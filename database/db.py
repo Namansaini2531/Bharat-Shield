@@ -1,7 +1,17 @@
 import os
+from pathlib import Path
 import psycopg2
 from psycopg2.extras import execute_values
 import numpy as np
+
+# Load .env if present
+try:
+    from dotenv import load_dotenv
+    env_path = Path(__file__).resolve().parents[1] / ".env"
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path)
+except ImportError:
+    pass
 
 # Database connection settings
 DB_HOST = os.getenv("POSTGRES_HOST", "localhost")
@@ -28,6 +38,22 @@ def setup_vector_extension():
     conn.close()
     print("✓ pgvector extension initialized.")
 
+def init_db():
+    """Execute init.sql to configure schema, tables, and HNSW vector index."""
+    init_sql_path = Path(__file__).resolve().parent / "init.sql"
+    if not init_sql_path.exists():
+        raise FileNotFoundError(f"init.sql not found at {init_sql_path}")
+    
+    with open(init_sql_path, "r", encoding="utf-8") as f:
+        sql_content = f.read()
+
+    conn = get_connection()
+    with conn.cursor() as cur:
+        cur.execute(sql_content)
+        conn.commit()
+    conn.close()
+    print("✓ Database tables, schema, and HNSW indexes successfully initialized.")
+
 def search_similar_signals(query_embedding: list[float], limit: int = 5):
     """
     Search for signals using Cosine Distance (<-> operator in pgvector).
@@ -49,8 +75,10 @@ def search_similar_signals(query_embedding: list[float], limit: int = 5):
     return results
 
 if __name__ == "__main__":
-    print("Testing PostgreSQL + pgvector connection...")
+    print(f"Testing connection to PostgreSQL at {DB_HOST}:{DB_PORT}/{DB_NAME}...")
     try:
-        setup_vector_extension()
+        init_db()
+        print("✓ PostgreSQL initialization complete!")
     except Exception as e:
-        print(f"Could not connect to PostgreSQL. Make sure Docker container is running!\nError: {e}")
+        print(f"Could not connect to PostgreSQL. Make sure Docker container or PostgreSQL service is running!\nError: {e}")
+
