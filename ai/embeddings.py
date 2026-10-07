@@ -16,8 +16,9 @@ def get_model(model_name: str = DEFAULT_MODEL_NAME):
             print(f"Loading embedding model: {model_name}...")
             _models[model_name] = SentenceTransformer(model_name)
             print(f"✓ Model {model_name} loaded successfully.")
-        except Exception as e:
+        except BaseException as e:
             # Fallback when offline or running lightweight test
+            print(f"Notice: Model {model_name} offline or download deferred ({e}). Using deterministic multilingual fallback.")
             _models[model_name] = None
     return _models.get(model_name)
 
