@@ -9,6 +9,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "backend"))
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.api.intelligence import router as intelligence_router
+from backend.app.api.auth import router as auth_router
 
 app = FastAPI(
     title="BHARAT-SHIELD Intelligence API",
@@ -24,6 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
 app.include_router(intelligence_router)
 
 @app.get("/")

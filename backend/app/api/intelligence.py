@@ -1,46 +1,172 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Header, Body
 from backend.app.models.schemas import Campaign, EvidencePackage
 from ai.clustering.clusterer import CampaignClusterer
 from blockchain.evidence.hasher import EvidenceHasher
 import json
 from pathlib import Path
 from collections import Counter
-from typing import Optional
+from typing import Optional, Dict, Any, List
+from datetime import datetime, timezone
+import uuid
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 DATA_FILE = BASE_DIR / "data" / "synthetic" / "campaign_data.json"
 
 router = APIRouter(prefix="/api", tags=["Intelligence"])
 
-# Supported RBAC personas
-ROLES_METADATA = {
-    "investigation_bureau": {
-        "role_id": "investigation_bureau",
-        "name": "Investigation Bureau of India (IB / LEA)",
-        "clearance": "Level 5 Top Secret",
-        "scope": "National Security, Critical Infrastructure & Cross-Border Ops",
-        "allowed_campaigns": ["CMP-007", "CMP-011", "CMP-003", "CAMPAIGN_007", "CAMPAIGN_011"]
-    },
-    "corporate_enterprise": {
-        "role_id": "corporate_enterprise",
-        "name": "Adani Group — Brand Defense & Market Risk",
-        "clearance": "Enterprise Tier-1",
-        "scope": "Stock Volatility Sabotage, Executive Deepfakes & Corporate Disinformation",
-        "allowed_campaigns": ["ADANI-009", "ADANI-014", "ADANI-022"]
-    },
-    "journalist_media": {
-        "role_id": "journalist_media",
-        "name": "National Press Consortium & Fact-Check Desk",
-        "clearance": "Press Accredited",
-        "scope": "Public Virality, Cross-Lingual Mutation Trees & WhatsApp Debunks",
-        "allowed_campaigns": ["FACT-007", "FACT-011", "FACT-033"]
-    }
+# Role-specific campaign registries
+ROLE_CAMPAIGNS = {
+    "investigation_bureau": [
+        {
+            "id": "CMP-007",
+            "title": "Operation Echo: Telecom & Critical Grid Sabotage",
+            "status": "ACTIVE_CRITICAL",
+            "category": "National Security / Disinformation Warfare",
+            "threat_score": 94,
+            "confidence": "HIGH",
+            "primary_language": "hi-Latn",
+            "languages_detected": ["Hindi", "Hinglish", "Punjabi", "English"],
+            "platforms": ["twitter", "telegram", "whatsapp"],
+            "post_count": 842,
+            "cross_platform_sync": 96,
+            "target": "National Critical Infrastructure & Public Law & Order",
+            "summary": "Coordinated synthetic campaign spreading false claims of nationwide communication blackout to trigger civic panic and bank runs.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-011",
+            "title": "Operation Redacted: Border Sector Coordinated Proxy Swarm",
+            "status": "MONITORING",
+            "category": "Cross-Border Cyber Operations",
+            "threat_score": 88,
+            "confidence": "HIGH",
+            "primary_language": "en",
+            "languages_detected": ["English", "Urdu", "Hindi"],
+            "platforms": ["twitter", "telegram"],
+            "post_count": 412,
+            "cross_platform_sync": 89,
+            "target": "Defense Personnel & Northern Logistics Hubs",
+            "summary": "Coordinated bot network deploying deepfake operational orders targeting border transit networks.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier"]
+        },
+        {
+            "id": "CMP-003",
+            "title": "Operation Cipher: Subsea Cable Sabotage Rumor Tree",
+            "status": "TRIAGED",
+            "category": "State-Sponsored Information Warfare",
+            "threat_score": 79,
+            "confidence": "MEDIUM",
+            "primary_language": "en",
+            "languages_detected": ["English", "Tamil", "Hindi"],
+            "platforms": ["twitter", "news"],
+            "post_count": 218,
+            "cross_platform_sync": 84,
+            "target": "Coastal Data Centers & Banking Backbone",
+            "summary": "Synthetic technical advisories alleging undersea fiber cuts to trigger financial market panic.",
+            "authorized_actions": ["inter_agency_dossier"]
+        }
+    ],
+    "corporate_enterprise": [
+        {
+            "id": "CMP-ADANI-009",
+            "title": "Coordinated Short-Seller Disinformation Swarm (Port Operations)",
+            "status": "ACTIVE_HIGH",
+            "category": "Market Manipulation & Short Sabotage",
+            "threat_score": 91,
+            "confidence": "HIGH",
+            "primary_language": "en",
+            "languages_detected": ["English", "Gujarati", "Hindi"],
+            "platforms": ["twitter", "telegram", "news"],
+            "post_count": 1280,
+            "cross_platform_sync": 93,
+            "target": "Adani Ports & SEZ (APSEZ) Share Price & ESG Ratings",
+            "summary": "Synchronized release of fabricated environmental and customs non-compliance documents on shadow financial Telegram channels prior to market opening.",
+            "authorized_actions": ["bse_clarification", "executive_briefing", "defamation_vault"]
+        },
+        {
+            "id": "CMP-ADANI-014",
+            "title": "Deepfake Voice Note Attack on Executive Financial Solvency",
+            "status": "FORENSIC_TRIAGE",
+            "category": "Executive Deepfake Phishing & Defamation",
+            "threat_score": 87,
+            "confidence": "HIGH",
+            "primary_language": "hi",
+            "languages_detected": ["Hindi", "English"],
+            "platforms": ["whatsapp", "telegram"],
+            "post_count": 520,
+            "cross_platform_sync": 88,
+            "target": "Adani Enterprises Leadership & Institutional Bondholders",
+            "summary": "AI voice synthesis impersonating Group CFO discussing fictional credit default swaps and asset revaluations.",
+            "authorized_actions": ["bse_clarification", "defamation_vault"]
+        },
+        {
+            "id": "CMP-CORP-022",
+            "title": "Solar & Green Energy Supply Chain Malign Smear",
+            "status": "MONITORING",
+            "category": "Commercial ESG Sabotage",
+            "threat_score": 73,
+            "confidence": "MEDIUM",
+            "primary_language": "en",
+            "languages_detected": ["English", "French"],
+            "platforms": ["twitter", "news"],
+            "post_count": 310,
+            "cross_platform_sync": 77,
+            "target": "Adani Green Energy Global Sovereign Funds",
+            "summary": "Cross-border botnet weaponizing outdated dispute filings to trigger automated ESG risk rating downgrades.",
+            "authorized_actions": ["executive_briefing"]
+        }
+    ],
+    "journalist_media": [
+        {
+            "id": "FACT-007",
+            "title": "Nationwide Internet & Power Shutdown Hoax Mutation Tree",
+            "status": "VIRAL_SPIKE",
+            "category": "Citizen WhatsApp Debunk & Fact-Check",
+            "threat_score": 89,
+            "confidence": "HIGH",
+            "primary_language": "hi-Latn",
+            "languages_detected": ["Hindi", "Hinglish", "Bengali", "Marathi", "English"],
+            "platforms": ["whatsapp", "telegram", "facebook"],
+            "post_count": 3490,
+            "cross_platform_sync": 94,
+            "target": "General Public & Civic Communities",
+            "summary": "Multi-lingual viral forward falsely citing Department of Telecom order to induce emergency ATM withdrawals and fuel hoarding.",
+            "authorized_actions": ["publish_factcheck", "generate_debunk_bulletin"]
+        },
+        {
+            "id": "FACT-011",
+            "title": "Synthetic Audio Clip Claiming Regional Bank Moratorium",
+            "status": "DEBUNKED",
+            "category": "Financial Disinformation Fact-Check",
+            "threat_score": 82,
+            "confidence": "HIGH",
+            "primary_language": "hi",
+            "languages_detected": ["Hindi", "English"],
+            "platforms": ["whatsapp", "twitter"],
+            "post_count": 1840,
+            "cross_platform_sync": 91,
+            "target": "Retail Depositors & Urban Cooperatives",
+            "summary": "Fabricated voice clip of RBI Governor allegedly restricting cash withdrawals in northern states.",
+            "authorized_actions": ["publish_factcheck", "generate_debunk_bulletin"]
+        },
+        {
+            "id": "FACT-033",
+            "title": "Manipulated Video of Election Electoral Roll Purge",
+            "status": "MONITORING",
+            "category": "Electoral Integrity & Misinformation",
+            "threat_score": 76,
+            "confidence": "MEDIUM",
+            "primary_language": "en",
+            "languages_detected": ["English", "Hindi", "Telugu"],
+            "platforms": ["twitter", "facebook"],
+            "post_count": 920,
+            "cross_platform_sync": 81,
+            "target": "Voters & Civic Organizations",
+            "summary": "Old training video republished with deceptive subtitles claiming electronic voting machine server anomalies.",
+            "authorized_actions": ["publish_factcheck"]
+        }
+    ]
 }
-
-@router.get("/auth/roles")
-def get_roles():
-    """Return all available RBAC roles and permissions."""
-    return ROLES_METADATA
 
 @router.get("/overview")
 def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
@@ -49,13 +175,13 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             posts = json.load(f)
 
-    # Role tailored metrics
     if role == "corporate_enterprise":
         return {
             "role": "corporate_enterprise",
-            "organization": "Adani Group Brand Defense",
+            "organization": "Adani Group — Brand Defense & Market Risk",
+            "clearance": "Enterprise Tier-1",
             "stats": {
-                "active_campaigns": 4,
+                "active_campaigns": 3,
                 "high_risk_campaigns": 2,
                 "content_analyzed": 4892,
                 "tipline_submissions": 46,
@@ -82,10 +208,11 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
     if role == "journalist_media":
         return {
             "role": "journalist_media",
-            "organization": "National Press Consortium",
+            "organization": "National Press Consortium & Fact-Check Desk",
+            "clearance": "Press Accredited",
             "stats": {
-                "active_campaigns": 23,
-                "high_risk_campaigns": 6,
+                "active_campaigns": 3,
+                "high_risk_campaigns": 2,
                 "content_analyzed": 8420,
                 "tipline_submissions": 842,
                 "ai_suspected": 11
@@ -144,10 +271,11 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
 
     return {
         "role": "investigation_bureau",
-        "organization": "Investigation Bureau of India",
+        "organization": "Investigation Bureau of India (IB / LEA)",
+        "clearance": "Level 5 Top Secret",
         "stats": {
-            "active_campaigns": len(clusters) or 17,
-            "high_risk_campaigns": sum(1 for c in ["CAMPAIGN_007", "CAMPAIGN_011"] if c in clusters) or 5,
+            "active_campaigns": len(clusters) or 3,
+            "high_risk_campaigns": 2,
             "content_analyzed": total_posts or 12483,
             "tipline_submissions": whatsapp_count or 385,
             "ai_suspected": 7
@@ -159,16 +287,101 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
     }
 
 @router.get("/campaigns")
-def get_campaigns(role: Optional[str] = Query(default="investigation_bureau")):
-    all_campaigns = CampaignClusterer.get_all_campaigns()
-    return all_campaigns
+def get_campaigns(
+    role: Optional[str] = Query(default="investigation_bureau"),
+    x_user_role: Optional[str] = Header(default=None)
+):
+    """Return campaign intelligence list filtered by active user persona/role clearance."""
+    active_role = role or x_user_role or "investigation_bureau"
+    if active_role in ROLE_CAMPAIGNS:
+        return ROLE_CAMPAIGNS[active_role]
+    return ROLE_CAMPAIGNS["investigation_bureau"]
 
 @router.get("/campaigns/{campaign_id}")
-def get_campaign(campaign_id: str):
+def get_campaign(campaign_id: str, role: Optional[str] = Query(default="investigation_bureau")):
+    """Fetch specific campaign with role authorization checks."""
+    active_role = role if role in ROLE_CAMPAIGNS else "investigation_bureau"
+    for c in ROLE_CAMPAIGNS[active_role]:
+        if c["id"].lower() == campaign_id.lower():
+            return c
+            
+    # Check default AI clusterer fallback
     campaign = CampaignClusterer.get_campaign_by_id(campaign_id)
     if not campaign:
-        raise HTTPException(status_code=404, detail="Campaign not found")
+        raise HTTPException(status_code=404, detail="Campaign not found under current clearance partition")
     return campaign
+
+@router.post("/analyst/action")
+def execute_analyst_action(
+    payload: Dict[str, Any] = Body(...),
+    x_user_role: Optional[str] = Header(default="investigation_bureau")
+):
+    """
+    Role-Protected Execution of Counter-Operations:
+    - 'sec69a_takedown' requires 'investigation_bureau'
+    - 'bse_clarification' requires 'corporate_enterprise'
+    - 'publish_factcheck' requires 'journalist_media'
+    """
+    action_type = payload.get("action_type")
+    campaign_id = payload.get("campaign_id", "CMP-007")
+    active_role = x_user_role if x_user_role in ROLE_CAMPAIGNS else "investigation_bureau"
+
+    # RBAC Authorization Matrix Check
+    ROLE_PERMISSIONS = {
+        "sec69a_takedown": ["investigation_bureau"],
+        "inter_agency_dossier": ["investigation_bureau"],
+        "blockchain_notarize": ["investigation_bureau", "corporate_enterprise"],
+        "bse_clarification": ["corporate_enterprise"],
+        "executive_briefing": ["corporate_enterprise"],
+        "defamation_vault": ["corporate_enterprise"],
+        "publish_factcheck": ["journalist_media"],
+        "generate_debunk_bulletin": ["journalist_media"]
+    }
+
+    allowed_roles = ROLE_PERMISSIONS.get(action_type, ["investigation_bureau"])
+    if active_role not in allowed_roles:
+        raise HTTPException(
+            status_code=403, 
+            detail=f"RBAC ACCESS DENIED: Active role '{active_role}' is not authorized to execute '{action_type}'. Required permissions: {allowed_roles}"
+        )
+
+    tx_hash = f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:8]}"
+    return {
+        "status": "EXECUTED",
+        "action_type": action_type,
+        "campaign_id": campaign_id,
+        "executor_role": active_role,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "cryptographic_signature": tx_hash,
+        "message": f"Operation '{action_type}' authorized and sealed with EVM cryptographic timestamp."
+    }
+
+@router.post("/reports/generate")
+def generate_role_report(
+    payload: Dict[str, Any] = Body(...),
+    x_user_role: Optional[str] = Header(default="investigation_bureau")
+):
+    """Generate role-jurisdiction official report dossiers."""
+    active_role = x_user_role if x_user_role in ROLE_CAMPAIGNS else "investigation_bureau"
+    campaign_id = payload.get("campaign_id", "CMP-007")
+    format_type = payload.get("format", "pdf")
+
+    report_titles = {
+        "investigation_bureau": "Section 69A IT Act Emergency Information Operation Dossier",
+        "corporate_enterprise": "SEBI / Stock Exchange Brand Defense & Market Volatility Briefing",
+        "journalist_media": "Multilingual Fact-Check & WhatsApp Debunk Dispatch"
+    }
+
+    return {
+        "report_id": f"REP-{str(uuid.uuid4())[:8].upper()}",
+        "title": report_titles.get(active_role, "Threat Intelligence Report"),
+        "role": active_role,
+        "campaign_id": campaign_id,
+        "format": format_type,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "integrity_hash": f"sha256:{uuid.uuid4().hex}",
+        "status": "READY_FOR_DOWNLOAD"
+    }
 
 @router.post("/evidence/{evidence_id}/verify")
 def verify_evidence(evidence_id: str):

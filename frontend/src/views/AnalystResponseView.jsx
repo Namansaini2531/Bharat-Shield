@@ -14,14 +14,19 @@ import {
   Send,
   AlertTriangle,
   FileCheck2,
-  Share2
+  Share2,
+  Fingerprint,
+  RefreshCw,
+  Clock
 } from 'lucide-react';
 import { useAuth, ROLES } from '../context/AuthContext';
 
 export default function AnalystResponseView({ onNavigate }) {
-  const { currentRole, currentUser } = useAuth();
+  const { currentRole, currentUser, executeProtectedAction, recordAuditLog } = useAuth();
   const [checkedSteps, setCheckedSteps] = useState([true, true, true, true, false, false]);
   const [actionMessage, setActionMessage] = useState('');
+  const [actionTx, setActionTx] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const toggleStep = (index) => {
     const updated = [...checkedSteps];
@@ -32,7 +37,7 @@ export default function AnalystResponseView({ onNavigate }) {
   const getRoleWorkflow = () => {
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return {
-        campaignId: 'ADANI-009',
+        campaignId: 'CMP-ADANI-009',
         campaignName: 'Mundra Port & Liquidity Disinformation Operation',
         threatLevel: 'CRITICAL BRAND THREAT',
         threatColor: '#f59e0b',
@@ -45,9 +50,9 @@ export default function AnalystResponseView({ onNavigate }) {
           { num: 6, text: "Continuous sentiment & stock volatility monitoring", subtitle: "Maintain 24/7 brand defense radar until negative sentiment normalizes." }
         ],
         actions: [
-          { label: 'Dispatch BSE/NSE Clarification', icon: Share2, primary: true, isDanger: false, type: 'bse' },
-          { label: 'Issue Legal Defamation Notice', icon: Lock, primary: false, isDanger: true, type: 'legal' },
-          { label: 'Generate Corporate Threat Brief', icon: FileText, primary: false, isDanger: false, type: 'report' }
+          { label: 'Dispatch BSE/NSE Clarification', actionType: 'bse_clarification', icon: Share2, primary: true, isDanger: false },
+          { label: 'Notarize Defamation Vault', actionType: 'blockchain_notarize', icon: Lock, primary: false, isDanger: false },
+          { label: 'Generate Corporate Threat Brief', actionType: 'report', icon: FileText, primary: false, isDanger: false }
         ]
       };
     }
@@ -67,9 +72,9 @@ export default function AnalystResponseView({ onNavigate }) {
           { num: 6, text: "Broadcast verification update to WhatsApp news subscribers", subtitle: "Push pre-verified debunk bulletin to stop rumor propagation early." }
         ],
         actions: [
-          { label: 'Publish Press Fact-Check Card', icon: Newspaper, primary: true, isDanger: false, type: 'factcheck' },
-          { label: 'Broadcast WhatsApp Tipline Debunk', icon: Send, primary: false, isDanger: false, type: 'broadcast' },
-          { label: 'Generate Media Intelligence Brief', icon: FileText, primary: false, isDanger: false, type: 'report' }
+          { label: 'Publish Press Fact-Check Card', actionType: 'publish_factcheck', icon: Newspaper, primary: true, isDanger: false },
+          { label: 'Dispatch WhatsApp Tipline Debunk', actionType: 'generate_debunk_bulletin', icon: Send, primary: false, isDanger: false },
+          { label: 'Generate Media Fact-Check Brief', actionType: 'report', icon: FileText, primary: false, isDanger: false }
         ]
       };
     }
@@ -89,46 +94,60 @@ export default function AnalystResponseView({ onNavigate }) {
         { num: 6, text: "Maintain active surveillance & inter-agency briefing", subtitle: "Ongoing monitoring until threat network is fully neutralized." }
       ],
       actions: [
-        { label: 'Issue Section 69A IT Act Takedown', icon: ShieldAlert, primary: true, isDanger: true, type: 'sec69a' },
-        { label: 'Seal Court Evidence Package', icon: FileCheck2, primary: false, isDanger: false, type: 'evidence' },
-        { label: 'Generate Classified Inter-Agency Brief', icon: FileText, primary: false, isDanger: false, type: 'report' }
+        { label: 'Issue Section 69A IT Act Takedown', actionType: 'sec69a_takedown', icon: ShieldAlert, primary: true, isDanger: true },
+        { label: 'Seal EVM Court Evidence Package', actionType: 'blockchain_notarize', icon: FileCheck2, primary: false, isDanger: false },
+        { label: 'Generate Classified Inter-Agency Brief', actionType: 'report', icon: FileText, primary: false, isDanger: false }
       ]
     };
   };
 
   const workflow = getRoleWorkflow();
 
-  const handleAction = (type) => {
-    if (type === 'report') {
+  const handleAction = async (actionType) => {
+    if (actionType === 'report') {
       if (onNavigate) onNavigate('report-generator');
       return;
     }
-    if (type === 'evidence') {
+    if (actionType === 'evidence') {
       if (onNavigate) onNavigate('evidence');
       return;
     }
-    if (type === 'sec69a') {
-      setActionMessage('🚨 Section 69A IT Act Emergency Direction generated and queued for Inter-Agency signatory approval.');
-    } else if (type === 'bse') {
-      setActionMessage('📈 Regulatory Clarification Statement formatted and transmitted to BSE/NSE Investor Compliance Desk.');
-    } else if (type === 'factcheck' || type === 'broadcast') {
-      setActionMessage('✅ Multilingual Fact-Check Card approved and published across National Press Wire & Tipline feed.');
-    } else if (type === 'legal') {
-      setActionMessage('⚖️ Legal Cease & Desist dossier packaged with cryptographically timestamped evidence.');
+
+    setIsProcessing(true);
+    setActionMessage('');
+    setActionTx(null);
+
+    try {
+      const res = await executeProtectedAction(actionType, workflow.campaignId, {
+        analyst: currentUser.name,
+        role: currentUser.roleTitle
+      });
+
+      setActionMessage(res.message || `Action '${actionType}' verified and signed.`);
+      setActionTx({
+        txHash: res.cryptographic_signature,
+        timestamp: res.timestamp || new Date().toISOString(),
+        role: res.executor_role
+      });
+      recordAuditLog(actionType.toUpperCase(), workflow.campaignId, { status: 'EXECUTED', tx: res.cryptographic_signature });
+    } catch (err) {
+      setActionMessage(`⚠️ Access Denied / Error: ${err.message || 'Operation failed'}`);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   return (
     <div>
-      {/* Top Banner */}
+      {/* Top Banner with Active Persona Clearance */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)', padding: '3px 10px', backgroundColor: 'var(--bg-muted)', border: '1px solid var(--border-color)', borderRadius: '9999px' }}>
-              ID: #{workflow.campaignId}
+            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: currentUser.badgeColor, padding: '3px 10px', backgroundColor: 'var(--bg-muted)', border: `1px solid ${currentUser.badgeColor}40`, borderRadius: '9999px', fontWeight: 700 }}>
+              {currentUser.badgeText}
             </span>
-            <span style={{ fontSize: '11px', color: '#60a5fa', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              ↳ Active Response Mode
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              Campaign ID: #{workflow.campaignId}
             </span>
           </div>
           <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', marginTop: '6px', letterSpacing: '-0.5px' }}>
@@ -151,23 +170,31 @@ export default function AnalystResponseView({ onNavigate }) {
 
       {actionMessage && (
         <div style={{
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          border: '1px solid rgba(16, 185, 129, 0.3)',
+          backgroundColor: actionMessage.includes('Denied') ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+          border: actionMessage.includes('Denied') ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(16, 185, 129, 0.3)',
           borderRadius: '8px',
-          padding: '12px 16px',
+          padding: '14px 18px',
           marginBottom: '20px',
           fontSize: '13px',
-          color: '#10b981',
+          color: actionMessage.includes('Denied') ? '#ef4444' : '#10b981',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+          flexDirection: 'column',
+          gap: '8px'
         }}>
-          <span>{actionMessage}</span>
-          <button 
-            onClick={() => setActionMessage('')}
-            style={{ background: 'transparent', border: 'none', color: '#10b981', cursor: 'pointer', fontWeight: 700 }}>
-            ✕
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontWeight: 600 }}>{actionMessage}</span>
+            <button 
+              onClick={() => { setActionMessage(''); setActionTx(null); }}
+              style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', fontWeight: 700 }}>
+              ✕
+            </button>
+          </div>
+          {actionTx && (
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <span>EVM Signature: {actionTx.txHash}</span>
+              <span>Timestamp: {actionTx.timestamp}</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -252,9 +279,10 @@ export default function AnalystResponseView({ onNavigate }) {
                 return (
                   <button 
                     key={idx}
-                    onClick={() => handleAction(act.type)}
+                    disabled={isProcessing}
+                    onClick={() => handleAction(act.actionType)}
                     className={act.isDanger ? 'bs-button bs-button-danger' : (act.primary ? 'bs-button bs-button-primary' : 'bs-button bs-button-secondary')} 
-                    style={{ width: '100%', justifyContent: 'space-between', padding: '12px 16px', fontSize: '13px' }}>
+                    style={{ width: '100%', justifyContent: 'space-between', padding: '12px 16px', fontSize: '13px', opacity: isProcessing ? 0.7 : 1 }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Icon size={15} /> {act.label}
                     </span>
@@ -268,7 +296,7 @@ export default function AnalystResponseView({ onNavigate }) {
                 className="bs-button bs-button-secondary" 
                 style={{ width: '100%', justifyContent: 'flex-start', padding: '12px 16px', gap: '10px', fontSize: '13px' }}>
                 <UserPlus size={14} style={{ color: 'var(--text-secondary)' }} />
-                <span>Assign Lead Analyst</span>
+                <span>Assign Lead Analyst ({currentUser.name})</span>
               </button>
 
               <button 
@@ -281,7 +309,7 @@ export default function AnalystResponseView({ onNavigate }) {
             </div>
           </div>
 
-          {/* Policy Notice Box */}
+          {/* Cryptographic Key & Governance Notice */}
           <div style={{ 
             backgroundColor: 'var(--bg-card)', 
             border: '1px solid var(--border-color)', 
@@ -292,7 +320,11 @@ export default function AnalystResponseView({ onNavigate }) {
             color: 'var(--text-secondary)',
             lineHeight: 1.5
           }}>
-            <strong style={{ color: 'var(--text-heading)' }}>Responsible AI Governance:</strong> BHARAT-SHIELD does not execute autonomous censorship. All countermeasures require human operator authorization.
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px', color: 'var(--text-heading)', fontWeight: 700 }}>
+              <Fingerprint size={14} style={{ color: currentUser.badgeColor }} />
+              <span>Signatory Clearance Verified:</span>
+            </div>
+            <span>Operating under clearance <strong>{currentUser.clearance}</strong>. All countermeasure triggers are logged to the tamper-evident audit ledger.</span>
           </div>
 
         </div>
