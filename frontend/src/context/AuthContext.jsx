@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
+export const MASTER_PASSWORD = 'sentinel@16#';
+
 export const ROLES = {
   INVESTIGATION_BUREAU: 'investigation_bureau',
   CORPORATE_ENTERPRISE: 'corporate_enterprise',
@@ -11,6 +13,8 @@ export const USER_PROFILES = {
     id: 'user_ib_001',
     name: 'Joint Director Vikram Rawat',
     email: 'v.rawat@ib.gov.in',
+    phone: '+91 98100 44219',
+    username: 'v_rawat_ib',
     role: ROLES.INVESTIGATION_BUREAU,
     roleTitle: 'Investigation Bureau of India (IB / LEA)',
     organization: 'Ministry of Home Affairs / Cyber Ops Command',
@@ -41,6 +45,8 @@ export const USER_PROFILES = {
     id: 'user_adani_007',
     name: 'Rajesh Singhania',
     email: 'ciso.defense@adani.com',
+    phone: '+91 98250 88314',
+    username: 'rsinghania_ag',
     role: ROLES.CORPORATE_ENTERPRISE,
     roleTitle: 'Adani Group — Brand Defense & Market Risk',
     organization: 'Adani Corporate Security & Threat Intelligence',
@@ -71,6 +77,8 @@ export const USER_PROFILES = {
     id: 'user_media_404',
     name: 'Pooja Kashyap',
     email: 'pooja.k@nationalpress.org',
+    phone: '+91 99112 33451',
+    username: 'pkashyap_npc',
     role: ROLES.JOURNALIST_MEDIA,
     roleTitle: 'Investigative Bureau Lead / Fact-Checker',
     organization: 'National Press Consortium & Fact-Check Desk',
@@ -102,6 +110,14 @@ export const USER_PROFILES = {
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    try {
+      return localStorage.getItem('bharat_shield_authenticated') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
   const [currentRole, setCurrentRole] = useState(() => {
     try {
       const saved = localStorage.getItem('bharat_shield_active_role');
@@ -111,9 +127,8 @@ export function AuthProvider({ children }) {
     }
   });
 
-  const [currentUser, setCurrentUser] = useState(() => USER_PROFILES[currentRole]);
+  const [currentUser, setCurrentUser] = useState(() => USER_PROFILES[currentRole] || USER_PROFILES[ROLES.INVESTIGATION_BUREAU]);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [auditEventNotification, setAuditEventNotification] = useState(null);
 
   useEffect(() => {
     const profile = USER_PROFILES[currentRole] || USER_PROFILES[ROLES.INVESTIGATION_BUREAU];
@@ -122,6 +137,54 @@ export function AuthProvider({ children }) {
       localStorage.setItem('bharat_shield_active_role', currentRole);
     } catch {}
   }, [currentRole]);
+
+  const login = useCallback(async ({ password, roleKey = ROLES.INVESTIGATION_BUREAU, customName = '', customPhone = '', customUsername = '' }) => {
+    const isMaster = password === MASTER_PASSWORD;
+    
+    // Valid if master password OR standard demo login
+    if (!isMaster && password.length < 4 && password !== 'admin' && password !== 'sentinel') {
+      throw new Error('Invalid credentials. Use master password "sentinel@16#" or valid credentials.');
+    }
+
+    const targetRole = USER_PROFILES[roleKey] ? roleKey : ROLES.INVESTIGATION_BUREAU;
+    const baseProfile = USER_PROFILES[targetRole];
+
+    const userProfile = {
+      ...baseProfile,
+      name: customName || baseProfile.name,
+      phone: customPhone || baseProfile.phone,
+      username: customUsername || baseProfile.username
+    };
+
+    setCurrentRole(targetRole);
+    setCurrentUser(userProfile);
+    setIsAuthenticated(true);
+
+    try {
+      localStorage.setItem('bharat_shield_authenticated', 'true');
+      localStorage.setItem('bharat_shield_active_role', targetRole);
+      
+      // Audit log to backend
+      fetch('http://127.0.0.1:8000/api/auth/audit-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-User-Role': targetRole },
+        body: JSON.stringify({
+          action: isMaster ? 'MASTER_KEY_LOGIN_SUCCESS' : 'LOGIN_SUCCESS',
+          target: `${userProfile.name} (${userProfile.clearance})`,
+          details: { isMaster, timestamp: new Date().toISOString() }
+        })
+      }).catch(() => {});
+    } catch {}
+
+    return userProfile;
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsAuthenticated(false);
+    try {
+      localStorage.removeItem('bharat_shield_authenticated');
+    } catch {}
+  }, []);
 
   const switchRole = useCallback(async (roleKey) => {
     if (USER_PROFILES[roleKey]) {
@@ -192,6 +255,9 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{
+      isAuthenticated,
+      login,
+      logout,
       currentRole,
       currentUser,
       switchRole,
@@ -201,8 +267,7 @@ export function AuthProvider({ children }) {
       recordAuditLog,
       isAuthModalOpen,
       setIsAuthModalOpen,
-      auditEventNotification,
-      setAuditEventNotification,
+      masterPassword: MASTER_PASSWORD,
       allProfiles: USER_PROFILES
     }}>
       {children}

@@ -38,7 +38,7 @@ import {
 } from 'lucide-react';
 
 export default function Layout({ currentNav, setCurrentNav, theme, setTheme, children }) {
-  const { currentRole, currentUser, isAuthModalOpen, setIsAuthModalOpen } = useAuth();
+  const { currentRole, currentUser, isAuthModalOpen, setIsAuthModalOpen, logout } = useAuth();
   
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
@@ -839,6 +839,35 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                     >
                       <Shield size={14} style={{ color: 'var(--accent-cyan)' }} /> 
                       <span>Command Dashboard</span>
+                    </button>
+
+                    <button 
+                      onClick={() => { logout(); setShowUserMenu(false); }}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '8px 12px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        background: 'transparent',
+                        color: '#ef4444',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'all 0.15s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }}
+                    >
+                      <LogOut size={14} /> 
+                      <span>Lock & Sign Out</span>
                     </button>
                   </div>
                 </div>

@@ -1,5 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react';
 import Layout from './components/Layout';
+import LoginView from './views/LoginView';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Loader2 } from 'lucide-react';
 
@@ -40,7 +41,7 @@ function LoadingFallback() {
 function MainAppContent() {
   const [currentNav, setCurrentNav] = useState('overview');
   const [theme, setTheme] = useState('dark');
-  const { currentRole, hasAccessToNav } = useAuth();
+  const { isAuthenticated, currentRole, hasAccessToNav } = useAuth();
 
   // Reset to overview if user switches to a role that lacks access to the current view
   React.useEffect(() => {
@@ -63,6 +64,11 @@ function MainAppContent() {
       document.documentElement.setAttribute('data-theme', theme);
     }
   }, [theme]);
+
+  // If not authenticated, display the Login / Auth Screen
+  if (!isAuthenticated) {
+    return <LoginView />;
+  }
 
   const renderView = () => {
     switch (currentNav) {
