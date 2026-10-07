@@ -6,28 +6,20 @@ DEFAULT_MODEL_NAME = os.getenv("EMBEDDING_MODEL", "sentence-transformers/paraphr
 LABSE_MODEL_NAME = "sentence-transformers/LaBSE"
 
 _models = {}
-_HAS_ST = False
-
-try:
-    from sentence_transformers import SentenceTransformer
-    _HAS_ST = True
-except Exception as e:
-    _HAS_ST = False
-    print(f"Notice: sentence-transformers not initialized ({e}). Using deterministic fallback generator.")
 
 def get_model(model_name: str = DEFAULT_MODEL_NAME):
     """Lazy-load and cache the requested sentence-transformer model."""
-    if not _HAS_ST:
-        return None
+    global _models
     if model_name not in _models:
         try:
+            from sentence_transformers import SentenceTransformer
             print(f"Loading embedding model: {model_name}...")
             _models[model_name] = SentenceTransformer(model_name)
             print(f"✓ Model {model_name} loaded successfully.")
         except Exception as e:
-            print(f"Warning: Could not load model {model_name}: {e}")
-            return None
-    return _models[model_name]
+            # Fallback when offline or running lightweight test
+            _models[model_name] = None
+    return _models.get(model_name)
 
 class MultilingualEmbedder:
     """

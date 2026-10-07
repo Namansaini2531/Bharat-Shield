@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query, Header, Body
 from backend.app.models.schemas import Campaign, EvidencePackage
 from ai.clustering.clusterer import CampaignClusterer
+from ai.pipeline import BharatShieldIntelligencePipeline
 from blockchain.evidence.hasher import EvidenceHasher
 import json
 from pathlib import Path
@@ -407,4 +407,54 @@ def verify_evidence(evidence_id: str):
         "verified": is_valid,
         "sha256_hash": evidence["sha256_hash"],
         "message": "Evidence integrity verified successfully via SHA-256 digest match."
+    }
+
+@router.get("/models/status")
+def get_ai_models_status():
+    """Returns the operational status of all BHARAT-SHIELD AI/ML models."""
+    return BharatShieldIntelligencePipeline.get_models_status()
+
+@router.post("/pipeline/analyze")
+def analyze_content(payload: Dict[str, Any] = Body(...)):
+    """
+    Real-Time Multimodal Intelligence Analysis:
+    Runs full pipeline (Language ID -> OCR/ASR -> Entities -> Embeddings -> Threat Score -> Evidence).
+    """
+    text = payload.get("text", "")
+    media_type = payload.get("media_type", "text")
+    platform = payload.get("platform", "whatsapp_tipline")
+    metadata = payload.get("metadata", {})
+
+    result = BharatShieldIntelligencePipeline.process_signal(
+        text=text,
+        media_type=media_type,
+        platform=platform,
+        metadata=metadata
+    )
+    return result
+
+@router.post("/tipline/ingest")
+def ingest_tipline_signal(payload: Dict[str, Any] = Body(...)):
+    """
+    Tipline Signal Ingestion:
+    Analyzes submitted signal, calculates campaign correlation, and seals evidence.
+    """
+    text = payload.get("text", "")
+    media_type = payload.get("media_type", "text")
+    platform = payload.get("platform", "whatsapp_tipline")
+
+    analysis = BharatShieldIntelligencePipeline.process_signal(
+        text=text,
+        media_type=media_type,
+        platform=platform
+    )
+    return {
+        "status": "INGESTED",
+        "signal_id": analysis["signal_id"],
+        "language_detected": analysis["language_analysis"]["language"],
+        "threat_level": analysis["risk_assessment"]["base_risk"],
+        "confidence": analysis["risk_assessment"]["confidence"],
+        "ai_assistance": analysis["ai_assistance_indicators"]["status"],
+        "sha256_hash": analysis["evidence_package"]["sha256_hash"],
+        "full_analysis": analysis
     }
