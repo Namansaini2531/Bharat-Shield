@@ -1,0 +1,717 @@
+[
+  {
+    "id": "P001",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:01:15",
+    "language": "en",
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately!",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P002",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:02:15",
+    "language": "en",
+    "text": "BREAKING: Total internet suspension ordered by government starting midnight tonight.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P003",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:03:15",
+    "language": "hi",
+    "text": "कल से पूरे देश में इंटरनेट बंद होने वाला है। तुरंत सभी व्हाट्सएप ग्रुप में भेजें।",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P004",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:04:15",
+    "language": "hi-Latn",
+    "text": "Sarkar kal internet band karne wali hai. Sabko immediately forward karo.",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P005",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:05:15",
+    "language": "ta",
+    "text": "அவசரம்: நாளை முதல் இணைய சேவை நிறுத்தப்படும் என அரசு அறிவித்துள்ளது. உடனடியாக பகிரவும்.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P006",
+    "platform": "news",
+    "timestamp": "2026-08-16T09:06:15",
+    "language": "en",
+    "text": "Unverified reports claim potential nationwide internet shutdown scheduled for tomorrow.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P007",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:07:15",
+    "language": "hi-Latn",
+    "text": "Sarkar internet bandh kar rahi hai kal se. Confirm news guys share fast!",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P008",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:08:15",
+    "language": "hi",
+    "text": "सरकार द्वारा इंटरनेट निलंबन का आधिकारिक गुप्त आदेश जारी हुआ।",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P009",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:09:15",
+    "language": "bn",
+    "text": "জরুরী: সরকার আগামীকাল ইন্টারনেট পরিষেবা বন্ধ করে দেবে। এখনই শেয়ার করুন।",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P010",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:10:15",
+    "language": "en",
+    "text": "ALERT: Telecom providers instructed to throttle 4G/5G networks starting 00:00 UTC.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P011",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:11:15",
+    "language": "en",
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately! (Variant #11)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P012",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:12:15",
+    "language": "en",
+    "text": "BREAKING: Total internet suspension ordered by government starting midnight tonight. (Variant #12)",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P013",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:13:15",
+    "language": "hi",
+    "text": "कल से पूरे देश में इंटरनेट बंद होने वाला है। तुरंत सभी व्हाट्सएप ग्रुप में भेजें। (Variant #13)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P014",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:14:15",
+    "language": "hi-Latn",
+    "text": "Sarkar kal internet band karne wali hai. Sabko immediately forward karo. (Variant #14)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P015",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:15:15",
+    "language": "ta",
+    "text": "அவசரம்: நாளை முதல் இணைய சேவை நிறுத்தப்படும் என அரசு அறிவித்துள்ளது. உடனடியாக பகிரவும். (Variant #15)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P016",
+    "platform": "news",
+    "timestamp": "2026-08-16T09:16:15",
+    "language": "en",
+    "text": "Unverified reports claim potential nationwide internet shutdown scheduled for tomorrow. (Variant #16)",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P017",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:17:15",
+    "language": "hi-Latn",
+    "text": "Sarkar internet bandh kar rahi hai kal se. Confirm news guys share fast! (Variant #17)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P018",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:18:15",
+    "language": "hi",
+    "text": "सरकार द्वारा इंटरनेट निलंबन का आधिकारिक गुप्त आदेश जारी हुआ। (Variant #18)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P019",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:19:15",
+    "language": "bn",
+    "text": "জরুরী: সরকার আগামীকাল ইন্টারনেট পরিষেবা বন্ধ করে দেবে। এখনই শেয়ার করুন। (Variant #19)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P020",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:20:15",
+    "language": "en",
+    "text": "ALERT: Telecom providers instructed to throttle 4G/5G networks starting 00:00 UTC. (Variant #20)",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P021",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:21:15",
+    "language": "en",
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately! (Variant #21)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P022",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:22:15",
+    "language": "en",
+    "text": "BREAKING: Total internet suspension ordered by government starting midnight tonight. (Variant #22)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P023",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:23:15",
+    "language": "hi",
+    "text": "कल से पूरे देश में इंटरनेट बंद होने वाला है। तुरंत सभी व्हाट्सएप ग्रुप में भेजें। (Variant #23)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P024",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:24:15",
+    "language": "hi-Latn",
+    "text": "Sarkar kal internet band karne wali hai. Sabko immediately forward karo. (Variant #24)",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P025",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:25:15",
+    "language": "ta",
+    "text": "அவசரம்: நாளை முதல் இணைய சேவை நிறுத்தப்படும் என அரசு அறிவித்துள்ளது. உடனடியாக பகிரவும். (Variant #25)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P026",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:52:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें!",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P027",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:54:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks.",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P028",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:56:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle!",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P029",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:58:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज।",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P030",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:00:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit.",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P031",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:02:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें! [Verified Warning Ref #31]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P032",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:04:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks. [Verified Warning Ref #32]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P033",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:06:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle! [Verified Warning Ref #33]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P034",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:08:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज। [Verified Warning Ref #34]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P035",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:10:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit. [Verified Warning Ref #35]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P036",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:12:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें! [Verified Warning Ref #36]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P037",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:14:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks. [Verified Warning Ref #37]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P038",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:16:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle! [Verified Warning Ref #38]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P039",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:18:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज। [Verified Warning Ref #39]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P040",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:20:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit. [Verified Warning Ref #40]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P041",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:22:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें! [Verified Warning Ref #41]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P042",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:24:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks. [Verified Warning Ref #42]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P043",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:26:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle! [Verified Warning Ref #43]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P044",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:28:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज। [Verified Warning Ref #44]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P045",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:30:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit. [Verified Warning Ref #45]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P046",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:18:30",
+    "language": "en",
+    "text": "WHAT A WIN! India wins the World Cup final in a stunning last-over thriller! 🇮🇳🏆",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P047",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T14:21:30",
+    "language": "hi",
+    "text": "भारत बना विश्व विजेता! शानदार प्रदर्शन, पूरी टीम को बधाई। 🎉",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P048",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T14:24:30",
+    "language": "en",
+    "text": "Unbelievable match! Captain leads from the front to secure historic trophy.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P049",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:27:30",
+    "language": "hi-Latn",
+    "text": "India jeet gayi World Cup!! Epic performance by the bowlers in death overs!",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P050",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T14:30:30",
+    "language": "en",
+    "text": "Congratulations Team India on winning the championship! Proud moment.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P051",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:33:30",
+    "language": "en",
+    "text": "WHAT A WIN! India wins the World Cup final in a stunning last-over thriller! 🇮🇳🏆",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P052",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T14:36:30",
+    "language": "hi",
+    "text": "भारत बना विश्व विजेता! शानदार प्रदर्शन, पूरी टीम को बधाई। 🎉",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P053",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T14:39:30",
+    "language": "en",
+    "text": "Unbelievable match! Captain leads from the front to secure historic trophy.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P054",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:42:30",
+    "language": "hi-Latn",
+    "text": "India jeet gayi World Cup!! Epic performance by the bowlers in death overs!",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P055",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T14:45:30",
+    "language": "en",
+    "text": "Congratulations Team India on winning the championship! Proud moment.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P056",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:48:30",
+    "language": "en",
+    "text": "WHAT A WIN! India wins the World Cup final in a stunning last-over thriller! 🇮🇳🏆",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P057",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T14:51:30",
+    "language": "hi",
+    "text": "भारत बना विश्व विजेता! शानदार प्रदर्शन, पूरी टीम को बधाई। 🎉",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P058",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T14:54:30",
+    "language": "en",
+    "text": "Unbelievable match! Captain leads from the front to secure historic trophy.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P059",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:57:30",
+    "language": "hi-Latn",
+    "text": "India jeet gayi World Cup!! Epic performance by the bowlers in death overs!",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P060",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T14:00:30",
+    "language": "en",
+    "text": "Congratulations Team India on winning the championship! Proud moment.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P061",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:04:45",
+    "language": "hi-Latn",
+    "text": "[Audio Transcript 0:42]: Bhai news me sunne ko mila hai ki kal petrol pumps pe rationing hogi. Pura tank bharwa lo.",
+    "media_type": "audio",
+    "ocr_text": null,
+    "campaign_cluster": "EDGE_AUDIO_001"
+  },
+  {
+    "id": "P062",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:08:45",
+    "language": "hi-Latn",
+    "text": "Arrey yar, chennai la internet slow aa irukku! Is government blocking servers?",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "EDGE_MIXED_001"
+  },
+  {
+    "id": "P063",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:12:45",
+    "language": "hi",
+    "text": "[Image Intercept]",
+    "media_type": "image",
+    "ocr_text": "सरकारी योजना: सभी नागरिकों को मिलेंगे ₹50000 सहायता राशि। इस लिंक पर क्लिक करें।",
+    "campaign_cluster": "EDGE_OCR_001"
+  },
+  {
+    "id": "P064",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:16:45",
+    "language": "en",
+    "text": "Does anyone know the official schedule for tomorrow's metro maintenance work?",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "NEUTRAL_QUERY"
+  },
+  {
+    "id": "P065",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T16:20:45",
+    "language": "en",
+    "text": "[Video Analysis]: AI Deepfake video of official news anchor spreading fake stock market crash alert.",
+    "media_type": "video",
+    "ocr_text": null,
+    "campaign_cluster": "EDGE_DEEPFAKE_001"
+  },
+  {
+    "id": "P066",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:24:45",
+    "language": "en",
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately!",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P067",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T16:28:45",
+    "language": "hi",
+    "text": "🚨🚨 इमेरजेंसी नोटिस 🚨🚨 बंद होगा बैंक सर्वर! 😱😱 शेयर करें ➡️ ➡️ ➡️",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P068",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:32:45",
+    "language": "ta",
+    "text": "நாளை முதல் அனைத்து ஏடிஎம்களும் மூடப்படும் என ரிசர்வ் வங்கி தெரிவித்துள்ளது.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P069",
+    "platform": "news",
+    "timestamp": "2026-08-16T16:36:45",
+    "language": "en",
+    "text": "Fringe Alert: Domain resolving to bulletproof hosting subnet 185.220.x.x posting fake emergency advisories.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P070",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:40:45",
+    "language": "hi-Latn",
+    "text": "Breaking news 🚨 Kal se 500 note ban ho gaya boss!! Viral news forward fast 🔥",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P071",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:44:45",
+    "language": "en",
+    "text": "???",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "NOISE"
+  },
+  {
+    "id": "P072",
+    "platform": "news",
+    "timestamp": "2026-08-16T16:48:45",
+    "language": "en",
+    "text": "OFFICIAL PRESS RELEASE: Press Information Bureau issues clarification regarding false rumors circulating on social messaging platforms. Citizens are advised to rely only on official handles.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "OFFICIAL_PRESS_RELEASE"
+  },
+  {
+    "id": "P073",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T16:52:45",
+    "language": "bn",
+    "text": "জরুরি খবর: আগামীকাল ব্যাঙ্ক বন্ধ থাকবে, আজই টাকা তুলুন।",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P074",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:56:45",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight [Bot Retry #09]",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P075",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:00:45",
+    "language": "hi-Latn",
+    "text": "[Audio Transcript 1:15]: Voice recording claiming military lockdown in northern sector.",
+    "media_type": "audio",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  }
+]

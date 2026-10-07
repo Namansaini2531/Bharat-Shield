@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic
+pandas
+numpy
+psycopg2-binary
+pgvector
+sqlalchemy
+sentence-transformers

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector extension enabled out-of-the-box
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: bharat_shield_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-bharat_shield}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Redis for pub/sub ingestion queue & caching
+  redis:
+    image: redis:7-alpine
+    container_name: bharat_shield_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
