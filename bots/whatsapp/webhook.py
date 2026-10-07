@@ -113,10 +113,11 @@ def format_whatsapp_response_card(analysis: Dict[str, Any], extracted_text: Opti
         "━━━━━━━━━━━━━━━━━━━━━━━",
         f"🔒 *Tamper-Proof Ledger Seal:*",
         f"`sha256:{sha_hash[:24]}...`",
-        "⚖️ *Protected under DPDP Act 2023 & IT Act Sec 69A*",
+        "⚖️ *Protected & Cryptographically Verified under IT Act Sec 69A*",
     ])
 
     return "\n".join(lines)
+
 
 @router.get("", response_class=PlainTextResponse)
 @router.get("/", response_class=PlainTextResponse)

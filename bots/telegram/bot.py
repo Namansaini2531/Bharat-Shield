@@ -202,10 +202,11 @@ class TelegramSentinelBot:
                 "• *Forward any suspicious text* message, WhatsApp forward, or tweet.\n"
                 "• *Send a screenshot or poster* to trigger Multilingual OCR extraction.\n"
                 "• *Send a voice note* to trigger Whisper ASR audio transcription.\n\n"
-                "🔒 *Privacy Guarantee:* DPDP Act 2023 compliant. All submissions are cryptographically hashed and anonymized."
+                "🔒 *Privacy Guarantee:* All submissions are cryptographically hashed and anonymized."
             )
             await self.send_message(client, chat_id, welcome_text)
             return
+
 
         if text.startswith("/status"):
             models_status = BharatShieldIntelligencePipeline.get_models_status()
