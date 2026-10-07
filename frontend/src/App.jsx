@@ -1,5 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react';
 import Layout from './components/Layout';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Loader2 } from 'lucide-react';
 
 // Lazy loading all 11 view components
@@ -30,15 +31,23 @@ function LoadingFallback() {
     }}>
       <Loader2 size={32} className="animate-pulse-slow" style={{ color: '#3b82f6' }} />
       <div style={{ fontSize: '12px', fontFamily: 'JetBrains Mono', letterSpacing: '1px' }}>
-        LOADING SECURE MODULE...
+        AUTHENTICATING & LOADING SECURE PARTITION...
       </div>
     </div>
   );
 }
 
-export default function App() {
+function MainAppContent() {
   const [currentNav, setCurrentNav] = useState('overview');
   const [theme, setTheme] = useState('dark');
+  const { currentRole, hasAccessToNav } = useAuth();
+
+  // Reset to overview if user switches to a role that lacks access to the current view
+  React.useEffect(() => {
+    if (!hasAccessToNav(currentNav)) {
+      setCurrentNav('overview');
+    }
+  }, [currentRole, currentNav, hasAccessToNav]);
 
   React.useEffect(() => {
     if (theme === 'system') {
@@ -90,5 +99,13 @@ export default function App() {
         {renderView()}
       </Suspense>
     </Layout>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainAppContent />
+    </AuthProvider>
   );
 }

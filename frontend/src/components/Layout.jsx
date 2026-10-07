@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Breadcrumbs from './Breadcrumbs';
 import ThemeToggle from './ThemeToggle';
+import RoleSwitchModal from './RoleSwitchModal';
+import { useAuth, ROLES } from '../context/AuthContext';
 import { 
   LayoutDashboard, 
   ShieldAlert, 
@@ -26,10 +28,18 @@ import {
   Layers,
   HelpCircle,
   LogOut,
-  X
+  X,
+  Building2,
+  Newspaper,
+  ShieldCheck,
+  UserCheck,
+  RefreshCw,
+  Fingerprint
 } from 'lucide-react';
 
 export default function Layout({ currentNav, setCurrentNav, theme, setTheme, children }) {
+  const { currentRole, currentUser, isAuthModalOpen, setIsAuthModalOpen } = useAuth();
+  
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
       return localStorage.getItem('bharat_shield_sidebar_collapsed') === 'true';
@@ -89,42 +99,123 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Structured Navigation Groups for Shadcn Application Shell 1
-  const navGroups = [
-    {
-      label: 'PLATFORM & RECON',
-      items: [
-        { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
-        { id: 'live', label: 'Live Intel Feed', icon: Radio, badge: 'LIVE', badgeColor: 'red' },
-        { id: 'tipline', label: 'Citizen Tipline', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
-      ]
-    },
-    {
-      label: 'INVESTIGATION & THREATS',
-      items: [
-        { id: 'campaigns', label: 'Campaign #007', icon: ShieldAlert, badge: '94%', badgeColor: 'red' },
-        { id: 'narratives', label: 'Narrative Clusters', icon: GitFork },
-        { id: 'threats', label: 'Threat Assessments', icon: AlertTriangle },
-        { id: 'analyst-response', label: 'Response Studio', icon: Sparkles },
-        { id: 'report-generator', label: 'Advisory Generator', icon: FileText }
-      ]
-    },
-    {
-      label: 'FORENSICS & LEDGER',
-      items: [
-        { id: 'evidence', label: 'Evidence Vault', icon: FileCheck },
-        { id: 'audit', label: 'Blockchain Audit', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
-      ]
+  // Role-specific dynamic navigation definitions
+  const getNavGroups = () => {
+    if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
+      return [
+        {
+          label: 'CORPORATE BRAND RADAR',
+          items: [
+            { id: 'overview', label: 'Executive Dashboard', icon: LayoutDashboard },
+            { id: 'live', label: 'Market Sentiment & Intel', icon: Radio, badge: 'ACTIVE', badgeColor: 'orange' }
+          ]
+        },
+        {
+          label: 'BRAND THREATS & SMEAR OPS',
+          items: [
+            { id: 'campaigns', label: 'Adani Smear Campaign', icon: ShieldAlert, badge: '91%', badgeColor: 'red' },
+            { id: 'narratives', label: 'Sabotage Clusters', icon: GitFork },
+            { id: 'threats', label: 'Market Volatility Risk', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'BSE/NSE Clarification', icon: Sparkles },
+            { id: 'report-generator', label: 'Executive Briefing', icon: FileText }
+          ]
+        },
+        {
+          label: 'LEGAL & EVIDENCE',
+          items: [
+            { id: 'evidence', label: 'Defamation Evidence', icon: FileCheck }
+          ]
+        }
+      ];
     }
-  ];
+
+    if (currentRole === ROLES.JOURNALIST_MEDIA) {
+      return [
+        {
+          label: 'MEDIA VIRALITY RADAR',
+          items: [
+            { id: 'overview', label: 'Newsroom Overview', icon: LayoutDashboard },
+            { id: 'live', label: 'Viral Feed & Trends', icon: Radio, badge: 'VIRAL', badgeColor: 'blue' },
+            { id: 'tipline', label: 'WhatsApp Tipline', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
+          ]
+        },
+        {
+          label: 'FACT-CHECK INVESTIGATION',
+          items: [
+            { id: 'campaigns', label: 'Rumor Origin Tracker', icon: ShieldAlert, badge: 'HOT', badgeColor: 'red' },
+            { id: 'narratives', label: 'Narrative Mutation Tree', icon: GitFork },
+            { id: 'threats', label: 'Viral Reach Metrics', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'Fact-Check Debunk Card', icon: Sparkles },
+            { id: 'report-generator', label: 'Press Debunk Bulletin', icon: FileText }
+          ]
+        }
+      ];
+    }
+
+    // Default: Investigation Bureau of India (Full Classified Access)
+    return [
+      {
+        label: 'NATIONAL THREAT RECON',
+        items: [
+          { id: 'overview', label: 'Command Dashboard', icon: LayoutDashboard },
+          { id: 'live', label: 'Classified Intel Stream', icon: Radio, badge: 'INTEL', badgeColor: 'red' },
+          { id: 'tipline', label: 'Intercept Tipline', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
+        ]
+      },
+      {
+        label: 'CAMPAIGN INVESTIGATION',
+        items: [
+          { id: 'campaigns', label: 'Campaign #007 (Cyber Ops)', icon: ShieldAlert, badge: '94%', badgeColor: 'red' },
+          { id: 'narratives', label: 'Cross-Border Clusters', icon: GitFork },
+          { id: 'threats', label: 'National Security Risk', icon: AlertTriangle },
+          { id: 'analyst-response', label: 'Sec 69A IT Escalation', icon: Sparkles },
+          { id: 'report-generator', label: 'Inter-Agency Dossier', icon: FileText }
+        ]
+      },
+      {
+        label: 'FORENSICS & LEDGER',
+        items: [
+          { id: 'evidence', label: 'Court Evidence Vault', icon: FileCheck },
+          { id: 'audit', label: 'EVM Blockchain Audit', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
+        ]
+      }
+    ];
+  };
+
+  const navGroups = getNavGroups();
+
+  const getRoleIcon = () => {
+    if (currentRole === ROLES.CORPORATE_ENTERPRISE) return Building2;
+    if (currentRole === ROLES.JOURNALIST_MEDIA) return Newspaper;
+    return ShieldCheck;
+  };
+
+  const RoleIcon = getRoleIcon();
 
   const notificationsList = [
-    { id: 1, title: 'Campaign #007 Cross-Lingual Surge', desc: 'Hindi & Hinglish paraphrases detected in Tipline within 18m.', time: '2m ago', unread: true },
-    { id: 2, title: 'Blockchain Evidence Recorded', desc: 'SHA-256 Digest 0x7f4a... anchored to EVM Block #10429.', time: '14m ago', unread: true },
-    { id: 3, title: 'OCR Extraction Completed', desc: 'Poster image normalized from Roman Hindi to Devanagari.', time: '35m ago', unread: false }
+    { 
+      id: 1, 
+      title: currentRole === ROLES.CORPORATE_ENTERPRISE 
+        ? 'Deepfake Audio of CFO Detected' 
+        : currentRole === ROLES.JOURNALIST_MEDIA 
+          ? 'Viral WhatsApp Forward Spike (+420%)' 
+          : 'Campaign #007 Cross-Border Surge', 
+      desc: currentRole === ROLES.CORPORATE_ENTERPRISE 
+        ? 'Synthetic Hindi/English voice note attacking port solvency circulating on Telegram.'
+        : currentRole === ROLES.JOURNALIST_MEDIA 
+          ? 'Unverified blackout rumor translated into 4 regional languages.'
+          : 'High coordination burst across 36 proxy nodes detected in J&K sector.', 
+      time: '2m ago', 
+      unread: true 
+    },
+    { 
+      id: 2, 
+      title: 'Evidence Package Timestamped', 
+      desc: 'SHA-256 Digest registered with court-admissible audit metadata.', 
+      time: '14m ago', 
+      unread: true 
+    }
   ];
-
-  const sidebarWidth = isCollapsed ? '64px' : '260px';
 
   return (
     <div style={{ 
@@ -134,11 +225,14 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       color: 'var(--text-primary)',
       transition: 'background-color 0.25s ease, color 0.25s ease'
     }}>
+      {/* Role Switcher Authentication Modal */}
+      <RoleSwitchModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+
       {/* ========================================================================= */}
-      {/* SHADCN APPLICATION SHELL 1: COLLAPSIBLE SIDEBAR                          */}
+      {/* SHADCN APPLICATION SHELL: COLLAPSIBLE SIDEBAR                             */}
       {/* ========================================================================= */}
       <aside className={`bs-sidebar ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
-        {/* Sidebar Header / Organization Switcher */}
+        {/* Sidebar Header / Brand */}
         <div className="sidebar-brand-container">
           <div 
             onClick={isCollapsed ? toggleSidebar : undefined}
@@ -174,10 +268,83 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           </div>
         </div>
 
+        {/* Active Role Quick Card in Sidebar */}
+        {!isCollapsed && (
+          <div style={{
+            margin: '8px 10px',
+            padding: '10px 12px',
+            borderRadius: '8px',
+            backgroundColor: 'var(--inner-box-bg)',
+            border: '1px solid var(--border-color)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+              <div style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '6px',
+                backgroundColor: `${currentUser.badgeColor}20`,
+                color: currentUser.badgeColor,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <RoleIcon size={16} />
+              </div>
+              <div style={{ minWidth: 0, overflow: 'hidden' }}>
+                <div style={{ 
+                  fontSize: '11px', 
+                  fontWeight: 700, 
+                  color: 'var(--text-heading)',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden'
+                }}>
+                  {currentUser.organization}
+                </div>
+                <div style={{ fontSize: '9px', color: currentUser.badgeColor, fontWeight: 600 }}>
+                  {currentUser.badgeText}
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              title="Switch RBAC Persona"
+              style={{
+                background: 'transparent',
+                border: '1px solid var(--border-color)',
+                borderRadius: '4px',
+                color: 'var(--text-muted)',
+                cursor: 'pointer',
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--text-primary)';
+                e.currentTarget.style.borderColor = 'var(--accent-blue)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-muted)';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
+              }}
+            >
+              <RefreshCw size={12} />
+            </button>
+          </div>
+        )}
+
         {/* Sidebar Navigation Content */}
         <div style={{ 
           flex: 1, 
-          padding: '12px 8px', 
+          padding: '8px 8px', 
           overflowY: 'auto',
           overflowX: 'hidden',
           display: 'flex',
@@ -247,7 +414,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       </aside>
 
       {/* ========================================================================= */}
-      {/* APPLICATION SHELL 1: MAIN CONTAINER & TOP NAVIGATION BAR                */}
+      {/* MAIN CONTAINER & TOP NAVIGATION BAR                                       */}
       {/* ========================================================================= */}
       <div className={`bs-main-layout ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
         {/* Top Sticky Header */}
@@ -267,7 +434,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         }}>
           {/* Left Header Section: SidebarTrigger + Separator + Breadcrumbs */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
-            {/* Sidebar Trigger Button (shadcn style) */}
+            {/* Sidebar Trigger Button */}
             <button
               onClick={toggleSidebar}
               title={isCollapsed ? 'Expand Sidebar (Ctrl+B)' : 'Collapse Sidebar (Ctrl+B)'}
@@ -306,10 +473,48 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
             </div>
           </div>
 
-          {/* Right Header Section: Search, Blockchain Status, Notifications, Theme & Account Info */}
+          {/* Right Header Section: Role Persona Switcher Pill, Search, Notifications, Theme, Account */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
             
-            {/* Global Quick Search Input with kbd badge */}
+            {/* RBAC Persona Switcher Quick Button */}
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '5px 12px',
+                borderRadius: '8px',
+                backgroundColor: `${currentUser.badgeColor}15`,
+                border: `1px solid ${currentUser.badgeColor}40`,
+                color: currentUser.badgeColor,
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: 600,
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = `${currentUser.badgeColor}25`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = `${currentUser.badgeColor}15`;
+              }}
+            >
+              <RoleIcon size={15} />
+              <span>{currentUser.roleTitle.split('—')[0]}</span>
+              <span style={{
+                fontSize: '9px',
+                padding: '1px 6px',
+                borderRadius: '4px',
+                backgroundColor: currentUser.badgeColor,
+                color: '#ffffff',
+                fontWeight: 700
+              }}>
+                {currentUser.badgeText}
+              </span>
+            </button>
+
+            {/* Global Quick Search Input */}
             <div style={{ 
               display: 'flex', 
               alignItems: 'center', 
@@ -318,14 +523,14 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
               border: '1px solid var(--border-color)', 
               borderRadius: '8px',
               padding: '5px 10px',
-              width: '210px',
+              width: '180px',
               transition: 'border-color 0.15s ease'
             }}>
               <Search size={14} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
               <input 
                 ref={searchInputRef}
                 type="text" 
-                placeholder="Search campaigns..." 
+                placeholder="Search..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{ 
@@ -343,7 +548,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
               </div>
             </div>
 
-            {/* Notification Bell with Dropdown */}
+            {/* Notification Bell */}
             <div ref={notificationRef} style={{ position: 'relative' }}>
               <button 
                 onClick={() => setShowNotifications(prev => !prev)}
@@ -415,7 +620,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                       color: 'var(--accent-red)',
                       fontWeight: 600
                     }}>
-                      2 UNREAD
+                      ACTIVE
                     </span>
                   </div>
 
@@ -515,7 +720,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   width: '26px',
                   height: '26px',
                   borderRadius: '6px',
-                  background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                  background: `linear-gradient(135deg, ${currentUser.badgeColor}, #06b6d4)`,
                   color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
@@ -525,11 +730,11 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   flexShrink: 0,
                   boxShadow: '0 1px 4px rgba(0,0,0,0.2)'
                 }}>
-                  BS
+                  {currentUser.avatarInitials}
                 </div>
                 <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
                   <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-heading)', whiteSpace: 'nowrap' }}>
-                    Analyst Unit #09
+                    {currentUser.name.split(' ')[0]}
                   </div>
                 </div>
                 <ChevronsUpDown size={13} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
@@ -541,7 +746,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   position: 'absolute',
                   top: '100%',
                   right: 0,
-                  width: '240px',
+                  width: '260px',
                   marginTop: '8px',
                   backgroundColor: 'var(--bg-card)',
                   border: '1px solid var(--border-color)',
@@ -553,32 +758,32 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                 }}>
                   <div style={{ padding: '10px 12px', borderBottom: '1px solid var(--border-color)' }}>
                     <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>
-                      Analyst Unit #09
+                      {currentUser.name}
                     </div>
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '1px' }}>
-                      analyst@bharat-shield.gov.in
+                      {currentUser.email}
                     </div>
                     <div style={{ 
                       fontSize: '10px', 
-                      color: 'var(--accent-green)', 
+                      color: currentUser.badgeColor, 
                       fontWeight: 600, 
                       display: 'flex', 
                       alignItems: 'center', 
                       gap: '5px', 
                       marginTop: '6px',
                       padding: '3px 8px',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                      backgroundColor: `${currentUser.badgeColor}15`,
                       borderRadius: '9999px',
                       width: 'fit-content'
                     }}>
-                      <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--accent-green)' }} />
-                      Level 4 Clearance
+                      <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: currentUser.badgeColor }} />
+                      {currentUser.clearance}
                     </div>
                   </div>
 
-                  <div style={{ padding: '4px 0' }}>
+                  <div style={{ padding: '6px 0' }}>
                     <button 
-                      onClick={() => { setCurrentNav('audit'); setShowUserMenu(false); }}
+                      onClick={() => { setIsAuthModalOpen(true); setShowUserMenu(false); }}
                       style={{
                         width: '100%',
                         display: 'flex',
@@ -588,23 +793,22 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                         borderRadius: '6px',
                         border: 'none',
                         background: 'transparent',
-                        color: 'var(--text-secondary)',
+                        color: 'var(--accent-blue)',
                         fontSize: '12px',
+                        fontWeight: 600,
                         cursor: 'pointer',
                         textAlign: 'left',
                         transition: 'all 0.15s ease'
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = 'var(--bg-card-hover)';
-                        e.currentTarget.style.color = 'var(--text-primary)';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.color = 'var(--text-secondary)';
                       }}
                     >
-                      <BookOpen size={14} style={{ color: 'var(--accent-blue)' }} /> 
-                      <span>Audit Trail Log</span>
+                      <Fingerprint size={14} /> 
+                      <span>Switch RBAC Persona...</span>
                     </button>
 
                     <button 
@@ -634,7 +838,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                       }}
                     >
                       <Shield size={14} style={{ color: 'var(--accent-cyan)' }} /> 
-                      <span>Defense Dashboard</span>
+                      <span>Command Dashboard</span>
                     </button>
                   </div>
                 </div>
