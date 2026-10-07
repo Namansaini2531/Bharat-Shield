@@ -3,7 +3,9 @@ import Breadcrumbs from './Breadcrumbs';
 import ThemeToggle from './ThemeToggle';
 import RoleSwitchModal from './RoleSwitchModal';
 import { useAuth, ROLES } from '../context/AuthContext';
+import logoImg from '../assets/logo.png';
 import { 
+
   LayoutDashboard, 
   ShieldAlert, 
   Radio, 
@@ -268,23 +270,31 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
             title={isCollapsed ? "Expand BHARAT-SHIELD Sidebar (Ctrl+B)" : undefined}
           >
             <div style={{ 
-              width: '36px', 
-              height: '36px', 
+              width: '38px', 
+              height: '38px', 
               borderRadius: '8px', 
-              background: 'linear-gradient(135deg, #2563eb, #06b6d4)', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center', 
-              color: '#ffffff', 
-              boxShadow: '0 0 12px rgba(37, 99, 235, 0.45)', 
-              flexShrink: 0 
+              flexShrink: 0,
+              filter: 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.45))'
             }}>
-              <Shield size={20} strokeWidth={2.4} />
+              <img 
+                src={logoImg} 
+                alt="Bharat-Shield Sentinel" 
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'contain',
+                  borderRadius: '6px'
+                }} 
+              />
             </div>
             
             <div className="sidebar-brand-text">
               <span>BHARAT-SHIELD</span>
             </div>
+
           </div>
         </div>
 

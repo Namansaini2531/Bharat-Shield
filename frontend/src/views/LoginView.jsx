@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth, ROLES } from '../context/AuthContext';
+import logoImg from '../assets/logo.png';
 import { 
   Eye, 
   EyeOff, 
@@ -7,6 +8,7 @@ import {
   Sparkles,
   Check
 } from 'lucide-react';
+
 
 export default function LoginView() {
   const { login, allProfiles } = useAuth();
@@ -218,11 +220,33 @@ export default function LoginView() {
         </div>
 
         {/* Top Logo Header */}
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ fontSize: '38px', fontWeight: 900, color: '#ffffff', letterSpacing: '1px', textTransform: 'uppercase' }}>
-            SENTINEL
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{
+            width: '54px',
+            height: '54px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            padding: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 25px rgba(59, 130, 246, 0.45)',
+            backdropFilter: 'blur(8px)',
+            flexShrink: 0
+          }}>
+            <img src={logoImg} alt="Bharat-Shield Emblem" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <div>
+            <div style={{ fontSize: '26px', fontWeight: 900, color: '#ffffff', letterSpacing: '1.5px', textTransform: 'uppercase', lineHeight: 1.1 }}>
+              BHARAT-SHIELD
+            </div>
+            <div style={{ fontSize: '11px', color: '#38bdf8', letterSpacing: '2px', fontWeight: 700, marginTop: '4px', fontFamily: 'JetBrains Mono, monospace' }}>
+              COGNITIVE DEFENSE SENTINEL
+            </div>
           </div>
         </div>
+
 
         {/* Bottom Hero Description */}
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '420px', marginBottom: '20px' }}>

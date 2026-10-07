@@ -1,0 +1,273 @@
+[
+  {
+    "id": "REDDIT-IND-01",
+    "platform": "reddit",
+    "subreddit": "india",
+    "author": "disinfo_watcher99",
+    "title": "URGENT: DoT and Home Ministry issuing nationwide mobile internet blackout from midnight tonight? Hearing rumors on WhatsApp.",
+    "text": "Seeing widespread forwards in local housing society groups claiming all telecom operators (Jio, Airtel) will halt mobile data services for 72 hours across NCR and Maharashtra due to central server migrations. Is this verified or another coordinated WhatsApp hoax?",
+    "url": "https://reddit.com/r/india/comments/blackout_rumor",
+    "score": 482,
+    "upvote_ratio": 0.89,
+    "num_comments": 142,
+    "timestamp": "2026-10-07T19:56:08.598322+00:00",
+    "language_analysis": {
+      "language": "en",
+      "script": "Latin (English)",
+      "confidence": 0.9,
+      "is_code_mixed": false
+    },
+    "entities_and_claims": {
+      "organizations": [
+        "Airtel",
+        "Jio"
+      ],
+      "infrastructure": [
+        "telecom"
+      ],
+      "locations": [],
+      "claim_proposition": "Seeing widespread forwards in local housing society groups claiming all telecom operators (Jio, Airtel) will halt mobile"
+    },
+    "ai_assistance_indicators": {
+      "ai_probability": 5,
+      "status": "Organic / Low Synthetic Signals",
+      "indicators": [],
+      "is_elevated": false
+    },
+    "threat_score": 19.0,
+    "confidence": "Low",
+    "risk_signals": [
+      "semantic_similarity",
+      "temporal_burst",
+      "cross_platform",
+      "cross_language",
+      "template_fingerprint",
+      "narrative_mutation",
+      "amplification_signals",
+      "source_anomaly"
+    ],
+    "evidence_sha256": "a8e569a6e5d876b461a90beaca033651af72e9a31b0d1b0181839ae97be846dc",
+    "embedding_dimension": 384,
+    "embedding_preview": [
+      -0.0025219800934763096,
+      -0.027228982354293003,
+      0.0226079253880334,
+      0.012756661550196837,
+      -0.04690213533873233
+    ]
+  },
+  {
+    "id": "REDDIT-DEF-02",
+    "platform": "reddit",
+    "subreddit": "IndianDefense",
+    "author": "northern_sector_intel",
+    "title": "Unverified Telegram video claiming massive cross-border proxy drone incursions in Poonch / Rajouri sector.",
+    "text": "Multiple shadow OSINT handles on Twitter and Telegram are circulating a 30-second low-resolution night vision clip claiming border skirmishes. Geolocation metadata appears recycled from 2022 Nagorno-Karabakh footage. Suspected coordinated PSYOP disinformation swarm.",
+    "url": "https://reddit.com/r/IndianDefense/comments/border_drone_osint",
+    "score": 310,
+    "upvote_ratio": 0.94,
+    "num_comments": 89,
+    "timestamp": "2026-10-07T19:56:08.598342+00:00",
+    "language_analysis": {
+      "language": "en",
+      "script": "Latin (English)",
+      "confidence": 0.9,
+      "is_code_mixed": false
+    },
+    "entities_and_claims": {
+      "organizations": [],
+      "infrastructure": [],
+      "locations": [],
+      "claim_proposition": "Multiple shadow OSINT handles on Twitter and Telegram are circulating a 30-second low-resolution night vision clip claim"
+    },
+    "ai_assistance_indicators": {
+      "ai_probability": 5,
+      "status": "Organic / Low Synthetic Signals",
+      "indicators": [],
+      "is_elevated": false
+    },
+    "threat_score": 19.0,
+    "confidence": "Low",
+    "risk_signals": [
+      "semantic_similarity",
+      "temporal_burst",
+      "cross_platform",
+      "cross_language",
+      "template_fingerprint",
+      "narrative_mutation",
+      "amplification_signals",
+      "source_anomaly"
+    ],
+    "evidence_sha256": "c933c285d5b4513a2dfd6904e9ecbb124c8b0abd67fd9fd91540d603e0051427",
+    "embedding_dimension": 384,
+    "embedding_preview": [
+      0.013591581770753732,
+      0.03779925596238742,
+      0.045233044123486284,
+      -0.040316257665525095,
+      -0.028989164400595818
+    ]
+  },
+  {
+    "id": "REDDIT-FIN-03",
+    "platform": "reddit",
+    "subreddit": "IndianStockMarket",
+    "author": "market_hawk_in",
+    "title": "Fabricated SEBI advisory regarding port export license suspensions being dumped on fin-influencer groups.",
+    "text": "Before market open today, PDF documents with forged SEBI and DRI letterheads claiming customs cancellation for Adani Ports & SEZ were circulated on anonymous trading channels. Seems like a deliberate short-seller bear raid coordinated ahead of derivative expiry.",
+    "url": "https://reddit.com/r/IndianStockMarket/comments/sebi_fake_advisory",
+    "score": 625,
+    "upvote_ratio": 0.96,
+    "num_comments": 210,
+    "timestamp": "2026-10-07T19:56:08.598347+00:00",
+    "language_analysis": {
+      "language": "en",
+      "script": "Latin (English)",
+      "confidence": 0.9,
+      "is_code_mixed": false
+    },
+    "entities_and_claims": {
+      "organizations": [
+        "SEBI",
+        "Adani",
+        "Adani Ports"
+      ],
+      "infrastructure": [],
+      "locations": [],
+      "claim_proposition": "Before market open today, PDF documents with forged SEBI and DRI letterheads claiming customs cancellation for Adani Por"
+    },
+    "ai_assistance_indicators": {
+      "ai_probability": 5,
+      "status": "Organic / Low Synthetic Signals",
+      "indicators": [],
+      "is_elevated": false
+    },
+    "threat_score": 19.0,
+    "confidence": "Low",
+    "risk_signals": [
+      "semantic_similarity",
+      "temporal_burst",
+      "cross_platform",
+      "cross_language",
+      "template_fingerprint",
+      "narrative_mutation",
+      "amplification_signals",
+      "source_anomaly"
+    ],
+    "evidence_sha256": "e4fc0fc1936f15ac62adf29e2f04f88dc9fbbc268e6432c1aa439dfefa4009a9",
+    "embedding_dimension": 384,
+    "embedding_preview": [
+      0.004656863262237617,
+      -0.0379370914182423,
+      -0.1006742552324333,
+      -0.010951458132850374,
+      0.09707590168894185
+    ]
+  },
+  {
+    "id": "REDDIT-HIN-04",
+    "platform": "reddit",
+    "subreddit": "indiadiscussion",
+    "author": "desi_patriot_77",
+    "title": "सावधान: क्या रिज़र्व बैंक ने 500 रुपये के नोटों की वैधता पर कोई नई गाइडलाइन जारी की है?",
+    "text": "व्हाट्सएप और फेसबुक पर एक ऑडियो क्लिप वायरल हो रहा है जिसमें दावा किया गया है कि 31 तारीख के बाद 500 के नोट अमान्य हो जाएंगे। क्या यह पूरी तरह से फर्जी और भ्रामक प्रचार है? सबको सूचित करें।",
+    "url": "https://reddit.com/r/indiadiscussion/comments/rbi_500_hoax",
+    "score": 195,
+    "upvote_ratio": 0.91,
+    "num_comments": 64,
+    "timestamp": "2026-10-07T19:56:08.598350+00:00",
+    "language_analysis": {
+      "language": "hi",
+      "script": "Devanagari",
+      "confidence": 0.92,
+      "is_code_mixed": false
+    },
+    "entities_and_claims": {
+      "organizations": [],
+      "infrastructure": [],
+      "locations": [],
+      "claim_proposition": "व्हाट्सएप और फेसबुक पर एक ऑडियो क्लिप वायरल हो रहा है जिसमें दावा किया गया है कि 31 तारीख के बाद 500 के नोट अमान्य हो जा"
+    },
+    "ai_assistance_indicators": {
+      "ai_probability": 5,
+      "status": "Organic / Low Synthetic Signals",
+      "indicators": [],
+      "is_elevated": false
+    },
+    "threat_score": 27.0,
+    "confidence": "Low",
+    "risk_signals": [
+      "semantic_similarity",
+      "temporal_burst",
+      "cross_platform",
+      "cross_language",
+      "template_fingerprint",
+      "narrative_mutation",
+      "amplification_signals",
+      "source_anomaly"
+    ],
+    "evidence_sha256": "e5d79a33a4bbdbd8dd8cb55519141270dea4cf2d02137cea0f41aa79949a042d",
+    "embedding_dimension": 384,
+    "embedding_preview": [
+      0.032732538243210776,
+      -0.006515399684710364,
+      0.05372183407498154,
+      -0.015405214588242743,
+      0.030447515977064923
+    ]
+  },
+  {
+    "id": "REDDIT-CYB-05",
+    "platform": "reddit",
+    "subreddit": "india",
+    "author": "cyber_analyst_blr",
+    "title": "Deepfake audio impersonating senior government officials spreading on regional WhatsApp channels.",
+    "text": "Voice synthesis clone discussing fabricated power grid rationing in southern states has surfaced across multiple tier-2 Telegram dark channels. High-frequency burst patterns indicate automated botnet amplification.",
+    "url": "https://reddit.com/r/india/comments/deepfake_audio_grid",
+    "score": 540,
+    "upvote_ratio": 0.97,
+    "num_comments": 115,
+    "timestamp": "2026-10-07T19:56:08.598354+00:00",
+    "language_analysis": {
+      "language": "en",
+      "script": "Latin (English)",
+      "confidence": 0.9,
+      "is_code_mixed": false
+    },
+    "entities_and_claims": {
+      "organizations": [],
+      "infrastructure": [
+        "power grid"
+      ],
+      "locations": [],
+      "claim_proposition": "Voice synthesis clone discussing fabricated power grid rationing in southern states has surfaced across multiple tier-2 "
+    },
+    "ai_assistance_indicators": {
+      "ai_probability": 5,
+      "status": "Organic / Low Synthetic Signals",
+      "indicators": [],
+      "is_elevated": false
+    },
+    "threat_score": 19.0,
+    "confidence": "Low",
+    "risk_signals": [
+      "semantic_similarity",
+      "temporal_burst",
+      "cross_platform",
+      "cross_language",
+      "template_fingerprint",
+      "narrative_mutation",
+      "amplification_signals",
+      "source_anomaly"
+    ],
+    "evidence_sha256": "48e2364e9a63d2c67dee5f1e191d0ddc49efd73d9bb74654af2d1a1fbddda2ef",
+    "embedding_dimension": 384,
+    "embedding_preview": [
+      -0.03875262378711087,
+      -0.008778730235051352,
+      -0.03523814279876365,
+      -0.1473815548347977,
+      -0.01877845166320996
+    ]
+  }
+]
