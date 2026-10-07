@@ -8,3 +8,4 @@ psycopg2-binary
 pgvector
 sqlalchemy
 sentence-transformers
+scikit-learn
