@@ -1,5 +1,6 @@
 fastapi
-uvicorn
+uvicorn[standard]
+websockets
 python-dotenv
 pydantic
 pandas
@@ -9,3 +10,5 @@ pgvector
 sqlalchemy
 sentence-transformers
 scikit-learn
+httpx
+Pillow

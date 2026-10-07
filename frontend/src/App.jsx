@@ -2,6 +2,7 @@ import React, { useState, lazy, Suspense } from 'react';
 import Layout from './components/Layout';
 import LoginView from './views/LoginView';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { WebSocketProvider } from './context/WebSocketContext';
 import { Loader2 } from 'lucide-react';
 
 // Lazy loading all 11 view components
@@ -220,7 +221,9 @@ export default function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <MainAppContent />
+        <WebSocketProvider>
+          <MainAppContent />
+        </WebSocketProvider>
       </AuthProvider>
     </ErrorBoundary>
   );
