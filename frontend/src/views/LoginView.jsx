@@ -1,68 +1,117 @@
 import React, { useState } from 'react';
-import { useAuth, ROLES, MASTER_PASSWORD } from '../context/AuthContext';
+import { useAuth, ROLES } from '../context/AuthContext';
 import { 
-  Shield, 
   Eye, 
   EyeOff, 
-  Check, 
-  Lock, 
-  Key, 
-  ArrowRight, 
-  Sparkles, 
-  ShieldCheck, 
-  Building2, 
-  Newspaper,
-  CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  Check
 } from 'lucide-react';
 
 export default function LoginView() {
   const { login, allProfiles } = useAuth();
 
-  const [mode, setMode] = useState('join'); // 'join' or 'login'
-  const [phone, setPhone] = useState('+91 98100 44219');
-  const [fullName, setFullName] = useState('Joint Director Vikram Rawat');
-  const [username, setUsername] = useState('v_rawat_ib');
+  const [email, setEmail] = useState('admin@sentinel.gov.in');
   const [password, setPassword] = useState('sentinel@16#');
+  const [rememberMe, setRememberMe] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState(ROLES.INVESTIGATION_BUREAU);
-  const [stepIndex, setStepIndex] = useState(1);
-  const [errorMsg, setErrorMsg] = useState('');
+
+  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSelectRole = (roleKey) => {
-    setSelectedRole(roleKey);
-    const profile = allProfiles[roleKey];
-    if (profile) {
-      setFullName(profile.name);
-      setUsername(profile.username || profile.id);
-      setPhone(profile.phone || '+91 98100 00000');
+  // Email validation regex
+  const validateEmail = (val) => {
+    if (!val || !val.trim()) {
+      return 'Work email is required';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val.trim())) {
+      return 'Please enter a valid email address';
+    }
+    return '';
+  };
+
+  const validatePassword = (val) => {
+    if (!val) {
+      return 'Password is required';
+    }
+    if (val.length < 4) {
+      return 'Password must be at least 4 characters';
+    }
+    return '';
+  };
+
+  const handleEmailChange = (val) => {
+    setEmail(val);
+    if (touched.email) {
+      setErrors(prev => ({ ...prev, email: validateEmail(val) }));
     }
   };
 
-  const handleQuickMasterFill = () => {
-    setPassword(MASTER_PASSWORD);
-    handleSelectRole(ROLES.INVESTIGATION_BUREAU);
-    setErrorMsg('');
+  const handlePasswordChange = (val) => {
+    setPassword(val);
+    if (touched.password) {
+      setErrors(prev => ({ ...prev, password: validatePassword(val) }));
+    }
   };
 
+  const handleBlur = (field) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    if (field === 'email') {
+      setErrors(prev => ({ ...prev, email: validateEmail(email) }));
+    } else if (field === 'password') {
+      setErrors(prev => ({ ...prev, password: validatePassword(password) }));
+    }
+  };
+
+  const handleQuickAutofill = () => {
+    setEmail('admin@sentinel.gov.in');
+    setPassword('sentinel@16#');
+    setTouched({ email: true, password: true });
+    setErrors({ email: '', password: '' });
+    setServerError('');
+  };
+
+  const isEmailValid = !validateEmail(email);
+  const isPasswordValid = !validatePassword(password);
+  const isButtonDisabled = !email.trim() || !password || !isEmailValid || !isPasswordValid || isSubmitting;
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMsg('');
+    e?.preventDefault();
+    setServerError('');
+
+    const emailErr = validateEmail(email);
+    const passErr = validatePassword(password);
+
+    setTouched({ email: true, password: true });
+    setErrors({ email: emailErr, password: passErr });
+
+    if (emailErr || passErr) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       await login({
         password: password.trim(),
         roleKey: selectedRole,
-        customName: fullName,
-        customPhone: phone,
-        customUsername: username
+        customEmail: email.trim(),
       });
     } catch (err) {
-      setErrorMsg(err.message || 'Authentication failed. Please check your credentials.');
+      setServerError(err.message || 'Authentication failed. Please check your credentials.');
       setIsSubmitting(false);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    handleQuickAutofill();
+    setTimeout(() => {
+      handleSubmit();
+    }, 200);
   };
 
   return (
@@ -72,291 +121,199 @@ export default function LoginView() {
       minHeight: '100vh',
       overflow: 'hidden',
       display: 'grid',
-      gridTemplateColumns: '1.15fr 1fr',
+      gridTemplateColumns: '1.1fr 1fr',
       backgroundColor: '#ffffff',
-      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif'
+      fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
-      
-      {/* ================= LEFT COLUMN: Vibrant Blue Radiant Showcase (Full Screen Left Half) ================= */}
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .input-box:focus-within {
+          border-color: #3b82f6 !important;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12) !important;
+        }
+        .btn-sign-in:hover:not(:disabled) {
+          background-color: #dc2626 !important;
+          box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4) !important;
+        }
+        .btn-google:hover {
+          background-color: #f8fafc !important;
+          border-color: #cbd5e1 !important;
+        }
+      `}</style>
+
+      {/* ================= LEFT COLUMN: Dark Aesthetic with Diagonal Glowing Capsules ================= */}
       <div style={{
-        background: 'linear-gradient(145deg, #1d4ed8 0%, #2563eb 38%, #0284c7 75%, #38bdf8 100%)',
-        padding: '50px 60px',
+        backgroundColor: '#090d16',
+        position: 'relative',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        position: 'relative',
-        overflow: 'hidden',
-        color: '#ffffff',
-        height: '100%',
-        boxSizing: 'border-box'
+        padding: '50px 60px',
+        color: '#ffffff'
       }}>
-        {/* Ambient Lighting Background Circles */}
+        {/* Subtle grid pattern background */}
         <div style={{
           position: 'absolute',
-          top: '-10%',
-          right: '-10%',
-          width: '450px',
-          height: '450px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(186, 230, 253, 0.35) 0%, rgba(37, 99, 235, 0) 70%)',
+          inset: 0,
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px)`,
+          backgroundSize: '24px 24px',
+          opacity: 0.6,
           pointerEvents: 'none'
         }} />
 
+        {/* Floating Diagonal Gradient Capsules (Exact matching screenshot 3D effect) */}
         <div style={{
           position: 'absolute',
-          bottom: '10%',
-          left: '-10%',
-          width: '350px',
-          height: '350px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(96, 165, 250, 0.3) 0%, rgba(30, 64, 175, 0) 70%)',
+          top: '-15%',
+          left: '-20%',
+          width: '650px',
+          height: '650px',
           pointerEvents: 'none'
-        }} />
-
-        {/* Top Brand Header */}
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '10px',
-              backgroundColor: 'rgba(255, 255, 255, 0.22)',
-              backdropFilter: 'blur(10px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#ffffff',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-            }}>
-              <Shield size={22} strokeWidth={2.4} />
-            </div>
-            <span style={{ fontSize: '22px', fontWeight: 800, letterSpacing: '-0.4px' }}>
-              ninth <span style={{ opacity: 0.85, fontWeight: 500, fontSize: '15px', marginLeft: '4px' }}>/ SENTINEL</span>
-            </span>
-          </div>
-        </div>
-
-        {/* Middle Hero Showcase */}
-        <div style={{ position: 'relative', zIndex: 2, margin: 'auto 0' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: 'rgba(255, 255, 255, 0.18)',
-            backdropFilter: 'blur(12px)',
-            padding: '8px 18px',
-            borderRadius: '9999px',
-            fontSize: '13px',
-            fontWeight: 600,
-            marginBottom: '24px',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)'
-          }}>
-            <span>Join Us to Build</span>
-            <span style={{ fontSize: '15px' }}>🤩</span>
-          </div>
-
-          <h1 style={{
-            fontSize: '52px',
-            fontWeight: 800,
-            letterSpacing: '-1.5px',
-            lineHeight: 1.1,
-            margin: '0 0 16px 0',
-            color: '#ffffff'
-          }}>
-            Start your Journey
-          </h1>
-
-          <p style={{
-            fontSize: '16px',
-            color: 'rgba(255, 255, 255, 0.88)',
-            margin: 0,
-            lineHeight: 1.6,
-            maxWidth: '460px'
-          }}>
-            Follow these simple steps to set up your operational persona & access the unified cognitive defense grid.
-          </p>
-        </div>
-
-        {/* Bottom Progressive Step Cards */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px',
-          position: 'relative',
-          zIndex: 2
         }}>
-          {/* Step 1: Active White Card */}
-          <div 
-            onClick={() => setStepIndex(1)}
-            style={{
-              backgroundColor: stepIndex === 1 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '20px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: '135px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: stepIndex === 1 ? '0 16px 32px rgba(0, 0, 0, 0.18)' : 'none',
-              color: stepIndex === 1 ? '#0f172a' : '#ffffff',
-              transform: stepIndex === 1 ? 'translateY(-3px)' : 'none'
-            }}
-          >
-            <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: stepIndex === 1 ? '#2563eb' : 'rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              fontSize: '12px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              1
-            </div>
+          {/* Capsule 1 */}
+          <div style={{
+            position: 'absolute',
+            top: '80px',
+            left: '60px',
+            width: '420px',
+            height: '80px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.05) 100%)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            boxShadow: '0 0 40px rgba(16, 185, 129, 0.2)',
+            transform: 'rotate(-45deg)'
+          }} />
 
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 700,
-              lineHeight: 1.35,
-              marginTop: '16px'
-            }}>
-              Register your account
-            </div>
+          {/* Capsule 2 */}
+          <div style={{
+            position: 'absolute',
+            top: '200px',
+            left: '120px',
+            width: '480px',
+            height: '90px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(5, 150, 105, 0.08) 100%)',
+            border: '1px solid rgba(16, 185, 129, 0.4)',
+            boxShadow: '0 0 50px rgba(16, 185, 129, 0.25)',
+            transform: 'rotate(-45deg)'
+          }} />
+
+          {/* Capsule 3 */}
+          <div style={{
+            position: 'absolute',
+            top: '340px',
+            left: '190px',
+            width: '380px',
+            height: '75px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.02) 100%)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            boxShadow: '0 0 35px rgba(16, 185, 129, 0.15)',
+            transform: 'rotate(-45deg)'
+          }} />
+        </div>
+
+        {/* Top Logo Header */}
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{ fontSize: '38px', fontWeight: 900, color: '#ffffff', letterSpacing: '1px', textTransform: 'uppercase' }}>
+            SENTINEL
           </div>
+        </div>
 
-          {/* Step 2: Glass Card */}
-          <div 
-            onClick={() => setStepIndex(2)}
-            style={{
-              backgroundColor: stepIndex === 2 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '20px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: '135px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              color: stepIndex === 2 ? '#0f172a' : '#ffffff',
-              transform: stepIndex === 2 ? 'translateY(-3px)' : 'none'
-            }}
-          >
-            <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: stepIndex === 2 ? '#2563eb' : 'rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              fontSize: '12px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              2
-            </div>
-
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              lineHeight: 1.35,
-              opacity: stepIndex === 2 ? 1 : 0.9,
-              marginTop: '16px'
-            }}>
-              Set up your profile information
-            </div>
-          </div>
-
-          {/* Step 3: Glass Card */}
-          <div 
-            onClick={() => setStepIndex(3)}
-            style={{
-              backgroundColor: stepIndex === 3 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '20px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: '135px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              color: stepIndex === 3 ? '#0f172a' : '#ffffff',
-              transform: stepIndex === 3 ? 'translateY(-3px)' : 'none'
-            }}
-          >
-            <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: stepIndex === 3 ? '#2563eb' : 'rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              fontSize: '12px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              3
-            </div>
-
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              lineHeight: 1.35,
-              opacity: stepIndex === 3 ? 1 : 0.9,
-              marginTop: '16px'
-            }}>
-              Verify your identity through passport/ID
-            </div>
-          </div>
+        {/* Bottom Hero Description */}
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '420px', marginBottom: '20px' }}>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.8px', marginBottom: '14px' }}>
+            Unified Threat Intelligence & Cognitive Grid
+          </h2>
+          <p style={{ fontSize: '15px', color: '#94a3b8', lineHeight: 1.6, margin: 0 }}>
+            Empowering defense analysts, law enforcement, and risk leaders with real-time AI narrative verification and EVM-sealed court evidence.
+          </p>
         </div>
       </div>
 
-      {/* ================= RIGHT COLUMN: Form Panel (Full Screen Right Half) ================= */}
+      {/* ================= RIGHT COLUMN: Clean White Form (Exact Screenshot Match) ================= */}
       <div style={{
         backgroundColor: '#ffffff',
-        padding: '50px 60px',
+        padding: '60px 80px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#1e293b',
         height: '100%',
-        overflowY: 'auto',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        overflowY: 'auto'
       }}>
-        <div style={{ width: '100%', maxWidth: '440px' }}>
+        <div style={{ width: '100%', maxWidth: '420px' }}>
           
           {/* Header Title & Subtitle */}
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <h2 style={{
-              fontSize: '32px',
-              fontWeight: 800,
+          <div style={{ marginBottom: '30px' }}>
+            <h1 style={{
+              fontSize: '34px',
+              fontWeight: 900,
               color: '#0f172a',
-              margin: '0 0 6px 0',
-              letterSpacing: '-0.6px'
+              margin: '0 0 8px 0',
+              letterSpacing: '-1px'
             }}>
-              {mode === 'join' ? 'Join Us' : 'Welcome Back'}
-            </h2>
-            <div style={{ fontSize: '14px', color: '#64748b' }}>
-              {mode === 'join' ? 'Enter operator credentials or select persona' : 'Authenticate with your clearance token'}
+              Welcome Back!
+            </h1>
+            <p style={{
+              fontSize: '14px',
+              color: '#64748b',
+              margin: 0,
+              lineHeight: 1.5
+            }}>
+              Log in to start managing your projects and clients with ease.
+            </p>
+          </div>
+
+          {/* Quick Demo Autofill Badge */}
+          <div style={{
+            backgroundColor: '#eff6ff',
+            border: '1px solid #bfdbfe',
+            borderRadius: '12px',
+            padding: '12px 14px',
+            marginBottom: '24px',
+            fontSize: '12px',
+            color: '#1e40af'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <span style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Sparkles size={14} style={{ color: '#2563eb' }} /> Default Demo Login
+              </span>
+              <button
+                type="button"
+                onClick={handleQuickAutofill}
+                style={{
+                  background: '#2563eb',
+                  border: 'none',
+                  color: '#ffffff',
+                  padding: '4px 10px',
+                  borderRadius: '6px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                Autofill
+              </button>
+            </div>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '11px', color: '#1e3a8a' }}>
+              <div><strong>Email:</strong> admin@sentinel.gov.in</div>
+              <div><strong>Password:</strong> sentinel@16#</div>
             </div>
           </div>
 
-          {/* Error Message Alert */}
-          {errorMsg && (
+          {/* Server Error Alert */}
+          {serverError && (
             <div style={{
               backgroundColor: '#fef2f2',
               border: '1px solid #fecaca',
               borderRadius: '12px',
-              padding: '12px 16px',
+              padding: '12px 14px',
               marginBottom: '20px',
               fontSize: '13px',
               color: '#dc2626',
@@ -364,70 +321,45 @@ export default function LoginView() {
               alignItems: 'center',
               gap: '10px'
             }}>
-              <AlertCircle size={16} />
-              <span>{errorMsg}</span>
+              <AlertCircle size={16} style={{ flexShrink: 0 }} />
+              <span>{serverError}</span>
             </div>
           )}
 
-          {/* Master Password Override Quick Chip */}
-          <div style={{
-            backgroundColor: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            borderRadius: '12px',
-            padding: '10px 14px',
-            marginBottom: '22px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: '12px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontWeight: 600 }}>
-              <Key size={15} />
-              <span>Master Key: <code style={{ fontFamily: 'JetBrains Mono', color: '#2563eb', fontWeight: 700 }}>sentinel@16#</code></span>
-            </div>
-            <button
-              type="button"
-              onClick={handleQuickMasterFill}
-              style={{
-                background: '#2563eb',
-                border: 'none',
-                color: '#ffffff',
-                padding: '4px 12px',
-                borderRadius: '8px',
-                fontSize: '11px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(37, 99, 235, 0.25)'
-              }}
-            >
-              Autofill
-            </button>
-          </div>
-
-          {/* Authentication Form */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          {/* Main Login Form */}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             
-            {/* Phone Number / Official ID Input */}
+            {/* WORK EMAIL * */}
             <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                Phone number
-              </label>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '14px',
-                padding: '12px 16px',
-                gap: '12px',
-                transition: 'all 0.15s ease'
+              <label style={{
+                fontSize: '11px',
+                fontWeight: 800,
+                color: '#334155',
+                display: 'block',
+                marginBottom: '8px',
+                letterSpacing: '0.6px',
+                textTransform: 'uppercase'
               }}>
-                <span style={{ fontSize: '16px', userSelect: 'none' }}>🇦🇲</span>
+                WORK EMAIL <span style={{ color: '#ef4444' }}>*</span>
+              </label>
+              <div 
+                className="input-box"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: touched.email && errors.email ? '#fef2f2' : '#ffffff',
+                  border: `1px solid ${touched.email && errors.email ? '#ef4444' : '#e2e8f0'}`,
+                  borderRadius: '14px',
+                  padding: '13px 16px',
+                  transition: 'all 0.15s ease'
+                }}
+              >
                 <input
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+374 0000 00 00"
+                  type="email"
+                  value={email}
+                  onChange={(e) => handleEmailChange(e.target.value)}
+                  onBlur={() => handleBlur('email')}
+                  placeholder="you@company.com"
                   style={{
                     border: 'none',
                     backgroundColor: 'transparent',
@@ -439,128 +371,45 @@ export default function LoginView() {
                   }}
                 />
               </div>
+              {touched.email && errors.email && (
+                <div style={{ fontSize: '12px', color: '#dc2626', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <AlertCircle size={13} />
+                  <span>{errors.email}</span>
+                </div>
+              )}
             </div>
 
-            {/* Full Name & Username Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-              <div>
-                <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Juliette Karapetyan"
-                  style={{
-                    width: '100%',
-                    backgroundColor: '#f8fafc',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '14px',
-                    padding: '12px 16px',
-                    fontSize: '14px',
-                    color: '#0f172a',
-                    fontWeight: 500,
-                    outline: 'none',
-                    boxSizing: 'border-box'
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                  Username
-                </label>
-                <div style={{
+            {/* PASSWORD * */}
+            <div>
+              <label style={{
+                fontSize: '11px',
+                fontWeight: 800,
+                color: '#334155',
+                display: 'block',
+                marginBottom: '8px',
+                letterSpacing: '0.6px',
+                textTransform: 'uppercase'
+              }}>
+                PASSWORD <span style={{ color: '#ef4444' }}>*</span>
+              </label>
+              <div 
+                className="input-box"
+                style={{
                   display: 'flex',
                   alignItems: 'center',
-                  backgroundColor: '#f8fafc',
-                  border: '1px solid #e2e8f0',
+                  backgroundColor: touched.password && errors.password ? '#fef2f2' : '#ffffff',
+                  border: `1px solid ${touched.password && errors.password ? '#ef4444' : '#e2e8f0'}`,
                   borderRadius: '14px',
-                  padding: '12px 16px',
-                  position: 'relative'
-                }}>
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="julietux"
-                    style={{
-                      border: 'none',
-                      backgroundColor: 'transparent',
-                      outline: 'none',
-                      width: '100%',
-                      fontSize: '14px',
-                      color: '#0f172a',
-                      fontWeight: 500
-                    }}
-                  />
-                  <Check size={18} style={{ color: '#10b981', flexShrink: 0 }} />
-                </div>
-              </div>
-            </div>
-
-            {/* Operational Persona Switcher */}
-            <div>
-              <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: '8px', letterSpacing: '0.5px' }}>
-                Operational Clearance Persona
-              </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                {[
-                  { key: ROLES.INVESTIGATION_BUREAU, label: 'IB / LEA', color: '#ef4444', icon: ShieldCheck },
-                  { key: ROLES.CORPORATE_ENTERPRISE, label: 'Adani Risk', color: '#f59e0b', icon: Building2 },
-                  { key: ROLES.JOURNALIST_MEDIA, label: 'Press Desk', color: '#3b82f6', icon: Newspaper }
-                ].map(p => {
-                  const isSelected = selectedRole === p.key;
-                  const Icon = p.icon;
-                  return (
-                    <button
-                      type="button"
-                      key={p.key}
-                      onClick={() => handleSelectRole(p.key)}
-                      style={{
-                        padding: '9px 6px',
-                        borderRadius: '10px',
-                        border: isSelected ? `2px solid ${p.color}` : '1px solid #e2e8f0',
-                        backgroundColor: isSelected ? `${p.color}12` : '#f8fafc',
-                        color: isSelected ? p.color : '#64748b',
-                        fontSize: '12px',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
-                        transition: 'all 0.15s ease'
-                      }}
-                    >
-                      <Icon size={14} />
-                      <span>{p.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                Password
-              </label>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '14px',
-                padding: '12px 16px',
-                position: 'relative'
-              }}>
+                  padding: '13px 16px',
+                  transition: 'all 0.15s ease'
+                }}
+              >
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••••••"
+                  onChange={(e) => handlePasswordChange(e.target.value)}
+                  onBlur={() => handleBlur('password')}
+                  placeholder="••••••••"
                   style={{
                     border: 'none',
                     backgroundColor: 'transparent',
@@ -568,6 +417,7 @@ export default function LoginView() {
                     width: '100%',
                     fontSize: '15px',
                     color: '#0f172a',
+                    fontWeight: 500,
                     letterSpacing: showPassword ? 'normal' : '2px'
                   }}
                 />
@@ -587,71 +437,140 @@ export default function LoginView() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '6px', lineHeight: 1.4 }}>
-                At least 12 characters, no more than 20 characters.<br />
-                Uppercase letters, lowercase letters, numbers, and symbols.
-              </div>
-            </div>
-
-            {/* Continue Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              style={{
-                backgroundColor: '#2563eb',
-                backgroundImage: 'linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '14px',
-                padding: '15px',
-                fontSize: '15px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                boxShadow: '0 8px 25px rgba(37, 99, 235, 0.4)',
-                marginTop: '8px',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              {isSubmitting ? 'Authenticating Sentinel Grid...' : 'Continue'}
-            </button>
-
-            {/* Mode Switcher */}
-            <div style={{ textAlign: 'center', fontSize: '13px', color: '#64748b' }}>
-              {mode === 'join' ? (
-                <>
-                  Already have an account?{' '}
-                  <span 
-                    onClick={() => setMode('login')} 
-                    style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>
-                    Log in
-                  </span>
-                </>
-              ) : (
-                <>
-                  Need to configure a new operator?{' '}
-                  <span 
-                    onClick={() => setMode('join')} 
-                    style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>
-                    Join Us
-                  </span>
-                </>
+              {touched.password && errors.password && (
+                <div style={{ fontSize: '12px', color: '#dc2626', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <AlertCircle size={13} />
+                  <span>{errors.password}</span>
+                </div>
               )}
             </div>
 
-          </form>
+            {/* Remember me & Forgot Password Row */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontSize: '13px',
+              marginTop: '-4px'
+            }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#475569', cursor: 'pointer', userSelect: 'none' }}>
+                <div 
+                  onClick={() => setRememberMe(!rememberMe)}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '5px',
+                    backgroundColor: rememberMe ? '#ea580c' : '#ffffff',
+                    border: `1px solid ${rememberMe ? '#ea580c' : '#cbd5e1'}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  {rememberMe && <Check size={13} strokeWidth={3} />}
+                </div>
+                <span>Remember me</span>
+              </label>
 
-          {/* Bottom Legal Disclaimer */}
-          <div style={{
-            fontSize: '11px',
-            color: '#94a3b8',
-            textAlign: 'center',
-            lineHeight: 1.5,
-            marginTop: '28px'
-          }}>
-            By signing up I confirm that I carefully have read and agree to the Ninth{' '}
-            <span style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>Privacy Policy</span> and{' '}
-            <span style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>Terms of Service</span>.
-          </div>
+              <a 
+                href="#forgot" 
+                onClick={(e) => { e.preventDefault(); alert('Password reset link sent to your registered email.'); }}
+                style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none' }}
+              >
+                Forgot password?
+              </a>
+            </div>
+
+            {/* SIGN IN BUTTON */}
+            <button
+              type="submit"
+              disabled={isButtonDisabled}
+              className="btn-sign-in"
+              style={{
+                width: '100%',
+                padding: '16px',
+                borderRadius: '16px',
+                border: 'none',
+                backgroundColor: isButtonDisabled ? '#cbd5e1' : '#ef4444',
+                color: '#ffffff',
+                fontSize: '14px',
+                fontWeight: 800,
+                letterSpacing: '0.8px',
+                textTransform: 'uppercase',
+                cursor: isButtonDisabled ? 'not-allowed' : 'pointer',
+                boxShadow: isButtonDisabled ? 'none' : '0 8px 20px rgba(239, 68, 68, 0.35)',
+                transition: 'all 0.2s ease',
+                marginTop: '6px'
+              }}
+            >
+              {isSubmitting ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <span style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid rgba(255, 255, 255, 0.3)',
+                    borderTopColor: '#ffffff',
+                    borderRadius: '50%',
+                    display: 'inline-block',
+                    animation: 'spin 0.8s linear infinite'
+                  }} />
+                  <span>SIGNING IN...</span>
+                </div>
+              ) : (
+                'SIGN IN'
+              )}
+            </button>
+
+            {/* OR DIVIDER */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              margin: '6px 0',
+              color: '#94a3b8',
+              fontSize: '11px',
+              fontWeight: 700,
+              letterSpacing: '1px'
+            }}>
+              <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
+              <span style={{ padding: '0 14px' }}>OR</span>
+              <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }} />
+            </div>
+
+            {/* CONTINUE WITH GOOGLE BUTTON */}
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="btn-google"
+              style={{
+                width: '100%',
+                padding: '14px',
+                borderRadius: '16px',
+                border: '1px solid #e2e8f0',
+                backgroundColor: '#ffffff',
+                color: '#1e293b',
+                fontSize: '14px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              {/* Google Colored Logo */}
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span>Continue with Google</span>
+            </button>
+
+          </form>
 
         </div>
       </div>

@@ -6,10 +6,10 @@ export default function EvidenceView() {
     <div>
       {/* Header */}
       <div style={{ marginBottom: '20px' }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.5px' }}>
+        <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
           AI-Assistance Evidence
         </h2>
-        <p style={{ fontSize: '13px', color: '#8c9ba5', marginTop: '2px' }}>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
           Analytical breakdown of automated generation signals.
         </p>
       </div>
@@ -17,22 +17,22 @@ export default function EvidenceView() {
       {/* Top Metric Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
         <div className="bs-card" style={{ padding: '20px' }}>
-          <div style={{ fontSize: '11px', color: '#8c9ba5', fontWeight: 600, textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
             COORDINATION SCORE
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '8px' }}>
-            <span style={{ fontSize: '36px', fontWeight: 800, color: '#ffffff', fontFamily: 'JetBrains Mono' }}>93</span>
-            <span style={{ fontSize: '14px', color: '#8c9ba5' }}>/100</span>
+            <span style={{ fontSize: '36px', fontWeight: 800, color: 'var(--text-heading)', fontFamily: 'JetBrains Mono' }}>93</span>
+            <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>/100</span>
           </div>
         </div>
 
         <div className="bs-card" style={{ padding: '20px' }}>
-          <div style={{ fontSize: '11px', color: '#8c9ba5', fontWeight: 600, textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
             AI-ASSISTANCE LIKELIHOOD
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '8px' }}>
-            <span style={{ fontSize: '36px', fontWeight: 800, color: '#f59e0b', fontFamily: 'JetBrains Mono' }}>81</span>
-            <span style={{ fontSize: '14px', color: '#8c9ba5' }}>/100</span>
+            <span style={{ fontSize: '36px', fontWeight: 800, color: 'var(--accent-amber)', fontFamily: 'JetBrains Mono' }}>81</span>
+            <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>/100</span>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function EvidenceView() {
         
         {/* Component Breakdown Card */}
         <div className="bs-card" style={{ padding: '20px' }}>
-          <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '20px' }}>
+          <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '20px', color: 'var(--text-heading)' }}>
             Component Breakdown
           </div>
 
@@ -50,50 +50,50 @@ export default function EvidenceView() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
                 <span style={{ color: 'var(--text-primary)' }}>Linguistic similarity</span>
-                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: '#60a5fa' }}>18/20</span>
+                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: 'var(--accent-blue)' }}>18/20</span>
               </div>
               <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', overflow: 'hidden' }}>
-                <div style={{ width: '90%', height: '100%', backgroundColor: '#3b82f6', borderRadius: '9999px' }} />
+                <div style={{ width: '90%', height: '100%', backgroundColor: 'var(--accent-blue)', borderRadius: '9999px' }} />
               </div>
             </div>
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
                 <span style={{ color: 'var(--text-primary)' }}>Template reuse</span>
-                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: '#f59e0b' }}>15/20</span>
+                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: 'var(--accent-amber)' }}>15/20</span>
               </div>
               <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', overflow: 'hidden' }}>
-                <div style={{ width: '75%', height: '100%', backgroundColor: '#f59e0b', borderRadius: '9999px' }} />
+                <div style={{ width: '75%', height: '100%', backgroundColor: 'var(--accent-amber)', borderRadius: '9999px' }} />
               </div>
             </div>
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
                 <span style={{ color: 'var(--text-primary)' }}>Cross-language variants</span>
-                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: '#60a5fa' }}>18/20</span>
+                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: 'var(--accent-blue)' }}>18/20</span>
               </div>
               <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', overflow: 'hidden' }}>
-                <div style={{ width: '90%', height: '100%', backgroundColor: '#3b82f6', borderRadius: '9999px' }} />
+                <div style={{ width: '90%', height: '100%', backgroundColor: 'var(--accent-blue)', borderRadius: '9999px' }} />
               </div>
             </div>
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
                 <span style={{ color: 'var(--text-primary)' }}>Generation burst</span>
-                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: '#f59e0b' }}>14/20</span>
+                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: 'var(--accent-amber)' }}>14/20</span>
               </div>
               <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', overflow: 'hidden' }}>
-                <div style={{ width: '70%', height: '100%', backgroundColor: '#f59e0b', borderRadius: '9999px' }} />
+                <div style={{ width: '70%', height: '100%', backgroundColor: 'var(--accent-amber)', borderRadius: '9999px' }} />
               </div>
             </div>
 
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
                 <span style={{ color: 'var(--text-primary)' }}>Automation metadata</span>
-                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: '#8c9ba5' }}>8/10</span>
+                <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)' }}>8/10</span>
               </div>
               <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', overflow: 'hidden' }}>
-                <div style={{ width: '80%', height: '100%', backgroundColor: '#60a5fa', borderRadius: '9999px' }} />
+                <div style={{ width: '80%', height: '100%', backgroundColor: 'var(--accent-blue)', borderRadius: '9999px' }} />
               </div>
             </div>
           </div>
@@ -176,8 +176,8 @@ export default function EvidenceView() {
               <div style={{ position: 'absolute', bottom: '30%', right: '25%', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#ef4444', boxShadow: '0 0 8px #ef4444' }} />
               <div style={{ position: 'absolute', bottom: '45%', right: '40%', width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#f59e0b' }} />
 
-              <AlertTriangle size={18} style={{ color: '#ef4444', marginBottom: '4px' }} />
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#fca5a5', textAlign: 'center', lineHeight: 1.2 }}>
+              <AlertTriangle size={18} style={{ color: 'var(--accent-red)', marginBottom: '4px' }} />
+              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-red)', textAlign: 'center', lineHeight: 1.2 }}>
                 Potential AI-Amplified Coordinated Operation
               </span>
             </div>
