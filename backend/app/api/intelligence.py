@@ -1,18 +1,40 @@
-from backend.app.models.schemas import Campaign, EvidencePackage
-from ai.clustering.clusterer import CampaignClusterer
-from ai.pipeline import BharatShieldIntelligencePipeline
-from blockchain.evidence.hasher import EvidenceHasher
 import json
-from pathlib import Path
-from collections import Counter
-from typing import Optional, Dict, Any, List
-from datetime import datetime, timezone
+import logging
 import uuid
+from collections import Counter
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+from fastapi import APIRouter, Body, Header, HTTPException, Query
+
+from ai.clustering.clusterer import CampaignClusterer
+from ai.embeddings import MultilingualEmbedder
+from ai.pipeline import BharatShieldIntelligencePipeline
+from backend.app.models.schemas import Campaign, EvidencePackage
+from blockchain.evidence.hasher import EvidenceHasher
+from database.db import (
+    get_audit_ledger_from_db,
+    get_campaign_by_id_from_db,
+    get_campaigns_from_db,
+    get_db_overview_stats,
+    get_recent_signals,
+    insert_audit_entry,
+    insert_signal,
+    is_db_available,
+    search_similar_signals,
+    upsert_campaign,
+)
+
+logger = logging.getLogger("bharat_shield.intelligence")
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 DATA_FILE = BASE_DIR / "data" / "synthetic" / "campaign_data.json"
 
 router = APIRouter(prefix="/api", tags=["Intelligence"])
+
+# In-memory runtime fallback storage for signals and audit records
+IN_MEMORY_SIGNALS: List[Dict[str, Any]] = []
 
 # Role-specific campaign registries
 ROLE_CAMPAIGNS = {
@@ -170,21 +192,30 @@ ROLE_CAMPAIGNS = {
 
 @router.get("/overview")
 def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
+    """
+    Overview Telemetry & Threat Metrics with dynamic PostgreSQL + pgvector aggregation.
+    """
     posts = []
     if DATA_FILE.exists():
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            posts = json.load(f)
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                posts = json.load(f)
+        except Exception:
+            posts = []
+
+    db_stats = get_db_overview_stats() if is_db_available() else None
 
     if role == "corporate_enterprise":
         return {
             "role": "corporate_enterprise",
             "organization": "Adani Group — Brand Defense & Market Risk",
             "clearance": "Enterprise Tier-1",
+            "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
             "stats": {
-                "active_campaigns": 3,
-                "high_risk_campaigns": 2,
-                "content_analyzed": 4892,
-                "tipline_submissions": 46,
+                "active_campaigns": db_stats["total_campaigns"] if db_stats and db_stats["total_campaigns"] > 0 else 3,
+                "high_risk_campaigns": db_stats["high_risk_campaigns"] if db_stats else 2,
+                "content_analyzed": (db_stats["total_signals"] + 4800) if db_stats else 4892,
+                "tipline_submissions": 46 + len(IN_MEMORY_SIGNALS),
                 "ai_suspected": 3
             },
             "timeline": {
@@ -210,11 +241,12 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
             "role": "journalist_media",
             "organization": "National Press Consortium & Fact-Check Desk",
             "clearance": "Press Accredited",
+            "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
             "stats": {
-                "active_campaigns": 3,
-                "high_risk_campaigns": 2,
-                "content_analyzed": 8420,
-                "tipline_submissions": 842,
+                "active_campaigns": db_stats["total_campaigns"] if db_stats and db_stats["total_campaigns"] > 0 else 3,
+                "high_risk_campaigns": db_stats["high_risk_campaigns"] if db_stats else 2,
+                "content_analyzed": (db_stats["total_signals"] + 8000) if db_stats else 8420,
+                "tipline_submissions": (842 + len(IN_MEMORY_SIGNALS)),
                 "ai_suspected": 11
             },
             "timeline": {
@@ -235,14 +267,14 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
             ]
         }
 
-    # Default: Investigation Bureau of India
+    # Default: Investigation Bureau of India (IB / LEA)
     total_posts = len(posts)
     clusters = Counter(p.get("campaign_cluster") for p in posts if p.get("campaign_cluster"))
     platforms = Counter(p.get("platform") for p in posts if p.get("platform"))
     
     twitter_count = platforms.get("twitter", 0)
     telegram_count = platforms.get("telegram", 0)
-    whatsapp_count = platforms.get("whatsapp_tipline", 0)
+    whatsapp_count = platforms.get("whatsapp_tipline", 0) + len(IN_MEMORY_SIGNALS)
     news_count = platforms.get("news", 0) + platforms.get("facebook", 0)
     
     total_platform_sum = max(twitter_count + telegram_count + whatsapp_count + news_count, 1)
@@ -273,10 +305,11 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
         "role": "investigation_bureau",
         "organization": "Investigation Bureau of India (IB / LEA)",
         "clearance": "Level 5 Top Secret",
+        "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Fallback",
         "stats": {
-            "active_campaigns": len(clusters) or 3,
-            "high_risk_campaigns": 2,
-            "content_analyzed": total_posts or 12483,
+            "active_campaigns": db_stats["total_campaigns"] if db_stats and db_stats["total_campaigns"] > 0 else (len(clusters) or 3),
+            "high_risk_campaigns": db_stats["high_risk_campaigns"] if db_stats else 2,
+            "content_analyzed": (db_stats["total_signals"] if db_stats and db_stats["total_signals"] > 0 else (total_posts or 12483)) + len(IN_MEMORY_SIGNALS),
             "tipline_submissions": whatsapp_count or 385,
             "ai_suspected": 7
         },
@@ -293,13 +326,26 @@ def get_campaigns(
 ):
     """Return campaign intelligence list filtered by active user persona/role clearance."""
     active_role = role or x_user_role or "investigation_bureau"
+    
+    # Try PostgreSQL first if available
+    if is_db_available():
+        db_campaigns = get_campaigns_from_db()
+        if db_campaigns:
+            return db_campaigns
+
+    # Fallback to persona partitioned campaigns
     if active_role in ROLE_CAMPAIGNS:
         return ROLE_CAMPAIGNS[active_role]
     return ROLE_CAMPAIGNS["investigation_bureau"]
 
 @router.get("/campaigns/{campaign_id}")
 def get_campaign(campaign_id: str, role: Optional[str] = Query(default="investigation_bureau")):
-    """Fetch specific campaign with role authorization checks."""
+    """Fetch specific campaign with role authorization checks and DB lookup."""
+    if is_db_available():
+        db_camp = get_campaign_by_id_from_db(campaign_id)
+        if db_camp:
+            return db_camp
+
     active_role = role if role in ROLE_CAMPAIGNS else "investigation_bureau"
     for c in ROLE_CAMPAIGNS[active_role]:
         if c["id"].lower() == campaign_id.lower():
@@ -318,34 +364,56 @@ def execute_analyst_action(
 ):
     """
     Role-Protected Execution of Counter-Operations:
-    - 'sec69a_takedown' requires 'investigation_bureau'
-    - 'bse_clarification' requires 'corporate_enterprise'
-    - 'publish_factcheck' requires 'journalist_media'
+    - 'sec69a_takedown' requires 'investigation_bureau' or 'system_admin'
+    - 'bse_clarification' requires 'corporate_enterprise' or 'system_admin'
+    - 'publish_factcheck' requires 'journalist_media' or 'system_admin'
+    Persists immutable audit trail into PostgreSQL audit_ledger table.
     """
     action_type = payload.get("action_type")
     campaign_id = payload.get("campaign_id", "CMP-007")
-    active_role = x_user_role if x_user_role in ROLE_CAMPAIGNS else "investigation_bureau"
+    active_role = x_user_role if x_user_role in ROLE_CAMPAIGNS or x_user_role == "system_admin" else "investigation_bureau"
 
     # RBAC Authorization Matrix Check
     ROLE_PERMISSIONS = {
-        "sec69a_takedown": ["investigation_bureau"],
-        "inter_agency_dossier": ["investigation_bureau"],
-        "blockchain_notarize": ["investigation_bureau", "corporate_enterprise"],
-        "bse_clarification": ["corporate_enterprise"],
-        "executive_briefing": ["corporate_enterprise"],
-        "defamation_vault": ["corporate_enterprise"],
-        "publish_factcheck": ["journalist_media"],
-        "generate_debunk_bulletin": ["journalist_media"]
+        "sec69a_takedown": ["investigation_bureau", "system_admin"],
+        "inter_agency_dossier": ["investigation_bureau", "system_admin"],
+        "blockchain_notarize": ["investigation_bureau", "corporate_enterprise", "system_admin"],
+        "bse_clarification": ["corporate_enterprise", "system_admin"],
+        "executive_briefing": ["corporate_enterprise", "system_admin"],
+        "defamation_vault": ["corporate_enterprise", "system_admin"],
+        "publish_factcheck": ["journalist_media", "system_admin"],
+        "generate_debunk_bulletin": ["journalist_media", "system_admin"]
     }
 
-    allowed_roles = ROLE_PERMISSIONS.get(action_type, ["investigation_bureau"])
+    allowed_roles = ROLE_PERMISSIONS.get(action_type, ["investigation_bureau", "system_admin"])
     if active_role not in allowed_roles:
         raise HTTPException(
             status_code=403, 
             detail=f"RBAC ACCESS DENIED: Active role '{active_role}' is not authorized to execute '{action_type}'. Required permissions: {allowed_roles}"
         )
 
+    package_id = f"EV-ACT-{uuid.uuid4().hex[:8].upper()}"
     tx_hash = f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:8]}"
+    details_str = json.dumps({
+        "action": action_type,
+        "campaign_id": campaign_id,
+        "executor": active_role,
+        "payload": payload
+    })
+
+    # Persist in PostgreSQL audit_ledger
+    db_persisted = False
+    if is_db_available():
+        db_persisted = insert_audit_entry(
+            package_id=package_id,
+            campaign_id=campaign_id,
+            sha256_hash=tx_hash,
+            event_type=f"COUNTER_ACTION_{action_type.upper()}",
+            details=details_str,
+            analyst_id=f"OP_{active_role.upper()}",
+            role=active_role
+        )
+
     return {
         "status": "EXECUTED",
         "action_type": action_type,
@@ -353,7 +421,9 @@ def execute_analyst_action(
         "executor_role": active_role,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "cryptographic_signature": tx_hash,
-        "message": f"Operation '{action_type}' authorized and sealed with EVM cryptographic timestamp."
+        "package_id": package_id,
+        "db_persisted": db_persisted,
+        "message": f"Operation '{action_type}' authorized, executed, and sealed with EVM cryptographic timestamp."
     }
 
 @router.post("/reports/generate")
@@ -372,14 +442,28 @@ def generate_role_report(
         "journalist_media": "Multilingual Fact-Check & WhatsApp Debunk Dispatch"
     }
 
+    report_id = f"REP-{str(uuid.uuid4())[:8].upper()}"
+    sha_hash = f"sha256:{uuid.uuid4().hex}"
+
+    if is_db_available():
+        insert_audit_entry(
+            package_id=report_id,
+            campaign_id=campaign_id,
+            sha256_hash=sha_hash,
+            event_type="REPORT_GENERATED",
+            details=f"Generated {format_type.upper()} briefing: {report_titles.get(active_role)}",
+            analyst_id=f"OP_{active_role.upper()}",
+            role=active_role
+        )
+
     return {
-        "report_id": f"REP-{str(uuid.uuid4())[:8].upper()}",
+        "report_id": report_id,
         "title": report_titles.get(active_role, "Threat Intelligence Report"),
         "role": active_role,
         "campaign_id": campaign_id,
         "format": format_type,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "integrity_hash": f"sha256:{uuid.uuid4().hex}",
+        "integrity_hash": sha_hash,
         "status": "READY_FOR_DOWNLOAD"
     }
 
@@ -431,13 +515,25 @@ def analyze_content(payload: Dict[str, Any] = Body(...)):
         platform=platform,
         metadata=metadata
     )
+
+    # Optional vector similarity search against PostgreSQL
+    similar_signals = []
+    if is_db_available() and text:
+        embedding = MultilingualEmbedder.encode(text)
+        similar_signals = search_similar_signals(embedding, limit=3)
+        result["similar_known_threats"] = similar_signals
+
     return result
 
 @router.post("/tipline/ingest")
 def ingest_tipline_signal(payload: Dict[str, Any] = Body(...)):
     """
     Tipline Signal Ingestion:
-    Analyzes submitted signal, calculates campaign correlation, and seals evidence.
+    1. Analyzes submitted signal via Multilingual Multimodal AI Pipeline.
+    2. Calculates 384-dimensional pgvector semantic embedding.
+    3. Persists signal into PostgreSQL `tipline_signals` with HNSW vector index.
+    4. Logs tamper-evident cryptographic evidence hash into `audit_ledger`.
+    5. Performs real-time Cosine Similarity search to detect campaign correlation.
     """
     text = payload.get("text", "")
     media_type = payload.get("media_type", "text")
@@ -448,13 +544,114 @@ def ingest_tipline_signal(payload: Dict[str, Any] = Body(...)):
         media_type=media_type,
         platform=platform
     )
+
+    signal_id = analysis["signal_id"]
+    lang = analysis["language_analysis"]["language"]
+    threat_level = analysis["risk_assessment"]["base_risk"]
+    confidence = analysis["risk_assessment"]["confidence"]
+    sha256_hash = analysis["evidence_package"]["sha256_hash"]
+    
+    # Determine severity label
+    severity = "CRITICAL" if threat_level >= 85 else ("HIGH" if threat_level >= 65 else "MEDIUM")
+    
+    # Generate 384-dim embedding
+    embedding = MultilingualEmbedder.encode(text or analysis.get("language_analysis", {}).get("raw_text", ""))
+
+    # PostgreSQL + pgvector persistence
+    db_saved = False
+    similar_clusters = []
+    if is_db_available():
+        db_saved = insert_signal(
+            signal_id=signal_id,
+            source=platform,
+            raw_payload=text,
+            detected_language=lang,
+            confidence_score=0.92 if confidence == "HIGH" else 0.75,
+            intent_classification="disinformation_swarm" if threat_level > 70 else "unverified_signal",
+            severity=severity,
+            normalized_translation=analysis["language_analysis"].get("normalized_text", text),
+            campaign_id="CMP-007" if threat_level > 80 else None,
+            embedding=embedding
+        )
+
+        # Log evidence record to PostgreSQL audit_ledger
+        insert_audit_entry(
+            package_id=signal_id,
+            campaign_id="CMP-007" if threat_level > 80 else None,
+            sha256_hash=sha256_hash,
+            event_type="SIGNAL_INGESTION_SEALED",
+            details=f"Ingested from {platform} ({lang}) with Threat Score {threat_level}/100",
+            analyst_id="SENTINEL_AI_INGEST",
+            role="investigation_bureau"
+        )
+
+        # Query pgvector for cosine similarity matches
+        similar_clusters = search_similar_signals(embedding, limit=3)
+
+    # In-memory buffer backup
+    IN_MEMORY_SIGNALS.append({
+        "id": signal_id,
+        "platform": platform,
+        "text": text,
+        "language": lang,
+        "threat_level": threat_level,
+        "confidence": confidence,
+        "sha256_hash": sha256_hash,
+        "timestamp": analysis["timestamp"]
+    })
+
     return {
         "status": "INGESTED",
-        "signal_id": analysis["signal_id"],
-        "language_detected": analysis["language_analysis"]["language"],
-        "threat_level": analysis["risk_assessment"]["base_risk"],
-        "confidence": analysis["risk_assessment"]["confidence"],
+        "signal_id": signal_id,
+        "language_detected": lang,
+        "threat_level": threat_level,
+        "severity": severity,
+        "confidence": confidence,
         "ai_assistance": analysis["ai_assistance_indicators"]["status"],
-        "sha256_hash": analysis["evidence_package"]["sha256_hash"],
+        "sha256_hash": sha256_hash,
+        "db_persisted": db_saved,
+        "storage_engine": "PostgreSQL (pgvector HNSW)" if db_saved else "In-Memory Buffer",
+        "correlated_signals": similar_clusters,
         "full_analysis": analysis
+    }
+
+@router.get("/signals/recent")
+def get_recent_tipline_signals(limit: int = Query(default=20)):
+    """Retrieve the newest ingested signals from PostgreSQL or in-memory fallback."""
+    if is_db_available():
+        db_signals = get_recent_signals(limit=limit)
+        if db_signals:
+            return db_signals
+    
+    # Return in-memory buffer
+    return IN_MEMORY_SIGNALS[-limit:]
+
+@router.post("/signals/search-vector")
+def search_signals_by_vector(payload: Dict[str, Any] = Body(...)):
+    """
+    Search tipline signals using pgvector cosine similarity (<=>).
+    """
+    query_text = payload.get("query", "")
+    limit = payload.get("limit", 5)
+    
+    if not query_text:
+        raise HTTPException(status_code=400, detail="Query text required")
+
+    embedding = MultilingualEmbedder.encode(query_text)
+
+    if is_db_available():
+        results = search_similar_signals(embedding, limit=limit)
+        return {
+            "query": query_text,
+            "dimension": len(embedding),
+            "matches_count": len(results),
+            "results": results
+        }
+
+    return {
+        "query": query_text,
+        "dimension": len(embedding),
+        "matches_count": 0,
+        "results": [],
+        "note": "PostgreSQL pgvector offline; returning empty match set."
     }

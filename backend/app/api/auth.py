@@ -164,6 +164,8 @@ class AuditLogEntry(BaseModel):
     target: str
     details: Optional[Dict[str, Any]] = None
 
+from database.db import is_db_available, insert_audit_entry, get_audit_ledger_from_db
+
 @router.get("/roles")
 def get_all_roles():
     """Return all available RBAC roles, clearance levels, and capability definitions."""
@@ -184,17 +186,32 @@ def switch_role(req: RoleSwitchRequest):
         raise HTTPException(status_code=400, detail=f"Invalid target role: {req.target_role}")
 
     profile = USER_PROFILES[req.target_role]
+    audit_id = f"AUD-{str(uuid.uuid4())[:8].upper()}"
+    tx_hash = f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
+    
     log_entry = {
-        "id": f"AUD-{str(uuid.uuid4())[:8].upper()}",
+        "id": audit_id,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "actor": profile["name"],
         "role": profile["role"],
         "action": f"ROLE_SWITCH_TO_{profile['role'].upper()}",
         "target": profile["clearance"],
         "status": "AUTHORIZED",
-        "hash": f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
+        "hash": tx_hash
     }
     AUDIT_LOGS.insert(0, log_entry)
+
+    # Persist in DB if available
+    if is_db_available():
+        insert_audit_entry(
+            package_id=audit_id,
+            campaign_id=None,
+            sha256_hash=tx_hash,
+            event_type="ROLE_SWITCH",
+            details=f"Switched persona to {profile['name']} ({profile['role']})",
+            analyst_id=profile["id"],
+            role=profile["role"]
+        )
 
     return {
         "status": "success",
@@ -218,10 +235,29 @@ def get_permissions_matrix():
 
 @router.get("/audit-log")
 def get_audit_log(x_user_role: Optional[str] = Header(default="investigation_bureau"), role: Optional[str] = Query(default=None)):
-    """Return cryptographic RBAC audit logs."""
+    """Return cryptographic RBAC audit logs from PostgreSQL or in-memory fallback."""
     active_role = role or x_user_role or "investigation_bureau"
-    # Full audit log visible to IB; Corporate and Media see their own actions
-    if active_role == "investigation_bureau":
+    
+    if is_db_available():
+        db_logs = get_audit_ledger_from_db(limit=50, role=active_role)
+        if db_logs:
+            # Map DB format to UI expectations
+            return [
+                {
+                    "id": f"AUD-{log['package_id'][-8:]}" if log.get("package_id") else f"AUD-{log['id']}",
+                    "timestamp": log["recorded_at"].isoformat() if hasattr(log["recorded_at"], "isoformat") else str(log["recorded_at"]),
+                    "actor": log.get("analyst_id") or "OPERATOR",
+                    "role": log.get("role") or "investigation_bureau",
+                    "action": log.get("event_type") or "AUDIT_EVENT",
+                    "target": log.get("campaign_id") or "Sentinel Vault",
+                    "status": "AUTHORIZED",
+                    "hash": log.get("sha256_hash") or f"0x{uuid.uuid4().hex}"
+                }
+                for log in db_logs
+            ]
+
+    # Full audit log visible to IB & admin; Corporate and Media see their own actions
+    if active_role in ["investigation_bureau", "system_admin"]:
         return AUDIT_LOGS
     else:
         return [log for log in AUDIT_LOGS if log["role"] == active_role]
@@ -231,9 +267,11 @@ def create_audit_log(entry: AuditLogEntry, x_user_role: Optional[str] = Header(d
     """Record an RBAC or operational action into the tamper-evident audit trail."""
     active_role = x_user_role if x_user_role in USER_PROFILES else "investigation_bureau"
     profile = USER_PROFILES[active_role]
+    audit_id = f"AUD-{str(uuid.uuid4())[:8].upper()}"
+    tx_hash = f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
 
     log_item = {
-        "id": f"AUD-{str(uuid.uuid4())[:8].upper()}",
+        "id": audit_id,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "actor": profile["name"],
         "role": profile["role"],
@@ -241,7 +279,20 @@ def create_audit_log(entry: AuditLogEntry, x_user_role: Optional[str] = Header(d
         "target": entry.target,
         "status": "AUTHORIZED",
         "details": entry.details or {},
-        "hash": f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
+        "hash": tx_hash
     }
     AUDIT_LOGS.insert(0, log_item)
+
+    if is_db_available():
+        insert_audit_entry(
+            package_id=audit_id,
+            campaign_id=None,
+            sha256_hash=tx_hash,
+            event_type=entry.action,
+            details=json.dumps(entry.details or {}),
+            analyst_id=profile["id"],
+            role=profile["role"]
+        )
+
     return {"status": "recorded", "entry": log_item}
+

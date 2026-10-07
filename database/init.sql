@@ -6,14 +6,21 @@ CREATE TABLE IF NOT EXISTS campaigns (
     id VARCHAR(64) PRIMARY KEY,
     title TEXT NOT NULL,
     status VARCHAR(32) DEFAULT 'active',
+    category TEXT,
     primary_language VARCHAR(16),
     languages_detected TEXT[],
     platforms TEXT[],
     post_count INT DEFAULT 0,
     overall_threat_min INT,
     overall_threat_max INT,
+    threat_score INT,
+    confidence VARCHAR(32),
     coordination_score INT,
     ai_probability INT,
+    cross_platform_sync INT,
+    target TEXT,
+    summary TEXT,
+    authorized_actions TEXT[],
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -28,8 +35,7 @@ CREATE TABLE IF NOT EXISTS tipline_signals (
     intent_classification VARCHAR(64),
     severity VARCHAR(32),
     normalized_translation TEXT,
-    campaign_id VARCHAR(64) REFERENCES campaigns(id),
-    -- 384-dimensional vector embedding for multilingual semantic matching (e.g. using sentence-transformers)
+    campaign_id VARCHAR(64) REFERENCES campaigns(id) ON DELETE SET NULL,
     embedding vector(384)
 );
 
@@ -42,10 +48,11 @@ USING hnsw (embedding vector_cosine_ops);
 CREATE TABLE IF NOT EXISTS audit_ledger (
     id SERIAL PRIMARY KEY,
     package_id VARCHAR(64) NOT NULL,
-    campaign_id VARCHAR(64) REFERENCES campaigns(id),
-    sha256_hash VARCHAR(64) NOT NULL,
+    campaign_id VARCHAR(64),
+    sha256_hash VARCHAR(128) NOT NULL,
     event_type VARCHAR(64) NOT NULL,
     details TEXT,
-    analyst_id VARCHAR(32),
+    analyst_id VARCHAR(64),
+    role VARCHAR(64),
     recorded_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
