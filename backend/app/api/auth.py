@@ -10,8 +10,8 @@ router = APIRouter(prefix="/api/auth", tags=["Authentication & RBAC"])
 USER_PROFILES = {
     "system_admin": {
         "id": "user_admin_000",
-        "name": "Commander Arvind Sharma",
-        "email": "a.sharma@sentinel.gov.in",
+        "name": "Naman Saini (Super Admin)",
+        "email": "saininaman643@gmail.com",
         "role": "system_admin",
         "role_title": "Super Administrator / NCCC Operations Command",
         "organization": "National Cyber Coordination Centre (NCCC) & MoD",
@@ -19,7 +19,7 @@ USER_PROFILES = {
         "clearance_level": 6,
         "badge_color": "#10b981",
         "badge_text": "SUPREME ADMIN // ROOT",
-        "avatar_initials": "SA",
+        "avatar_initials": "NS",
         "allowed_navs": [
             "overview", "live", "tipline", "campaigns", "narratives", 
             "threats", "analyst-response", "report-generator", "evidence", "audit", "admin", "settings"

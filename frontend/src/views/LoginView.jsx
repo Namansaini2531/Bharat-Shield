@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAuth, ROLES } from '../context/AuthContext';
 import logoImg from '../assets/logo.png';
 import { 
@@ -6,23 +6,117 @@ import {
   EyeOff, 
   AlertCircle,
   Sparkles,
-  Check
+  Check,
+  ChevronDown,
+  Shield,
+  ShieldAlert,
+  Building2,
+  Newspaper,
+  UserCheck,
+  Lock,
+  Crown
 } from 'lucide-react';
 
+const ACCOUNTS = [
+  {
+    id: 'super_admin',
+    role: ROLES.SYSTEM_ADMIN,
+    name: 'Naman Saini',
+    email: 'saininaman643@gmail.com',
+    password: 'Naman@16#',
+    title: 'Super Administrator / Root Command',
+    badgeText: 'SUPREME ROOT // ADMIN',
+    badgeColor: '#10b981',
+    initials: 'NS',
+    icon: Crown,
+    organization: 'NCCC Operations & Ministry of Defence'
+  },
+  {
+    id: 'ib_lea',
+    role: ROLES.INVESTIGATION_BUREAU,
+    name: 'Vikram Rawat',
+    email: 'v.rawat@ib.gov.in',
+    password: 'sentinel@16#',
+    title: 'Joint Director / Cyber Operations',
+    badgeText: 'TOP SECRET / LEA',
+    badgeColor: '#ef4444',
+    initials: 'IB',
+    icon: ShieldAlert,
+    organization: 'Investigation Bureau & MHA'
+  },
+  {
+    id: 'adani_corp',
+    role: ROLES.CORPORATE_ENTERPRISE,
+    name: 'Rajesh Singhania',
+    email: 'ciso.defense@adani.com',
+    password: 'sentinel@16#',
+    title: 'CISO / Brand Defense Lead',
+    badgeText: 'ENTERPRISE RISK',
+    badgeColor: '#f59e0b',
+    initials: 'AG',
+    icon: Building2,
+    organization: 'Adani Strategic Intelligence'
+  },
+  {
+    id: 'media_press',
+    role: ROLES.JOURNALIST_MEDIA,
+    name: 'Pooja Kashyap',
+    email: 'pooja.k@nationalpress.org',
+    password: 'sentinel@16#',
+    title: 'Investigative Fact-Check Lead',
+    badgeText: 'PRESS ACCREDITED',
+    badgeColor: '#3b82f6',
+    initials: 'NP',
+    icon: Newspaper,
+    organization: 'National Press Consortium'
+  }
+];
 
 export default function LoginView() {
-  const { login, allProfiles } = useAuth();
+  const { login } = useAuth();
 
-  const [email, setEmail] = useState('admin@sentinel.gov.in');
-  const [password, setPassword] = useState('sentinel@16#');
+  // Default to Super Admin (Naman Saini)
+  const [selectedAccount, setSelectedAccount] = useState(ACCOUNTS[0]);
+  const [email, setEmail] = useState(ACCOUNTS[0].email);
+  const [password, setPassword] = useState(ACCOUNTS[0].password);
   const [rememberMe, setRememberMe] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(ROLES.INVESTIGATION_BUREAU);
+  const [selectedRole, setSelectedRole] = useState(ACCOUNTS[0].role);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const dropdownRef = useRef(null);
 
   const [touched, setTouched] = useState({});
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Autofill handler when selecting an account from dropdown
+  const handleSelectAccount = (account) => {
+    setSelectedAccount(account);
+    setEmail(account.email);
+    setPassword(account.password);
+    setSelectedRole(account.role);
+    setTouched({ email: true, password: true });
+    setErrors({ email: '', password: '' });
+    setServerError('');
+    setIsDropdownOpen(false);
+
+    setToastMessage(`Autofilled credentials for ${account.name} (${account.badgeText})`);
+    setTimeout(() => setToastMessage(''), 3500);
+  };
 
   // Email validation regex
   const validateEmail = (val) => {
@@ -69,14 +163,6 @@ export default function LoginView() {
     }
   };
 
-  const handleQuickAutofill = () => {
-    setEmail('admin@sentinel.gov.in');
-    setPassword('sentinel@16#');
-    setTouched({ email: true, password: true });
-    setErrors({ email: '', password: '' });
-    setServerError('');
-  };
-
   const isEmailValid = !validateEmail(email);
   const isPasswordValid = !validatePassword(password);
   const isButtonDisabled = !email.trim() || !password || !isEmailValid || !isPasswordValid || isSubmitting;
@@ -102,13 +188,13 @@ export default function LoginView() {
         password: password.trim(),
         roleKey: selectedRole,
         customEmail: email.trim(),
+        customName: selectedAccount?.name
       });
     } catch (err) {
       setServerError(err.message || 'Authentication failed. Please check your credentials.');
       setIsSubmitting(false);
     }
   };
-
 
   return (
     <div style={{
@@ -119,12 +205,17 @@ export default function LoginView() {
       display: 'grid',
       gridTemplateColumns: '1.1fr 1fr',
       backgroundColor: '#ffffff',
-      fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      position: 'relative'
     }}>
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeInSlide {
+          0% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         .input-box:focus-within {
           border-color: #3b82f6 !important;
@@ -134,7 +225,180 @@ export default function LoginView() {
           background-color: #dc2626 !important;
           box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4) !important;
         }
+        .account-item:hover {
+          background-color: #f8fafc !important;
+        }
+        .account-circle-btn:hover {
+          transform: scale(1.04);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+        }
       `}</style>
+
+      {/* ================= TOP-RIGHT CIRCULAR ACCOUNT SWITCHER BUTTON & DROPDOWN ================= */}
+      <div 
+        ref={dropdownRef}
+        style={{
+          position: 'fixed',
+          top: '24px',
+          right: '28px',
+          zIndex: 1000
+        }}
+      >
+        {/* Circular Avatar Switcher Button */}
+        <button
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className="account-circle-btn"
+          title="Switch Account // Quick Autofill"
+          style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '50%',
+            backgroundColor: '#ffffff',
+            border: `2px solid ${selectedAccount?.badgeColor || '#3b82f6'}`,
+            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            position: 'relative',
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            backgroundColor: `${selectedAccount?.badgeColor || '#3b82f6'}18`,
+            color: selectedAccount?.badgeColor || '#3b82f6',
+            fontWeight: 800,
+            fontSize: '13px',
+            fontFamily: 'JetBrains Mono, monospace',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {selectedAccount?.initials || 'SA'}
+          </div>
+
+          {/* Active Status Pulse Indicator */}
+          <span style={{
+            position: 'absolute',
+            bottom: '0px',
+            right: '0px',
+            width: '12px',
+            height: '12px',
+            borderRadius: '50%',
+            backgroundColor: selectedAccount?.badgeColor || '#10b981',
+            border: '2px solid #ffffff',
+            boxShadow: `0 0 6px ${selectedAccount?.badgeColor || '#10b981'}`
+          }} />
+        </button>
+
+        {/* Dropdown Menu */}
+        {isDropdownOpen && (
+          <div style={{
+            position: 'absolute',
+            top: '56px',
+            right: '0px',
+            width: '340px',
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.2), 0 0 1px 1px rgba(0, 0, 0, 0.08)',
+            border: '1px solid #e2e8f0',
+            padding: '12px',
+            animation: 'fadeInSlide 0.2s ease-out forwards',
+            zIndex: 1001
+          }}>
+            <div style={{
+              padding: '6px 10px 10px 10px',
+              borderBottom: '1px solid #f1f5f9',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', letterSpacing: '0.8px', textTransform: 'uppercase' }}>
+                Select Account to Autofill
+              </span>
+              <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700, fontFamily: 'JetBrains Mono' }}>
+                4 PROFILES
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '6px' }}>
+              {ACCOUNTS.map((acc) => {
+                const isSelected = selectedAccount?.id === acc.id;
+                const IconComponent = acc.icon;
+                return (
+                  <div
+                    key={acc.id}
+                    onClick={() => handleSelectAccount(acc)}
+                    className="account-item"
+                    style={{
+                      padding: '10px 12px',
+                      borderRadius: '12px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
+                      border: isSelected ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {/* Avatar Circle */}
+                    <div style={{
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      backgroundColor: `${acc.badgeColor}15`,
+                      border: `1.5px solid ${acc.badgeColor}`,
+                      color: acc.badgeColor,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 800,
+                      fontSize: '12px',
+                      fontFamily: 'JetBrains Mono',
+                      flexShrink: 0
+                    }}>
+                      {acc.initials}
+                    </div>
+
+                    {/* Account Info */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+                          {acc.name}
+                        </span>
+                        {isSelected && <Check size={14} style={{ color: '#3b82f6', strokeWidth: 3 }} />}
+                      </div>
+                      
+                      <div style={{ fontSize: '11px', color: '#64748b', marginTop: '1px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                        {acc.email}
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                        <span style={{
+                          fontSize: '9px',
+                          fontWeight: 700,
+                          padding: '1px 6px',
+                          borderRadius: '4px',
+                          backgroundColor: `${acc.badgeColor}15`,
+                          color: acc.badgeColor,
+                          border: `1px solid ${acc.badgeColor}30`,
+                          letterSpacing: '0.4px'
+                        }}>
+                          {acc.badgeText}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* ================= LEFT COLUMN: Dark Aesthetic with Diagonal Glowing Capsules ================= */}
       <div style={{
@@ -237,7 +501,6 @@ export default function LoginView() {
           </div>
         </div>
 
-
         {/* Bottom Hero Description */}
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '420px', marginBottom: '20px' }}>
           <h2 style={{ fontSize: '32px', fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.8px', marginBottom: '14px' }}>
@@ -264,12 +527,12 @@ export default function LoginView() {
         <div style={{ width: '100%', maxWidth: '420px' }}>
           
           {/* Header Title & Subtitle */}
-          <div style={{ marginBottom: '30px' }}>
+          <div style={{ marginBottom: '24px' }}>
             <h1 style={{
-              fontSize: '34px',
+              fontSize: '32px',
               fontWeight: 900,
               color: '#0f172a',
-              margin: '0 0 8px 0',
+              margin: '0 0 6px 0',
               letterSpacing: '-1px'
             }}>
               Welcome Back!
@@ -280,48 +543,71 @@ export default function LoginView() {
               margin: 0,
               lineHeight: 1.5
             }}>
-              Log in to start managing your projects and clients with ease.
+              Access your security partition with verified operational credentials.
             </p>
           </div>
 
-          {/* Quick Demo Autofill Badge */}
+          {/* Toast Notification if Account Selected */}
+          {toastMessage && (
+            <div style={{
+              backgroundColor: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              borderRadius: '10px',
+              padding: '10px 14px',
+              marginBottom: '18px',
+              fontSize: '12px',
+              color: '#166534',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              animation: 'fadeInSlide 0.2s ease-out'
+            }}>
+              <Check size={14} style={{ color: '#16a34a', flexShrink: 0 }} />
+              <span>{toastMessage}</span>
+            </div>
+          )}
+
+          {/* Active Clearance Badge Card */}
           <div style={{
-            backgroundColor: '#eff6ff',
-            border: '1px solid #bfdbfe',
+            backgroundColor: `${selectedAccount?.badgeColor || '#10b981'}10`,
+            border: `1px solid ${selectedAccount?.badgeColor || '#10b981'}30`,
             borderRadius: '12px',
             padding: '12px 14px',
-            marginBottom: '24px',
-            fontSize: '12px',
-            color: '#1e40af'
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={14} style={{ color: '#2563eb' }} /> Default Demo Login
-              </span>
-              <button
-                type="button"
-                onClick={handleQuickAutofill}
-                style={{
-                  background: '#2563eb',
-                  border: 'none',
-                  color: '#ffffff',
-                  padding: '4px 10px',
-                  borderRadius: '6px',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  cursor: 'pointer'
-                }}
-              >
-                Autofill
-              </button>
+            <div>
+              <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Active Clearance Persona
+              </div>
+              <div style={{ fontSize: '13px', fontWeight: 800, color: selectedAccount?.badgeColor || '#10b981', marginTop: '2px' }}>
+                {selectedAccount?.name} • {selectedAccount?.badgeText}
+              </div>
             </div>
-            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '11px', color: '#1e3a8a' }}>
-              <div><strong>Email:</strong> admin@sentinel.gov.in</div>
-              <div><strong>Password:</strong> sentinel@16#</div>
-            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              style={{
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#2563eb',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <span>Switch</span>
+              <ChevronDown size={13} />
+            </button>
           </div>
 
-          {/* Server Error Alert */}
+          {/* Server / Auth Error Banner */}
           {serverError && (
             <div style={{
               backgroundColor: '#fef2f2',
@@ -329,42 +615,42 @@ export default function LoginView() {
               borderRadius: '12px',
               padding: '12px 14px',
               marginBottom: '20px',
-              fontSize: '13px',
-              color: '#dc2626',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px'
+              gap: '10px',
+              color: '#991b1b',
+              fontSize: '13px'
             }}>
-              <AlertCircle size={16} style={{ flexShrink: 0 }} />
+              <AlertCircle size={18} style={{ color: '#ef4444', flexShrink: 0 }} />
               <span>{serverError}</span>
             </div>
           )}
 
-          {/* Main Login Form */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* FORM */}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             
-            {/* WORK EMAIL * */}
+            {/* EMAIL INPUT */}
             <div>
               <label style={{
-                fontSize: '11px',
-                fontWeight: 800,
-                color: '#334155',
                 display: 'block',
-                marginBottom: '8px',
-                letterSpacing: '0.6px',
-                textTransform: 'uppercase'
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#1e293b',
+                marginBottom: '6px'
               }}>
-                WORK EMAIL <span style={{ color: '#ef4444' }}>*</span>
+                Work Email
               </label>
+              
               <div 
                 className="input-box"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  backgroundColor: touched.email && errors.email ? '#fef2f2' : '#ffffff',
-                  border: `1px solid ${touched.email && errors.email ? '#ef4444' : '#e2e8f0'}`,
+                  border: errors.email && touched.email ? '1px solid #ef4444' : '1px solid #cbd5e1',
                   borderRadius: '14px',
-                  padding: '13px 16px',
+                  backgroundColor: '#ffffff',
+                  padding: '0 16px',
+                  height: '48px',
                   transition: 'all 0.15s ease'
                 }}
               >
@@ -373,48 +659,51 @@ export default function LoginView() {
                   value={email}
                   onChange={(e) => handleEmailChange(e.target.value)}
                   onBlur={() => handleBlur('email')}
-                  placeholder="you@company.com"
+                  placeholder="name@organization.gov.in"
+                  disabled={isSubmitting}
                   style={{
-                    border: 'none',
-                    backgroundColor: 'transparent',
-                    outline: 'none',
                     width: '100%',
+                    border: 'none',
+                    outline: 'none',
                     fontSize: '14px',
                     color: '#0f172a',
-                    fontWeight: 500
+                    backgroundColor: 'transparent'
                   }}
                 />
               </div>
-              {touched.email && errors.email && (
-                <div style={{ fontSize: '12px', color: '#dc2626', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <AlertCircle size={13} />
-                  <span>{errors.email}</span>
+
+              {errors.email && touched.email && (
+                <div style={{ fontSize: '11px', color: '#ef4444', marginTop: '4px', fontWeight: 500 }}>
+                  {errors.email}
                 </div>
               )}
             </div>
 
-            {/* PASSWORD * */}
+            {/* PASSWORD INPUT */}
             <div>
-              <label style={{
-                fontSize: '11px',
-                fontWeight: 800,
-                color: '#334155',
-                display: 'block',
-                marginBottom: '8px',
-                letterSpacing: '0.6px',
-                textTransform: 'uppercase'
-              }}>
-                PASSWORD <span style={{ color: '#ef4444' }}>*</span>
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={{
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: '#1e293b'
+                }}>
+                  Operational Password
+                </label>
+                <span style={{ fontSize: '11px', color: '#64748b' }}>
+                  Master: <code style={{ color: '#0f172a', fontWeight: 600 }}>Naman@16#</code>
+                </span>
+              </div>
+              
               <div 
                 className="input-box"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  backgroundColor: touched.password && errors.password ? '#fef2f2' : '#ffffff',
-                  border: `1px solid ${touched.password && errors.password ? '#ef4444' : '#e2e8f0'}`,
+                  border: errors.password && touched.password ? '1px solid #ef4444' : '1px solid #cbd5e1',
                   borderRadius: '14px',
-                  padding: '13px 16px',
+                  backgroundColor: '#ffffff',
+                  padding: '0 16px',
+                  height: '48px',
                   transition: 'all 0.15s ease'
                 }}
               >
@@ -424,15 +713,14 @@ export default function LoginView() {
                   onChange={(e) => handlePasswordChange(e.target.value)}
                   onBlur={() => handleBlur('password')}
                   placeholder="••••••••"
+                  disabled={isSubmitting}
                   style={{
-                    border: 'none',
-                    backgroundColor: 'transparent',
-                    outline: 'none',
                     width: '100%',
-                    fontSize: '15px',
+                    border: 'none',
+                    outline: 'none',
+                    fontSize: '14px',
                     color: '#0f172a',
-                    fontWeight: 500,
-                    letterSpacing: showPassword ? 'normal' : '2px'
+                    backgroundColor: 'transparent'
                   }}
                 />
                 <button
@@ -441,9 +729,9 @@ export default function LoginView() {
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: '#94a3b8',
+                    color: '#64748b',
                     cursor: 'pointer',
-                    padding: 0,
+                    padding: '4px',
                     display: 'flex',
                     alignItems: 'center'
                   }}
@@ -451,50 +739,29 @@ export default function LoginView() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {touched.password && errors.password && (
-                <div style={{ fontSize: '12px', color: '#dc2626', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <AlertCircle size={13} />
-                  <span>{errors.password}</span>
+
+              {errors.password && touched.password && (
+                <div style={{ fontSize: '11px', color: '#ef4444', marginTop: '4px', fontWeight: 500 }}>
+                  {errors.password}
                 </div>
               )}
             </div>
 
-            {/* Remember me & Forgot Password Row */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '13px',
-              marginTop: '-4px'
-            }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#475569', cursor: 'pointer', userSelect: 'none' }}>
-                <div 
-                  onClick={() => setRememberMe(!rememberMe)}
-                  style={{
-                    width: '18px',
-                    height: '18px',
-                    borderRadius: '5px',
-                    backgroundColor: rememberMe ? '#ea580c' : '#ffffff',
-                    border: `1px solid ${rememberMe ? '#ea580c' : '#cbd5e1'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#ffffff',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  {rememberMe && <Check size={13} strokeWidth={3} />}
-                </div>
-                <span>Remember me</span>
+            {/* REMEMBER ME */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: '#475569' }}>
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  style={{ width: '16px', height: '16px', accentColor: '#ef4444' }}
+                />
+                <span>Persist operational session</span>
               </label>
 
-              <a 
-                href="#forgot" 
-                onClick={(e) => { e.preventDefault(); alert('Password reset link sent to your registered email.'); }}
-                style={{ color: '#ea580c', fontWeight: 700, textDecoration: 'none' }}
-              >
-                Forgot password?
-              </a>
+              <span style={{ fontSize: '12px', color: '#64748b', fontFamily: 'JetBrains Mono' }}>
+                EVM Auth Ready
+              </span>
             </div>
 
             {/* SIGN IN BUTTON */}
@@ -504,39 +771,37 @@ export default function LoginView() {
               className="btn-sign-in"
               style={{
                 width: '100%',
-                padding: '16px',
-                borderRadius: '16px',
+                padding: '14px',
+                borderRadius: '14px',
                 border: 'none',
-                backgroundColor: isButtonDisabled ? '#cbd5e1' : '#ef4444',
+                backgroundColor: isButtonDisabled ? '#94a3b8' : '#ef4444',
                 color: '#ffffff',
                 fontSize: '14px',
                 fontWeight: 800,
                 letterSpacing: '0.8px',
-                textTransform: 'uppercase',
                 cursor: isButtonDisabled ? 'not-allowed' : 'pointer',
-                boxShadow: isButtonDisabled ? 'none' : '0 8px 20px rgba(239, 68, 68, 0.35)',
+                boxShadow: isButtonDisabled ? 'none' : '0 4px 14px rgba(239, 68, 68, 0.35)',
                 transition: 'all 0.2s ease',
-                marginTop: '6px'
+                marginTop: '4px'
               }}
             >
               {isSubmitting ? (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <span style={{
+                  <div style={{
                     width: '16px',
                     height: '16px',
-                    border: '2px solid rgba(255, 255, 255, 0.3)',
-                    borderTopColor: '#ffffff',
+                    border: '2px solid #ffffff',
+                    borderTopColor: 'transparent',
                     borderRadius: '50%',
                     display: 'inline-block',
                     animation: 'spin 0.8s linear infinite'
                   }} />
-                  <span>SIGNING IN...</span>
+                  <span>AUTHENTICATING SENTINEL...</span>
                 </div>
               ) : (
-                'SIGN IN'
+                'SIGN IN TO SENTINEL'
               )}
             </button>
-
 
           </form>
 
