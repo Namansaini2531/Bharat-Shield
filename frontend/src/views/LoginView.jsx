@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useAuth, ROLES, MASTER_PASSWORD } from '../context/AuthContext';
-import { 
-  Shield, 
-  Eye, 
-  EyeOff, 
-  Check, 
-  Lock, 
-  Key, 
-  ArrowRight, 
-  Sparkles, 
-  ShieldCheck, 
-  Building2, 
+import {
+  Shield,
+  Eye,
+  EyeOff,
+  Check,
+  Lock,
+  Key,
+  ArrowRight,
+  Sparkles,
+  ShieldCheck,
+  Building2,
   Newspaper,
   CheckCircle2,
   AlertCircle
@@ -76,7 +76,7 @@ export default function LoginView() {
       backgroundColor: '#ffffff',
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif'
     }}>
-      
+
       {/* ================= LEFT COLUMN: Vibrant Blue Radiant Showcase (Full Screen Left Half) ================= */}
       <div style={{
         background: 'linear-gradient(145deg, #1d4ed8 0%, #2563eb 38%, #0284c7 75%, #38bdf8 100%)',
@@ -186,7 +186,7 @@ export default function LoginView() {
           zIndex: 2
         }}>
           {/* Step 1: Active White Card */}
-          <div 
+          <div
             onClick={() => setStepIndex(1)}
             style={{
               backgroundColor: stepIndex === 1 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
@@ -230,7 +230,7 @@ export default function LoginView() {
           </div>
 
           {/* Step 2: Glass Card */}
-          <div 
+          <div
             onClick={() => setStepIndex(2)}
             style={{
               backgroundColor: stepIndex === 2 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
@@ -274,7 +274,7 @@ export default function LoginView() {
           </div>
 
           {/* Step 3: Glass Card */}
-          <div 
+          <div
             onClick={() => setStepIndex(3)}
             style={{
               backgroundColor: stepIndex === 3 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
@@ -333,7 +333,7 @@ export default function LoginView() {
         boxSizing: 'border-box'
       }}>
         <div style={{ width: '100%', maxWidth: '440px' }}>
-          
+
           {/* Header Title & Subtitle */}
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
             <h2 style={{
@@ -406,7 +406,7 @@ export default function LoginView() {
 
           {/* Authentication Form */}
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            
+
             {/* Phone Number / Official ID Input */}
             <div>
               <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
@@ -620,8 +620,8 @@ export default function LoginView() {
               {mode === 'join' ? (
                 <>
                   Already have an account?{' '}
-                  <span 
-                    onClick={() => setMode('login')} 
+                  <span
+                    onClick={() => setMode('login')}
                     style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>
                     Log in
                   </span>
@@ -629,8 +629,8 @@ export default function LoginView() {
               ) : (
                 <>
                   Need to configure a new operator?{' '}
-                  <span 
-                    onClick={() => setMode('join')} 
+                  <span
+                    onClick={() => setMode('join')}
                     style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>
                     Join Us
                   </span>
