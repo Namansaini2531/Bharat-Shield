@@ -24,6 +24,68 @@ export default function OverviewView({ onNavigate }) {
 
   // Role-partitioned data feeds
   const getRoleDashboardData = () => {
+    if (currentRole === ROLES.SYSTEM_ADMIN) {
+      return {
+        title: 'Super Administrator — System Architecture & Threat Grid Command',
+        subtitle: 'Supreme root access: software telemetry, cluster health, cross-agency IO matrix & vector operations',
+        classificationBadge: 'SUPREME ROOT / LEVEL 5+',
+        classificationColor: '#10b981',
+        stats: [
+          { label: 'Active Cyber Campaigns', value: '17', sub: 'Cross-Border Ingestion', color: 'var(--text-heading)' },
+          { label: 'Critical National Threats', value: '5', sub: 'Sec 69A Escalation Tier', color: '#ef4444', isDanger: true },
+          { label: 'Raw Intercepts Ingested', value: '12,483', sub: 'Deep Web & Social Feeds', color: 'var(--text-heading)' },
+          { label: 'Cluster Nodes Online', value: '4 / 4', sub: '100% Operational', color: '#10b981' },
+          { label: 'Court Evidences Sealed', value: '89', sub: 'SHA-256 Block-anchored', color: '#10b981' }
+        ],
+        campaigns: [
+          {
+            id: 'CMP-007',
+            title: 'Infrastructure Shutdown & Civil Unrest Narrative',
+            risk: '88-94',
+            coord: '93',
+            aiAsst: '81',
+            status: 'SEC 69A ACTIVE',
+            statusColor: 'danger',
+            focus: 'State-Sponsored Destabilization'
+          },
+          {
+            id: 'CMP-011',
+            title: 'Government Identity Spoofing & Phishing Matrix',
+            risk: '71-83',
+            coord: '65',
+            aiAsst: '42',
+            status: 'MONITORING',
+            statusColor: 'secondary',
+            focus: 'Credential Harvesting Farm'
+          },
+          {
+            id: 'CMP-003',
+            title: 'Communal Polarization Burst in Border Districts',
+            risk: '52-67',
+            coord: '48',
+            aiAsst: '12',
+            status: 'SURVEILLANCE',
+            statusColor: 'secondary',
+            focus: 'Cross-Border Telegram Networks'
+          }
+        ],
+        sources: [
+          { name: 'X (Twitter)', pct: '52%', color: '#3b82f6' },
+          { name: 'Telegram Dark Channels', pct: '21%', color: '#f59e0b' },
+          { name: 'WhatsApp Tiplines', pct: '17%', color: '#ef4444' },
+          { name: 'News & Shadow Portals', pct: '10%', color: '#8c9ba5' }
+        ],
+        timeline: [
+          { time: '00:00', count: 14, highRisk: 3 },
+          { time: '04:00', count: 16, highRisk: 4 },
+          { time: '08:00', count: 64, highRisk: 24 },
+          { time: '12:00', count: 128, highRisk: 92 },
+          { time: '16:00', count: 98, highRisk: 62 },
+          { time: '20:00', count: 56, highRisk: 22 },
+        ]
+      };
+    }
+
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return {
         title: 'Adani Group — Brand Defense & Market Risk Radar',
@@ -235,7 +297,7 @@ export default function OverviewView({ onNavigate }) {
             boxShadow: `0 0 8px ${data.classificationColor}`
           }} />
           <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>
-            CURRENT ACCESS SCOPE: {currentUser.roleTitle}
+            CURRENT ACCESS SCOPE: {currentUser?.roleTitle || 'Super Administrator'}
           </span>
           <span style={{
             fontSize: '10px',

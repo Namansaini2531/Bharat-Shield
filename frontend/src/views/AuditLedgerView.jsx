@@ -51,8 +51,8 @@ export default function AuditLedgerView() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '11px', color: currentUser.badgeColor, fontWeight: 700, letterSpacing: '1px' }}>
-              {currentUser.badgeText}
+            <span style={{ fontSize: '11px', color: currentUser?.badgeColor || '#10b981', fontWeight: 700, letterSpacing: '1px' }}>
+              {currentUser?.badgeText || 'ROOT'}
             </span>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>•</span>
             <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
@@ -64,10 +64,10 @@ export default function AuditLedgerView() {
           </h2>
           <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
             <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)', padding: '2px 8px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '2px' }}>
-              Auditor: {currentUser.name}
+              Auditor: {currentUser?.name || 'Commander Arvind Sharma'}
             </span>
             <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)', padding: '2px 8px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '2px' }}>
-              Clearance: {currentUser.clearance.split('(')[0]}
+              Clearance: {currentUser?.clearance ? currentUser.clearance.split('(')[0] : 'Level 5+'}
             </span>
             <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)', padding: '2px 8px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '2px' }}>
               Hardhat / EVM Chain ID: 31337

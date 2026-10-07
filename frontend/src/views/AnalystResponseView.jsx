@@ -35,6 +35,28 @@ export default function AnalystResponseView({ onNavigate }) {
   };
 
   const getRoleWorkflow = () => {
+    if (currentRole === ROLES.SYSTEM_ADMIN) {
+      return {
+        campaignId: 'CMP-ROOT-001',
+        campaignName: 'Full-Spectrum Cyber Defense & IO Counter-Measures',
+        threatLevel: 'SUPREME ROOT COMMAND',
+        threatColor: '#10b981',
+        steps: [
+          { num: 1, text: "Synchronize inter-agency IO threat telemetry across all active zones", subtitle: "Correlate signals from NCCC, CERT-In, and state cyber command centers." },
+          { num: 2, text: "Execute Section 69A IT Act emergency takedown protocols", subtitle: "Authorize fast-track blocking notices for critical malicious hosting infrastructure." },
+          { num: 3, text: "Inspect and tune real-time AI vector similarity cluster parameters", subtitle: "Optimize MiniLM 384-dimensional cosine distance thresholds." },
+          { num: 4, text: "Anchor cryptographic evidence packages on EVM Polygon notary ledger", subtitle: "Seal SHA-256 canonical manifests with multi-sig governance keys." },
+          { num: 5, text: "Compile inter-agency strategic cyber threat briefings", subtitle: "Publish consolidated executive dossiers for Cabinet Security Committee." },
+          { num: 6, text: "Monitor 24/7 autonomous botnet mutation detection grid", subtitle: "Maintain automated sentinel alerts until coordinated swarm activity subsides." }
+        ],
+        actions: [
+          { label: 'Execute Sec 69A Takedown', actionType: 'sec69a_takedown', icon: ShieldAlert, primary: true, isDanger: true },
+          { label: 'Notarize Evidence Ledger', actionType: 'blockchain_notarize', icon: Lock, primary: false, isDanger: false },
+          { label: 'Generate Root Intelligence Dossier', actionType: 'report', icon: FileText, primary: false, isDanger: false }
+        ]
+      };
+    }
+
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return {
         campaignId: 'CMP-ADANI-009',

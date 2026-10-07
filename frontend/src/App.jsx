@@ -15,6 +15,7 @@ const ThreatAssessmentsView = lazy(() => import('./views/ThreatAssessmentsView')
 const AuditLedgerView = lazy(() => import('./views/AuditLedgerView'));
 const AnalystResponseView = lazy(() => import('./views/AnalystResponseView'));
 const ReportGeneratorView = lazy(() => import('./views/ReportGeneratorView'));
+const AdminView = lazy(() => import('./views/AdminView'));
 const SettingsView = lazy(() => import('./views/SettingsView'));
 const NotFoundView = lazy(() => import('./views/NotFoundView'));
 
@@ -36,6 +37,111 @@ function LoadingFallback() {
       </div>
     </div>
   );
+}
+
+// Global Robust Error Boundary
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Bharat-Shield App Error caught by boundary:", error, errorInfo);
+  }
+
+  handleReset = () => {
+    try {
+      localStorage.removeItem('bharat_shield_authenticated');
+      localStorage.removeItem('bharat_shield_active_role');
+    } catch {}
+    window.location.reload();
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          backgroundColor: '#0c0e14',
+          color: '#f3f4f6',
+          padding: '24px',
+          fontFamily: 'system-ui, sans-serif'
+        }}>
+          <div style={{
+            maxWidth: '520px',
+            width: '100%',
+            backgroundColor: '#161822',
+            border: '1px solid #2a2d3d',
+            borderRadius: '16px',
+            padding: '32px',
+            textAlign: 'center',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+          }}>
+            <div style={{
+              width: '54px',
+              height: '54px',
+              borderRadius: '12px',
+              backgroundColor: 'rgba(239, 68, 68, 0.15)',
+              color: '#ef4444',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 18px auto'
+            }}>
+              ⚠️
+            </div>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, margin: '0 0 8px 0', color: '#ffffff' }}>
+              Security Partition Initialization Notice
+            </h2>
+            <p style={{ fontSize: '13px', color: '#9ca3af', lineHeight: 1.5, marginBottom: '20px' }}>
+              The application encountered a state conflict during session hydration. Click below to clear cache and reload cleanly.
+            </p>
+            <div style={{
+              backgroundColor: '#0b0d13',
+              border: '1px solid #1e2230',
+              borderRadius: '8px',
+              padding: '12px',
+              fontSize: '11px',
+              color: '#ef4444',
+              fontFamily: 'JetBrains Mono, monospace',
+              textAlign: 'left',
+              marginBottom: '24px',
+              overflowX: 'auto'
+            }}>
+              {this.state.error?.message || 'Unknown render error'}
+            </div>
+            <button
+              onClick={this.handleReset}
+              style={{
+                width: '100%',
+                padding: '12px',
+                borderRadius: '10px',
+                border: 'none',
+                backgroundColor: '#3b82f6',
+                color: '#ffffff',
+                fontWeight: 700,
+                fontSize: '14px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 14px rgba(59, 130, 246, 0.4)'
+              }}
+            >
+              Reset Session & Reload Application
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 function MainAppContent() {
@@ -92,6 +198,8 @@ function MainAppContent() {
         return <AnalystResponseView onNavigate={(nav) => setCurrentNav(nav)} />;
       case 'report-generator':
         return <ReportGeneratorView />;
+      case 'admin':
+        return <AdminView />;
       case 'settings':
         return <SettingsView />;
       default:
@@ -110,8 +218,10 @@ function MainAppContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <MainAppContent />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <MainAppContent />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

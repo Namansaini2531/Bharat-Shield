@@ -8,6 +8,37 @@ router = APIRouter(prefix="/api/auth", tags=["Authentication & RBAC"])
 
 # Master RBAC Personas & Capabilities
 USER_PROFILES = {
+    "system_admin": {
+        "id": "user_admin_000",
+        "name": "Commander Arvind Sharma",
+        "email": "a.sharma@sentinel.gov.in",
+        "role": "system_admin",
+        "role_title": "Super Administrator / NCCC Operations Command",
+        "organization": "National Cyber Coordination Centre (NCCC) & MoD",
+        "clearance": "Level 5+ (Supreme Root Authority)",
+        "clearance_level": 6,
+        "badge_color": "#10b981",
+        "badge_text": "SUPREME ADMIN // ROOT",
+        "avatar_initials": "SA",
+        "allowed_navs": [
+            "overview", "live", "tipline", "campaigns", "narratives", 
+            "threats", "analyst-response", "report-generator", "evidence", "audit", "admin", "settings"
+        ],
+        "permissions": {
+            "can_manage_system": True,
+            "can_issue_sec69a": True,
+            "can_access_classified_intel": True,
+            "can_view_unmasked_metadata": True,
+            "can_generate_legal_dossier": True,
+            "can_sign_blockchain_evidence": True,
+            "can_generate_sebi_disclosure": True,
+            "can_track_market_sabotage": True,
+            "can_publish_fact_check": True,
+            "can_inspect_narrative_tree": True,
+            "can_view_audit_ledger": True
+        },
+        "scope_title": "Full Spectrum Software Architecture & Threat Grid Management"
+    },
     "investigation_bureau": {
         "id": "user_ib_001",
         "name": "Joint Director Vikram Rawat",
@@ -22,7 +53,7 @@ USER_PROFILES = {
         "avatar_initials": "IB",
         "allowed_navs": [
             "overview", "live", "tipline", "campaigns", "narratives", 
-            "threats", "analyst-response", "report-generator", "evidence", "audit", "settings"
+            "threats", "analyst-response", "report-generator", "evidence", "audit", "admin", "settings"
         ],
         "permissions": {
             "can_issue_sec69a": True,
@@ -52,7 +83,7 @@ USER_PROFILES = {
         "avatar_initials": "AG",
         "allowed_navs": [
             "overview", "live", "campaigns", "narratives", 
-            "threats", "analyst-response", "report-generator", "evidence", "settings"
+            "threats", "analyst-response", "report-generator", "evidence", "admin", "settings"
         ],
         "permissions": {
             "can_issue_sec69a": False,
@@ -82,7 +113,7 @@ USER_PROFILES = {
         "avatar_initials": "NP",
         "allowed_navs": [
             "overview", "live", "tipline", "campaigns", "narratives", 
-            "threats", "analyst-response", "report-generator", "settings"
+            "threats", "analyst-response", "report-generator", "admin", "settings"
         ],
         "permissions": {
             "can_issue_sec69a": False,

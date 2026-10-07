@@ -136,45 +136,45 @@ export default function SettingsView() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               
               {/* Active Identity Card */}
-              <div className="bs-card" style={{ padding: '24px', borderLeft: `4px solid ${currentUser.badgeColor}` }}>
+              <div className="bs-card" style={{ padding: '24px', borderLeft: `4px solid ${currentUser?.badgeColor || '#10b981'}` }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
                   <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                     <div style={{
                       width: '54px',
                       height: '54px',
                       borderRadius: '12px',
-                      backgroundColor: `${currentUser.badgeColor}20`,
-                      border: `1px solid ${currentUser.badgeColor}60`,
-                      color: currentUser.badgeColor,
+                      backgroundColor: `${currentUser?.badgeColor || '#10b981'}20`,
+                      border: `1px solid ${currentUser?.badgeColor || '#10b981'}60`,
+                      color: currentUser?.badgeColor || '#10b981',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '18px',
                       fontWeight: 800
                     }}>
-                      {currentUser.avatarInitials}
+                      {currentUser?.avatarInitials || 'SA'}
                     </div>
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-heading)', margin: 0 }}>
-                          {currentUser.name}
+                          {currentUser?.name || 'Commander Arvind Sharma'}
                         </h3>
                         <span style={{
                           fontSize: '10px',
                           fontWeight: 700,
                           padding: '2px 8px',
                           borderRadius: '4px',
-                          backgroundColor: `${currentUser.badgeColor}20`,
-                          color: currentUser.badgeColor
+                          backgroundColor: `${currentUser?.badgeColor || '#10b981'}20`,
+                          color: currentUser?.badgeColor || '#10b981'
                         }}>
-                          {currentUser.badgeText}
+                          {currentUser?.badgeText || 'ROOT'}
                         </span>
                       </div>
                       <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                        {currentUser.roleTitle}
+                        {currentUser?.roleTitle || 'Super Administrator / NCCC Operations Command'}
                       </div>
                       <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', fontFamily: 'JetBrains Mono' }}>
-                        {currentUser.email} • ID: {currentUser.id} • {currentUser.organization}
+                        {currentUser?.email || 'a.sharma@sentinel.gov.in'} • ID: {currentUser?.id || 'user_admin_000'} • {currentUser?.organization || 'National Cyber Coordination Centre (NCCC)'}
                       </div>
                     </div>
                   </div>

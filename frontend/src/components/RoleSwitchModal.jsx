@@ -21,6 +21,23 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
 
   const roleCards = [
     {
+      key: ROLES.SYSTEM_ADMIN,
+      title: 'Super Administrator / NCCC',
+      subtitle: 'Software Ops Command & System Governance',
+      badge: 'SUPREME ROOT (Level 5+)',
+      badgeBg: 'rgba(16, 185, 129, 0.15)',
+      badgeColor: '#10b981',
+      icon: ShieldCheck,
+      iconColor: '#10b981',
+      targetEntity: 'National Cyber Coordination Centre (NCCC) & MoD',
+      capabilities: [
+        'Full software management & node cluster telemetry',
+        'Operator RBAC clearance & credentials governance',
+        'Live ingestion connector pipeline controls',
+        'Real-time AI threat risk weight hyperparameter tuning'
+      ]
+    },
+    {
       key: ROLES.INVESTIGATION_BUREAU,
       title: 'Investigation Bureau of India',
       subtitle: 'Law Enforcement & National Security Wing',

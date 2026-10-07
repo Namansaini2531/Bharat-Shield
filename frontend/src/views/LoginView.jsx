@@ -505,8 +505,9 @@ export default function LoginView() {
               <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: '8px', letterSpacing: '0.5px' }}>
                 Operational Clearance Persona
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
                 {[
+                  { key: ROLES.SYSTEM_ADMIN, label: 'Root Admin', color: '#10b981', icon: ShieldCheck },
                   { key: ROLES.INVESTIGATION_BUREAU, label: 'IB / LEA', color: '#ef4444', icon: ShieldCheck },
                   { key: ROLES.CORPORATE_ENTERPRISE, label: 'Adani Risk', color: '#f59e0b', icon: Building2 },
                   { key: ROLES.JOURNALIST_MEDIA, label: 'Press Desk', color: '#3b82f6', icon: Newspaper }

@@ -3,12 +3,46 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 export const MASTER_PASSWORD = 'sentinel@16#';
 
 export const ROLES = {
+  SYSTEM_ADMIN: 'system_admin',
   INVESTIGATION_BUREAU: 'investigation_bureau',
   CORPORATE_ENTERPRISE: 'corporate_enterprise',
   JOURNALIST_MEDIA: 'journalist_media'
 };
 
 export const USER_PROFILES = {
+  [ROLES.SYSTEM_ADMIN]: {
+    id: 'user_admin_000',
+    name: 'Commander Arvind Sharma',
+    email: 'a.sharma@sentinel.gov.in',
+    phone: '+91 98110 00001',
+    username: 'root_admin_nccc',
+    role: ROLES.SYSTEM_ADMIN,
+    roleTitle: 'Super Administrator / NCCC Operations Command',
+    organization: 'National Cyber Coordination Centre (NCCC) & MoD',
+    clearance: 'Level 5+ (Supreme Root Authority)',
+    clearanceLevel: 6,
+    badgeColor: '#10b981',
+    badgeText: 'SUPREME ADMIN // ROOT',
+    avatarInitials: 'SA',
+    allowedNavs: [
+      'overview', 'live', 'tipline', 'campaigns', 'narratives', 
+      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
+    ],
+    features: {
+      canManageSystem: true,
+      canIssueSec69A: true,
+      canAccessClassifiedIntel: true,
+      canViewUnmaskedMetadata: true,
+      canGenerateLegalDossier: true,
+      canSignBlockchainEvidence: true,
+      canGenerateSEBIDisclosure: true,
+      canTrackMarketSabotage: true,
+      canPublishFactCheck: true,
+      canInspectNarrativeTree: true,
+      canViewAuditLedger: true,
+      scopeTitle: 'Full Spectrum Software Architecture & Threat Grid Management'
+    }
+  },
   [ROLES.INVESTIGATION_BUREAU]: {
     id: 'user_ib_001',
     name: 'Joint Director Vikram Rawat',
@@ -25,7 +59,7 @@ export const USER_PROFILES = {
     avatarInitials: 'IB',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'settings'
+      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: true,
@@ -57,7 +91,7 @@ export const USER_PROFILES = {
     avatarInitials: 'AG',
     allowedNavs: [
       'overview', 'live', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'settings'
+      'threats', 'analyst-response', 'report-generator', 'evidence', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: false,
@@ -89,7 +123,7 @@ export const USER_PROFILES = {
     avatarInitials: 'NP',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'settings'
+      'threats', 'analyst-response', 'report-generator', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: false,
@@ -103,6 +137,40 @@ export const USER_PROFILES = {
       canInspectNarrativeTree: true,
       canViewAuditLedger: false,
       scopeTitle: 'Public Virality & Cross-Lingual Narrative Verification'
+    }
+  },
+  // Alias keys for robust backward-compatibility
+  'admin': {
+    id: 'user_admin_000',
+    name: 'Commander Arvind Sharma',
+    email: 'a.sharma@sentinel.gov.in',
+    phone: '+91 98110 00001',
+    username: 'root_admin_nccc',
+    role: ROLES.SYSTEM_ADMIN,
+    roleTitle: 'Super Administrator / NCCC Operations Command',
+    organization: 'National Cyber Coordination Centre (NCCC) & MoD',
+    clearance: 'Level 5+ (Supreme Root Authority)',
+    clearanceLevel: 6,
+    badgeColor: '#10b981',
+    badgeText: 'SUPREME ADMIN // ROOT',
+    avatarInitials: 'SA',
+    allowedNavs: [
+      'overview', 'live', 'tipline', 'campaigns', 'narratives', 
+      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
+    ],
+    features: {
+      canManageSystem: true,
+      canIssueSec69A: true,
+      canAccessClassifiedIntel: true,
+      canViewUnmaskedMetadata: true,
+      canGenerateLegalDossier: true,
+      canSignBlockchainEvidence: true,
+      canGenerateSEBIDisclosure: true,
+      canTrackMarketSabotage: true,
+      canPublishFactCheck: true,
+      canInspectNarrativeTree: true,
+      canViewAuditLedger: true,
+      scopeTitle: 'Full Spectrum Software Architecture & Threat Grid Management'
     }
   }
 };

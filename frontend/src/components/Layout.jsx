@@ -34,7 +34,8 @@ import {
   ShieldCheck,
   UserCheck,
   RefreshCw,
-  Fingerprint
+  Fingerprint,
+  Terminal
 } from 'lucide-react';
 
 export default function Layout({ currentNav, setCurrentNav, theme, setTheme, children }) {
@@ -125,6 +126,12 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           items: [
             { id: 'evidence', label: 'Defamation Evidence', icon: FileCheck }
           ]
+        },
+        {
+          label: 'SYSTEM & GOVERNANCE',
+          items: [
+            { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+          ]
         }
       ];
     }
@@ -147,6 +154,12 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
             { id: 'threats', label: 'Viral Reach Metrics', icon: AlertTriangle },
             { id: 'analyst-response', label: 'Fact-Check Debunk Card', icon: Sparkles },
             { id: 'report-generator', label: 'Press Debunk Bulletin', icon: FileText }
+          ]
+        },
+        {
+          label: 'SYSTEM & GOVERNANCE',
+          items: [
+            { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
           ]
         }
       ];
@@ -178,6 +191,12 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           { id: 'evidence', label: 'Court Evidence Vault', icon: FileCheck },
           { id: 'audit', label: 'EVM Blockchain Audit', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
         ]
+      },
+      {
+        label: 'SYSTEM & GOVERNANCE',
+        items: [
+          { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+        ]
       }
     ];
   };
@@ -185,6 +204,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
   const navGroups = getNavGroups();
 
   const getRoleIcon = () => {
+    if (currentRole === ROLES.SYSTEM_ADMIN) return Terminal;
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) return Building2;
     if (currentRole === ROLES.JOURNALIST_MEDIA) return Newspaper;
     return ShieldCheck;
@@ -304,10 +324,10 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   textOverflow: 'ellipsis',
                   overflow: 'hidden'
                 }}>
-                  {currentUser.organization}
+                  {currentUser?.organization || 'Cyber Operations Command'}
                 </div>
-                <div style={{ fontSize: '9px', color: currentUser.badgeColor, fontWeight: 600 }}>
-                  {currentUser.badgeText}
+                <div style={{ fontSize: '9px', color: currentUser?.badgeColor || '#10b981', fontWeight: 600 }}>
+                  {currentUser?.badgeText || 'OPERATOR'}
                 </div>
               </div>
             </div>
@@ -485,32 +505,32 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                 gap: '8px',
                 padding: '5px 12px',
                 borderRadius: '8px',
-                backgroundColor: `${currentUser.badgeColor}15`,
-                border: `1px solid ${currentUser.badgeColor}40`,
-                color: currentUser.badgeColor,
+                backgroundColor: `${currentUser?.badgeColor || '#10b981'}15`,
+                border: `1px solid ${currentUser?.badgeColor || '#10b981'}40`,
+                color: currentUser?.badgeColor || '#10b981',
                 cursor: 'pointer',
                 fontSize: '12px',
                 fontWeight: 600,
                 transition: 'all 0.2s ease'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = `${currentUser.badgeColor}25`;
+                e.currentTarget.style.backgroundColor = `${currentUser?.badgeColor || '#10b981'}25`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = `${currentUser.badgeColor}15`;
+                e.currentTarget.style.backgroundColor = `${currentUser?.badgeColor || '#10b981'}15`;
               }}
             >
               <RoleIcon size={15} />
-              <span>{currentUser.roleTitle.split('—')[0]}</span>
+              <span>{currentUser?.roleTitle ? currentUser.roleTitle.split('—')[0] : 'Super Administrator'}</span>
               <span style={{
                 fontSize: '9px',
                 padding: '1px 6px',
                 borderRadius: '4px',
-                backgroundColor: currentUser.badgeColor,
+                backgroundColor: currentUser?.badgeColor || '#10b981',
                 color: '#ffffff',
                 fontWeight: 700
               }}>
-                {currentUser.badgeText}
+                {currentUser?.badgeText || 'ROOT'}
               </span>
             </button>
 
@@ -758,26 +778,26 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                 }}>
                   <div style={{ padding: '10px 12px', borderBottom: '1px solid var(--border-color)' }}>
                     <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>
-                      {currentUser.name}
+                      {currentUser?.name || 'Commander Arvind Sharma'}
                     </div>
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '1px' }}>
-                      {currentUser.email}
+                      {currentUser?.email || 'a.sharma@sentinel.gov.in'}
                     </div>
                     <div style={{ 
                       fontSize: '10px', 
-                      color: currentUser.badgeColor, 
+                      color: currentUser?.badgeColor || '#10b981', 
                       fontWeight: 600, 
                       display: 'flex', 
                       alignItems: 'center', 
                       gap: '5px', 
                       marginTop: '6px',
                       padding: '3px 8px',
-                      backgroundColor: `${currentUser.badgeColor}15`,
+                      backgroundColor: `${currentUser?.badgeColor || '#10b981'}15`,
                       borderRadius: '9999px',
                       width: 'fit-content'
                     }}>
-                      <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: currentUser.badgeColor }} />
-                      {currentUser.clearance}
+                      <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: currentUser?.badgeColor || '#10b981' }} />
+                      {currentUser?.clearance || 'Level 5+ (Supreme Root Authority)'}
                     </div>
                   </div>
 
