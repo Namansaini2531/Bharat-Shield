@@ -130,7 +130,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         {
           label: 'SYSTEM & GOVERNANCE',
           items: [
-            { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+            { id: 'admin', label: 'Admin & Subscriber Governance', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
           ]
         }
       ];
@@ -159,7 +159,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         {
           label: 'SYSTEM & GOVERNANCE',
           items: [
-            { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+            { id: 'admin', label: 'Admin & Subscriber Governance', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
           ]
         }
       ];
@@ -195,7 +195,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       {
         label: 'SYSTEM & GOVERNANCE',
         items: [
-          { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+          { id: 'admin', label: 'Admin & Subscriber Governance', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
         ]
       }
     ];
