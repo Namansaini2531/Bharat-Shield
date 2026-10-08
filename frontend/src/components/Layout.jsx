@@ -435,15 +435,15 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           {/* Right Header Section: Role Persona Switcher Pill, Search, Notifications, Theme, Account */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
             
-            {/* RBAC Persona Switcher Quick Button */}
+            {/* RBAC Persona Switcher Pill Button */}
             <button
               onClick={() => setIsAuthModalOpen(true)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '5px 12px',
-                borderRadius: '8px',
+                padding: '6px 14px',
+                borderRadius: '9999px',
                 backgroundColor: `${currentUser?.badgeColor || '#10b981'}15`,
                 border: `1px solid ${currentUser?.badgeColor || '#10b981'}40`,
                 color: currentUser?.badgeColor || '#10b981',
@@ -463,8 +463,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
               <span>{currentUser?.roleTitle ? currentUser.roleTitle.split('—')[0] : 'Super Administrator'}</span>
               <span style={{
                 fontSize: '9px',
-                padding: '1px 6px',
-                borderRadius: '4px',
+                padding: '1px 7px',
+                borderRadius: '9999px',
                 backgroundColor: currentUser?.badgeColor || '#10b981',
                 color: '#ffffff',
                 fontWeight: 700
@@ -473,16 +473,16 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
               </span>
             </button>
 
-            {/* Global Quick Search Input */}
+            {/* Global Quick Search Pill */}
             <div style={{ 
               display: 'flex', 
               alignItems: 'center', 
               gap: '8px', 
               backgroundColor: 'var(--bg-card)', 
               border: '1px solid var(--border-color)', 
-              borderRadius: '8px',
-              padding: '5px 10px',
-              width: '180px',
+              borderRadius: '9999px',
+              padding: '6px 14px',
+              width: '190px',
               transition: 'border-color 0.15s ease'
             }}>
               <Search size={14} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
@@ -498,29 +498,31 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   color: 'var(--text-primary)', 
                   fontSize: '12px', 
                   outline: 'none', 
-                  width: '100%' 
+                  width: '100%',
+                  fontFamily: 'DM Sans, sans-serif'
                 }} 
               />
-              <div className="kbd-badge">
+              <div className="kbd-badge" style={{ borderRadius: '4px' }}>
                 <span>Ctrl</span>
                 <span>K</span>
               </div>
             </div>
 
-            {/* Notification Bell */}
+            {/* Notification Bell Button */}
             <div ref={notificationRef} style={{ position: 'relative' }}>
               <button 
                 onClick={() => setShowNotifications(prev => !prev)}
                 style={{ 
                   background: 'transparent', 
                   border: '1px solid var(--border-color)', 
-                  borderRadius: '8px',
+                  borderRadius: '9999px',
                   color: 'var(--text-secondary)', 
                   cursor: 'pointer', 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
-                  padding: '6px 8px',
+                  width: '36px',
+                  height: '36px',
                   position: 'relative',
                   transition: 'all 0.15s ease'
                 }}
@@ -652,8 +654,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  padding: '3px 8px 3px 4px',
-                  borderRadius: '8px',
+                  padding: '3px 12px 3px 4px',
+                  borderRadius: '9999px',
                   border: '1px solid',
                   borderColor: showUserMenu ? 'var(--border-light)' : 'var(--border-color)',
                   background: showUserMenu ? 'var(--bg-card-hover)' : 'var(--bg-card)',
@@ -676,9 +678,9 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                 }}
               >
                 <div style={{
-                  width: '26px',
-                  height: '26px',
-                  borderRadius: '6px',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '9999px',
                   background: `linear-gradient(135deg, ${currentUser.badgeColor}, #06b6d4)`,
                   color: '#ffffff',
                   display: 'flex',

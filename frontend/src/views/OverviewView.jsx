@@ -14,7 +14,12 @@ import {
   TrendingDown,
   FileCheck2,
   Lock,
-  ExternalLink
+  ExternalLink,
+  Radio,
+  PhoneCall,
+  GitFork,
+  Sparkles,
+  Layers
 } from 'lucide-react';
 import { useAuth, ROLES } from '../context/AuthContext';
 
@@ -277,34 +282,166 @@ export default function OverviewView({ onNavigate }) {
   return (
     <div>
       {/* Page Title Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
-          {data.title}
-        </h2>
-        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-          {data.subtitle}
-        </p>
+      <div style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+            <span className="bs-badge bs-badge-green">COGNITIVE RADAR ONLINE</span>
+            <span style={{ fontSize: '12px', color: 'var(--steel)', fontFamily: 'JetBrains Mono' }}>
+              LATENCY // 14ms • 4 CLUSTER NODES ACTIVE
+            </span>
+          </div>
+          <h2 style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.8px', lineHeight: 1.15 }}>
+            {data.title}
+          </h2>
+          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '6px', maxWidth: '820px', lineHeight: 1.5 }}>
+            {data.subtitle}
+          </p>
+        </div>
+
+        {/* Pill-Shaped Dual CTA Hero Buttons per Design.md */}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button 
+            onClick={() => onNavigate && onNavigate('live')}
+            className="button-primary"
+          >
+            <span>Launch Live Stream</span>
+            <ArrowUpRight size={15} />
+          </button>
+          <button 
+            onClick={() => onNavigate && onNavigate('report-generator')}
+            className="button-secondary"
+          >
+            <span>Export Dossier</span>
+          </button>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* FULL-STACK COGNITIVE MODEL MATRIX: 32px VIBRANT GRADIENT PRODUCT CARDS    */}
+      {/* ========================================================================= */}
+      <div style={{ marginBottom: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+          <div>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.3px' }}>
+              Full-Stack Cognitive Defense Matrix
+            </h3>
+            <p style={{ fontSize: '13px', color: 'var(--steel)' }}>
+              Dedicated neural inference engines with localized Indic cross-modal capability.
+            </p>
+          </div>
+          <span className="badge-new">4 ACTIVE ENGINES</span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+          {/* Card 1: Coral M2.7 MiniLM */}
+          <div className="product-card-coral">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <span className="bs-badge" style={{ backgroundColor: 'rgba(255,255,255,0.22)', color: '#ffffff' }}>
+                TEXT // M2.7
+              </span>
+              <Bot size={20} />
+            </div>
+            <div style={{ marginTop: '28px' }}>
+              <h4 style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1.15 }}>
+                Indic-MiniLM
+              </h4>
+              <p style={{ fontSize: '12px', opacity: 0.9, marginTop: '8px', lineHeight: 1.4 }}>
+                384-dim semantic embeddings & stance clustering across 22 Indic regional scripts.
+              </p>
+            </div>
+            <div style={{ marginTop: '20px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.25)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontFamily: 'JetBrains Mono' }}>
+              <span>ACCURACY: 94.6%</span>
+              <span>12.4K INGESTS</span>
+            </div>
+          </div>
+
+          {/* Card 2: Magenta AudioSentry 2.6 */}
+          <div className="product-card-magenta">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <span className="bs-badge" style={{ backgroundColor: 'rgba(255,255,255,0.22)', color: '#ffffff' }}>
+                AUDIO // 2.6
+              </span>
+              <Activity size={20} />
+            </div>
+            <div style={{ marginTop: '28px' }}>
+              <h4 style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1.15 }}>
+                AudioSentry
+              </h4>
+              <p style={{ fontSize: '12px', opacity: 0.9, marginTop: '8px', lineHeight: 1.4 }}>
+                Acoustic spectrogram deepfake detection & synthetic voice cloning radar.
+              </p>
+            </div>
+            <div style={{ marginTop: '20px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.25)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontFamily: 'JetBrains Mono' }}>
+              <span>LATENCY: 42ms</span>
+              <span>VOICE BIOMETRIC</span>
+            </div>
+          </div>
+
+          {/* Card 3: Blue Hailuo VisionShield */}
+          <div className="product-card-blue">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <span className="bs-badge" style={{ backgroundColor: 'rgba(255,255,255,0.22)', color: '#ffffff' }}>
+                VISION // HAILUO
+              </span>
+              <FileCheck2 size={20} />
+            </div>
+            <div style={{ marginTop: '28px' }}>
+              <h4 style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1.15 }}>
+                VisionShield
+              </h4>
+              <p style={{ fontSize: '12px', opacity: 0.9, marginTop: '8px', lineHeight: 1.4 }}>
+                Multimodal OCR extraction, facial reenactment analysis & shadow-ban tracking.
+              </p>
+            </div>
+            <div style={{ marginTop: '20px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.25)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontFamily: 'JetBrains Mono' }}>
+              <span>60 FPS OCR</span>
+              <span>CROSS-BORDER</span>
+            </div>
+          </div>
+
+          {/* Card 4: Purple Speech 2.8 IndicASR */}
+          <div className="product-card-purple">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <span className="bs-badge" style={{ backgroundColor: 'rgba(255,255,255,0.22)', color: '#ffffff' }}>
+                SPEECH // 2.8
+              </span>
+              <MessageSquare size={20} />
+            </div>
+            <div style={{ marginTop: '28px' }}>
+              <h4 style={{ fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1.15 }}>
+                IndicVoice
+              </h4>
+              <p style={{ fontSize: '12px', opacity: 0.9, marginTop: '8px', lineHeight: 1.4 }}>
+                Whisper-Indic fine-tuned ASR for code-mixed Hinglish, Tanglish & regional dialects.
+              </p>
+            </div>
+            <div style={{ marginTop: '20px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.25)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontFamily: 'JetBrains Mono' }}>
+              <span>WER: 4.8%</span>
+              <span>22 DIALECTS</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Top 5 Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '24px' }}>
         {data.stats.map((st, idx) => (
           <div 
             key={idx} 
             className="bs-card" 
             style={{ 
-              padding: '16px',
-              borderColor: st.isDanger ? 'rgba(239, 68, 68, 0.4)' : undefined,
-              background: st.isDanger ? 'rgba(239, 68, 68, 0.04)' : undefined
+              padding: '18px',
+              borderColor: st.isDanger ? 'rgba(255, 75, 62, 0.4)' : undefined,
+              background: st.isDanger ? 'rgba(255, 75, 62, 0.04)' : undefined
             }}
           >
-            <div style={{ color: st.isDanger ? '#ef4444' : '#8c9ba5', fontSize: '12px', fontWeight: 600 }}>
+            <div style={{ color: st.isDanger ? '#ff4b3e' : 'var(--steel)', fontSize: '12px', fontWeight: 600 }}>
               <span>{st.label}</span>
             </div>
-            <div style={{ fontSize: '30px', fontWeight: 800, color: st.color, marginTop: '8px', fontFamily: 'JetBrains Mono' }}>
+            <div style={{ fontSize: '32px', fontWeight: 700, color: st.color, marginTop: '8px', fontFamily: 'JetBrains Mono', letterSpacing: '-1px' }}>
               {st.value}
             </div>
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '4px' }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
               {st.sub}
             </div>
           </div>
@@ -312,44 +449,34 @@ export default function OverviewView({ onNavigate }) {
       </div>
 
       {/* Middle Row: Timeline Chart & Source Distribution */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '24px' }}>
 
         {/* Timeline Chart */}
-        <div className="bs-card" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 600 }}>
-              <Activity size={16} style={{ color: '#3b82f6' }} />
+        <div className="bs-card" style={{ padding: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px', fontWeight: 600 }}>
+              <Activity size={18} style={{ color: 'var(--brand-blue)' }} />
               <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Brand Attack Velocity Timeline' : 'Threat Activity Timeline'}</span>
             </div>
-            <div style={{ display: 'flex', gap: '4px', backgroundColor: 'var(--bg-muted)', padding: '3px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+            {/* Pill-shaped Tabs */}
+            <div style={{ display: 'flex', gap: '6px' }}>
               <button
                 onClick={() => setTimeRange('24H')}
-                style={{
-                  padding: '4px 10px',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  backgroundColor: timeRange === '24H' ? 'var(--bg-card)' : 'transparent',
-                  color: timeRange === '24H' ? 'var(--text-heading)' : 'var(--text-muted)',
-                  border: 'none',
-                  borderRadius: '6px',
-                  boxShadow: timeRange === '24H' ? '0 1px 3px rgba(0,0,0,0.2)' : 'none',
-                  cursor: 'pointer'
-                }}>
+                className={`pill-tab ${timeRange === '24H' ? 'active' : ''}`}
+              >
                 24H
               </button>
               <button
                 onClick={() => setTimeRange('7D')}
-                style={{
-                  padding: '4px 10px',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  backgroundColor: timeRange === '7D' ? '#2563eb' : 'transparent',
-                  color: timeRange === '7D' ? '#ffffff' : 'var(--text-muted)',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer'
-                }}>
+                className={`pill-tab ${timeRange === '7D' ? 'active' : ''}`}
+              >
                 7D
+              </button>
+              <button
+                onClick={() => setTimeRange('30D')}
+                className={`pill-tab ${timeRange === '30D' ? 'active' : ''}`}
+              >
+                30D
               </button>
             </div>
           </div>
@@ -506,6 +633,167 @@ export default function OverviewView({ onNavigate }) {
           </div>
         </div>
 
+      </div>
+
+      {/* ========================================================================= */}
+      {/* AI PRODUCT MATRIX: 24px ROUNDED TILES PER DESIGN.MD                       */}
+      {/* ========================================================================= */}
+      <div style={{ marginTop: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.3px' }}>
+              Cognitive Defense Capability Matrix
+            </h3>
+            <p style={{ fontSize: '13px', color: 'var(--steel)' }}>
+              Operational workflows powered by real-time multimodal intelligence.
+            </p>
+          </div>
+          <span className="bs-badge" style={{ backgroundColor: 'var(--bg-muted)', color: 'var(--steel)' }}>
+            4 ACTIVE MODULES
+          </span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+          {/* Module 1 */}
+          <div 
+            onClick={() => onNavigate && onNavigate('live')}
+            className="ai-product-tile"
+            style={{ cursor: 'pointer' }}
+          >
+            <div style={{
+              height: '80px',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(37, 99, 235, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--brand-blue)',
+              marginBottom: '16px'
+            }}>
+              <Radio size={32} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)' }}>
+                  Classified Stream
+                </h4>
+                <ArrowUpRight size={15} style={{ color: 'var(--steel)' }} />
+              </div>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.5 }}>
+                Real-time WebSocket feed multiplexing 40K social posts, dark channels & verified intercepts.
+              </p>
+            </div>
+            <div style={{ marginTop: '16px', paddingTop: '10px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--steel)' }}>
+              <span>ROLE-FILTERED</span>
+              <span style={{ color: 'var(--brand-blue)', fontWeight: 600 }}>LIVE // 0.2s</span>
+            </div>
+          </div>
+
+          {/* Module 2 */}
+          <div 
+            onClick={() => onNavigate && onNavigate('narratives')}
+            className="ai-product-tile"
+            style={{ cursor: 'pointer' }}
+          >
+            <div style={{
+              height: '80px',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(124, 58, 237, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--brand-purple)',
+              marginBottom: '16px'
+            }}>
+              <GitFork size={32} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)' }}>
+                  Botnet Force Graph
+                </h4>
+                <ArrowUpRight size={15} style={{ color: 'var(--steel)' }} />
+              </div>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.5 }}>
+                Interactive Canvas force graph tracing coordinated amplification clusters and proxy bridges.
+              </p>
+            </div>
+            <div style={{ marginTop: '16px', paddingTop: '10px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--steel)' }}>
+              <span>D3 PHYSICS</span>
+              <span style={{ color: 'var(--brand-purple)', fontWeight: 600 }}>18 CAMPAIGNS</span>
+            </div>
+          </div>
+
+          {/* Module 3 */}
+          <div 
+            onClick={() => onNavigate && onNavigate('report-generator')}
+            className="ai-product-tile"
+            style={{ cursor: 'pointer' }}
+          >
+            <div style={{
+              height: '80px',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(255, 75, 62, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--brand-coral)',
+              marginBottom: '16px'
+            }}>
+              <Sparkles size={32} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)' }}>
+                  Sec 69A IT Dossier
+                </h4>
+                <ArrowUpRight size={15} style={{ color: 'var(--steel)' }} />
+              </div>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.5 }}>
+                Automated legal requisition generation compliant with CERT-In and judicial admissibility rules.
+              </p>
+            </div>
+            <div style={{ marginTop: '16px', paddingTop: '10px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--steel)' }}>
+              <span>CERT-IN READY</span>
+              <span style={{ color: 'var(--brand-coral)', fontWeight: 600 }}>SHA-256 SEALED</span>
+            </div>
+          </div>
+
+          {/* Module 4 */}
+          <div 
+            onClick={() => onNavigate && onNavigate('audit')}
+            className="ai-product-tile"
+            style={{ cursor: 'pointer' }}
+          >
+            <div style={{
+              height: '80px',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(16, 185, 129, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--accent-green)',
+              marginBottom: '16px'
+            }}>
+              <FileCheck2 size={32} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)' }}>
+                  EVM Audit Vault
+                </h4>
+                <ArrowUpRight size={15} style={{ color: 'var(--steel)' }} />
+              </div>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '6px', lineHeight: 1.5 }}>
+                Immutable on-chain evidence registry with smart contract verification and tamper-proof trails.
+              </p>
+            </div>
+            <div style={{ marginTop: '16px', paddingTop: '10px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--steel)' }}>
+              <span>ETHEREUM / L2</span>
+              <span style={{ color: 'var(--accent-green)', fontWeight: 600 }}>BLOCK #19842</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
