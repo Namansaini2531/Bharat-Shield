@@ -10,11 +10,11 @@ const OverviewView = lazy(() => import('./views/OverviewView'));
 const CampaignView = lazy(() => import('./views/CampaignView'));
 const LiveIntelView = lazy(() => import('./views/LiveIntelView'));
 const TiplineView = lazy(() => import('./views/TiplineView'));
-const NarrativesView = lazy(() => import('./views/NarrativesView'));
 const EvidenceView = lazy(() => import('./views/EvidenceView'));
 const ThreatAssessmentsView = lazy(() => import('./views/ThreatAssessmentsView'));
 const AuditLedgerView = lazy(() => import('./views/AuditLedgerView'));
 const AnalystResponseView = lazy(() => import('./views/AnalystResponseView'));
+const EnterpriseScopingView = lazy(() => import('./views/EnterpriseScopingView'));
 const ReportGeneratorView = lazy(() => import('./views/ReportGeneratorView'));
 const AdminView = lazy(() => import('./views/AdminView'));
 const SettingsView = lazy(() => import('./views/SettingsView'));
@@ -196,8 +196,6 @@ function MainAppContent() {
         return <LiveIntelView onNavigate={(nav) => setCurrentNav(nav)} />;
       case 'tipline':
         return <TiplineView onNavigate={(nav) => setCurrentNav(nav)} />;
-      case 'narratives':
-        return <NarrativesView />;
       case 'evidence':
         return <EvidenceView />;
       case 'threats':
@@ -206,6 +204,8 @@ function MainAppContent() {
         return <AuditLedgerView />;
       case 'analyst-response':
         return <AnalystResponseView onNavigate={(nav) => setCurrentNav(nav)} />;
+      case 'enterprise':
+        return <EnterpriseScopingView onNavigate={(nav) => setCurrentNav(nav)} />;
       case 'report-generator':
         return <ReportGeneratorView />;
       case 'admin':

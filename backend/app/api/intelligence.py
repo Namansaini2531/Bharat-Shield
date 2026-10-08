@@ -47,6 +47,81 @@ router = APIRouter(prefix="/api", tags=["Intelligence"])
 # In-memory runtime fallback storage for signals and audit records
 IN_MEMORY_SIGNALS: List[Dict[str, Any]] = []
 
+# Campaign Action & Mitigation Ledger Storage
+IN_MEMORY_CAMPAIGN_LEDGER: Dict[str, List[Dict[str, Any]]] = {
+    "CMP-007": [
+        {
+            "id": "EV-ACT-88A12B01",
+            "campaign_id": "CMP-007",
+            "action_type": "sec69a_takedown",
+            "action_name": "Section 69A IT Act Emergency Blocking Notice",
+            "damage_reduction_effect": "48 hostile Telegram seed URLs and C2 bridge accounts flagged to MeitY",
+            "executor": "OP_INVESTIGATION_BUREAU",
+            "role": "investigation_bureau",
+            "status": "SEALED_ON_EVM",
+            "tx_hash": "0x7a29e4d1f88c3a90b41c0989ad871034f828a1c902b4d7",
+            "block_number": 8492019,
+            "timestamp": "2026-10-08T10:15:00Z"
+        },
+        {
+            "id": "EV-ACT-88A12B02",
+            "campaign_id": "CMP-007",
+            "action_type": "inter_agency_dossier",
+            "action_name": "Inter-Agency Intelligence Flash Bulletin",
+            "damage_reduction_effect": "Threat actor IOCs and ASN proxy ranges synchronized with CERT-In",
+            "executor": "OP_INVESTIGATION_BUREAU",
+            "role": "investigation_bureau",
+            "status": "SEALED_ON_EVM",
+            "tx_hash": "0x33b190f892a014cf99812b1928fa802094391abf83c109",
+            "block_number": 8492044,
+            "timestamp": "2026-10-08T10:30:00Z"
+        }
+    ],
+    "CMP-TATA-009": [
+        {
+            "id": "EV-ACT-TATA-01",
+            "campaign_id": "CMP-TATA-009",
+            "action_type": "bse_clarification",
+            "action_name": "BSE & NSE Regulation 30 Corporate LODR Clarification",
+            "damage_reduction_effect": "Pre-market official denial distributed to exchange clearing members; retail panic curtailed by 85%",
+            "executor": "OP_CORPORATE_ENTERPRISE",
+            "role": "corporate_enterprise",
+            "status": "SEALED_ON_EVM",
+            "tx_hash": "0x89e02fb812903ab7cf34091ab109f7a934bb012489",
+            "block_number": 8492002,
+            "timestamp": "2026-10-08T08:55:00Z"
+        },
+        {
+            "id": "EV-ACT-TATA-02",
+            "campaign_id": "CMP-TATA-009",
+            "action_type": "blockchain_notarize",
+            "action_name": "Defamation Evidence Vault Cryptographic Sealing",
+            "damage_reduction_effect": "Merkle root of 1,280 coordinated bot accounts sealed into Polygon Amoy ledger for Section 66D IT Act litigation",
+            "executor": "OP_CORPORATE_ENTERPRISE",
+            "role": "corporate_enterprise",
+            "status": "SEALED_ON_EVM",
+            "tx_hash": "0x28fb01ab49c90182390abff71829034af109b8c910",
+            "block_number": 8492065,
+            "timestamp": "2026-10-08T09:20:00Z"
+        }
+    ],
+    "FACT-007": [
+        {
+            "id": "EV-ACT-FACT-01",
+            "campaign_id": "FACT-007",
+            "action_type": "publish_factcheck",
+            "action_name": "Multilingual IFCN Fact-Check Card Broadcast",
+            "damage_reduction_effect": "Verified debunk graphics pushed to 54,000+ WhatsApp Tipline subscribers; rumor velocity reduced by 92%",
+            "executor": "OP_JOURNALIST_MEDIA",
+            "role": "journalist_media",
+            "status": "SEALED_ON_EVM",
+            "tx_hash": "0x12a89047bf192083ca89012390fab847c109289124",
+            "block_number": 8492011,
+            "timestamp": "2026-10-08T09:40:00Z"
+        }
+    ]
+}
+
 # Role-specific campaign registries
 ROLE_CAMPAIGNS = {
     "investigation_bureau": [
@@ -594,15 +669,61 @@ def get_archived_ml_campaigns() -> List[Dict[str, Any]]:
 def get_campaigns(
     role: Optional[str] = Query(default="investigation_bureau"),
     status: Optional[str] = Query(default=None),
+    enterprise_id: Optional[str] = Query(default=None),
+    scope_enterprise: Optional[bool] = Query(default=False),
     x_user_role: Optional[str] = Header(default=None)
 ):
     """
-    Return comprehensive campaign intelligence filtered by user role and lifecycle state:
-    - Ongoing Campaigns: Active coordinated threats requiring real-time response
-    - Archived Campaigns: Historical operations discovered and clustered by ML models
+    Return comprehensive campaign intelligence filtered by user role, lifecycle state, 
+    and optional ML Enterprise Scoping.
     """
+    from ai.enterprise_scoper import EnterpriseScoper
+
     active_role = role or x_user_role or "investigation_bureau"
     
+    # If enterprise scoping is explicitly requested or role is corporate_enterprise
+    if scope_enterprise or (enterprise_id is not None) or active_role == "corporate_enterprise":
+        profile = None
+        if enterprise_id:
+            profiles = {p["id"]: p for p in EnterpriseScoper.get_all_profiles()}
+            profile = profiles.get(enterprise_id)
+        if not profile:
+            profile = EnterpriseScoper.get_active_profile()
+
+        # Gather all candidates
+        all_candidates = []
+        seen = set()
+        for r_camps in ROLE_CAMPAIGNS.values():
+            for c in r_camps:
+                if c["id"] not in seen:
+                    seen.add(c["id"])
+                    c_copy = dict(c)
+                    c_copy["type"] = "ongoing"
+                    all_candidates.append(c_copy)
+        for c in get_archived_ml_campaigns():
+            if c["id"] not in seen:
+                seen.add(c["id"])
+                all_candidates.append(dict(c))
+
+        scoped_list = EnterpriseScoper.filter_campaigns_for_enterprise(all_candidates, profile)
+        
+        ongoing_scoped = [c for c in scoped_list if c.get("type") == "ongoing"]
+        archived_scoped = [c for c in scoped_list if c.get("type") != "ongoing"]
+
+        if status == "ongoing":
+            return ongoing_scoped
+        elif status == "archived":
+            return archived_scoped
+
+        return {
+            "enterprise_profile": profile,
+            "ongoing": ongoing_scoped,
+            "archived": archived_scoped,
+            "total_count": len(scoped_list),
+            "ongoing_count": len(ongoing_scoped),
+            "archived_count": len(archived_scoped)
+        }
+
     ongoing_raw = ROLE_CAMPAIGNS.get(active_role, ROLE_CAMPAIGNS["investigation_bureau"])
     ongoing_list = []
     for c in ongoing_raw:
@@ -724,6 +845,24 @@ def execute_analyst_action(
             role=active_role
         )
 
+    # Record in campaign action ledger
+    ledger_entry = {
+        "id": package_id,
+        "campaign_id": campaign_id,
+        "action_type": action_type,
+        "action_name": payload.get("action_name", action_type.replace("_", " ").title()),
+        "damage_reduction_effect": payload.get("damage_reduction_effect") or f"Executed '{action_type}' to minimize campaign harm.",
+        "executor": f"OP_{active_role.upper()}",
+        "role": active_role,
+        "status": "SEALED_ON_EVM",
+        "tx_hash": tx_hash,
+        "block_number": 8492000 + len(IN_MEMORY_SIGNALS) + 1,
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+    if campaign_id not in IN_MEMORY_CAMPAIGN_LEDGER:
+        IN_MEMORY_CAMPAIGN_LEDGER[campaign_id] = []
+    IN_MEMORY_CAMPAIGN_LEDGER[campaign_id].insert(0, ledger_entry)
+
     return {
         "status": "EXECUTED",
         "action_type": action_type,
@@ -733,7 +872,34 @@ def execute_analyst_action(
         "cryptographic_signature": tx_hash,
         "package_id": package_id,
         "db_persisted": db_persisted,
+        "ledger_entry": ledger_entry,
         "message": f"Operation '{action_type}' authorized, executed, and sealed with EVM cryptographic timestamp."
+    }
+
+@router.get("/campaigns/{campaign_id}/ledger")
+def get_campaign_ledger(campaign_id: str):
+    """
+    Returns the immutable action & damage reduction ledger for a specific campaign.
+    """
+    entries = IN_MEMORY_CAMPAIGN_LEDGER.get(campaign_id, [])
+    if not entries and is_db_available():
+        db_entries = get_audit_ledger_from_db(limit=30)
+        entries = [e for e in db_entries if e.get("campaign_id") == campaign_id]
+    return {
+        "campaign_id": campaign_id,
+        "total_actions": len(entries),
+        "ledger": entries
+    }
+
+@router.get("/campaigns/ledger/all")
+def get_all_campaign_ledgers():
+    """
+    Returns summary action ledgers across all tracked campaigns.
+    """
+    return {
+        "status": "SUCCESS",
+        "total_campaigns_tracked": len(IN_MEMORY_CAMPAIGN_LEDGER),
+        "ledgers": IN_MEMORY_CAMPAIGN_LEDGER
     }
 
 @router.post("/reports/generate")
@@ -1089,7 +1255,7 @@ def generate_ai_counter_strategy(
 ):
     """
     Generates persona-tailored counter-disinformation strategies, multilingual debunk drafts, 
-    and statutory response steps using Groq LLaMA-3.3-70B.
+    and statutory response steps using Kritrim Sovereign AI Engine.
     """
     from ai.groq_advisor import GroqCounterAdvisor
 
@@ -1102,7 +1268,7 @@ def generate_ai_counter_strategy(
     languages_detected = payload.get("languages_detected", ["Hindi", "English"])
     summary = payload.get("summary", "")
     role = payload.get("role") or x_user_role or "investigation_bureau"
-    custom_groq_api_key = payload.get("custom_groq_api_key") or payload.get("groq_api_key")
+    custom_api_key = payload.get("custom_kritrim_api_key") or payload.get("kritrim_api_key") or payload.get("custom_groq_api_key") or payload.get("groq_api_key")
 
     strategy = GroqCounterAdvisor.generate_strategy(
         campaign_id=campaign_id,
@@ -1114,7 +1280,7 @@ def generate_ai_counter_strategy(
         languages_detected=languages_detected,
         summary=summary,
         role=role,
-        custom_key=custom_groq_api_key
+        custom_key=custom_api_key
     )
 
     return {
@@ -1253,6 +1419,20 @@ def run_enterprise_ml_scan(payload: Dict[str, Any] = Body(...)):
         "top_threat_detected": scoped[0] if scoped else None,
         "matching_campaigns": scoped
     }
+
+@router.delete("/enterprise/profile/{profile_id}")
+def delete_enterprise_profile(profile_id: str):
+    """Deletes an enterprise profile."""
+    from ai.enterprise_scoper import EnterpriseScoper
+    deleted = EnterpriseScoper.delete_profile(profile_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail=f"Enterprise profile '{profile_id}' not found.")
+    return {
+        "status": "SUCCESS",
+        "message": f"Enterprise profile '{profile_id}' deleted successfully.",
+        "active_profile": EnterpriseScoper.get_active_profile()
+    }
+
 
 
 

@@ -27,8 +27,8 @@ export const USER_PROFILES = {
     badgeText: 'SUPREME ADMIN // ROOT',
     avatarInitials: 'NS',
     allowedNavs: [
-      'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
+      'overview', 'live', 'tipline', 'campaigns', 
+      'threats', 'analyst-response', 'enterprise', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
       canManageSystem: true,
@@ -61,8 +61,8 @@ export const USER_PROFILES = {
     badgeText: 'TOP SECRET / LEA',
     avatarInitials: 'IB',
     allowedNavs: [
-      'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
+      'overview', 'live', 'tipline', 'campaigns', 
+      'threats', 'analyst-response', 'enterprise', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: true,
@@ -94,8 +94,8 @@ export const USER_PROFILES = {
     badgeText: 'ENTERPRISE RISK',
     avatarInitials: 'TG',
     allowedNavs: [
-      'overview', 'live', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'admin', 'settings'
+      'overview', 'live', 'campaigns', 
+      'threats', 'analyst-response', 'enterprise', 'report-generator', 'evidence', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: false,
@@ -127,8 +127,8 @@ export const USER_PROFILES = {
     badgeText: 'PRESS ACCREDITED',
     avatarInitials: 'NP',
     allowedNavs: [
-      'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'admin', 'settings'
+      'overview', 'live', 'tipline', 'campaigns', 
+      'threats', 'analyst-response', 'enterprise', 'report-generator', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: false,

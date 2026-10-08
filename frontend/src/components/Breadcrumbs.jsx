@@ -37,10 +37,10 @@ const NAV_METADATA = {
     label: 'Citizen Tipline',
     icon: PhoneCall
   },
-  narratives: {
-    category: 'Threat Analysis',
-    label: 'Narrative Clusters',
-    icon: GitFork
+  enterprise: {
+    category: 'Brand Defense',
+    label: 'Enterprise Data Profile & Scope',
+    icon: Building2
   },
   network: {
     category: 'Threat Analysis',

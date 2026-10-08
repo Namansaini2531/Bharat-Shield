@@ -1,8 +1,9 @@
 """
 BHARAT-SHIELD SENTINEL — Enterprise Data Profile & ML Semantic Scoping Engine
-Allows corporate enterprises to configure brand identities, stock tickers, subsidiaries, 
-key executives, and brand attack vectors. Scopes ML clustering and vector search to 
-exclusively target campaigns and signals threatening the configured enterprise.
+Allows corporate enterprises and threat analysts to configure brand identities, stock tickers, 
+subsidiaries, key executives, official domains, and brand attack vectors. 
+Scopes ML clustering, vector search, and threat detection to exclusively search and 
+isolate campaigns and signals threatening the configured enterprise.
 """
 
 import os
@@ -53,7 +54,7 @@ DEFAULT_ENTERPRISE_PROFILES: Dict[str, Dict[str, Any]] = {
         ],
         "official_domains": ["tata.com", "tatamotors.com", "tcs.com", "airindia.com", "@TataCompanies", "@TataMotors", "@TCS"],
         "industry_sector": "Diversified Conglomerate (Automotive, Tech, Energy, Aviation)",
-        "threat_threshold": 70,
+        "threat_threshold": 65,
         "is_active": True,
         "last_updated": "2026-10-08T11:30:00Z"
     },
@@ -86,7 +87,7 @@ DEFAULT_ENTERPRISE_PROFILES: Dict[str, Dict[str, Any]] = {
         ],
         "official_domains": ["ril.com", "jio.com", "relianceretail.com", "@reliancejio", "@flameofril"],
         "industry_sector": "Energy, Telecom, Retail & Digital Services",
-        "threat_threshold": 70,
+        "threat_threshold": 65,
         "is_active": False,
         "last_updated": "2026-10-08T10:00:00Z"
     },
@@ -117,7 +118,7 @@ DEFAULT_ENTERPRISE_PROFILES: Dict[str, Dict[str, Any]] = {
         ],
         "official_domains": ["infosys.com", "edgeverve.com", "@Infosys"],
         "industry_sector": "Information Technology & Financial Software",
-        "threat_threshold": 70,
+        "threat_threshold": 65,
         "is_active": False,
         "last_updated": "2026-10-08T09:30:00Z"
     },
@@ -133,10 +134,10 @@ DEFAULT_ENTERPRISE_PROFILES: Dict[str, Dict[str, Any]] = {
             "YONO Digital Banking"
         ],
         "executives": [
-            "Dinesh Khara (Former Chairman)", 
             "CS Setty (Chairman)", 
             "Saloni Narayan (MD)", 
-            "Kameshwar Rao Kodavanti (CFO)"
+            "Kameshwar Rao Kodavanti (CFO)",
+            "Dinesh Khara (Former Chairman)"
         ],
         "brand_keywords": [
             "yono hack hoax", 
@@ -148,9 +149,38 @@ DEFAULT_ENTERPRISE_PROFILES: Dict[str, Dict[str, Any]] = {
         ],
         "official_domains": ["sbi.co.in", "onlinesbi.sbi", "sbicard.com", "@TheOfficialSBI"],
         "industry_sector": "Public Sector Banking & Financial Services",
-        "threat_threshold": 70,
+        "threat_threshold": 65,
         "is_active": False,
         "last_updated": "2026-10-08T09:00:00Z"
+    },
+    "adani_group": {
+        "id": "adani_group",
+        "name": "Adani Group & Ports Entities",
+        "ticker_symbols": ["ADANIENT", "ADANIPORTS", "ADANIGREEN", "ADANIPOWER"],
+        "subsidiaries": [
+            "Adani Enterprises",
+            "Adani Ports and SEZ",
+            "Adani Green Energy",
+            "Adani Total Gas",
+            "Adani Wilmar"
+        ],
+        "executives": [
+            "Gautam Adani (Chairman)",
+            "Karan Adani (MD, Adani Ports)",
+            "Jugeshinder Singh (Group CFO)"
+        ],
+        "brand_keywords": [
+            "short seller dossier leak",
+            "port closure hoax",
+            "coal import penalty rumor",
+            "offshore shell company fabrication",
+            "bribery indictment fake circular"
+        ],
+        "official_domains": ["adani.com", "adaniports.com", "@AdaniOnline"],
+        "industry_sector": "Infrastructure, Logistics, Energy & Commodities",
+        "threat_threshold": 65,
+        "is_active": False,
+        "last_updated": "2026-10-08T08:30:00Z"
     }
 }
 
@@ -223,17 +253,31 @@ class EnterpriseScoper:
         
         existing = profiles.get(pid, {})
         
+        # Ensure list formats
+        def clean_list(val):
+            if isinstance(val, list):
+                return [str(v).strip() for v in val if str(v).strip()]
+            if isinstance(val, str):
+                return [v.strip() for v in val.split(",") if v.strip()]
+            return []
+
+        ticker_symbols = clean_list(profile_data.get("ticker_symbols", existing.get("ticker_symbols", [])))
+        subsidiaries = clean_list(profile_data.get("subsidiaries", existing.get("subsidiaries", [])))
+        executives = clean_list(profile_data.get("executives", existing.get("executives", [])))
+        brand_keywords = clean_list(profile_data.get("brand_keywords", existing.get("brand_keywords", [])))
+        official_domains = clean_list(profile_data.get("official_domains", existing.get("official_domains", [])))
+
         updated_profile = {
             "id": pid,
-            "name": profile_data.get("name", existing.get("name", "Custom Enterprise")),
-            "ticker_symbols": profile_data.get("ticker_symbols", existing.get("ticker_symbols", [])),
-            "subsidiaries": profile_data.get("subsidiaries", existing.get("subsidiaries", [])),
-            "executives": profile_data.get("executives", existing.get("executives", [])),
-            "brand_keywords": profile_data.get("brand_keywords", existing.get("brand_keywords", [])),
-            "official_domains": profile_data.get("official_domains", existing.get("official_domains", [])),
-            "industry_sector": profile_data.get("industry_sector", existing.get("industry_sector", "General Enterprise")),
-            "threat_threshold": int(profile_data.get("threat_threshold", existing.get("threat_threshold", 70))),
-            "is_active": bool(profile_data.get("is_active", True)),
+            "name": profile_data.get("name", existing.get("name", "Custom Enterprise")).strip(),
+            "ticker_symbols": ticker_symbols,
+            "subsidiaries": subsidiaries,
+            "executives": executives,
+            "brand_keywords": brand_keywords,
+            "official_domains": official_domains,
+            "industry_sector": profile_data.get("industry_sector", existing.get("industry_sector", "General Enterprise")).strip(),
+            "threat_threshold": int(profile_data.get("threat_threshold", existing.get("threat_threshold", 65))),
+            "is_active": bool(profile_data.get("is_active", existing.get("is_active", True))),
             "last_updated": profile_data.get("last_updated") or "2026-10-08T11:30:00Z"
         }
 
@@ -247,6 +291,20 @@ class EnterpriseScoper:
         return updated_profile
 
     @classmethod
+    def delete_profile(cls, profile_id: str) -> bool:
+        """Deletes a custom enterprise profile."""
+        profiles = cls._load_profiles()
+        if profile_id in profiles:
+            del profiles[profile_id]
+            # Ensure at least one is active
+            if profiles and not any(p.get("is_active") for p in profiles.values()):
+                first_key = list(profiles.keys())[0]
+                profiles[first_key]["is_active"] = True
+            cls._save_profiles(profiles)
+            return True
+        return False
+
+    @classmethod
     def calculate_campaign_relevance(
         cls, 
         campaign: Dict[str, Any], 
@@ -255,10 +313,10 @@ class EnterpriseScoper:
         """
         Calculates ML semantic & entity relevance score of a campaign against the enterprise profile.
         Returns:
-            - is_relevant: bool (whether campaign exceeds matching threshold)
+            - is_relevant: bool (whether campaign matches enterprise criteria)
             - match_score: float (0 - 100%)
             - matched_entities: list[str] (names of matching brands, executives, or keywords)
-            - match_type: str ('DIRECT_ENTITY_TARGET' | 'SUBSIDIARY_MENTION' | 'VECTOR_SIMILARITY' | 'UNRELATED')
+            - match_type: str ('DIRECT_ENTITY_TARGET' | 'SUBSIDIARY_MENTION' | 'EXECUTIVE_IMPERSONATION' | 'VECTOR_SIMILARITY' | 'UNRELATED')
         """
         if not profile:
             profile = cls.get_active_profile()
@@ -278,55 +336,67 @@ class EnterpriseScoper:
 
         matched_entities = []
         score = 0.0
+        match_type = "UNRELATED"
 
         # 1. Check direct company name & tickers
-        company_name_tokens = [t.lower() for t in profile.get("name", "").split() if len(t) > 3]
-        for t in company_name_tokens:
-            if t in corpus and t not in ["limited", "sons", "group", "industries", "bank", "india"]:
+        enterprise_name = (profile.get("name") or "").lower()
+        name_tokens = [t for t in enterprise_name.split() if len(t) > 3 and t not in ["limited", "sons", "group", "industries", "bank", "india", "entities"]]
+        for t in name_tokens:
+            if t in corpus:
                 matched_entities.append(profile.get("name"))
-                score += 35.0
+                score += 45.0
+                match_type = "DIRECT_ENTITY_TARGET"
                 break
 
         for ticker in profile.get("ticker_symbols", []):
             if ticker.lower() in corpus:
                 matched_entities.append(f"Ticker: {ticker}")
-                score += 30.0
+                score += 35.0
+                if match_type == "UNRELATED":
+                    match_type = "DIRECT_ENTITY_TARGET"
 
-        # 2. Check subsidiaries / brand names
-        for sub in profile.get("subsidiaries", []):
-            sub_clean = sub.split("(")[0].strip().lower()
-            if sub_clean and sub_clean in corpus:
-                matched_entities.append(sub)
-                score += 30.0
-
-        # 3. Check key executives
+        # 2. Check executives
         for exec_name in profile.get("executives", []):
             exec_clean = exec_name.split("(")[0].strip().lower()
-            # check last name or full name
             parts = [p for p in exec_clean.split() if len(p) > 3]
             for p in parts:
                 if p in corpus:
                     matched_entities.append(f"Executive: {exec_name}")
-                    score += 25.0
+                    score += 35.0
+                    match_type = "EXECUTIVE_IMPERSONATION"
                     break
+
+        # 3. Check subsidiaries / brand names
+        for sub in profile.get("subsidiaries", []):
+            sub_clean = sub.split("(")[0].strip().lower()
+            if sub_clean and sub_clean in corpus:
+                matched_entities.append(f"Subsidiary: {sub}")
+                score += 30.0
+                if match_type == "UNRELATED":
+                    match_type = "SUBSIDIARY_MENTION"
 
         # 4. Check brand attack keywords
         for kw in profile.get("brand_keywords", []):
             if kw.lower() in corpus:
-                matched_entities.append(f"Threat Vector: {kw}")
+                matched_entities.append(f"Attack Vector: {kw}")
                 score += 20.0
+                if match_type == "UNRELATED":
+                    match_type = "VECTOR_SIMILARITY"
+
+        # 5. Check official domains & handles
+        for dom in profile.get("official_domains", []):
+            dom_clean = dom.lower().replace("@", "")
+            if dom_clean in corpus:
+                matched_entities.append(f"Domain/Handle: {dom}")
+                score += 25.0
 
         # Normalize score
         match_score = min(100.0, round(score, 1))
-        is_relevant = match_score >= 20.0 or len(matched_entities) > 0
+        threshold = profile.get("threat_threshold", 65)
+        is_relevant = (match_score >= 25.0) or (len(matched_entities) > 0)
 
-        match_type = "UNRELATED"
-        if match_score >= 60.0:
+        if match_score >= 60.0 and match_type == "UNRELATED":
             match_type = "DIRECT_ENTITY_TARGET"
-        elif match_score >= 30.0:
-            match_type = "SUBSIDIARY_MENTION"
-        elif is_relevant:
-            match_type = "VECTOR_SIMILARITY"
 
         return {
             "is_relevant": is_relevant,
@@ -334,7 +404,8 @@ class EnterpriseScoper:
             "matched_entities": list(dict.fromkeys(matched_entities)),
             "match_type": match_type,
             "enterprise_id": profile.get("id"),
-            "enterprise_name": profile.get("name")
+            "enterprise_name": profile.get("name"),
+            "confidence": "HIGH" if match_score >= 60 else ("MEDIUM" if match_score >= 30 else "LOW")
         }
 
     @classmethod
@@ -344,8 +415,8 @@ class EnterpriseScoper:
         profile: Optional[Dict[str, Any]] = None
     ) -> List[Dict[str, Any]]:
         """
-        Filters a list of campaigns to return only those matching the enterprise profile,
-        enriching them with enterprise relevance metadata.
+        Filters a list of campaigns to return exclusively those matching the enterprise profile,
+        enriching each with enterprise relevance metadata and damage metrics.
         """
         if not profile:
             profile = cls.get_active_profile()
@@ -358,7 +429,7 @@ class EnterpriseScoper:
                 c_enriched["enterprise_relevance"] = relevance
                 results.append(c_enriched)
 
-        # Sort by relevance score descending then threat score descending
+        # Sort by relevance match_score descending, then threat_score descending
         results.sort(
             key=lambda x: (
                 x.get("enterprise_relevance", {}).get("match_score", 0),
