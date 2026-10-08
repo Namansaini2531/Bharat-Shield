@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
+export const MASTER_PASSWORDS = ['sentinel@16#', 'Naman@16#'];
 export const MASTER_PASSWORD = 'sentinel@16#';
 
 export const ROLES = {
@@ -12,10 +13,11 @@ export const ROLES = {
 export const USER_PROFILES = {
   [ROLES.SYSTEM_ADMIN]: {
     id: 'user_admin_000',
-    name: 'Commander Arvind Sharma',
-    email: 'a.sharma@sentinel.gov.in',
+    name: 'Naman Saini',
+    email: 'saininaman643@gmail.com',
     phone: '+91 98110 00001',
-    username: 'root_admin_nccc',
+    username: 'naman_superadmin',
+    defaultPassword: 'Naman@16#',
     role: ROLES.SYSTEM_ADMIN,
     roleTitle: 'Super Administrator / NCCC Operations Command',
     organization: 'National Cyber Coordination Centre (NCCC) & MoD',
@@ -23,7 +25,7 @@ export const USER_PROFILES = {
     clearanceLevel: 6,
     badgeColor: '#10b981',
     badgeText: 'SUPREME ADMIN // ROOT',
-    avatarInitials: 'SA',
+    avatarInitials: 'NS',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
       'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
@@ -49,6 +51,7 @@ export const USER_PROFILES = {
     email: 'v.rawat@ib.gov.in',
     phone: '+91 98100 44219',
     username: 'v_rawat_ib',
+    defaultPassword: 'sentinel@16#',
     role: ROLES.INVESTIGATION_BUREAU,
     roleTitle: 'Investigation Bureau of India (IB / LEA)',
     organization: 'Ministry of Home Affairs / Cyber Ops Command',
@@ -76,19 +79,20 @@ export const USER_PROFILES = {
     }
   },
   [ROLES.CORPORATE_ENTERPRISE]: {
-    id: 'user_adani_007',
+    id: 'user_tata_007',
     name: 'Rajesh Singhania',
-    email: 'ciso.defense@adani.com',
-    phone: '+91 98250 88314',
-    username: 'rsinghania_ag',
+    email: 'ciso.defense@tata.com',
+    phone: '+91 98200 88314',
+    username: 'rsinghania_tata',
+    defaultPassword: 'sentinel@16#',
     role: ROLES.CORPORATE_ENTERPRISE,
-    roleTitle: 'Adani Group — Brand Defense & Market Risk',
-    organization: 'Adani Corporate Security & Threat Intelligence',
+    roleTitle: 'Tata Sons — Brand Defense & Market Risk',
+    organization: 'Tata Strategic Threat Intelligence & Brand Protection',
     clearance: 'Enterprise Tier-1 (Corporate Risk & Security)',
     clearanceLevel: 3,
     badgeColor: '#f59e0b',
     badgeText: 'ENTERPRISE RISK',
-    avatarInitials: 'AG',
+    avatarInitials: 'TG',
     allowedNavs: [
       'overview', 'live', 'campaigns', 'narratives', 
       'threats', 'analyst-response', 'report-generator', 'evidence', 'admin', 'settings'
@@ -113,6 +117,7 @@ export const USER_PROFILES = {
     email: 'pooja.k@nationalpress.org',
     phone: '+91 99112 33451',
     username: 'pkashyap_npc',
+    defaultPassword: 'sentinel@16#',
     role: ROLES.JOURNALIST_MEDIA,
     roleTitle: 'Investigative Bureau Lead / Fact-Checker',
     organization: 'National Press Consortium & Fact-Check Desk',
@@ -142,10 +147,11 @@ export const USER_PROFILES = {
   // Alias keys for robust backward-compatibility
   'admin': {
     id: 'user_admin_000',
-    name: 'Commander Arvind Sharma',
-    email: 'a.sharma@sentinel.gov.in',
+    name: 'Naman Saini',
+    email: 'saininaman643@gmail.com',
     phone: '+91 98110 00001',
-    username: 'root_admin_nccc',
+    username: 'naman_superadmin',
+    defaultPassword: 'Naman@16#',
     role: ROLES.SYSTEM_ADMIN,
     roleTitle: 'Super Administrator / NCCC Operations Command',
     organization: 'National Cyber Coordination Centre (NCCC) & MoD',
@@ -153,7 +159,7 @@ export const USER_PROFILES = {
     clearanceLevel: 6,
     badgeColor: '#10b981',
     badgeText: 'SUPREME ADMIN // ROOT',
-    avatarInitials: 'SA',
+    avatarInitials: 'NS',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
       'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
@@ -206,12 +212,12 @@ export function AuthProvider({ children }) {
     } catch {}
   }, [currentRole]);
 
-  const login = useCallback(async ({ password, roleKey = ROLES.INVESTIGATION_BUREAU, customName = '', customPhone = '', customUsername = '' }) => {
-    const isMaster = password === MASTER_PASSWORD;
+  const login = useCallback(async ({ password, roleKey = ROLES.INVESTIGATION_BUREAU, customName = '', customPhone = '', customUsername = '', customEmail = '' }) => {
+    const isMaster = MASTER_PASSWORDS.includes(password) || password === 'sentinel@16#' || password === 'Naman@16#';
     
     // Valid if master password OR standard demo login
     if (!isMaster && password.length < 4 && password !== 'admin' && password !== 'sentinel') {
-      throw new Error('Invalid credentials. Use master password "sentinel@16#" or valid credentials.');
+      throw new Error('Invalid credentials. Please enter a valid password.');
     }
 
     const targetRole = USER_PROFILES[roleKey] ? roleKey : ROLES.INVESTIGATION_BUREAU;
@@ -220,6 +226,7 @@ export function AuthProvider({ children }) {
     const userProfile = {
       ...baseProfile,
       name: customName || baseProfile.name,
+      email: customEmail || baseProfile.email,
       phone: customPhone || baseProfile.phone,
       username: customUsername || baseProfile.username
     };

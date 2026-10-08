@@ -1,66 +1,197 @@
-import React, { useState } from 'react';
-import { useAuth, ROLES, MASTER_PASSWORD } from '../context/AuthContext';
-import {
-  Shield,
-  Eye,
-  EyeOff,
-  Check,
-  Lock,
-  Key,
-  ArrowRight,
+import React, { useState, useRef, useEffect } from 'react';
+import { useAuth, ROLES } from '../context/AuthContext';
+import logoImg from '../assets/logo.png';
+import { 
+  Eye, 
+  EyeOff, 
+  AlertCircle,
   Sparkles,
-  ShieldCheck,
+  Check,
+  ChevronDown,
+  Shield,
+  ShieldAlert,
   Building2,
   Newspaper,
-  CheckCircle2,
-  AlertCircle
+  UserCheck,
+  Lock,
+  Crown
 } from 'lucide-react';
 
-export default function LoginView() {
-  const { login, allProfiles } = useAuth();
+const ACCOUNTS = [
+  {
+    id: 'super_admin',
+    role: ROLES.SYSTEM_ADMIN,
+    name: 'Naman Saini',
+    email: 'saininaman643@gmail.com',
+    password: 'Naman@16#',
+    title: 'Super Administrator / Root Command',
+    badgeText: 'SUPREME ROOT // ADMIN',
+    badgeColor: '#10b981',
+    initials: 'NS',
+    icon: Crown,
+    organization: 'NCCC Operations & Ministry of Defence'
+  },
+  {
+    id: 'ib_lea',
+    role: ROLES.INVESTIGATION_BUREAU,
+    name: 'Vikram Rawat',
+    email: 'v.rawat@ib.gov.in',
+    password: 'sentinel@16#',
+    title: 'Joint Director / Cyber Operations',
+    badgeText: 'TOP SECRET / LEA',
+    badgeColor: '#ef4444',
+    initials: 'IB',
+    icon: ShieldAlert,
+    organization: 'Investigation Bureau & MHA'
+  },
+  {
+    id: 'tata_corp',
+    role: ROLES.CORPORATE_ENTERPRISE,
+    name: 'Rajesh Singhania',
+    email: 'ciso.defense@tata.com',
+    password: 'sentinel@16#',
+    title: 'CISO / Brand Defense Lead',
+    badgeText: 'ENTERPRISE RISK',
+    badgeColor: '#f59e0b',
+    initials: 'TG',
+    icon: Building2,
+    organization: 'Tata Sons & Strategic Threat Intelligence'
+  },
+  {
+    id: 'media_press',
+    role: ROLES.JOURNALIST_MEDIA,
+    name: 'Pooja Kashyap',
+    email: 'pooja.k@nationalpress.org',
+    password: 'sentinel@16#',
+    title: 'Investigative Fact-Check Lead',
+    badgeText: 'PRESS ACCREDITED',
+    badgeColor: '#3b82f6',
+    initials: 'NP',
+    icon: Newspaper,
+    organization: 'National Press Consortium'
+  }
+];
 
-  const [mode, setMode] = useState('join'); // 'join' or 'login'
-  const [phone, setPhone] = useState('+91 98100 44219');
-  const [fullName, setFullName] = useState('Joint Director Vikram Rawat');
-  const [username, setUsername] = useState('v_rawat_ib');
-  const [password, setPassword] = useState('sentinel@16#');
+export default function LoginView() {
+  const { login } = useAuth();
+
+  // Default to Super Admin (Naman Saini)
+  const [selectedAccount, setSelectedAccount] = useState(ACCOUNTS[0]);
+  const [email, setEmail] = useState(ACCOUNTS[0].email);
+  const [password, setPassword] = useState(ACCOUNTS[0].password);
+  const [rememberMe, setRememberMe] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(ROLES.INVESTIGATION_BUREAU);
-  const [stepIndex, setStepIndex] = useState(1);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [selectedRole, setSelectedRole] = useState(ACCOUNTS[0].role);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const dropdownRef = useRef(null);
+
+  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSelectRole = (roleKey) => {
-    setSelectedRole(roleKey);
-    const profile = allProfiles[roleKey];
-    if (profile) {
-      setFullName(profile.name);
-      setUsername(profile.username || profile.id);
-      setPhone(profile.phone || '+91 98100 00000');
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Autofill handler when selecting an account from dropdown
+  const handleSelectAccount = (account) => {
+    setSelectedAccount(account);
+    setEmail(account.email);
+    setPassword(account.password);
+    setSelectedRole(account.role);
+    setTouched({ email: true, password: true });
+    setErrors({ email: '', password: '' });
+    setServerError('');
+    setIsDropdownOpen(false);
+
+    setToastMessage(`Autofilled credentials for ${account.name} (${account.badgeText})`);
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Email validation regex
+  const validateEmail = (val) => {
+    if (!val || !val.trim()) {
+      return 'Work email is required';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val.trim())) {
+      return 'Please enter a valid email address';
+    }
+    return '';
+  };
+
+  const validatePassword = (val) => {
+    if (!val) {
+      return 'Password is required';
+    }
+    if (val.length < 4) {
+      return 'Password must be at least 4 characters';
+    }
+    return '';
+  };
+
+  const handleEmailChange = (val) => {
+    setEmail(val);
+    if (touched.email) {
+      setErrors(prev => ({ ...prev, email: validateEmail(val) }));
     }
   };
 
-  const handleQuickMasterFill = () => {
-    setPassword(MASTER_PASSWORD);
-    handleSelectRole(ROLES.INVESTIGATION_BUREAU);
-    setErrorMsg('');
+  const handlePasswordChange = (val) => {
+    setPassword(val);
+    if (touched.password) {
+      setErrors(prev => ({ ...prev, password: validatePassword(val) }));
+    }
   };
 
+  const handleBlur = (field) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    if (field === 'email') {
+      setErrors(prev => ({ ...prev, email: validateEmail(email) }));
+    } else if (field === 'password') {
+      setErrors(prev => ({ ...prev, password: validatePassword(password) }));
+    }
+  };
+
+  const isEmailValid = !validateEmail(email);
+  const isPasswordValid = !validatePassword(password);
+  const isButtonDisabled = !email.trim() || !password || !isEmailValid || !isPasswordValid || isSubmitting;
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMsg('');
+    e?.preventDefault();
+    setServerError('');
+
+    const emailErr = validateEmail(email);
+    const passErr = validatePassword(password);
+
+    setTouched({ email: true, password: true });
+    setErrors({ email: emailErr, password: passErr });
+
+    if (emailErr || passErr) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       await login({
         password: password.trim(),
         roleKey: selectedRole,
-        customName: fullName,
-        customPhone: phone,
-        customUsername: username
+        customEmail: email.trim(),
+        customName: selectedAccount?.name
       });
     } catch (err) {
-      setErrorMsg(err.message || 'Authentication failed. Please check your credentials.');
+      setServerError(err.message || 'Authentication failed. Please check your credentials.');
       setIsSubmitting(false);
     }
   };
@@ -72,504 +203,483 @@ export default function LoginView() {
       minHeight: '100vh',
       overflow: 'hidden',
       display: 'grid',
-      gridTemplateColumns: '1.15fr 1fr',
+      gridTemplateColumns: '1.1fr 1fr',
       backgroundColor: '#ffffff',
-      fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif'
+      fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      position: 'relative'
     }}>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeInSlide {
+          0% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .input-box:focus-within {
+          border-color: #3b82f6 !important;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12) !important;
+        }
+        .btn-sign-in:hover:not(:disabled) {
+          background-color: #dc2626 !important;
+          box-shadow: 0 10px 20px -5px rgba(239, 68, 68, 0.4) !important;
+        }
+        .account-item:hover {
+          background-color: #f8fafc !important;
+        }
+        .account-circle-btn:hover {
+          transform: scale(1.04);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+      `}</style>
 
-      {/* ================= LEFT COLUMN: Vibrant Blue Radiant Showcase (Full Screen Left Half) ================= */}
+      {/* ================= TOP-RIGHT CIRCULAR ACCOUNT SWITCHER BUTTON & DROPDOWN ================= */}
+      <div 
+        ref={dropdownRef}
+        style={{
+          position: 'fixed',
+          top: '24px',
+          right: '28px',
+          zIndex: 1000
+        }}
+      >
+        {/* Circular Avatar Switcher Button */}
+        <button
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className="account-circle-btn"
+          title="Switch Account // Quick Autofill"
+          style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '50%',
+            backgroundColor: '#ffffff',
+            border: `2px solid ${selectedAccount?.badgeColor || '#3b82f6'}`,
+            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            position: 'relative',
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            backgroundColor: `${selectedAccount?.badgeColor || '#3b82f6'}18`,
+            color: selectedAccount?.badgeColor || '#3b82f6',
+            fontWeight: 800,
+            fontSize: '13px',
+            fontFamily: 'JetBrains Mono, monospace',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {selectedAccount?.initials || 'SA'}
+          </div>
+
+          {/* Active Status Pulse Indicator */}
+          <span style={{
+            position: 'absolute',
+            bottom: '0px',
+            right: '0px',
+            width: '12px',
+            height: '12px',
+            borderRadius: '50%',
+            backgroundColor: selectedAccount?.badgeColor || '#10b981',
+            border: '2px solid #ffffff',
+            boxShadow: `0 0 6px ${selectedAccount?.badgeColor || '#10b981'}`
+          }} />
+        </button>
+
+        {/* Dropdown Menu */}
+        {isDropdownOpen && (
+          <div style={{
+            position: 'absolute',
+            top: '56px',
+            right: '0px',
+            width: '340px',
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.2), 0 0 1px 1px rgba(0, 0, 0, 0.08)',
+            border: '1px solid #e2e8f0',
+            padding: '12px',
+            animation: 'fadeInSlide 0.2s ease-out forwards',
+            zIndex: 1001
+          }}>
+            <div style={{
+              padding: '6px 10px 10px 10px',
+              borderBottom: '1px solid #f1f5f9',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: '#64748b', letterSpacing: '0.8px', textTransform: 'uppercase' }}>
+                Select Account to Autofill
+              </span>
+              <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700, fontFamily: 'JetBrains Mono' }}>
+                4 PROFILES
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '6px' }}>
+              {ACCOUNTS.map((acc) => {
+                const isSelected = selectedAccount?.id === acc.id;
+                const IconComponent = acc.icon;
+                return (
+                  <div
+                    key={acc.id}
+                    onClick={() => handleSelectAccount(acc)}
+                    className="account-item"
+                    style={{
+                      padding: '10px 12px',
+                      borderRadius: '12px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
+                      border: isSelected ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {/* Avatar Circle */}
+                    <div style={{
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      backgroundColor: `${acc.badgeColor}15`,
+                      border: `1.5px solid ${acc.badgeColor}`,
+                      color: acc.badgeColor,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 800,
+                      fontSize: '12px',
+                      fontFamily: 'JetBrains Mono',
+                      flexShrink: 0
+                    }}>
+                      {acc.initials}
+                    </div>
+
+                    {/* Account Info */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a' }}>
+                          {acc.name}
+                        </span>
+                        {isSelected && <Check size={14} style={{ color: '#3b82f6', strokeWidth: 3 }} />}
+                      </div>
+                      
+                      <div style={{ fontSize: '11px', color: '#64748b', marginTop: '1px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                        {acc.email}
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                        <span style={{
+                          fontSize: '9px',
+                          fontWeight: 700,
+                          padding: '1px 6px',
+                          borderRadius: '4px',
+                          backgroundColor: `${acc.badgeColor}15`,
+                          color: acc.badgeColor,
+                          border: `1px solid ${acc.badgeColor}30`,
+                          letterSpacing: '0.4px'
+                        }}>
+                          {acc.badgeText}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ================= LEFT COLUMN: Dark Aesthetic with Diagonal Glowing Capsules ================= */}
       <div style={{
-        background: 'linear-gradient(145deg, #1d4ed8 0%, #2563eb 38%, #0284c7 75%, #38bdf8 100%)',
-        padding: '50px 60px',
+        backgroundColor: '#090d16',
+        position: 'relative',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        position: 'relative',
-        overflow: 'hidden',
-        color: '#ffffff',
-        height: '100%',
-        boxSizing: 'border-box'
+        padding: '50px 60px',
+        color: '#ffffff'
       }}>
-        {/* Ambient Lighting Background Circles */}
+        {/* Subtle grid pattern background */}
         <div style={{
           position: 'absolute',
-          top: '-10%',
-          right: '-10%',
-          width: '450px',
-          height: '450px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(186, 230, 253, 0.35) 0%, rgba(37, 99, 235, 0) 70%)',
+          inset: 0,
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px)`,
+          backgroundSize: '24px 24px',
+          opacity: 0.6,
           pointerEvents: 'none'
         }} />
 
+        {/* Floating Diagonal Gradient Capsules */}
         <div style={{
           position: 'absolute',
-          bottom: '10%',
-          left: '-10%',
-          width: '350px',
-          height: '350px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(96, 165, 250, 0.3) 0%, rgba(30, 64, 175, 0) 70%)',
+          top: '-15%',
+          left: '-20%',
+          width: '650px',
+          height: '650px',
           pointerEvents: 'none'
-        }} />
-
-        {/* Top Brand Header */}
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '10px',
-              backgroundColor: 'rgba(255, 255, 255, 0.22)',
-              backdropFilter: 'blur(10px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#ffffff',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-            }}>
-              <Shield size={22} strokeWidth={2.4} />
-            </div>
-            <span style={{ fontSize: '22px', fontWeight: 800, letterSpacing: '-0.4px' }}>
-              ninth <span style={{ opacity: 0.85, fontWeight: 500, fontSize: '15px', marginLeft: '4px' }}>/ SENTINEL</span>
-            </span>
-          </div>
-        </div>
-
-        {/* Middle Hero Showcase */}
-        <div style={{ position: 'relative', zIndex: 2, margin: 'auto 0' }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: 'rgba(255, 255, 255, 0.18)',
-            backdropFilter: 'blur(12px)',
-            padding: '8px 18px',
-            borderRadius: '9999px',
-            fontSize: '13px',
-            fontWeight: 600,
-            marginBottom: '24px',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)'
-          }}>
-            <span>Join Us to Build</span>
-            <span style={{ fontSize: '15px' }}>🤩</span>
-          </div>
-
-          <h1 style={{
-            fontSize: '52px',
-            fontWeight: 800,
-            letterSpacing: '-1.5px',
-            lineHeight: 1.1,
-            margin: '0 0 16px 0',
-            color: '#ffffff'
-          }}>
-            Start your Journey
-          </h1>
-
-          <p style={{
-            fontSize: '16px',
-            color: 'rgba(255, 255, 255, 0.88)',
-            margin: 0,
-            lineHeight: 1.6,
-            maxWidth: '460px'
-          }}>
-            Follow these simple steps to set up your operational persona & access the unified cognitive defense grid.
-          </p>
-        </div>
-
-        {/* Bottom Progressive Step Cards */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px',
-          position: 'relative',
-          zIndex: 2
         }}>
-          {/* Step 1: Active White Card */}
-          <div
-            onClick={() => setStepIndex(1)}
-            style={{
-              backgroundColor: stepIndex === 1 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '20px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: '135px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: stepIndex === 1 ? '0 16px 32px rgba(0, 0, 0, 0.18)' : 'none',
-              color: stepIndex === 1 ? '#0f172a' : '#ffffff',
-              transform: stepIndex === 1 ? 'translateY(-3px)' : 'none'
-            }}
-          >
-            <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: stepIndex === 1 ? '#2563eb' : 'rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              fontSize: '12px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              1
-            </div>
+          {/* Capsule 1 */}
+          <div style={{
+            position: 'absolute',
+            top: '80px',
+            left: '60px',
+            width: '420px',
+            height: '80px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.05) 100%)',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            boxShadow: '0 0 40px rgba(16, 185, 129, 0.2)',
+            transform: 'rotate(-45deg)'
+          }} />
 
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 700,
-              lineHeight: 1.35,
-              marginTop: '16px'
-            }}>
-              Register your account
+          {/* Capsule 2 */}
+          <div style={{
+            position: 'absolute',
+            top: '200px',
+            left: '120px',
+            width: '480px',
+            height: '90px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(5, 150, 105, 0.08) 100%)',
+            border: '1px solid rgba(16, 185, 129, 0.4)',
+            boxShadow: '0 0 50px rgba(16, 185, 129, 0.25)',
+            transform: 'rotate(-45deg)'
+          }} />
+
+          {/* Capsule 3 */}
+          <div style={{
+            position: 'absolute',
+            top: '340px',
+            left: '190px',
+            width: '380px',
+            height: '75px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.02) 100%)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            boxShadow: '0 0 35px rgba(16, 185, 129, 0.15)',
+            transform: 'rotate(-45deg)'
+          }} />
+        </div>
+
+        {/* Top Logo Header */}
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{
+            width: '54px',
+            height: '54px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            padding: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 0 25px rgba(59, 130, 246, 0.45)',
+            backdropFilter: 'blur(8px)',
+            flexShrink: 0
+          }}>
+            <img src={logoImg} alt="Bharat-Shield Emblem" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <div>
+            <div style={{ fontSize: '26px', fontWeight: 900, color: '#ffffff', letterSpacing: '1.5px', textTransform: 'uppercase', lineHeight: 1.1 }}>
+              BHARAT-SHIELD
+            </div>
+            <div style={{ fontSize: '11px', color: '#38bdf8', letterSpacing: '2px', fontWeight: 700, marginTop: '4px', fontFamily: 'JetBrains Mono, monospace' }}>
+              COGNITIVE DEFENSE SENTINEL
             </div>
           </div>
+        </div>
 
-          {/* Step 2: Glass Card */}
-          <div
-            onClick={() => setStepIndex(2)}
-            style={{
-              backgroundColor: stepIndex === 2 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '20px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: '135px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              color: stepIndex === 2 ? '#0f172a' : '#ffffff',
-              transform: stepIndex === 2 ? 'translateY(-3px)' : 'none'
-            }}
-          >
-            <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: stepIndex === 2 ? '#2563eb' : 'rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              fontSize: '12px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              2
-            </div>
-
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              lineHeight: 1.35,
-              opacity: stepIndex === 2 ? 1 : 0.9,
-              marginTop: '16px'
-            }}>
-              Set up your profile information
-            </div>
-          </div>
-
-          {/* Step 3: Glass Card */}
-          <div
-            onClick={() => setStepIndex(3)}
-            style={{
-              backgroundColor: stepIndex === 3 ? '#ffffff' : 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '20px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: '135px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              color: stepIndex === 3 ? '#0f172a' : '#ffffff',
-              transform: stepIndex === 3 ? 'translateY(-3px)' : 'none'
-            }}
-          >
-            <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: stepIndex === 3 ? '#2563eb' : 'rgba(255, 255, 255, 0.25)',
-              color: '#ffffff',
-              fontSize: '12px',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              3
-            </div>
-
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              lineHeight: 1.35,
-              opacity: stepIndex === 3 ? 1 : 0.9,
-              marginTop: '16px'
-            }}>
-              Verify your identity through passport/ID
-            </div>
-          </div>
+        {/* Bottom Hero Description */}
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '420px', marginBottom: '20px' }}>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, lineHeight: 1.25, letterSpacing: '-0.8px', marginBottom: '14px' }}>
+            Unified Threat Intelligence & Cognitive Grid
+          </h2>
+          <p style={{ fontSize: '15px', color: '#94a3b8', lineHeight: 1.6, margin: 0 }}>
+            Empowering defense analysts, law enforcement, and risk leaders with real-time AI narrative verification and EVM-sealed court evidence.
+          </p>
         </div>
       </div>
 
-      {/* ================= RIGHT COLUMN: Form Panel (Full Screen Right Half) ================= */}
+      {/* ================= RIGHT COLUMN: Clean White Form ================= */}
       <div style={{
         backgroundColor: '#ffffff',
-        padding: '50px 60px',
+        padding: '60px 80px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#1e293b',
         height: '100%',
-        overflowY: 'auto',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        overflowY: 'auto'
       }}>
-        <div style={{ width: '100%', maxWidth: '440px' }}>
-
+        <div style={{ width: '100%', maxWidth: '420px' }}>
+          
           {/* Header Title & Subtitle */}
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <h2 style={{
+          <div style={{ marginBottom: '24px' }}>
+            <h1 style={{
               fontSize: '32px',
-              fontWeight: 800,
+              fontWeight: 900,
               color: '#0f172a',
               margin: '0 0 6px 0',
-              letterSpacing: '-0.6px'
+              letterSpacing: '-1px'
             }}>
-              {mode === 'join' ? 'Join Us' : 'Welcome Back'}
-            </h2>
-            <div style={{ fontSize: '14px', color: '#64748b' }}>
-              {mode === 'join' ? 'Enter operator credentials or select persona' : 'Authenticate with your clearance token'}
-            </div>
+              Welcome Back!
+            </h1>
+            <p style={{
+              fontSize: '14px',
+              color: '#64748b',
+              margin: 0,
+              lineHeight: 1.5
+            }}>
+              Access your security partition with verified operational credentials.
+            </p>
           </div>
 
-          {/* Error Message Alert */}
-          {errorMsg && (
+          {/* Toast Notification if Account Selected */}
+          {toastMessage && (
+            <div style={{
+              backgroundColor: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              borderRadius: '10px',
+              padding: '10px 14px',
+              marginBottom: '18px',
+              fontSize: '12px',
+              color: '#166534',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              animation: 'fadeInSlide 0.2s ease-out'
+            }}>
+              <Check size={14} style={{ color: '#16a34a', flexShrink: 0 }} />
+              <span>{toastMessage}</span>
+            </div>
+          )}
+
+
+
+          {/* Server / Auth Error Banner */}
+          {serverError && (
             <div style={{
               backgroundColor: '#fef2f2',
               border: '1px solid #fecaca',
               borderRadius: '12px',
-              padding: '12px 16px',
+              padding: '12px 14px',
               marginBottom: '20px',
-              fontSize: '13px',
-              color: '#dc2626',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px'
+              gap: '10px',
+              color: '#991b1b',
+              fontSize: '13px'
             }}>
-              <AlertCircle size={16} />
-              <span>{errorMsg}</span>
+              <AlertCircle size={18} style={{ color: '#ef4444', flexShrink: 0 }} />
+              <span>{serverError}</span>
             </div>
           )}
 
-          {/* Master Password Override Quick Chip */}
-          <div style={{
-            backgroundColor: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            borderRadius: '12px',
-            padding: '10px 14px',
-            marginBottom: '22px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: '12px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontWeight: 600 }}>
-              <Key size={15} />
-              <span>Master Key: <code style={{ fontFamily: 'JetBrains Mono', color: '#2563eb', fontWeight: 700 }}>sentinel@16#</code></span>
-            </div>
-            <button
-              type="button"
-              onClick={handleQuickMasterFill}
-              style={{
-                background: '#2563eb',
-                border: 'none',
-                color: '#ffffff',
-                padding: '4px 12px',
-                borderRadius: '8px',
-                fontSize: '11px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(37, 99, 235, 0.25)'
-              }}
-            >
-              Autofill
-            </button>
-          </div>
-
-          {/* Authentication Form */}
+          {/* FORM */}
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-
-            {/* Phone Number / Official ID Input */}
+            
+            {/* EMAIL INPUT */}
             <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                Phone number
-              </label>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '14px',
-                padding: '12px 16px',
-                gap: '12px',
-                transition: 'all 0.15s ease'
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#1e293b',
+                marginBottom: '6px'
               }}>
-                <span style={{ fontSize: '16px', userSelect: 'none' }}>🇦🇲</span>
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+374 0000 00 00"
-                  style={{
-                    border: 'none',
-                    backgroundColor: 'transparent',
-                    outline: 'none',
-                    width: '100%',
-                    fontSize: '14px',
-                    color: '#0f172a',
-                    fontWeight: 500
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Full Name & Username Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-              <div>
-                <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Juliette Karapetyan"
-                  style={{
-                    width: '100%',
-                    backgroundColor: '#f8fafc',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '14px',
-                    padding: '12px 16px',
-                    fontSize: '14px',
-                    color: '#0f172a',
-                    fontWeight: 500,
-                    outline: 'none',
-                    boxSizing: 'border-box'
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                  Username
-                </label>
-                <div style={{
+                Work Email
+              </label>
+              
+              <div 
+                className="input-box"
+                style={{
                   display: 'flex',
                   alignItems: 'center',
-                  backgroundColor: '#f8fafc',
-                  border: '1px solid #e2e8f0',
+                  border: errors.email && touched.email ? '1px solid #ef4444' : '1px solid #cbd5e1',
                   borderRadius: '14px',
-                  padding: '12px 16px',
-                  position: 'relative'
-                }}>
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="julietux"
-                    style={{
-                      border: 'none',
-                      backgroundColor: 'transparent',
-                      outline: 'none',
-                      width: '100%',
-                      fontSize: '14px',
-                      color: '#0f172a',
-                      fontWeight: 500
-                    }}
-                  />
-                  <Check size={18} style={{ color: '#10b981', flexShrink: 0 }} />
+                  backgroundColor: '#ffffff',
+                  padding: '0 16px',
+                  height: '48px',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => handleEmailChange(e.target.value)}
+                  onBlur={() => handleBlur('email')}
+                  placeholder="name@organization.gov.in"
+                  disabled={isSubmitting}
+                  style={{
+                    width: '100%',
+                    border: 'none',
+                    outline: 'none',
+                    fontSize: '14px',
+                    color: '#0f172a',
+                    backgroundColor: 'transparent'
+                  }}
+                />
+              </div>
+
+              {errors.email && touched.email && (
+                <div style={{ fontSize: '11px', color: '#ef4444', marginTop: '4px', fontWeight: 500 }}>
+                  {errors.email}
                 </div>
-              </div>
+              )}
             </div>
 
-            {/* Operational Persona Switcher */}
+            {/* PASSWORD INPUT */}
             <div>
-              <label style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: '8px', letterSpacing: '0.5px' }}>
-                Operational Clearance Persona
-              </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
-                {[
-                  { key: ROLES.SYSTEM_ADMIN, label: 'Root Admin', color: '#10b981', icon: ShieldCheck },
-                  { key: ROLES.INVESTIGATION_BUREAU, label: 'IB / LEA', color: '#ef4444', icon: ShieldCheck },
-                  { key: ROLES.CORPORATE_ENTERPRISE, label: 'Adani Risk', color: '#f59e0b', icon: Building2 },
-                  { key: ROLES.JOURNALIST_MEDIA, label: 'Press Desk', color: '#3b82f6', icon: Newspaper }
-                ].map(p => {
-                  const isSelected = selectedRole === p.key;
-                  const Icon = p.icon;
-                  return (
-                    <button
-                      type="button"
-                      key={p.key}
-                      onClick={() => handleSelectRole(p.key)}
-                      style={{
-                        padding: '9px 6px',
-                        borderRadius: '10px',
-                        border: isSelected ? `2px solid ${p.color}` : '1px solid #e2e8f0',
-                        backgroundColor: isSelected ? `${p.color}12` : '#f8fafc',
-                        color: isSelected ? p.color : '#64748b',
-                        fontSize: '12px',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
-                        transition: 'all 0.15s ease'
-                      }}
-                    >
-                      <Icon size={14} />
-                      <span>{p.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label style={{ fontSize: '13px', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '6px' }}>
-                Password
-              </label>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '14px',
-                padding: '12px 16px',
-                position: 'relative'
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#1e293b',
+                marginBottom: '6px'
               }}>
+                Operational Password
+              </label>
+              
+              <div 
+                className="input-box"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: errors.password && touched.password ? '1px solid #ef4444' : '1px solid #cbd5e1',
+                  borderRadius: '14px',
+                  backgroundColor: '#ffffff',
+                  padding: '0 16px',
+                  height: '48px',
+                  transition: 'all 0.15s ease'
+                }}
+              >
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••••••"
+                  onChange={(e) => handlePasswordChange(e.target.value)}
+                  onBlur={() => handleBlur('password')}
+                  placeholder="••••••••"
+                  disabled={isSubmitting}
                   style={{
-                    border: 'none',
-                    backgroundColor: 'transparent',
-                    outline: 'none',
                     width: '100%',
-                    fontSize: '15px',
+                    border: 'none',
+                    outline: 'none',
+                    fontSize: '14px',
                     color: '#0f172a',
-                    letterSpacing: showPassword ? 'normal' : '2px'
+                    backgroundColor: 'transparent'
                   }}
                 />
                 <button
@@ -578,9 +688,9 @@ export default function LoginView() {
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: '#94a3b8',
+                    color: '#64748b',
                     cursor: 'pointer',
-                    padding: 0,
+                    padding: '4px',
                     display: 'flex',
                     alignItems: 'center'
                   }}
@@ -588,71 +698,67 @@ export default function LoginView() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '6px', lineHeight: 1.4 }}>
-                At least 12 characters, no more than 20 characters.<br />
-                Uppercase letters, lowercase letters, numbers, and symbols.
-              </div>
-            </div>
 
-            {/* Continue Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              style={{
-                backgroundColor: '#2563eb',
-                backgroundImage: 'linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '14px',
-                padding: '15px',
-                fontSize: '15px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                boxShadow: '0 8px 25px rgba(37, 99, 235, 0.4)',
-                marginTop: '8px',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              {isSubmitting ? 'Authenticating Sentinel Grid...' : 'Continue'}
-            </button>
-
-            {/* Mode Switcher */}
-            <div style={{ textAlign: 'center', fontSize: '13px', color: '#64748b' }}>
-              {mode === 'join' ? (
-                <>
-                  Already have an account?{' '}
-                  <span
-                    onClick={() => setMode('login')}
-                    style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>
-                    Log in
-                  </span>
-                </>
-              ) : (
-                <>
-                  Need to configure a new operator?{' '}
-                  <span
-                    onClick={() => setMode('join')}
-                    style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>
-                    Join Us
-                  </span>
-                </>
+              {errors.password && touched.password && (
+                <div style={{ fontSize: '11px', color: '#ef4444', marginTop: '4px', fontWeight: 500 }}>
+                  {errors.password}
+                </div>
               )}
             </div>
 
-          </form>
+            {/* REMEMBER ME */}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: '#475569' }}>
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  style={{ width: '16px', height: '16px', accentColor: '#ef4444' }}
+                />
+                <span>Persist operational session</span>
+              </label>
+            </div>
 
-          {/* Bottom Legal Disclaimer */}
-          <div style={{
-            fontSize: '11px',
-            color: '#94a3b8',
-            textAlign: 'center',
-            lineHeight: 1.5,
-            marginTop: '28px'
-          }}>
-            By signing up I confirm that I carefully have read and agree to the Ninth{' '}
-            <span style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>Privacy Policy</span> and{' '}
-            <span style={{ color: '#2563eb', fontWeight: 600, cursor: 'pointer' }}>Terms of Service</span>.
-          </div>
+            {/* SIGN IN BUTTON */}
+            <button
+              type="submit"
+              disabled={isButtonDisabled}
+              className="btn-sign-in"
+              style={{
+                width: '100%',
+                padding: '14px',
+                borderRadius: '14px',
+                border: 'none',
+                backgroundColor: isButtonDisabled ? '#94a3b8' : '#ef4444',
+                color: '#ffffff',
+                fontSize: '14px',
+                fontWeight: 800,
+                letterSpacing: '0.8px',
+                cursor: isButtonDisabled ? 'not-allowed' : 'pointer',
+                boxShadow: isButtonDisabled ? 'none' : '0 4px 14px rgba(239, 68, 68, 0.35)',
+                transition: 'all 0.2s ease',
+                marginTop: '4px'
+              }}
+            >
+              {isSubmitting ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid #ffffff',
+                    borderTopColor: 'transparent',
+                    borderRadius: '50%',
+                    display: 'inline-block',
+                    animation: 'spin 0.8s linear infinite'
+                  }} />
+                  <span>AUTHENTICATING SENTINEL...</span>
+                </div>
+              ) : (
+                'SIGN IN TO SENTINEL'
+              )}
+            </button>
+
+          </form>
 
         </div>
       </div>

@@ -10,8 +10,8 @@ router = APIRouter(prefix="/api/auth", tags=["Authentication & RBAC"])
 USER_PROFILES = {
     "system_admin": {
         "id": "user_admin_000",
-        "name": "Commander Arvind Sharma",
-        "email": "a.sharma@sentinel.gov.in",
+        "name": "Naman Saini (Super Admin)",
+        "email": "saininaman643@gmail.com",
         "role": "system_admin",
         "role_title": "Super Administrator / NCCC Operations Command",
         "organization": "National Cyber Coordination Centre (NCCC) & MoD",
@@ -19,7 +19,7 @@ USER_PROFILES = {
         "clearance_level": 6,
         "badge_color": "#10b981",
         "badge_text": "SUPREME ADMIN // ROOT",
-        "avatar_initials": "SA",
+        "avatar_initials": "NS",
         "allowed_navs": [
             "overview", "live", "tipline", "campaigns", "narratives", 
             "threats", "analyst-response", "report-generator", "evidence", "audit", "admin", "settings"
@@ -70,17 +70,17 @@ USER_PROFILES = {
         "scope_title": "National Security & Inter-Agency Threat Matrix"
     },
     "corporate_enterprise": {
-        "id": "user_adani_007",
+        "id": "user_tata_007",
         "name": "Rajesh Singhania",
-        "email": "ciso.defense@adani.com",
+        "email": "ciso.defense@tata.com",
         "role": "corporate_enterprise",
-        "role_title": "Adani Group — Brand Defense & Market Risk",
-        "organization": "Adani Corporate Security & Threat Intelligence",
+        "role_title": "Tata Sons — Brand Defense & Market Risk",
+        "organization": "Tata Corporate Security & Threat Intelligence",
         "clearance": "Enterprise Tier-1 (Corporate Risk & Security)",
         "clearance_level": 3,
         "badge_color": "#f59e0b",
         "badge_text": "ENTERPRISE RISK",
-        "avatar_initials": "AG",
+        "avatar_initials": "TG",
         "allowed_navs": [
             "overview", "live", "campaigns", "narratives", 
             "threats", "analyst-response", "report-generator", "evidence", "admin", "settings"
@@ -149,7 +149,7 @@ AUDIT_LOGS = [
         "actor": "Rajesh Singhania",
         "role": "corporate_enterprise",
         "action": "SEBI_DISCLOSURE_DRAFTED",
-        "target": "Adani Stock Volatility Telemetry",
+        "target": "Tata Motors & TCS Stock Volatility Telemetry",
         "status": "AUTHORIZED",
         "hash": "0x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
     }
@@ -163,6 +163,8 @@ class AuditLogEntry(BaseModel):
     action: str
     target: str
     details: Optional[Dict[str, Any]] = None
+
+from database.db import is_db_available, insert_audit_entry, get_audit_ledger_from_db
 
 @router.get("/roles")
 def get_all_roles():
@@ -184,17 +186,32 @@ def switch_role(req: RoleSwitchRequest):
         raise HTTPException(status_code=400, detail=f"Invalid target role: {req.target_role}")
 
     profile = USER_PROFILES[req.target_role]
+    audit_id = f"AUD-{str(uuid.uuid4())[:8].upper()}"
+    tx_hash = f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
+    
     log_entry = {
-        "id": f"AUD-{str(uuid.uuid4())[:8].upper()}",
+        "id": audit_id,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "actor": profile["name"],
         "role": profile["role"],
         "action": f"ROLE_SWITCH_TO_{profile['role'].upper()}",
         "target": profile["clearance"],
         "status": "AUTHORIZED",
-        "hash": f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
+        "hash": tx_hash
     }
     AUDIT_LOGS.insert(0, log_entry)
+
+    # Persist in DB if available
+    if is_db_available():
+        insert_audit_entry(
+            package_id=audit_id,
+            campaign_id=None,
+            sha256_hash=tx_hash,
+            event_type="ROLE_SWITCH",
+            details=f"Switched persona to {profile['name']} ({profile['role']})",
+            analyst_id=profile["id"],
+            role=profile["role"]
+        )
 
     return {
         "status": "success",
@@ -218,10 +235,29 @@ def get_permissions_matrix():
 
 @router.get("/audit-log")
 def get_audit_log(x_user_role: Optional[str] = Header(default="investigation_bureau"), role: Optional[str] = Query(default=None)):
-    """Return cryptographic RBAC audit logs."""
+    """Return cryptographic RBAC audit logs from PostgreSQL or in-memory fallback."""
     active_role = role or x_user_role or "investigation_bureau"
-    # Full audit log visible to IB; Corporate and Media see their own actions
-    if active_role == "investigation_bureau":
+    
+    if is_db_available():
+        db_logs = get_audit_ledger_from_db(limit=50, role=active_role)
+        if db_logs:
+            # Map DB format to UI expectations
+            return [
+                {
+                    "id": f"AUD-{log['package_id'][-8:]}" if log.get("package_id") else f"AUD-{log['id']}",
+                    "timestamp": log["recorded_at"].isoformat() if hasattr(log["recorded_at"], "isoformat") else str(log["recorded_at"]),
+                    "actor": log.get("analyst_id") or "OPERATOR",
+                    "role": log.get("role") or "investigation_bureau",
+                    "action": log.get("event_type") or "AUDIT_EVENT",
+                    "target": log.get("campaign_id") or "Sentinel Vault",
+                    "status": "AUTHORIZED",
+                    "hash": log.get("sha256_hash") or f"0x{uuid.uuid4().hex}"
+                }
+                for log in db_logs
+            ]
+
+    # Full audit log visible to IB & admin; Corporate and Media see their own actions
+    if active_role in ["investigation_bureau", "system_admin"]:
         return AUDIT_LOGS
     else:
         return [log for log in AUDIT_LOGS if log["role"] == active_role]
@@ -231,9 +267,11 @@ def create_audit_log(entry: AuditLogEntry, x_user_role: Optional[str] = Header(d
     """Record an RBAC or operational action into the tamper-evident audit trail."""
     active_role = x_user_role if x_user_role in USER_PROFILES else "investigation_bureau"
     profile = USER_PROFILES[active_role]
+    audit_id = f"AUD-{str(uuid.uuid4())[:8].upper()}"
+    tx_hash = f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
 
     log_item = {
-        "id": f"AUD-{str(uuid.uuid4())[:8].upper()}",
+        "id": audit_id,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "actor": profile["name"],
         "role": profile["role"],
@@ -241,7 +279,20 @@ def create_audit_log(entry: AuditLogEntry, x_user_role: Optional[str] = Header(d
         "target": entry.target,
         "status": "AUTHORIZED",
         "details": entry.details or {},
-        "hash": f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:16]}"
+        "hash": tx_hash
     }
     AUDIT_LOGS.insert(0, log_item)
+
+    if is_db_available():
+        insert_audit_entry(
+            package_id=audit_id,
+            campaign_id=None,
+            sha256_hash=tx_hash,
+            event_type=entry.action,
+            details=json.dumps(entry.details or {}),
+            analyst_id=profile["id"],
+            role=profile["role"]
+        )
+
     return {"status": "recorded", "entry": log_item}
+

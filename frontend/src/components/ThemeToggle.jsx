@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Sun, Moon, Monitor, Check } from 'lucide-react';
 
 const themes = [
-  { id: 'dark',   label: 'Dark Mode',    icon: Moon,    color: '#818cf8' },
-  { id: 'light',  label: 'Light Mode',   icon: Sun,     color: '#f59e0b' },
+  { id: 'dark', label: 'Dark Mode', icon: Moon, color: '#818cf8' },
+  { id: 'light', label: 'Light Mode', icon: Sun, color: '#f59e0b' },
   { id: 'system', label: 'System Theme', icon: Monitor, color: '#10b981' },
 ];
 
@@ -54,7 +54,7 @@ export default function ThemeToggle({ theme, setTheme }) {
           whiteSpace: 'nowrap',
         }}
         onFocus={(e) => (e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.25)')}
-        onBlur={(e)  => (e.currentTarget.style.boxShadow = 'var(--shadow-sm)')}
+        onBlur={(e) => (e.currentTarget.style.boxShadow = 'var(--shadow-sm)')}
         onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--border-light)')}
         onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-color)')}
       >

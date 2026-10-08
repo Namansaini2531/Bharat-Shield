@@ -384,10 +384,6 @@ CONNECTORS = [
         "id": "conn_news_04",
         "name": "Multilingual Regional RSS & Web Scraper",
         "type": "scheduled_crawler",
-        "status": "active",
-        "endpoint": "http://127.0.0.1:8080/scraper/feed",
-        "events_per_min": 94,
-        "error_rate": "0.00%",
         "uptime": "99.10%",
         "latency_ms": 68,
         "used_by": ["National Press", "Adani Group"]

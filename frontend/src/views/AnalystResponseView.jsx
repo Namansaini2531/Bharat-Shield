@@ -43,14 +43,14 @@ export default function AnalystResponseView({ onNavigate }) {
         threatColor: '#10b981',
         steps: [
           { num: 1, text: "Synchronize inter-agency IO threat telemetry across all active zones", subtitle: "Correlate signals from NCCC, CERT-In, and state cyber command centers." },
-          { num: 2, text: "Execute Section 69A IT Act emergency takedown protocols", subtitle: "Authorize fast-track blocking notices for critical malicious hosting infrastructure." },
+          { num: 2, text: "Execute rapid incident containment & threat mitigation protocols", subtitle: "Authorize fast-track mitigation notices for critical malicious hosting infrastructure." },
           { num: 3, text: "Inspect and tune real-time AI vector similarity cluster parameters", subtitle: "Optimize MiniLM 384-dimensional cosine distance thresholds." },
           { num: 4, text: "Anchor cryptographic evidence packages on EVM Polygon notary ledger", subtitle: "Seal SHA-256 canonical manifests with multi-sig governance keys." },
           { num: 5, text: "Compile inter-agency strategic cyber threat briefings", subtitle: "Publish consolidated executive dossiers for Cabinet Security Committee." },
           { num: 6, text: "Monitor 24/7 autonomous botnet mutation detection grid", subtitle: "Maintain automated sentinel alerts until coordinated swarm activity subsides." }
         ],
         actions: [
-          { label: 'Execute Sec 69A Takedown', actionType: 'sec69a_takedown', icon: ShieldAlert, primary: true, isDanger: true },
+          { label: 'Execute Threat Remediation', actionType: 'sec69a_takedown', icon: ShieldAlert, primary: true, isDanger: true },
           { label: 'Notarize Evidence Ledger', actionType: 'blockchain_notarize', icon: Lock, primary: false, isDanger: false },
           { label: 'Generate Root Intelligence Dossier', actionType: 'report', icon: FileText, primary: false, isDanger: false }
         ]
@@ -59,17 +59,17 @@ export default function AnalystResponseView({ onNavigate }) {
 
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return {
-        campaignId: 'CMP-ADANI-009',
-        campaignName: 'Mundra Port & Liquidity Disinformation Operation',
+        campaignId: 'CMP-TATA-009',
+        campaignName: 'Tata Motors EV & TCS Disinformation Operation',
         threatLevel: 'CRITICAL BRAND THREAT',
         threatColor: '#f59e0b',
         steps: [
-          { num: 1, text: "Audit financial statements against fraudulent default claims", subtitle: "Compare quarterly balance sheet metrics with circulated Telegram rumors." },
+          { num: 1, text: "Audit technical telemetry against fraudulent battery defect claims", subtitle: "Verify BMS telemetry and safety certifications against viral Instagram Reels." },
           { num: 2, text: "Forensic acoustic check on alleged executive voice notes", subtitle: "Run deepfake voice synthesis classifier against authentic voice signatures." },
           { num: 3, text: "Track market short-seller correlation on stock exchanges", subtitle: "Cross-examine volume spike timestamps with social bot burst periods." },
           { num: 4, text: "Compile defamation evidence dossier for legal counsel", subtitle: "Preserve immutable SHA-256 snapshots of offending influencer accounts." },
           { num: 5, text: "Draft BSE / NSE Exchange clarification disclosure", subtitle: "Formulate regulatory clarification statement for market integrity." },
-          { num: 6, text: "Continuous sentiment & stock volatility monitoring", subtitle: "Maintain 24/7 brand defense radar until negative sentiment normalizes." }
+          { num: 6, text: "Continuous sentiment & brand defense monitoring", subtitle: "Maintain 24/7 brand defense radar until negative sentiment normalizes." }
         ],
         actions: [
           { label: 'Dispatch BSE/NSE Clarification', actionType: 'bse_clarification', icon: Share2, primary: true, isDanger: false },
@@ -111,12 +111,12 @@ export default function AnalystResponseView({ onNavigate }) {
         { num: 1, text: "Verify threat indicators with CERT-In & Intelligence grid", subtitle: "Correlate IP address nodes with known foreign APT infrastructure." },
         { num: 2, text: "Monitor cross-border botnet burst propagation in real-time", subtitle: "Cluster 36 coordinated proxy networks operating across Telegram and X." },
         { num: 3, text: "Analyze linguistic mutation tree across border districts", subtitle: "Detect systematic dialect shifts designed to induce panic." },
-        { num: 4, text: "Verify cryptographic SHA-256 seal on evidence repository", subtitle: "Ensure evidence chain integrity for judicial submission and Section 69A order." },
-        { num: 5, text: "Issue Section 69A IT Act emergency takedown direction", subtitle: "Transmit urgent takedown notice to intermediary compliance officers." },
+        { num: 4, text: "Verify cryptographic SHA-256 seal on evidence repository", subtitle: "Ensure evidence chain integrity for judicial submission and compliance orders." },
+        { num: 5, text: "Dispatch Inter-Agency Counter-Measure Directive", subtitle: "Transmit urgent containment notice to intermediary compliance officers." },
         { num: 6, text: "Maintain active surveillance & inter-agency briefing", subtitle: "Ongoing monitoring until threat network is fully neutralized." }
       ],
       actions: [
-        { label: 'Issue Section 69A IT Act Takedown', actionType: 'sec69a_takedown', icon: ShieldAlert, primary: true, isDanger: true },
+        { label: 'Dispatch Incident Response', actionType: 'sec69a_takedown', icon: ShieldAlert, primary: true, isDanger: true },
         { label: 'Seal EVM Court Evidence Package', actionType: 'blockchain_notarize', icon: FileCheck2, primary: false, isDanger: false },
         { label: 'Generate Classified Inter-Agency Brief', actionType: 'report', icon: FileText, primary: false, isDanger: false }
       ]

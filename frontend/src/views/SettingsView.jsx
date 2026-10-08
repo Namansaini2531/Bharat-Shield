@@ -28,7 +28,8 @@ import { useAuth, ROLES } from '../context/AuthContext';
 
 export default function SettingsView() {
   const { currentRole, currentUser, switchRole, setIsAuthModalOpen, allProfiles } = useAuth();
-  const [activeTab, setActiveTab] = useState('rbac');
+  const isAdmin = currentRole === ROLES.SYSTEM_ADMIN;
+  const [activeTab, setActiveTab] = useState(isAdmin ? 'rbac' : 'profile');
   const [saved, setSaved] = useState(false);
 
   // Form States
@@ -46,7 +47,7 @@ export default function SettingsView() {
   };
 
   const permissionsList = [
-    { key: 'canIssueSec69A', label: 'Section 69A IT Act Emergency Takedowns' },
+    { key: 'canIssueSec69A', label: 'Rapid Incident Containment & Counter-Measures' },
     { key: 'canAccessClassifiedIntel', label: 'Raw Classified Telemetry & Intelligence' },
     { key: 'canViewUnmaskedMetadata', label: 'Unmasked Submitter Metadata & IP Traces' },
     { key: 'canGenerateLegalDossier', label: 'Judicial Evidence Dossier Compilation' },
@@ -58,31 +59,51 @@ export default function SettingsView() {
     { key: 'canViewAuditLedger', label: 'Immutable Blockchain Audit Ledger Access' }
   ];
 
+  const adminTabs = [
+    { id: 'rbac', label: 'RBAC & Clearances', icon: Fingerprint },
+    { id: 'general', label: 'Threat Engine', icon: Sliders },
+    { id: 'blockchain', label: 'EVM & Custody', icon: Shield },
+    { id: 'ingestion', label: 'Ingestion Feeds', icon: Radio },
+    { id: 'api', label: 'API Keys & Webhooks', icon: Key },
+    { id: 'storage', label: 'Data Retention', icon: Database }
+  ];
+
+  const userTabs = [
+    { id: 'profile', label: 'Identity & Clearance', icon: Fingerprint },
+    { id: 'privileges', label: 'Assigned Privileges', icon: ShieldCheck }
+  ];
+
+  const currentTabs = isAdmin ? adminTabs : userTabs;
+
   return (
     <div>
       {/* Workspace Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase' }}>
-            SYSTEM & IDENTITY ADMINISTRATION
+            {isAdmin ? 'SYSTEM & IDENTITY ADMINISTRATION' : 'USER & CLEARANCE PROFILE'}
           </div>
           <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', marginTop: '4px', letterSpacing: '-0.5px' }}>
-            Cluster & Security Settings
+            {isAdmin ? 'Cluster & Security Settings' : 'Identity & Clearance Settings'}
           </h2>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            Configure RBAC clearances, threat detection algorithms, EVM blockchain notary, and ingestion telemetry.
+            {isAdmin 
+              ? 'Configure RBAC clearances, threat detection algorithms, EVM blockchain notary, and ingestion telemetry.'
+              : 'View your verified security clearance, authorized operational privileges, and identity tokens.'}
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
-            onClick={handleSave}
-            className="bs-button bs-button-primary" 
-            style={{ gap: '8px', padding: '9px 18px', fontSize: '13px' }}>
-            {saved ? <Check size={16} /> : <Save size={16} />}
-            <span>{saved ? 'Saved Configuration' : 'Save Changes'}</span>
-          </button>
-        </div>
+        {isAdmin && (
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button 
+              onClick={handleSave}
+              className="bs-button bs-button-primary" 
+              style={{ gap: '8px', padding: '9px 18px', fontSize: '13px' }}>
+              {saved ? <Check size={16} /> : <Save size={16} />}
+              <span>{saved ? 'Saved Configuration' : 'Save Changes'}</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Main Grid: Settings Sidebar Tabs + Active Panel */}
@@ -90,14 +111,7 @@ export default function SettingsView() {
         
         {/* Settings Navigation Tabs */}
         <div className="bs-card" style={{ padding: '12px', height: 'fit-content', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          {[
-            { id: 'rbac', label: 'RBAC & Clearances', icon: Fingerprint },
-            { id: 'general', label: 'Threat Engine', icon: Sliders },
-            { id: 'blockchain', label: 'EVM & Custody', icon: Shield },
-            { id: 'ingestion', label: 'Ingestion Feeds', icon: Radio },
-            { id: 'api', label: 'API Keys & Webhooks', icon: Key },
-            { id: 'storage', label: 'Data Retention', icon: Database }
-          ].map(tab => {
+          {currentTabs.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             return (
@@ -131,8 +145,129 @@ export default function SettingsView() {
         {/* Active Settings Panel */}
         <div>
           
-          {/* Tab 0: RBAC & Clearances */}
-          {activeTab === 'rbac' && (
+          {/* Non-Admin Profile Tab */}
+          {!isAdmin && activeTab === 'profile' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className="bs-card" style={{ padding: '24px', borderLeft: `4px solid ${currentUser?.badgeColor || '#10b981'}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+                  <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <div style={{
+                      width: '54px',
+                      height: '54px',
+                      borderRadius: '12px',
+                      backgroundColor: `${currentUser?.badgeColor || '#10b981'}20`,
+                      border: `1px solid ${currentUser?.badgeColor || '#10b981'}60`,
+                      color: currentUser?.badgeColor || '#10b981',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '18px',
+                      fontWeight: 800
+                    }}>
+                      {currentUser?.avatarInitials || 'TG'}
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-heading)', margin: 0 }}>
+                          {currentUser?.name}
+                        </h3>
+                        <span style={{
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          backgroundColor: `${currentUser?.badgeColor || '#10b981'}20`,
+                          color: currentUser?.badgeColor || '#10b981'
+                        }}>
+                          {currentUser?.badgeText}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                        {currentUser?.roleTitle}
+                      </div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', fontFamily: 'JetBrains Mono' }}>
+                        {currentUser?.email} • ID: {currentUser?.id} • {currentUser?.organization}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setIsAuthModalOpen(true)}
+                    className="bs-button bs-button-primary"
+                    style={{ fontSize: '12px', padding: '8px 16px', gap: '6px' }}
+                  >
+                    <RefreshCw size={14} />
+                    <span>Switch Active Persona</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Clearance Governance Notice */}
+              <div className="bs-card" style={{ padding: '20px', backgroundColor: 'var(--inner-box-bg)' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <Lock size={20} style={{ color: 'var(--accent-blue)', flexShrink: 0, marginTop: '2px' }} />
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-heading)' }}>
+                      Centrally Managed RBAC Authority
+                    </div>
+                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.5 }}>
+                      Global tenant policies, detection thresholds, API keys, and containment escalation privileges are centrally controlled by the Super Administrator (NCCC).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Non-Admin Assigned Privileges Tab */}
+          {!isAdmin && activeTab === 'privileges' && (
+            <div className="bs-card" style={{ padding: '24px' }}>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '4px' }}>
+                Operational Clearances & Permitted Capabilities
+              </div>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
+                Capabilities currently provisioned for {currentUser?.roleTitle}.
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {permissionsList.map((perm) => {
+                  const hasFeature = currentUser?.features?.[perm.key] ?? false;
+                  return (
+                    <div 
+                      key={perm.key} 
+                      style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+                        padding: '12px 16px',
+                        borderRadius: '8px',
+                        backgroundColor: hasFeature ? 'rgba(16, 185, 129, 0.06)' : 'var(--inner-box-bg)',
+                        border: '1px solid',
+                        borderColor: hasFeature ? 'rgba(16, 185, 129, 0.25)' : 'var(--border-color)'
+                      }}
+                    >
+                      <span style={{ fontSize: '13px', fontWeight: hasFeature ? 600 : 400, color: hasFeature ? 'var(--text-heading)' : 'var(--text-muted)' }}>
+                        {perm.label}
+                      </span>
+                      <span style={{
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        padding: '3px 8px',
+                        borderRadius: '4px',
+                        backgroundColor: hasFeature ? 'rgba(16, 185, 129, 0.15)' : 'rgba(148, 163, 184, 0.1)',
+                        color: hasFeature ? '#10b981' : 'var(--text-muted)'
+                      }}>
+                        {hasFeature ? 'AUTHORIZED' : 'RESTRICTED'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Admin Tab 0: RBAC & Clearances */}
+          {isAdmin && activeTab === 'rbac' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               
               {/* Active Identity Card */}
@@ -205,7 +340,7 @@ export default function SettingsView() {
                       <tr style={{ borderBottom: '1px solid var(--border-color)', textAlign: 'left', color: 'var(--text-muted)' }}>
                         <th style={{ padding: '10px 12px' }}>Operational Capability</th>
                         <th style={{ padding: '10px 12px', color: '#ef4444' }}>IB / LEA (Gov)</th>
-                        <th style={{ padding: '10px 12px', color: '#f59e0b' }}>Adani (Enterprise)</th>
+                        <th style={{ padding: '10px 12px', color: '#f59e0b' }}>Tata (Enterprise)</th>
                         <th style={{ padding: '10px 12px', color: '#3b82f6' }}>Press Consortium</th>
                       </tr>
                     </thead>

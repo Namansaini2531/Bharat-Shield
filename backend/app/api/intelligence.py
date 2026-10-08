@@ -1,18 +1,40 @@
-from fastapi import APIRouter, HTTPException, Query, Header, Body
-from backend.app.models.schemas import Campaign, EvidencePackage
-from ai.clustering.clusterer import CampaignClusterer
-from blockchain.evidence.hasher import EvidenceHasher
 import json
-from pathlib import Path
-from collections import Counter
-from typing import Optional, Dict, Any, List
-from datetime import datetime, timezone
+import logging
 import uuid
+from collections import Counter
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+from fastapi import APIRouter, Body, Header, HTTPException, Query
+
+from ai.clustering.clusterer import CampaignClusterer
+from ai.embeddings import MultilingualEmbedder
+from ai.pipeline import BharatShieldIntelligencePipeline
+from backend.app.models.schemas import Campaign, EvidencePackage
+from blockchain.evidence.hasher import EvidenceHasher
+from database.db import (
+    get_audit_ledger_from_db,
+    get_campaign_by_id_from_db,
+    get_campaigns_from_db,
+    get_db_overview_stats,
+    get_recent_signals,
+    insert_audit_entry,
+    insert_signal,
+    is_db_available,
+    search_similar_signals,
+    upsert_campaign,
+)
+
+logger = logging.getLogger("bharat_shield.intelligence")
 
 BASE_DIR = Path(__file__).resolve().parents[3]
 DATA_FILE = BASE_DIR / "data" / "synthetic" / "campaign_data.json"
 
 router = APIRouter(prefix="/api", tags=["Intelligence"])
+
+# In-memory runtime fallback storage for signals and audit records
+IN_MEMORY_SIGNALS: List[Dict[str, Any]] = []
 
 # Role-specific campaign registries
 ROLE_CAMPAIGNS = {
@@ -68,51 +90,51 @@ ROLE_CAMPAIGNS = {
     ],
     "corporate_enterprise": [
         {
-            "id": "CMP-ADANI-009",
-            "title": "Coordinated Short-Seller Disinformation Swarm (Port Operations)",
+            "id": "CMP-TATA-009",
+            "title": "Coordinated Disinformation Swarm (Tata Motors EV & TCS)",
             "status": "ACTIVE_HIGH",
-            "category": "Market Manipulation & Short Sabotage",
+            "category": "Market Manipulation & Brand Sabotage",
             "threat_score": 91,
             "confidence": "HIGH",
             "primary_language": "en",
-            "languages_detected": ["English", "Gujarati", "Hindi"],
-            "platforms": ["twitter", "telegram", "news"],
+            "languages_detected": ["English", "Hindi", "Marathi"],
+            "platforms": ["twitter", "telegram", "instagram"],
             "post_count": 1280,
             "cross_platform_sync": 93,
-            "target": "Adani Ports & SEZ (APSEZ) Share Price & ESG Ratings",
-            "summary": "Synchronized release of fabricated environmental and customs non-compliance documents on shadow financial Telegram channels prior to market opening.",
+            "target": "Tata Motors & TCS Share Price & Brand Trust",
+            "summary": "Synchronized release of fabricated EV battery defect videos and counterfeit hiring freeze notices on shadow Telegram channels prior to market opening.",
             "authorized_actions": ["bse_clarification", "executive_briefing", "defamation_vault"]
         },
         {
-            "id": "CMP-ADANI-014",
-            "title": "Deepfake Voice Note Attack on Executive Financial Solvency",
+            "id": "CMP-TATA-014",
+            "title": "Deepfake Voice Note Attack on Executive Leadership",
             "status": "FORENSIC_TRIAGE",
             "category": "Executive Deepfake Phishing & Defamation",
             "threat_score": 87,
             "confidence": "HIGH",
             "primary_language": "hi",
             "languages_detected": ["Hindi", "English"],
-            "platforms": ["whatsapp", "telegram"],
+            "platforms": ["whatsapp", "telegram", "instagram"],
             "post_count": 520,
             "cross_platform_sync": 88,
-            "target": "Adani Enterprises Leadership & Institutional Bondholders",
-            "summary": "AI voice synthesis impersonating Group CFO discussing fictional credit default swaps and asset revaluations.",
+            "target": "Tata Sons Leadership & Air India Operational Solvency",
+            "summary": "AI voice synthesis impersonating aviation management and Group CFO discussing fictional credit default swaps.",
             "authorized_actions": ["bse_clarification", "defamation_vault"]
         },
         {
-            "id": "CMP-CORP-022",
-            "title": "Solar & Green Energy Supply Chain Malign Smear",
+            "id": "CMP-TATA-022",
+            "title": "Tata Steel Environmental ESG Fabrications",
             "status": "MONITORING",
             "category": "Commercial ESG Sabotage",
             "threat_score": 73,
             "confidence": "MEDIUM",
             "primary_language": "en",
-            "languages_detected": ["English", "French"],
-            "platforms": ["twitter", "news"],
+            "languages_detected": ["English", "Hindi"],
+            "platforms": ["twitter", "instagram"],
             "post_count": 310,
             "cross_platform_sync": 77,
-            "target": "Adani Green Energy Global Sovereign Funds",
-            "summary": "Cross-border botnet weaponizing outdated dispute filings to trigger automated ESG risk rating downgrades.",
+            "target": "Tata Steel Global ESG Ratings & Sovereign Funds",
+            "summary": "Cross-border botnet weaponizing counterfeit regulatory notices to trigger automated ESG risk rating downgrades.",
             "authorized_actions": ["executive_briefing"]
         }
     ],
@@ -165,26 +187,151 @@ ROLE_CAMPAIGNS = {
             "summary": "Old training video republished with deceptive subtitles claiming electronic voting machine server anomalies.",
             "authorized_actions": ["publish_factcheck"]
         }
+    "system_admin": [
+        {
+            "id": "CMP-007",
+            "title": "Infrastructure Shutdown & Civil Unrest Narrative",
+            "status": "SEC 69A ACTIVE",
+            "category": "National Security / Disinformation Warfare",
+            "threat_score": 94,
+            "confidence": "HIGH",
+            "primary_language": "hi-Latn",
+            "languages_detected": ["Hindi", "Hinglish", "Punjabi", "English"],
+            "platforms": ["twitter", "telegram", "whatsapp"],
+            "post_count": 842,
+            "cross_platform_sync": 96,
+            "target": "National Critical Infrastructure & Public Law & Order",
+            "summary": "State-sponsored coordinated synthetic campaign spreading false claims of nationwide communication blackout to trigger civic panic and bank runs.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize", "bse_clarification"]
+        },
+        {
+            "id": "CMP-011",
+            "title": "Government Identity Spoofing & Phishing Matrix",
+            "status": "MONITORING",
+            "category": "Credential Harvesting Farm",
+            "threat_score": 83,
+            "confidence": "HIGH",
+            "primary_language": "en",
+            "languages_detected": ["English", "Hindi", "Urdu"],
+            "platforms": ["twitter", "telegram"],
+            "post_count": 412,
+            "cross_platform_sync": 89,
+            "target": "Defense Personnel & Northern Logistics Hubs",
+            "summary": "Coordinated bot network deploying deepfake operational orders targeting border transit networks.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-003",
+            "title": "Communal Polarization Burst in Border Districts",
+            "status": "SURVEILLANCE",
+            "category": "Cross-Border Telegram Networks",
+            "threat_score": 67,
+            "confidence": "MEDIUM",
+            "primary_language": "en",
+            "languages_detected": ["English", "Tamil", "Hindi"],
+            "platforms": ["telegram", "twitter"],
+            "post_count": 218,
+            "cross_platform_sync": 84,
+            "target": "Coastal Data Centers & Banking Backbone",
+            "summary": "Synthetic technical advisories alleging undersea fiber cuts to trigger financial market panic.",
+            "authorized_actions": ["inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-TATA-009",
+            "title": "Tata Motors EV & TCS Disinformation Swarm",
+            "status": "DEFENSE ACTIVE",
+            "category": "Market Manipulation & Short Sabotage",
+            "threat_score": 91,
+            "confidence": "HIGH",
+            "primary_language": "en",
+            "languages_detected": ["English", "Hindi", "Marathi"],
+            "platforms": ["twitter", "telegram", "instagram"],
+            "post_count": 1280,
+            "cross_platform_sync": 93,
+            "target": "Tata Motors & TCS Share Price & Brand Trust",
+            "summary": "Synchronized release of fabricated EV defect claims and counterfeit campus hiring freeze circulars on shadow Telegram & Instagram channels.",
+            "authorized_actions": ["bse_clarification", "executive_briefing", "defamation_vault"]
+        },
+        {
+            "id": "FACT-007",
+            "title": "Nationwide Internet & UPI Blackout Panic Forward",
+            "status": "DEBUNK ISSUED",
+            "category": "Mass Panic Induction",
+            "threat_score": 89,
+            "confidence": "HIGH",
+            "primary_language": "hi-Latn",
+            "languages_detected": ["Hindi", "Hinglish", "Bengali", "Marathi", "English"],
+            "platforms": ["whatsapp", "telegram", "facebook"],
+            "post_count": 3490,
+            "cross_platform_sync": 94,
+            "target": "General Public & Civic Communities",
+            "summary": "Multi-lingual viral forward falsely citing Department of Telecom order to induce emergency ATM withdrawals and fuel hoarding.",
+            "authorized_actions": ["publish_factcheck", "generate_debunk_bulletin"]
+        }
     ]
 }
 
 @router.get("/overview")
 def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
+    """
+    Overview Telemetry & Threat Metrics with dynamic multi-platform dataset integration.
+    """
     posts = []
     if DATA_FILE.exists():
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            posts = json.load(f)
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                posts = json.load(f)
+        except Exception:
+            posts = []
+
+    db_stats = get_db_overview_stats() if is_db_available() else None
+    total_analyzed = (db_stats["total_signals"] if db_stats and db_stats["total_signals"] > 0 else 72080) + len(IN_MEMORY_SIGNALS)
+
+    if role in ["system_admin", "admin", "super_admin"]:
+        return {
+            "role": "system_admin",
+            "organization": "National Cyber Coordination Centre (NCCC) & MoD",
+            "clearance": "Level 5+ (Supreme Root Authority)",
+            "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
+            "stats": {
+                "active_campaigns": 17,
+                "high_risk_campaigns": 5,
+                "content_analyzed": total_analyzed,
+                "tipline_submissions": 2000 + len(IN_MEMORY_SIGNALS),
+                "ai_suspected": 89,
+                "cluster_nodes_online": "4 / 4",
+                "court_evidences_sealed": 89
+            },
+            "timeline": {
+                "24H": [
+                    {"time": "00:00", "count": 14, "highRisk": 3},
+                    {"time": "04:00", "count": 16, "highRisk": 4},
+                    {"time": "08:00", "count": 64, "highRisk": 24},
+                    {"time": "12:00", "count": 128, "highRisk": 92},
+                    {"time": "16:00", "count": 98, "highRisk": 62},
+                    {"time": "20:00", "count": 56, "highRisk": 22},
+                ]
+            },
+            "sources": [
+                {"name": "X (Twitter)", "key": "twitter", "count": 26480, "percentage": 37, "color": "var(--sticker-sky)"},
+                {"name": "Reddit Ingestion", "key": "reddit", "count": 20000, "percentage": 28, "color": "var(--sticker-orange)"},
+                {"name": "Instagram Reels", "key": "instagram", "count": 20000, "percentage": 28, "color": "var(--sticker-pink)"},
+                {"name": "Telegram Dark Web", "key": "telegram", "count": 3600, "percentage": 5, "color": "var(--sticker-purple)"},
+                {"name": "WhatsApp Tiplines", "key": "whatsapp", "count": 2000, "percentage": 2, "color": "var(--sticker-teal)"}
+            ]
+        }
 
     if role == "corporate_enterprise":
         return {
             "role": "corporate_enterprise",
-            "organization": "Adani Group — Brand Defense & Market Risk",
+            "organization": "Tata Sons — Brand Defense & Market Risk",
             "clearance": "Enterprise Tier-1",
+            "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
             "stats": {
-                "active_campaigns": 3,
-                "high_risk_campaigns": 2,
-                "content_analyzed": 4892,
-                "tipline_submissions": 46,
+                "active_campaigns": db_stats["total_campaigns"] if db_stats and db_stats["total_campaigns"] > 0 else 4,
+                "high_risk_campaigns": db_stats["high_risk_campaigns"] if db_stats else 2,
+                "content_analyzed": 14280 + len(IN_MEMORY_SIGNALS),
+                "tipline_submissions": 46 + len(IN_MEMORY_SIGNALS),
                 "ai_suspected": 3
             },
             "timeline": {
@@ -198,10 +345,10 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
                 ]
             },
             "sources": [
-                {"name": "X / Stocktwits", "key": "twitter", "count": 2348, "percentage": 48, "color": "#3b82f6"},
-                {"name": "Telegram Channels", "key": "telegram", "count": 1565, "percentage": 32, "color": "#f59e0b"},
-                {"name": "WhatsApp Forwards", "key": "whatsapp", "count": 587, "percentage": 12, "color": "#ef4444"},
-                {"name": "Shadow Financial Web", "key": "news", "count": 392, "percentage": 8, "color": "#8c9ba5"}
+                {"name": "X / FinTwit Clusters", "key": "twitter", "count": 5426, "percentage": 38, "color": "var(--sticker-sky)"},
+                {"name": "Instagram Viral Reels", "key": "instagram", "count": 3998, "percentage": 28, "color": "var(--sticker-pink)"},
+                {"name": "Reddit Investor Hubs", "key": "reddit", "count": 2856, "percentage": 20, "color": "var(--sticker-orange)"},
+                {"name": "Telegram Shadow Groups", "key": "telegram", "count": 2000, "percentage": 14, "color": "var(--sticker-purple)"}
             ]
         }
 
@@ -210,11 +357,12 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
             "role": "journalist_media",
             "organization": "National Press Consortium & Fact-Check Desk",
             "clearance": "Press Accredited",
+            "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
             "stats": {
-                "active_campaigns": 3,
-                "high_risk_campaigns": 2,
-                "content_analyzed": 8420,
-                "tipline_submissions": 842,
+                "active_campaigns": db_stats["total_campaigns"] if db_stats and db_stats["total_campaigns"] > 0 else 3,
+                "high_risk_campaigns": db_stats["high_risk_campaigns"] if db_stats else 2,
+                "content_analyzed": 24800 + len(IN_MEMORY_SIGNALS),
+                "tipline_submissions": 9424 + len(IN_MEMORY_SIGNALS),
                 "ai_suspected": 11
             },
             "timeline": {
@@ -228,62 +376,48 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
                 ]
             },
             "sources": [
-                {"name": "WhatsApp Tipline", "key": "whatsapp", "count": 3704, "percentage": 44, "color": "#ef4444"},
-                {"name": "X (Twitter)", "key": "twitter", "count": 3031, "percentage": 36, "color": "#3b82f6"},
-                {"name": "Telegram Groups", "key": "telegram", "count": 1178, "percentage": 14, "color": "#f59e0b"},
-                {"name": "Facebook Pages", "key": "news", "count": 505, "percentage": 6, "color": "#8c9ba5"}
+                {"name": "WhatsApp Citizen Tipline", "key": "whatsapp", "count": 9424, "percentage": 38, "color": "var(--sticker-teal)"},
+                {"name": "Instagram Viral Reels", "key": "instagram", "count": 6944, "percentage": 28, "color": "var(--sticker-pink)"},
+                {"name": "Reddit Rumor Threads", "key": "reddit", "count": 4960, "percentage": 20, "color": "var(--sticker-orange)"},
+                {"name": "X / Public Feeds", "key": "twitter", "count": 3472, "percentage": 14, "color": "var(--sticker-sky)"}
             ]
         }
 
-    # Default: Investigation Bureau of India
-    total_posts = len(posts)
-    clusters = Counter(p.get("campaign_cluster") for p in posts if p.get("campaign_cluster"))
-    platforms = Counter(p.get("platform") for p in posts if p.get("platform"))
-    
-    twitter_count = platforms.get("twitter", 0)
-    telegram_count = platforms.get("telegram", 0)
-    whatsapp_count = platforms.get("whatsapp_tipline", 0)
-    news_count = platforms.get("news", 0) + platforms.get("facebook", 0)
-    
-    total_platform_sum = max(twitter_count + telegram_count + whatsapp_count + news_count, 1)
-    
-    source_distribution = [
-        {"name": "X (Twitter)", "key": "twitter", "count": twitter_count, "percentage": round((twitter_count / total_platform_sum) * 100), "color": "#3b82f6"},
-        {"name": "Telegram Dark Feeds", "key": "telegram", "count": telegram_count, "percentage": round((telegram_count / total_platform_sum) * 100), "color": "#f59e0b"},
-        {"name": "Citizen Tipline", "key": "whatsapp", "count": whatsapp_count, "percentage": round((whatsapp_count / total_platform_sum) * 100), "color": "#ef4444"},
-        {"name": "Shadow Portals", "key": "news", "count": news_count, "percentage": round((news_count / total_platform_sum) * 100), "color": "#8c9ba5"}
-    ]
-
-    timeline_24h = [
-        {"time": "00:00", "count": 14, "highRisk": 3},
-        {"time": "02:00", "count": 22, "highRisk": 5},
-        {"time": "04:00", "count": 16, "highRisk": 4},
-        {"time": "06:00", "count": 38, "highRisk": 9},
-        {"time": "08:00", "count": 64, "highRisk": 24},
-        {"time": "10:00", "count": 92, "highRisk": 48},
-        {"time": "12:00", "count": 128, "highRisk": 92},
-        {"time": "14:00", "count": 112, "highRisk": 78},
-        {"time": "16:00", "count": 98, "highRisk": 62},
-        {"time": "18:00", "count": 74, "highRisk": 34},
-        {"time": "20:00", "count": 56, "highRisk": 22},
-        {"time": "22:00", "count": 42, "highRisk": 11},
-    ]
-
+    # Default: Investigation Bureau of India (IB / LEA)
     return {
         "role": "investigation_bureau",
         "organization": "Investigation Bureau of India (IB / LEA)",
         "clearance": "Level 5 Top Secret",
+        "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
         "stats": {
-            "active_campaigns": len(clusters) or 3,
-            "high_risk_campaigns": 2,
-            "content_analyzed": total_posts or 12483,
-            "tipline_submissions": whatsapp_count or 385,
-            "ai_suspected": 7
+            "active_campaigns": db_stats["total_campaigns"] if db_stats and db_stats["total_campaigns"] > 0 else 12,
+            "high_risk_campaigns": db_stats["high_risk_campaigns"] if db_stats else 5,
+            "content_analyzed": total_analyzed,
+            "tipline_submissions": 3850 + len(IN_MEMORY_SIGNALS),
+            "ai_suspected": 89
         },
         "timeline": {
-            "24H": timeline_24h
+            "24H": [
+                {"time": "00:00", "count": 14, "highRisk": 3},
+                {"time": "02:00", "count": 22, "highRisk": 5},
+                {"time": "04:00", "count": 16, "highRisk": 4},
+                {"time": "06:00", "count": 38, "highRisk": 9},
+                {"time": "08:00", "count": 64, "highRisk": 24},
+                {"time": "10:00", "count": 92, "highRisk": 48},
+                {"time": "12:00", "count": 128, "highRisk": 92},
+                {"time": "14:00", "count": 112, "highRisk": 78},
+                {"time": "16:00", "count": 98, "highRisk": 62},
+                {"time": "18:00", "count": 74, "highRisk": 34},
+                {"time": "20:00", "count": 56, "highRisk": 22},
+                {"time": "22:00", "count": 42, "highRisk": 11},
+            ]
         },
-        "sources": source_distribution
+        "sources": [
+            {"name": "X (Twitter Botnets)", "key": "twitter", "count": 26480, "percentage": 37, "color": "var(--sticker-sky)"},
+            {"name": "Reddit Disinfo Swarms", "key": "reddit", "count": 20000, "percentage": 28, "color": "var(--sticker-orange)"},
+            {"name": "Instagram Visual Ops", "key": "instagram", "count": 20000, "percentage": 28, "color": "var(--sticker-pink)"},
+            {"name": "Dark Telegram Channels", "key": "telegram", "count": 5600, "percentage": 7, "color": "var(--sticker-purple)"}
+        ]
     }
 
 @router.get("/campaigns")
@@ -293,13 +427,26 @@ def get_campaigns(
 ):
     """Return campaign intelligence list filtered by active user persona/role clearance."""
     active_role = role or x_user_role or "investigation_bureau"
+    
+    # Try PostgreSQL first if available
+    if is_db_available():
+        db_campaigns = get_campaigns_from_db()
+        if db_campaigns:
+            return db_campaigns
+
+    # Fallback to persona partitioned campaigns
     if active_role in ROLE_CAMPAIGNS:
         return ROLE_CAMPAIGNS[active_role]
     return ROLE_CAMPAIGNS["investigation_bureau"]
 
 @router.get("/campaigns/{campaign_id}")
 def get_campaign(campaign_id: str, role: Optional[str] = Query(default="investigation_bureau")):
-    """Fetch specific campaign with role authorization checks."""
+    """Fetch specific campaign with role authorization checks and DB lookup."""
+    if is_db_available():
+        db_camp = get_campaign_by_id_from_db(campaign_id)
+        if db_camp:
+            return db_camp
+
     active_role = role if role in ROLE_CAMPAIGNS else "investigation_bureau"
     for c in ROLE_CAMPAIGNS[active_role]:
         if c["id"].lower() == campaign_id.lower():
@@ -318,34 +465,56 @@ def execute_analyst_action(
 ):
     """
     Role-Protected Execution of Counter-Operations:
-    - 'sec69a_takedown' requires 'investigation_bureau'
-    - 'bse_clarification' requires 'corporate_enterprise'
-    - 'publish_factcheck' requires 'journalist_media'
+    - 'sec69a_takedown' requires 'investigation_bureau' or 'system_admin'
+    - 'bse_clarification' requires 'corporate_enterprise' or 'system_admin'
+    - 'publish_factcheck' requires 'journalist_media' or 'system_admin'
+    Persists immutable audit trail into PostgreSQL audit_ledger table.
     """
     action_type = payload.get("action_type")
     campaign_id = payload.get("campaign_id", "CMP-007")
-    active_role = x_user_role if x_user_role in ROLE_CAMPAIGNS else "investigation_bureau"
+    active_role = x_user_role if x_user_role in ROLE_CAMPAIGNS or x_user_role == "system_admin" else "investigation_bureau"
 
     # RBAC Authorization Matrix Check
     ROLE_PERMISSIONS = {
-        "sec69a_takedown": ["investigation_bureau"],
-        "inter_agency_dossier": ["investigation_bureau"],
-        "blockchain_notarize": ["investigation_bureau", "corporate_enterprise"],
-        "bse_clarification": ["corporate_enterprise"],
-        "executive_briefing": ["corporate_enterprise"],
-        "defamation_vault": ["corporate_enterprise"],
-        "publish_factcheck": ["journalist_media"],
-        "generate_debunk_bulletin": ["journalist_media"]
+        "sec69a_takedown": ["investigation_bureau", "system_admin"],
+        "inter_agency_dossier": ["investigation_bureau", "system_admin"],
+        "blockchain_notarize": ["investigation_bureau", "corporate_enterprise", "system_admin"],
+        "bse_clarification": ["corporate_enterprise", "system_admin"],
+        "executive_briefing": ["corporate_enterprise", "system_admin"],
+        "defamation_vault": ["corporate_enterprise", "system_admin"],
+        "publish_factcheck": ["journalist_media", "system_admin"],
+        "generate_debunk_bulletin": ["journalist_media", "system_admin"]
     }
 
-    allowed_roles = ROLE_PERMISSIONS.get(action_type, ["investigation_bureau"])
+    allowed_roles = ROLE_PERMISSIONS.get(action_type, ["investigation_bureau", "system_admin"])
     if active_role not in allowed_roles:
         raise HTTPException(
             status_code=403, 
             detail=f"RBAC ACCESS DENIED: Active role '{active_role}' is not authorized to execute '{action_type}'. Required permissions: {allowed_roles}"
         )
 
+    package_id = f"EV-ACT-{uuid.uuid4().hex[:8].upper()}"
     tx_hash = f"0x{uuid.uuid4().hex}{uuid.uuid4().hex[:8]}"
+    details_str = json.dumps({
+        "action": action_type,
+        "campaign_id": campaign_id,
+        "executor": active_role,
+        "payload": payload
+    })
+
+    # Persist in PostgreSQL audit_ledger
+    db_persisted = False
+    if is_db_available():
+        db_persisted = insert_audit_entry(
+            package_id=package_id,
+            campaign_id=campaign_id,
+            sha256_hash=tx_hash,
+            event_type=f"COUNTER_ACTION_{action_type.upper()}",
+            details=details_str,
+            analyst_id=f"OP_{active_role.upper()}",
+            role=active_role
+        )
+
     return {
         "status": "EXECUTED",
         "action_type": action_type,
@@ -353,7 +522,9 @@ def execute_analyst_action(
         "executor_role": active_role,
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "cryptographic_signature": tx_hash,
-        "message": f"Operation '{action_type}' authorized and sealed with EVM cryptographic timestamp."
+        "package_id": package_id,
+        "db_persisted": db_persisted,
+        "message": f"Operation '{action_type}' authorized, executed, and sealed with EVM cryptographic timestamp."
     }
 
 @router.post("/reports/generate")
@@ -372,14 +543,28 @@ def generate_role_report(
         "journalist_media": "Multilingual Fact-Check & WhatsApp Debunk Dispatch"
     }
 
+    report_id = f"REP-{str(uuid.uuid4())[:8].upper()}"
+    sha_hash = f"sha256:{uuid.uuid4().hex}"
+
+    if is_db_available():
+        insert_audit_entry(
+            package_id=report_id,
+            campaign_id=campaign_id,
+            sha256_hash=sha_hash,
+            event_type="REPORT_GENERATED",
+            details=f"Generated {format_type.upper()} briefing: {report_titles.get(active_role)}",
+            analyst_id=f"OP_{active_role.upper()}",
+            role=active_role
+        )
+
     return {
-        "report_id": f"REP-{str(uuid.uuid4())[:8].upper()}",
+        "report_id": report_id,
         "title": report_titles.get(active_role, "Threat Intelligence Report"),
         "role": active_role,
         "campaign_id": campaign_id,
         "format": format_type,
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "integrity_hash": f"sha256:{uuid.uuid4().hex}",
+        "integrity_hash": sha_hash,
         "status": "READY_FOR_DOWNLOAD"
     }
 
@@ -408,3 +593,236 @@ def verify_evidence(evidence_id: str):
         "sha256_hash": evidence["sha256_hash"],
         "message": "Evidence integrity verified successfully via SHA-256 digest match."
     }
+
+@router.get("/models/status")
+def get_ai_models_status():
+    """Returns the operational status of all BHARAT-SHIELD AI/ML models."""
+    return BharatShieldIntelligencePipeline.get_models_status()
+
+@router.post("/pipeline/analyze")
+def analyze_content(payload: Dict[str, Any] = Body(...)):
+    """
+    Real-Time Multimodal Intelligence Analysis:
+    Runs full pipeline (Language ID -> OCR/ASR -> Entities -> Embeddings -> Threat Score -> Evidence).
+    """
+    text = payload.get("text", "")
+    media_type = payload.get("media_type", "text")
+    platform = payload.get("platform", "whatsapp_tipline")
+    metadata = payload.get("metadata", {})
+
+    result = BharatShieldIntelligencePipeline.process_signal(
+        text=text,
+        media_type=media_type,
+        platform=platform,
+        metadata=metadata
+    )
+
+    # Optional vector similarity search against PostgreSQL
+    similar_signals = []
+    if is_db_available() and text:
+        embedding = MultilingualEmbedder.encode(text)
+        similar_signals = search_similar_signals(embedding, limit=3)
+        result["similar_known_threats"] = similar_signals
+
+    return result
+
+@router.post("/tipline/ingest")
+def ingest_tipline_signal(payload: Dict[str, Any] = Body(...)):
+    """
+    Tipline Signal Ingestion:
+    1. Analyzes submitted signal via Multilingual Multimodal AI Pipeline.
+    2. Calculates 384-dimensional pgvector semantic embedding.
+    3. Persists signal into PostgreSQL `tipline_signals` with HNSW vector index.
+    4. Logs tamper-evident cryptographic evidence hash into `audit_ledger`.
+    5. Performs real-time Cosine Similarity search to detect campaign correlation.
+    """
+    text = payload.get("text", "")
+    media_type = payload.get("media_type", "text")
+    platform = payload.get("platform", "whatsapp_tipline")
+
+    analysis = BharatShieldIntelligencePipeline.process_signal(
+        text=text,
+        media_type=media_type,
+        platform=platform
+    )
+
+    signal_id = analysis["signal_id"]
+    lang = analysis["language_analysis"]["language"]
+    threat_level = analysis["risk_assessment"]["base_risk"]
+    confidence = analysis["risk_assessment"]["confidence"]
+    sha256_hash = analysis["evidence_package"]["sha256_hash"]
+    
+    # Determine severity label
+    severity = "CRITICAL" if threat_level >= 85 else ("HIGH" if threat_level >= 65 else "MEDIUM")
+    
+    # Generate 384-dim embedding
+    embedding = MultilingualEmbedder.encode(text or analysis.get("language_analysis", {}).get("raw_text", ""))
+
+    # PostgreSQL + pgvector persistence
+    db_saved = False
+    similar_clusters = []
+    if is_db_available():
+        db_saved = insert_signal(
+            signal_id=signal_id,
+            source=platform,
+            raw_payload=text,
+            detected_language=lang,
+            confidence_score=0.92 if confidence == "HIGH" else 0.75,
+            intent_classification="disinformation_swarm" if threat_level > 70 else "unverified_signal",
+            severity=severity,
+            normalized_translation=analysis["language_analysis"].get("normalized_text", text),
+            campaign_id="CMP-007" if threat_level > 80 else None,
+            embedding=embedding
+        )
+
+        # Log evidence record to PostgreSQL audit_ledger
+        insert_audit_entry(
+            package_id=signal_id,
+            campaign_id="CMP-007" if threat_level > 80 else None,
+            sha256_hash=sha256_hash,
+            event_type="SIGNAL_INGESTION_SEALED",
+            details=f"Ingested from {platform} ({lang}) with Threat Score {threat_level}/100",
+            analyst_id="SENTINEL_AI_INGEST",
+            role="investigation_bureau"
+        )
+
+        # Query pgvector for cosine similarity matches
+        similar_clusters = search_similar_signals(embedding, limit=3)
+
+    # In-memory buffer backup
+    IN_MEMORY_SIGNALS.append({
+        "id": signal_id,
+        "platform": platform,
+        "text": text,
+        "language": lang,
+        "threat_level": threat_level,
+        "confidence": confidence,
+        "sha256_hash": sha256_hash,
+        "timestamp": analysis["timestamp"]
+    })
+
+    return {
+        "status": "INGESTED",
+        "signal_id": signal_id,
+        "language_detected": lang,
+        "threat_level": threat_level,
+        "severity": severity,
+        "confidence": confidence,
+        "ai_assistance": analysis["ai_assistance_indicators"]["status"],
+        "sha256_hash": sha256_hash,
+        "db_persisted": db_saved,
+        "storage_engine": "PostgreSQL (pgvector HNSW)" if db_saved else "In-Memory Buffer",
+        "correlated_signals": similar_clusters,
+        "full_analysis": analysis
+    }
+
+@router.get("/signals/recent")
+def get_recent_tipline_signals(limit: int = Query(default=20)):
+    """Retrieve the newest ingested signals from PostgreSQL or in-memory fallback."""
+    if is_db_available():
+        db_signals = get_recent_signals(limit=limit)
+        if db_signals:
+            return db_signals
+    
+    # Return in-memory buffer
+    return IN_MEMORY_SIGNALS[-limit:]
+
+@router.post("/signals/search-vector")
+def search_signals_by_vector(payload: Dict[str, Any] = Body(...)):
+    """
+    Search tipline signals using pgvector cosine similarity (<=>).
+    """
+    query_text = payload.get("query", "")
+    limit = payload.get("limit", 5)
+    
+    if not query_text:
+        raise HTTPException(status_code=400, detail="Query text required")
+
+    embedding = MultilingualEmbedder.encode(query_text)
+
+    if is_db_available():
+        results = search_similar_signals(embedding, limit=limit)
+        return {
+            "query": query_text,
+            "dimension": len(embedding),
+            "matches_count": len(results),
+            "results": results
+        }
+
+    return {
+        "query": query_text,
+        "dimension": len(embedding),
+        "matches_count": 0,
+        "results": [],
+        "note": "PostgreSQL pgvector offline; returning empty match set."
+    }
+
+@router.post("/reports/generate")
+def generate_intelligence_report(
+    payload: Dict[str, Any] = Body(...),
+    x_user_role: Optional[str] = Header(default="investigation_bureau")
+):
+    """
+    Generates a certified legal and compliance intelligence dossier with SHA-256 evidence integrity.
+    Supports Section 69A IT Act (LEA), SEBI Regulation 30 (Corporate), and IFCN Fact-Checking (Media).
+    """
+    campaign_id = payload.get("campaign_id", "CMP-007")
+    fmt = payload.get("format", "pdf").lower()
+    
+    role = x_user_role or "investigation_bureau"
+    
+    # Generate timestamp and cryptographic seal
+    timestamp = datetime.now(timezone.utc).isoformat()
+    dossier_id = f"DOSSIER-{uuid.uuid4().hex[:8].upper()}"
+    
+    dossier = {
+        "dossier_id": dossier_id,
+        "campaign_id": campaign_id,
+        "generated_at": timestamp,
+        "role_partition": role,
+        "format": fmt,
+        "statutory_authority": "Section 69A of Information Technology Act 2000 (Blocking Rules 2009)" if role == "investigation_bureau" else "SEBI LODR Regulation 30 & IPC Sec 499" if role == "corporate_enterprise" else "IFCN Press Verification Standard",
+        "threat_classification": "CRITICAL NATIONAL SECURITY DISINFORMATION OPERATION" if role == "investigation_bureau" else "COORDINATED MARKET MANIPULATION",
+        "evidence_integrity": {
+            "merkle_root": f"0x{uuid.uuid4().hex}",
+            "sha256_package_hash": EvidenceHasher.compute_sha256_dict({"campaign_id": campaign_id, "dossier_id": dossier_id, "timestamp": timestamp}),
+            "chain_of_custody": "EVM Block Notarized & PostgreSQL Audit Ledger Logged",
+            "admissibility": "Certified Under Section 65B Indian Evidence Act / Bharatiya Sakshya Adhiniyam"
+        },
+        "target_infringing_vectors": [
+            {
+                "platform": "twitter",
+                "target_url": "https://x.com/tech_leaks_in/status/17849201948",
+                "sha256_digest": "sha256:d82a44bb01c89f50e7a2b91901a5b82c",
+                "recommended_action": "EMERGENCY_URL_TAKEDOWN"
+            },
+            {
+                "platform": "telegram",
+                "target_url": "https://t.me/telecom_sabotage_news/4192",
+                "sha256_digest": "sha256:f55a12ec89bb4109ca8817a02b66782d",
+                "recommended_action": "CHANNEL_SEQUESTRATION"
+            },
+            {
+                "platform": "whatsapp",
+                "target_url": "urn:whatsapp:forward_tree:77192a01",
+                "sha256_digest": "sha256:88bc4190ea148201feea2910ba489912",
+                "recommended_action": "PUBLIC_DEBUNK_BROADCAST"
+            }
+        ]
+    }
+
+    if is_db_available():
+        insert_audit_entry(
+            package_id=dossier_id,
+            campaign_id=campaign_id,
+            sha256_hash=dossier["evidence_integrity"]["sha256_package_hash"],
+            event_type="LEGAL_DOSSIER_COMPILED",
+            details=f"Dossier {dossier_id} generated for {role} targeting {campaign_id}.",
+            role=role
+        )
+
+    return {
+        "status": "DOSSIER_COMPILED_SUCCESSFULLY",
+        "dossier": dossier
+    }
+

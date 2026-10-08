@@ -1,20 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-/* Default Dark Theme Variables (Charcoal Black) */
+/* ========================================================================= */
+/* NOTION DESIGN SYSTEM TOKENS — Bharat-Shield Sentinel                      */
+/* ========================================================================= */
+
 :root {
+  /* Core Notion Canvas & Chrome (Dark Mode default) */
   --bg-dark: #121214;
   --bg-sidebar: #16161a;
   --bg-card: #1a1a1e;
   --bg-card-hover: #232328;
   --border-color: #2a2b30;
   --border-light: #3a3b42;
-  
+
   --text-primary: #f3f4f6;
   --text-secondary: #9ca3af;
   --text-muted: #6b7280;
   --text-heading: #ffffff;
 
-  --accent-blue: #3b82f6;
+  /* Notion Primary Structural Accent */
+  --notion-blue: #0075de;
+  --notion-blue-hover: #0060b8;
+
+  /* Notion Multi-Colour Sticker Palette */
+  --sticker-purple: #7934c9;
+  --sticker-teal: #1fa971;
+  --sticker-orange: #dd5b00;
+  --sticker-pink: #ff64c8;
+  --sticker-sky: #0075de;
+  --sticker-green: #1aae39;
+
+  /* Ink semantic aliases */
+  --ink: #f7f6f5;
+  --ink-secondary: #9ca3af;
+  --ink-muted: #6b7280;
+  --ink-faint: #4b5563;
+
+  /* General accents */
+  --accent-blue: #0075de;
   --accent-cyan: #06b6d4;
   --accent-pink: #ec4899;
   --accent-amber: #f59e0b;
@@ -31,25 +54,34 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.18);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-/* Light Theme Variables Override - Premium Off-White & Soft Slate Palette */
+/* Light Theme Variables Override — Warm Paper Soft Canvas (#f6f5f4) */
 [data-theme="light"] {
-  --bg-dark: #f4f4f5;
+  --bg-dark: #f6f5f4;
   --bg-sidebar: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #f4f4f5;
-  --border-color: #e4e4e7;
-  --border-light: #d4d4d8;
-  
-  --text-primary: #18181b;
-  --text-secondary: #52525b;
-  --text-muted: #71717a;
-  --text-heading: #09090b;
+  --bg-card-hover: #f0eeec;
+  --border-color: #e4e2df;
+  --border-light: #d2cfca;
 
-  --accent-blue: #2563eb;
+  --text-primary: #222020;
+  --text-secondary: #555250;
+  --text-muted: #888480;
+  --text-heading: #111113;
+
+  --ink: #222020;
+  --ink-secondary: #555250;
+  --ink-muted: #888480;
+  --ink-faint: #b5b0ab;
+
+  --notion-blue: #0075de;
+  --notion-blue-hover: #0060b8;
+
+  --accent-blue: #0075de;
   --accent-cyan: #0891b2;
   --accent-pink: #db2777;
   --accent-amber: #d97706;
@@ -57,11 +89,12 @@
   --accent-green: #059669;
   --accent-purple: #7c3aed;
 
-  --inner-box-bg: #f4f4f5;
+  --inner-box-bg: #edece9;
   --input-bg: #ffffff;
-  --bg-muted: #f4f4f5;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --bg-muted: #edece9;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -70,8 +103,12 @@
   padding: 0;
 }
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+body,
+button,
+input,
+select,
+textarea {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-primary);
   line-height: 1.5;
@@ -80,7 +117,8 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-code, .font-mono {
+code,
+.font-mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -89,18 +127,303 @@ code, .font-mono {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-dark);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-light);
 }
 
-/* Shadcn Style Containers */
+/* ========================================================================= */
+/* NOTION SIGNATURE HERO NIGHT BAND & DUAL-CTA SYSTEM                        */
+/* ========================================================================= */
+
+.hero-band {
+  background: linear-gradient(135deg, #192564 0%, #213183 55%, #152054 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 30px 34px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(33, 49, 131, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  margin-bottom: 28px;
+}
+
+.sticker-constellation {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.button-primary {
+  background-color: #0075de;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 117, 222, 0.4);
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.button-primary:hover {
+  background-color: #0060b8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 117, 222, 0.5);
+}
+
+.button-primary:active {
+  transform: translateY(0);
+}
+
+.button-secondary {
+  background-color: #ffffff;
+  color: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 9999px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.button-secondary:hover {
+  background-color: #f6f5f4;
+  transform: translateY(-1px);
+}
+
+.button-secondary:active {
+  transform: translateY(0);
+}
+
+.button-utility {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.button-utility:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--border-light);
+}
+
+/* ========================================================================= */
+/* NOTION 12px FEATURE CARDS & STICKER HEADER BANDS                          */
+/* ========================================================================= */
+
+.feature-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Dark mode sticker headers */
+.sticker-header-purple {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #2b1d3d;
+  color: #c084fc;
+  border-bottom: 1px solid rgba(192, 132, 252, 0.2);
+}
+
+.sticker-header-teal {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #163327;
+  color: #34d399;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.sticker-header-orange {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #3b2314;
+  color: #fb923c;
+  border-bottom: 1px solid rgba(251, 146, 60, 0.2);
+}
+
+.sticker-header-pink {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #3d1a31;
+  color: #f472b6;
+  border-bottom: 1px solid rgba(244, 114, 182, 0.2);
+}
+
+.sticker-header-sky {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #142942;
+  color: #38bdf8;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.sticker-header-green {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #14351d;
+  color: #4ade80;
+  border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+/* Light mode sticker header overrides */
+[data-theme="light"] .sticker-header-purple {
+  background: #efe7f6;
+  color: #7934c9;
+  border-bottom: 1px solid rgba(121, 52, 201, 0.15);
+}
+
+[data-theme="light"] .sticker-header-teal {
+  background: #e6f5ee;
+  color: #1fa971;
+  border-bottom: 1px solid rgba(31, 169, 113, 0.15);
+}
+
+[data-theme="light"] .sticker-header-orange {
+  background: #fbede3;
+  color: #dd5b00;
+  border-bottom: 1px solid rgba(221, 91, 0, 0.15);
+}
+
+[data-theme="light"] .sticker-header-pink {
+  background: #fdf0f8;
+  color: #d43f9a;
+  border-bottom: 1px solid rgba(212, 63, 154, 0.15);
+}
+
+[data-theme="light"] .sticker-header-sky {
+  background: #e6f1fb;
+  color: #0075de;
+  border-bottom: 1px solid rgba(0, 117, 222, 0.15);
+}
+
+[data-theme="light"] .sticker-header-green {
+  background: #e7f7ec;
+  color: #1aae39;
+  border-bottom: 1px solid rgba(26, 174, 57, 0.15);
+}
+
+/* ========================================================================= */
+/* PILL TABS & BADGES                                                        */
+/* ========================================================================= */
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background-color: var(--inner-box-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.pill-tab {
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-color: var(--inner-box-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill-tab:hover {
+  color: var(--text-primary);
+  border-color: var(--border-light);
+}
+
+.pill-tab.active {
+  background-color: var(--bg-card);
+  color: var(--notion-blue);
+  border-color: var(--border-color);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ========================================================================= */
+/* SHADCN STYLE CARDS & BUTTONS                                              */
+/* ========================================================================= */
+
 .bs-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -114,7 +437,7 @@ code, .font-mono {
 }
 
 .bs-card-glow {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 20px rgba(0, 117, 222, 0.1);
 }
 
 .bs-badge {
@@ -142,9 +465,9 @@ code, .font-mono {
 }
 
 .bs-badge-blue {
-  background: rgba(59, 130, 246, 0.12);
+  background: rgba(0, 117, 222, 0.12);
   color: var(--accent-blue);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(0, 117, 222, 0.3);
 }
 
 .bs-badge-cyan {
@@ -179,14 +502,14 @@ code, .font-mono {
 }
 
 .bs-button-primary {
-  background: #2563eb;
+  background: #0075de;
   color: white;
-  border-color: #3b82f6;
+  border-color: #0060b8;
   box-shadow: var(--shadow-sm);
 }
+
 .bs-button-primary:hover {
-  background: #1d4ed8;
-  border-color: #2563eb;
+  background: #0060b8;
 }
 
 .bs-button-secondary {
@@ -195,6 +518,7 @@ code, .font-mono {
   border-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
+
 .bs-button-secondary:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-light);
@@ -205,6 +529,7 @@ code, .font-mono {
   color: var(--accent-red);
   border-color: rgba(239, 68, 68, 0.3);
 }
+
 .bs-button-danger:hover {
   background: rgba(239, 68, 68, 0.2);
 }
@@ -219,10 +544,10 @@ code, .font-mono {
   animation: pulseGlow 2s infinite ease-in-out;
 }
 
-
 /* ========================================================================= */
 /* SILKY SMOOTH SIDEBAR DESIGN & ANIMATION SYSTEM                            */
 /* ========================================================================= */
+
 .bs-sidebar {
   width: 260px;
   background-color: var(--bg-sidebar);
@@ -373,7 +698,7 @@ code, .font-mono {
   overflow: hidden;
   opacity: 1;
   transform: translateX(0);
-  max-width: 180px;
+  max-width: 100%;
   transition: opacity 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), max-width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -397,9 +722,9 @@ code, .font-mono {
 }
 
 .sidebar-menu-btn.active {
-  background-color: rgba(59, 130, 246, 0.12);
-  color: var(--accent-blue);
-  border-color: rgba(59, 130, 246, 0.25);
+  background-color: rgba(0, 117, 222, 0.12);
+  color: var(--notion-blue);
+  border-color: rgba(0, 117, 222, 0.25);
   font-weight: 600;
 }
 
@@ -440,9 +765,9 @@ code, .font-mono {
 }
 
 .sidebar-badge-blue {
-  background: rgba(59, 130, 246, 0.18);
+  background: rgba(0, 117, 222, 0.18);
   color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.35);
+  border: 1px solid rgba(0, 117, 222, 0.35);
 }
 
 .sidebar-badge-green {
@@ -463,5 +788,3 @@ code, .font-mono {
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-muted);
 }
-
-

@@ -54,6 +54,53 @@ export default function CampaignView() {
 
   // Fallback defaults if backend is unreachable
   const fallbackCampaignsByRole = {
+    [ROLES.SYSTEM_ADMIN]: [
+      {
+        id: 'CMP-007',
+        title: 'Infrastructure Shutdown & Civil Unrest Narrative',
+        category: 'National Security / Disinformation Warfare',
+        status: 'ACTIVE CRITICAL',
+        threat_score: 94,
+        confidence: 'HIGH',
+        primary_language: 'hi-Latn',
+        languages_detected: ['Hindi', 'Hinglish', 'Punjabi', 'English'],
+        platforms: ['twitter', 'telegram', 'whatsapp'],
+        post_count: 842,
+        cross_platform_sync: 96,
+        target: 'National Critical Infrastructure & Public Law & Order',
+        summary: 'State-sponsored coordinated synthetic campaign spreading false claims of nationwide communication blackout to trigger civic panic and bank runs.'
+      },
+      {
+        id: 'CMP-011',
+        title: 'Government Identity Spoofing & Phishing Matrix',
+        category: 'Credential Harvesting Farm',
+        status: 'MONITORING',
+        threat_score: 83,
+        confidence: 'HIGH',
+        primary_language: 'en',
+        languages_detected: ['English', 'Hindi', 'Urdu'],
+        platforms: ['twitter', 'telegram'],
+        post_count: 412,
+        cross_platform_sync: 89,
+        target: 'Defense Personnel & Northern Logistics Hubs',
+        summary: 'Coordinated bot network deploying deepfake operational orders targeting border transit networks.'
+      },
+      {
+        id: 'CMP-TATA-009',
+        title: 'Tata Motors EV & TCS Disinformation Swarm',
+        category: 'Market Manipulation & Short Sabotage',
+        status: 'DEFENSE ACTIVE',
+        threat_score: 91,
+        confidence: 'HIGH',
+        primary_language: 'en',
+        languages_detected: ['English', 'Hindi', 'Marathi'],
+        platforms: ['twitter', 'telegram', 'instagram'],
+        post_count: 1280,
+        cross_platform_sync: 93,
+        target: 'Tata Motors EV Safety & TCS Campus Recruitment',
+        summary: 'Synchronized release of fabricated EV battery explosion videos and counterfeit TCS hiring freeze memos across shadow Telegram & Instagram channels.'
+      }
+    ],
     [ROLES.INVESTIGATION_BUREAU]: [
       {
         id: 'CMP-007',
@@ -88,34 +135,34 @@ export default function CampaignView() {
     ],
     [ROLES.CORPORATE_ENTERPRISE]: [
       {
-        id: 'CMP-ADANI-009',
-        title: 'Coordinated Short-Seller Disinformation Swarm (Port Operations)',
+        id: 'CMP-TATA-009',
+        title: 'Coordinated Disinformation Swarm (Tata Motors EV & TCS)',
         category: 'Market Manipulation & Short Sabotage',
         status: 'ACTIVE_HIGH',
         threat_score: 91,
         confidence: 'HIGH',
         primary_language: 'en',
-        languages_detected: ['English', 'Gujarati', 'Hindi'],
-        platforms: ['twitter', 'telegram', 'news'],
+        languages_detected: ['English', 'Hindi', 'Marathi'],
+        platforms: ['twitter', 'telegram', 'instagram'],
         post_count: 1280,
         cross_platform_sync: 93,
-        target: 'Adani Ports & SEZ (APSEZ) Share Price & ESG Ratings',
-        summary: 'Synchronized release of fabricated environmental and customs non-compliance documents on shadow financial Telegram channels prior to market opening.'
+        target: 'Tata Motors & TCS Share Price & Brand Trust',
+        summary: 'Synchronized release of fabricated EV battery defect videos and counterfeit hiring freeze notices on shadow Telegram channels prior to market opening.'
       },
       {
-        id: 'CMP-ADANI-014',
-        title: 'Deepfake Voice Note Attack on Executive Financial Solvency',
+        id: 'CMP-TATA-014',
+        title: 'Deepfake Voice Note Attack on Executive Leadership',
         category: 'Executive Deepfake Phishing & Defamation',
         status: 'FORENSIC_TRIAGE',
         threat_score: 87,
         confidence: 'HIGH',
         primary_language: 'hi',
         languages_detected: ['Hindi', 'English'],
-        platforms: ['whatsapp', 'telegram'],
+        platforms: ['whatsapp', 'telegram', 'instagram'],
         post_count: 520,
         cross_platform_sync: 88,
-        target: 'Adani Enterprises Leadership & Institutional Bondholders',
-        summary: 'AI voice synthesis impersonating Group CFO discussing fictional credit default swaps and asset revaluations.'
+        target: 'Tata Sons Leadership & Air India Operational Solvency',
+        summary: 'AI voice synthesis impersonating aviation management and Group CFO discussing fictional credit default swaps.'
       }
     ],
     [ROLES.JOURNALIST_MEDIA]: [
@@ -490,7 +537,7 @@ export default function CampaignView() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               
-              {/* Action 1: Sec 69A IT Act (IB Only) */}
+              {/* Action 1: Incident Remediation */}
               {can('canIssueSec69A') && (
                 <button
                   onClick={() => handleExecuteAction('sec69a_takedown')}
@@ -509,7 +556,7 @@ export default function CampaignView() {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>Issue Sec 69A Emergency Takedown</span>
+                  <span>Dispatch Threat Remediation Directive</span>
                   <ArrowRight size={14} />
                 </button>
               )}

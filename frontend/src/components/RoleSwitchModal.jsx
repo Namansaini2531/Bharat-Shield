@@ -56,14 +56,14 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
     },
     {
       key: ROLES.CORPORATE_ENTERPRISE,
-      title: 'Adani Group — Brand Defense',
+      title: 'Tata Sons — Brand Defense',
       subtitle: 'Corporate Risk & Market Intelligence',
       badge: 'ENTERPRISE TIER-1',
       badgeBg: 'rgba(245, 158, 11, 0.15)',
       badgeColor: '#f59e0b',
       icon: Building2,
       iconColor: '#f59e0b',
-      targetEntity: 'Adani Strategic Threat & Brand Defense Unit',
+      targetEntity: 'Tata Strategic Threat Intelligence & Brand Protection',
       capabilities: [
         'Stock manipulation & short-seller smear detection',
         'Executive deepfake & phishing alert radar',
