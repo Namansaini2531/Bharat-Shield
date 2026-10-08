@@ -1,1635 +1,717 @@
 [
   {
-    "id": "INSTA-TATA-77401928491",
-    "platform": "instagram",
-    "text": "Breaking Alert: Leaked internal test video alleging Tata Motors EV battery packs failing thermal runaway tests in extreme heat. Automotive Research Association confirms video is manipulated CGI footage. #TataMotors #NexonEV #FactCheck [Visual Infographic OCR Text]: WARNING: TATA EV BATTERY DEFECT HOAX [Spoken Audio Transcript]: [ऑडियो 0:28]: टाटा मोटर्स की ईवी गाड़ियों में बैटरी ब्लास्ट का दावा पूरी तरह फर्जी है।",
+    "id": "P001",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:01:15",
+    "language": "en",
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately!",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P002",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:02:15",
+    "language": "en",
+    "text": "BREAKING: Total internet suspension ordered by government starting midnight tonight.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P003",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:03:15",
     "language": "hi",
-    "media_type": "video",
-    "author": "@auto_leaks_india",
-    "timestamp": "2026-10-07T14:22:10.000000+00:00",
-    "campaign_cluster": "CMP-TATA-009",
-    "ai_assistance": {
-      "ai_probability": 94,
-      "status": "High Synthetic / AI Generated Manipulation",
-      "indicators": [
-        "Deepfake voice synthesis",
-        "Manipulated CGI frame insertion"
-      ],
-      "is_elevated": true
-    }
+    "text": "कल से पूरे देश में इंटरनेट बंद होने वाला है। तुरंत सभी व्हाट्सएप ग्रुप में भेजें।",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-TATA-88319401243",
-    "platform": "instagram",
-    "text": "Fake circular on TCS letterhead claiming cancellation of 25,000 campus placements and pan-India hiring freeze. HR forensics confirms forged digital signatures and counterfeit domain. #TCS #TataConsultancyServices #JobScam #FakeNotice [Visual Infographic OCR Text]: TCS RECRUITMENT NOTICE: ALL FRESHER ONBOARDING SUSPENDED INDEFINITELY",
-    "language": "en",
-    "media_type": "image",
-    "author": "@tech_insider_in",
-    "timestamp": "2026-10-07T16:45:30.000000+00:00",
-    "campaign_cluster": "CMP-TATA-009",
-    "ai_assistance": {
-      "ai_probability": 88,
-      "status": "Coordinated Corporate Disinformation",
-      "indicators": [
-        "Forged document template",
-        "Automated botnet propagation"
-      ],
-      "is_elevated": true
-    }
-  },
-  {
-    "id": "INSTA-TATA-99120485721",
-    "platform": "instagram",
-    "text": "AI voice cloning audio circulating on Instagram reels impersonating Air India chief pilot claiming emergency navigation shutdown on international routes. Forensics analysis confirms 99.6% synthetic voice clone. #AirIndia #TataAviation #DeepfakeAlert [Spoken Audio Transcript]: [Cockpit Audio 0:31]: Mayday simulation audio extracted from training simulator republished as real-time emergency.",
-    "language": "en",
-    "media_type": "video",
-    "author": "@aviation_radar_asia",
-    "timestamp": "2026-10-07T18:10:15.000000+00:00",
-    "campaign_cluster": "CMP-TATA-014",
-    "ai_assistance": {
-      "ai_probability": 99,
-      "status": "Synthetic Voice Clone Verified",
-      "indicators": [
-        "Neural vocoder acoustic artifacts",
-        "Biometric voice mismatch"
-      ],
-      "is_elevated": true
-    }
-  },
-  {
-    "id": "INSTA-TATA-66201948371",
-    "platform": "instagram",
-    "text": "Doctored National Green Tribunal (NGT) order falsely claiming complete shutdown notice for Tata Steel plant in Kalinganagar. State Pollution Control Board confirms document is a counterfeit forgery. #TataSteel #CorporateESG #FactCheck [Visual Infographic OCR Text]: NATIONAL GREEN TRIBUNAL: IMMEDIATE CLOSURE ORDER TATA STEEL KALINGANAGAR",
-    "language": "en",
-    "media_type": "image",
-    "author": "@shadow_finance_in",
-    "timestamp": "2026-10-07T19:30:00.000000+00:00",
-    "campaign_cluster": "CMP-TATA-022",
-    "ai_assistance": {
-      "ai_probability": 82,
-      "status": "Counterfeit Regulatory Notice",
-      "indicators": [
-        "Forged official seal",
-        "Short-seller timing correlation"
-      ],
-      "is_elevated": true
-    }
-  },
-  {
-    "id": "INSTA-TATA-55104928172",
-    "platform": "instagram",
-    "text": "व्हायरल इन्फोग्राफिक: टाटा पॉवर कडून मुंबई आणि पुण्यात पुढील ७२ तास वीज पुरवठा खंडित केला जाईल हा दावा पूर्णपणे खोटा आहे. ग्रीड सुरळीत सुरू आहे. #TataPower #MumbaiFactCheck [Spoken Audio Transcript]: [मराठी ऑडिओ 0:24]: नागरिकांनी अफवांवर विश्वास ठेवू नये, टाटा पॉवरकडून कोणताही वीज खंडित करण्याचा आदेश नाही.",
-    "language": "mr",
-    "media_type": "video",
-    "author": "@maharashtra_live",
-    "timestamp": "2026-10-07T21:05:40.000000+00:00",
-    "campaign_cluster": "CMP-TATA-009",
-    "ai_assistance": {
-      "ai_probability": 78,
-      "status": "Regional Civic Panic Vector",
-      "indicators": [
-        "Cross-lingual forward swarm",
-        "Fabricated utility advisory"
-      ],
-      "is_elevated": true
-    }
-  },
-  {
-    "id": "INSTA-6759994917962949",
-    "platform": "instagram",
-    "text": "ਬੈਂਕ ਖਾਤੇ ਬੰਦ ਹੋਣ ਦੀ ਆਰਬੀਆਈ ਗਵਰਨਰ ਦੇ ਨਾਂ ਤੇ ਵਾਇਰਲ ਵੀਡੀਓ ਪੂਰੀ ਤਰ੍ਹਾਂ ਨਕਲੀ ਹੈ। ਫੋਰੈਂਸਿਕ ਜਾਂਚ ਨੇ ਨਕਲੀ ਆਵਾਜ਼ ਦੀ ਪੁਸ਼ਟੀ ਕੀਤੀ ਹੈ। #PIBFactCheck [Visual Infographic OCR Text]: ਚੇਤਾਵਨੀ: ਏਆਈ ਡੀਪਫੇਕ ਵੌਇਸ ਕਲੋਨ ਰਾਹੀਂ ਗਲਤ ਪ੍ਰਚਾਰ",
-    "language": "pa",
-    "media_type": "image",
-    "author": "@mumbai_live_updates",
-    "timestamp": "2026-09-28T18:08:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-5542199631547792",
-    "platform": "instagram",
-    "text": "₹500 నోట్ల రద్దు అంటూ సర్క్యులేట్ అవుతున్న నోటీస్ పూర్తిగా ఫేక్. ఆర్బీఐ అలాంటి నోటిఫికేషన్ విడుదల చేయలేదు. #PIBFactCheck #RBI [Alert #2] [Spoken Audio Transcript]: [వాయిస్ నోట్ 0:19]: యూపీఐ ఛార్జీలపై తప్పుడు సందేశాలను షేర్ చేయవద్దు.",
-    "language": "te",
-    "media_type": "video",
-    "author": "@mumbaipolice",
-    "timestamp": "2026-09-28T08:53:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-9341771890863720",
-    "platform": "instagram",
-    "text": "दूरसंचार विभागाकडून ४८ तासांसाठी इंटरनेट बंद करण्याचे कोणतेही आदेश जारी करण्यात आलेले नाहीत. ही बातमी खोटी आहे. #FactCheck #DoT [Alert #3] [Visual Infographic OCR Text]: पॉवर ग्रिड बुलेटिन: वीज पुरवठा पूर्णपणे सुरळीत",
-    "language": "hi",
-    "media_type": "image",
-    "author": "@tamil_nadu_radar",
-    "timestamp": "2026-10-06T00:26:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-6302968420043086",
-    "platform": "instagram",
-    "text": "టెలికాం శాఖ ఇంటర్నెట్ సేవలను 48 గంటలు నిలిపివేస్తుందనేది పూర్తిగా తప్పుడు ప్రచారం. ఎటువంటి ఆదేశాలు రాలేదు. #FactCheck #DoT [Spoken Audio Transcript]: [ఆడియో ట్రాన్స్క్రిప్ట్ 0:25]: అత్యవసర సమాచారం: నేటి అర్ధరాత్రి నుండి మొబైల్ డేటా నిలిపివేస్తున్నారనే ఫేక్ వార్త వ్యాపిస్తోంది.",
-    "language": "te",
-    "media_type": "video",
-    "author": "@vishvasnews",
-    "timestamp": "2026-09-29T11:34:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-2216213066603544",
-    "platform": "instagram",
-    "text": "কলকাতা মেট্রোর নতুন সম্প্রসারিত রুটের উদ্বোধন। শহরের যোগাযোগ ব্যবস্থায় যুগান্তকারী পদক্ষেপ। #KolkataMetro #BengalDevelopment [Spoken Audio Transcript]: [ভয়েসওভার 0:25]: আধুনিক মেট্রো কোচে স্বাচ্ছন্দ্যে যাতায়াত করছেন যাত্রীরা, দারুণ অভিজ্ঞতা।",
-    "language": "bn",
-    "media_type": "video",
-    "author": "@bharat_alert_24x7",
-    "timestamp": "2026-09-25T13:37:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-2056106156145567",
-    "platform": "instagram",
-    "text": "Team India ne cricket test series me historic victory register ki hai! Outstanding team performance and bowling masterclass. #TeamIndia #BleedBlue #CricketLovers [Visual Infographic OCR Text]: MATCH REPORT: INDIA CLINCHES HISTORIC TEST VICTORY [Spoken Audio Transcript]: [Commentary 0:30]: What a stunning delivery to finish off the match, scenes of pure joy in the stadium!",
+    "id": "P004",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:04:15",
     "language": "hi-Latn",
-    "media_type": "video",
-    "author": "@tamilnadupolice",
-    "timestamp": "2026-09-19T03:25:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-7626886675266028",
-    "platform": "instagram",
-    "text": "वायरल रील में दावा किया जा रहा है कि सेना प्रमुख ने सीमा पर आपातकालीन निर्देश दिए हैं। यह 100% डीपफेक AI वॉयस क्लोन है। अफवाहों पर ध्यान न दें। #FactCheck #IndianArmy [Alert #7] [Visual Infographic OCR Text]: सावधान: एआई डीपफेक वॉइस क्लोन द्वारा फर्जी दावा प्रसारित [Spoken Audio Transcript]: [रील ऑडियो ट्रांसक्रिप्ट 0:26]: रिजर्व बैंक की आपात बैठक में सभी निजी बैंक खातों पर 48 घंटे की रोक लगाने का फैसला हुआ है।",
-    "language": "hi",
-    "media_type": "video",
-    "author": "@punjab_voice_now",
-    "timestamp": "2026-09-28T07:11:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-4291880413684246",
-    "platform": "instagram",
-    "text": "హైదరాబాద్ మెట్రో రైలు సేవలు రద్దయ్యాయని వస్తున్న వార్తలు అవాస్తవం. రైళ్లు యథావిధిగా నడుస్తున్నాయి. #HyderabadMetro [Alert #8] [Visual Infographic OCR Text]: హైదరాబాద్ మెట్రో: రైళ్ల రాకపోకలు యథావిధిగా కొనసాగుతున్నాయి [Spoken Audio Transcript]: [ఆడియో ట్రాన్స్క్రిప్ట్ 0:25]: అత్యవసర సమాచారం: నేటి అర్ధరాత్రి నుండి మొబైల్ డేటా నిలిపివేస్తున్నారనే ఫేక్ వార్త వ్యాపిస్తోంది.",
-    "language": "te",
-    "media_type": "video",
-    "author": "@delhi_crime_pulse",
-    "timestamp": "2026-09-18T11:00:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-2720770799422928",
-    "platform": "instagram",
-    "text": "₹૫૦૦ની નોટો બંધ થવાનો વાયરલ પરિપત્ર તદ્દન ખોટો છે. રિઝર્વ બેંકે આવો કોઈ નિર્ણય લીધો નથી. #PIBFactCheck #RBI [Alert #9] [Visual Infographic OCR Text]: એનપીસીઆઈ સ્પષ્ટતા: યુપીઆઈ પર કોઈ વધારાનો ચાર્જ નથી [Spoken Audio Transcript]: [ઓડિયો 0:25]: એટીએમ બંધ થવાની વાતો અફવા છે, બધી બેંકો રાબેતા મુજબ કાર્યરત છે.",
-    "language": "en",
-    "media_type": "video",
-    "author": "@bengal_express_live",
-    "timestamp": "2026-10-02T12:19:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-3195166342880918",
-    "platform": "instagram",
-    "text": "आयकर रिफंड के नाम पर संदिग्ध एपीके फाइल और लिंक वायरल किए जा रहे हैं। किसी भी अनजान लिंक पर ओटीपी दर्ज न करें। #CyberSecurity #SafeBanking [Spoken Audio Transcript]: [रील ऑडियो 0:21]: सरकार ने सभी ऑनलाइन डिजिटल पेमेंट्स पर नया चार्ज लगा दिया है, सबको फॉरवर्ड करें।",
-    "language": "hi",
-    "media_type": "video",
-    "author": "@bengal_express_live",
-    "timestamp": "2026-09-25T10:56:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-5043717840178082",
-    "platform": "instagram",
-    "text": "Refinery blast ka viral video India ka nahi balki Mexico ka 2021 ka incident hai. Drone strike bata kar jhootha narrative banaya ja raha hai. #BOOMFactCheck #ViralDebunk [Alert #11] [Visual Infographic OCR Text]: BOOM LIVE VERIFICATION: 2021 MEXICO INCIDENT MISREPRESENTED [Spoken Audio Transcript]: [Spoken Commentary 0:36]: Dekho bhai yaha live explosion hua hai, police barricading kar rahi hai.",
-    "language": "hi-Latn",
-    "media_type": "video",
-    "author": "@bengal_express_live",
-    "timestamp": "2026-09-24T11:01:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-2738520919096596",
-    "platform": "instagram",
-    "text": "ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು 48 ಗಂಟೆಗಳ ಕಾಲ ಕಡಿತಗೊಳಿಸಲಾಗುತ್ತದೆ ಎಂಬ ಸುದ್ದಿ ಸುಳ್ಳು. ಯಾವುದೇ ಆದೇಶವಿಲ್ಲ. #FactCheck [Spoken Audio Transcript]: [ಆಡಿಯೋ 0:23]: ಇಂಟರ್ನೆಟ್ ಸ್ಥಗಿತಗೊಳ್ಳಲಿದೆ ಎಂಬ ವದಂತಿಯನ್ನು ನಂಬಬೇಡಿ.",
-    "language": "en",
-    "media_type": "video",
-    "author": "@cyber_sentinel_in",
-    "timestamp": "2026-09-17T14:21:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-1369974616947962",
-    "platform": "instagram",
-    "text": "Team India ne cricket test series me historic victory register ki hai! Outstanding team performance and bowling masterclass. #TeamIndia #BleedBlue #CricketLovers [Visual Infographic OCR Text]: MATCH REPORT: INDIA CLINCHES HISTORIC TEST VICTORY",
-    "language": "hi-Latn",
+    "text": "Sarkar kal internet band karne wali hai. Sabko immediately forward karo.",
     "media_type": "image",
-    "author": "@thehindu",
-    "timestamp": "2026-09-25T13:07:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-1874028073195576",
-    "platform": "instagram",
-    "text": "आयकर रिफंड के नाम पर संदिग्ध एपीके फाइल और लिंक वायरल किए जा रहे हैं। किसी भी अनजान लिंक पर ओटीपी दर्ज न करें। #CyberSecurity #SafeBanking [Alert #14] [Visual Infographic OCR Text]: साइबर हेल्पलाइन 1930: फर्जी बैंक रिफंड मैसेज से सतर्क रहें",
-    "language": "hi",
-    "media_type": "carousel",
-    "author": "@uppolice",
-    "timestamp": "2026-10-04T19:23:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-5174302757450086",
-    "platform": "instagram",
-    "text": "Viral Instagram post claims UPI transactions will incur a mandatory 5% surcharge starting tomorrow midnight. NPCI confirms this is completely FALSE. #FactCheck #UPITransactions #DigitalIndia [Visual Infographic OCR Text]: RESERVE BANK OF INDIA - [FORGED CIRCULAR] - MANDATORY DEPOSIT FREEZE",
-    "language": "en",
-    "media_type": "image",
-    "author": "@bharat_alert_24x7",
-    "timestamp": "2026-09-23T00:48:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-4414058629344265",
-    "platform": "instagram",
-    "text": "Misleading Reel claiming metro services in Delhi-NCR suspended due to security drills. DMRC clarifies regular train schedules are completely normal. #DelhiMetro #FactCheck [Visual Infographic OCR Text]: DEPARTMENT OF TELECOMMUNICATIONS - [FAKE DOCUMENT] - BANDWIDTH SUSPENSION",
-    "language": "en",
-    "media_type": "image",
-    "author": "@fintech_india_buzz",
-    "timestamp": "2026-09-18T12:46:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-4219790646034015",
-    "platform": "instagram",
-    "text": "हा स्फोटाचा व्हिडिओ भारताचा नसून २०२१ मधील मेक्सिकोतील कारखान्यातील आगीचा आहे. ड्रोन हल्ला म्हणून चुकीची माहिती पसरवली जात आहे. #BOOMFactCheck [Alert #17] [Visual Infographic OCR Text]: सत्यशोधन: जुना व्हिडिओ चुकीच्या माहितीसह पसरवला जात आहे [Spoken Audio Transcript]: [ऑडिओ 0:36]: हा जुना व्हिडिओ सध्याची घटना म्हणून दाखवून नागरिकांमध्ये भीती निर्माण केली जात आहे.",
-    "language": "hi",
-    "media_type": "video",
-    "author": "@telugu_samachar_24",
-    "timestamp": "2026-09-17T10:28:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-9913562210950053",
-    "platform": "instagram",
-    "text": "బ్యాంకు ఖాతాలు స్తంభింపజేస్తారని ఆర్బీఐ గవర్నర్ పేరుతో షేర్ అవుతున్న క్లిప్ నకిలీది. సింథటిక్ వాయిస్ ద్వారా తయారు చేయబడింది. #PIBFactCheck [Visual Infographic OCR Text]: పీఐబీ ఫ్యాక్ట్ చెక్: బ్యాంకింగ్ నిలిపివేత వార్త పూర్తిగా అవాస్తవం",
-    "language": "te",
-    "media_type": "image",
-    "author": "@uppolice",
-    "timestamp": "2026-09-23T23:50:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-1838479169842812",
-    "platform": "instagram",
-    "text": "భారత అంతరిక్ష పరిశోధన సంస్థ (ఇస్రో) మరో మైలురాయిని అధిగమించింది. శాస్త్రవేత్తలకు హృదయపూర్వక అభినందనలు! #ISRO #India #Science [Visual Infographic OCR Text]: ఇస్రో విజయం: ఉపగ్రహ ప్రయోగం విజయవంతం",
-    "language": "te",
-    "media_type": "image",
-    "author": "@pibindia",
-    "timestamp": "2026-09-28T13:40:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-5441197322765110",
-    "platform": "instagram",
-    "text": "Fabricated audit report claiming major private bank insolvency is circulating on stock trading groups to depress share prices. #SEBI #MarketIntegrity [Visual Infographic OCR Text]: CYBER CRIME ADVISORY: BEWARE OF PHISHING REFUND REELS",
-    "language": "en",
-    "media_type": "image",
-    "author": "@tamil_nadu_radar",
-    "timestamp": "2026-09-28T02:12:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-1813048504675330",
-    "platform": "instagram",
-    "text": "आयकर रिफंड के नाम पर संदिग्ध एपीके फाइल और लिंक वायरल किए जा रहे हैं। किसी भी अनजान लिंक पर ओटीपी दर्ज न करें। #CyberSecurity #SafeBanking [Visual Infographic OCR Text]: साइबर हेल्पलाइन 1930: फर्जी बैंक रिफंड मैसेज से सतर्क रहें",
-    "language": "hi",
-    "media_type": "image",
-    "author": "@vishvasnews",
-    "timestamp": "2026-09-17T01:25:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-8667480905989382",
-    "platform": "instagram",
-    "text": "টেলিকম দপ্তর কর্তৃক ৪৮ ঘণ্টার জন্য ইন্টারনেট বন্ধের বিজ্ঞপ্তি সম্পূর্ণ মিথ্যা। কোনো ইন্টারনেট ব্ল্যাকআউট হচ্ছে না। #FactCheck [Alert #22] [Spoken Audio Transcript]: [অডিও প্রতিলিপি ০:২৫]: জরুরি খবর: আজ মধ্যরাত থেকে রাজ্যের সমস্ত ইন্টারনেট ব্রডব্যান্ড বন্ধ থাকবে।",
-    "language": "bn",
-    "media_type": "video",
-    "author": "@bengal_express_live",
-    "timestamp": "2026-09-20T06:04:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-4350301928687479",
-    "platform": "instagram",
-    "text": "யுபிஐ பரிவர்த்தனைகளுக்கு 5% கட்டணம் விதிக்கப்படும் என்பது தவறான தகவல். என்பிசிஐ இதை முழுமையாக மறுத்துள்ளது. #UPI #TamilNews [Alert #23] [Spoken Audio Transcript]: [ஆடியோ பதிவு 0:27]: அவசரமாக ஏடிஎம்மில் பணம் எடுத்துக் கொள்ளுங்கள், நாளை முதல் புதிய கட்டுப்பாடுகள் என வதந்தி பரவுகிறது.",
+    "id": "P005",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:05:15",
     "language": "ta",
-    "media_type": "video",
-    "author": "@telugu_samachar_24",
-    "timestamp": "2026-10-04T15:52:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "text": "அவசரம்: நாளை முதல் இணைய சேவை நிறுத்தப்படும் என அரசு அறிவித்துள்ளது. உடனடியாக பகிரவும்.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-2774655167508453",
-    "platform": "instagram",
-    "text": "A viral Instagram Reel claims that the Ministry of Communications has issued orders to cut mobile data bandwidth across major cities for 48 hours. #PIBFactCheck: This claim is completely FAKE. No such circular or shutdown order has been issued by the Government of India. Beware of panic mongering forwards. #FactCheck #India [Visual Infographic OCR Text]: DMRC ADVISORY: METRO TRAINS RUNNING AS PER SCHEDULE [Spoken Audio Transcript]: [Spoken Audio Transcript 0:31]: Alert guys! DoT secret circular has ordered mobile data suspension in major metros tonight. Check your local groups.",
+    "id": "P006",
+    "platform": "news",
+    "timestamp": "2026-08-16T09:06:15",
     "language": "en",
-    "media_type": "video",
-    "author": "@punjab_voice_now",
-    "timestamp": "2026-10-01T18:01:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "text": "Unverified reports claim potential nationwide internet shutdown scheduled for tomorrow.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-4086592955968943",
-    "platform": "instagram",
-    "text": "ਵਾਇਰਲ ਵੀਡੀਓ ਵਿੱਚ ਫੌਜ ਮੁਖੀ ਵੱਲੋਂ ਹੰਗਾਮੀ ਹੁਕਮ ਜਾਰੀ ਕਰਨ ਦਾ ਦਾਅਵਾ 100% ਏਆਈ ਡੀਪਫੇਕ ਵੌਇਸ ਕਲੋਨ ਹੈ। ਅਫਵਾਹਾਂ ਤੋਂ ਬਚੋ। #FactCheck #Punjab [Alert #25] [Visual Infographic OCR Text]: ਪੰਜਾਬ ਪੁਲਿਸ ਸਾਈਬਰ ਸੈੱਲ: ਅਫਵਾਹ ਫੈਲਾਉਣ ਵਾਲਿਆਂ ਖਿਲਾਫ ਸਖਤ ਕਾਰਵਾਈ",
-    "language": "pa",
-    "media_type": "image",
-    "author": "@viral_khabar_reels",
-    "timestamp": "2026-10-07T11:07:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-4725832963287260",
-    "platform": "instagram",
-    "text": "Fake notice alert: Rs 500 ke notes demonetize hone ki khabar bilkul jhoothi hai. RBI ne aisi koi circular issue nahi ki hai. #PIBFactCheck #FinanceFacts [Spoken Audio Transcript]: [Reel Voiceover 0:22]: Bhai mere account me fake refund link aaya tha, ye cyber fraud hai savdhan rehna.",
+    "id": "P007",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:07:15",
     "language": "hi-Latn",
-    "media_type": "video",
-    "author": "@thequint_webqoof",
-    "timestamp": "2026-09-19T04:52:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
+    "text": "Sarkar internet bandh kar rahi hai kal se. Confirm news guys share fast!",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-3555674209901222",
-    "platform": "instagram",
-    "text": "यूपीआय व्यवहारांवर ५% जादा कर लागणार असल्याचा दावा चुकीचा आहे. एनपीसीआयने स्पष्ट केले आहे की व्यवहार विनामूल्य आहेत. #UPI #DigitalIndia [Alert #27] [Spoken Audio Transcript]: [ऑडिओ रेकॉर्डिंग 0:27]: लवकर एटीएममधून रोख रक्कम काढा, नवीन नियमांबद्दल खोट्या अफवा पसरवल्या जात आहेत.",
+    "id": "P008",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:08:15",
     "language": "hi",
-    "media_type": "video",
-    "author": "@uppolice",
-    "timestamp": "2026-10-03T00:20:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-3855541103743824",
-    "platform": "instagram",
-    "text": "మంత్రి గారి పేరుతో ప్రసారమవుతున్న ఫేక్ ఆడియోను సైబర్ సెల్ గుర్తించింది. ప్రజలు అప్రమత్తంగా ఉండాలి. #CyberCrime [Alert #28] [Visual Infographic OCR Text]: హెచ్చరిక: ఏఐ డీప్ఫేక్ వాయిస్ క్లోన్ ద్వారా తప్పుడు ప్రచారం",
-    "language": "te",
+    "text": "सरकार द्वारा इंटरनेट निलंबन का आधिकारिक गुप्त आदेश जारी हुआ।",
     "media_type": "image",
-    "author": "@delhi_crime_pulse",
-    "timestamp": "2026-10-05T17:32:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-6228882787170594",
-    "platform": "instagram",
-    "text": "इसरो ने अगले पीढ़ी के उपग्रह प्रक्षेपण की सभी तैयारियां सफलतापूर्वक पूरी कर ली हैं। भारत के अंतरिक्ष अभियान के लिए गौरवशाली क्षण! #ISRO #IndiaInSpace [Spoken Audio Transcript]: [कमेंट्री 0:28]: श्रीहरिकोटा से ऐतिहासिक प्रक्षेपण का सीधा प्रसारण, वैज्ञानिकों में भारी उत्साह।",
-    "language": "hi",
-    "media_type": "video",
-    "author": "@punjabpoliceind",
-    "timestamp": "2026-10-02T13:06:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-2491237284185583",
-    "platform": "instagram",
-    "text": "భారత అంతరిక్ష పరిశోధన సంస్థ (ఇస్రో) మరో మైలురాయిని అధిగమించింది. శాస్త్రవేత్తలకు హృదయపూర్వక అభినందనలు! #ISRO #India #Science [Spoken Audio Transcript]: [వ్యాఖ్యానం 0:25]: శ్రీహరికోట నుంచి నింగికెగిసిన రాకెట్, విజయవంతమైన ప్రయోగం.",
-    "language": "te",
-    "media_type": "video",
-    "author": "@delhi_crime_pulse",
-    "timestamp": "2026-10-06T13:20:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-6891437442585167",
-    "platform": "instagram",
-    "text": "কলকাতা মেট্রোর নতুন সম্প্রসারিত রুটের উদ্বোধন। শহরের যোগাযোগ ব্যবস্থায় যুগান্তকারী পদক্ষেপ। #KolkataMetro #BengalDevelopment [Spoken Audio Transcript]: [ভয়েসওভার 0:25]: আধুনিক মেট্রো কোচে স্বাচ্ছন্দ্যে যাতায়াত করছেন যাত্রীরা, দারুণ অভিজ্ঞতা।",
+    "id": "P009",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:09:15",
     "language": "bn",
-    "media_type": "video",
-    "author": "@desi_reels_bulletin",
-    "timestamp": "2026-09-19T11:10:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "text": "জরুরী: সরকার আগামীকাল ইন্টারনেট পরিষেবা বন্ধ করে দেবে। এখনই শেয়ার করুন।",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-9380428655327514",
-    "platform": "instagram",
-    "text": "Fake news alert: Viral video claims national power grid collapse in northern states. Power Grid Corporation confirms all transmission lines are fully operational. #GridSecurity #FactCheck [Alert #32] [Visual Infographic OCR Text]: DEPARTMENT OF TELECOMMUNICATIONS - [FAKE DOCUMENT] - BANDWIDTH SUSPENSION",
+    "id": "P010",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:10:15",
     "language": "en",
-    "media_type": "image",
-    "author": "@cyber_sentinel_in",
-    "timestamp": "2026-10-06T18:46:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "text": "ALERT: Telecom providers instructed to throttle 4G/5G networks starting 00:00 UTC.",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-5955315944873203",
-    "platform": "instagram",
-    "text": "DoT dwara internet 48 hours ke liye band karne ki news completely FAKE hai. Kisi bhi telecom operator ko koi shutdown order nahi diya gaya. #PIBFactCheck [Spoken Audio Transcript]: [Spoken Reel Audio 0:19]: Metro routes suspend ho gaye hain security reasons se, aisa forward ghum raha hai.",
-    "language": "hi-Latn",
-    "media_type": "video",
-    "author": "@fintech_india_buzz",
-    "timestamp": "2026-09-24T03:19:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-1206687087361038",
-    "platform": "instagram",
-    "text": "शेयर बाजार में भारी गिरावट की फर्जी चेतावनी देने वाला यह वीडियो एआई से बनाया गया है। अधिकृत स्रोतों से ही जानकारी लें। #AltNews #Debunk [Alert #34] [Visual Infographic OCR Text]: साइबर सेल चेतावनी: फर्जी वॉयस नोट साझा करने वालों पर सख्त कार्रवाई",
-    "language": "hi",
-    "media_type": "image",
-    "author": "@boomfactcheck",
-    "timestamp": "2026-09-17T23:00:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-8846932064044395",
-    "platform": "instagram",
-    "text": "Senior minister ka viral speech audio completely forged hai. Forensic analysis me synthetic pitch anomaly detect hui hai. #AltNews #Deepfake [Alert #35] [Visual Infographic OCR Text]: FACT CHECK: DEEPFAKE VIDEO BUSTED BY CYBER FORENSICS [Spoken Audio Transcript]: [Voice Note ASR Transcript 0:31]: Dosto urgent alert hai, kal se sabhi commercial banks pe withdrawal freeze hone wala hai, paisa nikal lo.",
-    "language": "hi-Latn",
-    "media_type": "video",
-    "author": "@delhi_crime_pulse",
-    "timestamp": "2026-10-02T12:44:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-7834527496336462",
-    "platform": "instagram",
-    "text": "Misleading Reel claiming metro services in Delhi-NCR suspended due to security drills. DMRC clarifies regular train schedules are completely normal. #DelhiMetro #FactCheck [Visual Infographic OCR Text]: OFFICIAL CLARIFICATION: POWER GRID SYSTEMS OPERATING NORMALLY",
+    "id": "P011",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:11:15",
     "language": "en",
-    "media_type": "carousel",
-    "author": "@cyber_sentinel_in",
-    "timestamp": "2026-09-17T05:54:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately! (Variant #11)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-3451996656529492",
-    "platform": "instagram",
-    "text": "उत्तरी ग्रिड फेल होने और बड़े बिजली संकट का दावा भ्रामक है। पावर ग्रिड कॉर्पोरेशन के अनुसार सभी ट्रांसमिशन लाइनें सुचारू हैं। #PowerGrid #India [Alert #37] [Visual Infographic OCR Text]: डीएमआरसी यात्रा परामर्श: मेट्रो सेवाएं नियमित समय पर संचालित [Spoken Audio Transcript]: [रील ऑडियो 0:18]: ग्रिड ट्रिप होने के कारण कई राज्यों में बिजली ठप होने की खबर है, मोबाइल चार्ज कर लें।",
-    "language": "hi",
-    "media_type": "video",
-    "author": "@telugu_samachar_24",
-    "timestamp": "2026-09-17T11:08:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-7872757013430880",
-    "platform": "instagram",
-    "text": "शेयर बाजार में भारी गिरावट की फर्जी चेतावनी देने वाला यह वीडियो एआई से बनाया गया है। अधिकृत स्रोतों से ही जानकारी लें। #AltNews #Debunk [Visual Infographic OCR Text]: साइबर सेल चेतावनी: फर्जी वॉयस नोट साझा करने वालों पर सख्त कार्रवाई",
-    "language": "hi",
-    "media_type": "image",
-    "author": "@truth_seeker_desi",
-    "timestamp": "2026-10-07T01:51:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-5228771358097944",
-    "platform": "instagram",
-    "text": "આર્મી ચીફના નામે ઈમરજન્સી આદેશનો દાવો કરતો વાયરલ વીડિયો ૧૦૦% એઆઈ ડીપફેક વોઈસ ક્લોન છે. અફવાઓથી દૂર રહો. #FactCheck #Gujarat [Alert #39] [Visual Infographic OCR Text]: પીઆઈબી ફેક્ટ ચેક: બેંક ખાતા બંધ થવાનો દાવો પાયાવિહોણો [Spoken Audio Transcript]: [વોઈસ નોટ ASR 0:29]: મિત્રો ધ્યાન આપો, બેંકો બંધ થવાના મેસેજ ખોટા છે, અફવાઓ પર વિશ્વાસ ન કરો.",
+    "id": "P012",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:12:15",
     "language": "en",
-    "media_type": "video",
-    "author": "@tamil_nadu_radar",
-    "timestamp": "2026-09-26T11:42:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-5049088189360028",
-    "platform": "instagram",
-    "text": "మంత్రి గారి పేరుతో ప్రసారమవుతున్న ఫేక్ ఆడియోను సైబర్ సెల్ గుర్తించింది. ప్రజలు అప్రమత్తంగా ఉండాలి. #CyberCrime [Visual Infographic OCR Text]: పీఐబీ ఫ్యాక్ట్ చెక్: బ్యాంకింగ్ నిలిపివేత వార్త పూర్తిగా అవాస్తవం",
-    "language": "te",
+    "text": "BREAKING: Total internet suspension ordered by government starting midnight tonight. (Variant #12)",
     "media_type": "image",
-    "author": "@desi_reels_bulletin",
-    "timestamp": "2026-09-29T14:01:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-5362176489605552",
-    "platform": "instagram",
-    "text": "Instagram reel pe fake crypto scheme promote karne ke liye celebrity voice clone use kiya ja raha hai. Do not invest! #CyberDost #ScamAlert [Visual Infographic OCR Text]: PIB FACT CHECK: FAKE AUDIO ADVISORY DEBUNKED",
+    "id": "P013",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:13:15",
+    "language": "hi",
+    "text": "कल से पूरे देश में इंटरनेट बंद होने वाला है। तुरंत सभी व्हाट्सएप ग्रुप में भेजें। (Variant #13)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P014",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:14:15",
     "language": "hi-Latn",
-    "media_type": "image",
-    "author": "@fintech_india_buzz",
-    "timestamp": "2026-10-03T14:30:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "text": "Sarkar kal internet band karne wali hai. Sabko immediately forward karo. (Variant #14)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-9736546487629852",
-    "platform": "instagram",
-    "text": "Northern power grid collapse hone ki viral video fake hai. Powergrid authorities ne confirm kiya hai sabhi lines normal chal rahi hain. #IndiaInfrastructure [Spoken Audio Transcript]: [Spoken Reel Audio 0:19]: Metro routes suspend ho gaye hain security reasons se, aisa forward ghum raha hai.",
-    "language": "hi-Latn",
-    "media_type": "video",
-    "author": "@fintech_india_buzz",
-    "timestamp": "2026-09-18T21:58:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-1066809365855875",
-    "platform": "instagram",
-    "text": "இஸ்ரோவின் அடுத்த தலைமுறை செயற்கைக்கோள் ஏவுதல் வெற்றிகரமாக நிறைவடைந்தது! இந்திய விஞ்ஞானிகளுக்கு பாராட்டுகள். #ISRO #Science #TamilNadu [Visual Infographic OCR Text]: இஸ்ரோ அறிவியல் சாதனை: புதிய செயற்கைக்கோள் நிலைநிறுத்தம் [Spoken Audio Transcript]: [கருத்துரை 0:24]: ஸ்ரீஹரிகோட்டாவிலிருந்து வரலாற்று சிறப்புமிக்க ராக்கெட் வெற்றிகரமாக விண்ணில் பாய்ந்தது.",
+    "id": "P015",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:15:15",
     "language": "ta",
-    "media_type": "video",
-    "author": "@kolkatapolice",
-    "timestamp": "2026-09-28T03:59:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "text": "அவசரம்: நாளை முதல் இணைய சேவை நிறுத்தப்படும் என அரசு அறிவித்துள்ளது. உடனடியாக பகிரவும். (Variant #15)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "INSTA-5470638449582243",
-    "platform": "instagram",
-    "text": "Team India ne cricket test series me historic victory register ki hai! Outstanding team performance and bowling masterclass. #TeamIndia #BleedBlue #CricketLovers [Visual Infographic OCR Text]: MATCH REPORT: INDIA CLINCHES HISTORIC TEST VICTORY [Spoken Audio Transcript]: [Commentary 0:30]: What a stunning delivery to finish off the match, scenes of pure joy in the stadium!",
-    "language": "hi-Latn",
-    "media_type": "video",
-    "author": "@desi_reels_bulletin",
-    "timestamp": "2026-09-27T21:52:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-9164829834168160",
-    "platform": "instagram",
-    "text": "हा स्फोटाचा व्हिडिओ भारताचा नसून २०२१ मधील मेक्सिकोतील कारखान्यातील आगीचा आहे. ड्रोन हल्ला म्हणून चुकीची माहिती पसरवली जात आहे. #BOOMFactCheck [Visual Infographic OCR Text]: सत्यशोधन: जुना व्हिडिओ चुकीच्या माहितीसह पसरवला जात आहे [Spoken Audio Transcript]: [व्हॉइस नोट 0:20]: ही घटना भारताबाहेरील आहे, स्थानिक घटनेशी याचा संबंध नाही.",
-    "language": "hi",
-    "media_type": "video",
-    "author": "@boomfactcheck",
-    "timestamp": "2026-10-01T12:34:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-2574472023526934",
-    "platform": "instagram",
-    "text": "Deepfake video of senior ministry official endorsing fraudulent crypto trading scheme on Instagram. The lip-sync is synthetically altered. Verify before investing. #CyberDost #ScamAlert [Alert #46] [Visual Infographic OCR Text]: FACT CHECK: DEEPFAKE REEL DEBUNKED BY FORENSIC LAB [Spoken Audio Transcript]: [Spoken Audio Transcript 0:29]: Emergency defense alert: Coordinated troop mobilizations reported in western sector, verify immediately.",
+    "id": "P016",
+    "platform": "news",
+    "timestamp": "2026-08-16T09:16:15",
     "language": "en",
-    "media_type": "video",
-    "author": "@cyber_sentinel_in",
-    "timestamp": "2026-09-30T07:56:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-6104282318696502",
-    "platform": "instagram",
-    "text": "মন্ত্রিসভার গুরুত্বপূর্ণ নেতার কণ্ঠে ভুয়ো অডিও রেকর্ড তৈরি করে সমাজমাধ্যমে আতঙ্ক ছড়ানো হচ্ছে। সাইবার সেল তদন্ত শুরু করেছে। #CyberCrimeAlert [Spoken Audio Transcript]: [রিল অডিও প্রতিলিপি ০:২২]: সেনা অভিযানের ভুয়ো অডিও রিল ইনস্টাগ্রামে দ্রুত ছড়াচ্ছে, এটি শেয়ার করবেন না।",
-    "language": "bn",
-    "media_type": "video",
-    "author": "@pibfactcheck",
-    "timestamp": "2026-10-06T12:11:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-5727311797081727",
-    "platform": "instagram",
-    "text": "High-profile financial influencer video modified with synthetic deepfake audio to engineer artificial panic in public sector bank stocks. #AltNews #StockMarket [Alert #48] [Visual Infographic OCR Text]: CYBER CRIME CELL: PROSECUTION UNDER IT ACT FOR COGNIZABLE AI MISINFORMATION [Spoken Audio Transcript]: [Voice Note ASR Transcript 0:35]: Urgent announcement from central reserve board: all digital bank transfers will be suspended for 48 hours starting tonight.",
-    "language": "en",
-    "media_type": "video",
-    "author": "@delhipolice",
-    "timestamp": "2026-09-21T04:06:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-8082874585810153",
-    "platform": "instagram",
-    "text": "Misleading Reel claiming metro services in Delhi-NCR suspended due to security drills. DMRC clarifies regular train schedules are completely normal. #DelhiMetro #FactCheck [Alert #49] [Visual Infographic OCR Text]: OFFICIAL CLARIFICATION: POWER GRID SYSTEMS OPERATING NORMALLY [Spoken Audio Transcript]: [Spoken Audio Transcript 0:31]: Alert guys! DoT secret circular has ordered mobile data suspension in major metros tonight. Check your local groups.",
-    "language": "en",
-    "media_type": "video",
-    "author": "@marathi_khabar_live",
-    "timestamp": "2026-10-02T13:55:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "INSTA-4171329728704962",
-    "platform": "instagram",
-    "text": "মন্ত্রিসভার গুরুত্বপূর্ণ নেতার কণ্ঠে ভুয়ো অডিও রেকর্ড তৈরি করে সমাজমাধ্যমে আতঙ্ক ছড়ানো হচ্ছে। সাইবার সেল তদন্ত শুরু করেছে। #CyberCrimeAlert [Alert #50] [Visual Infographic OCR Text]: সতর্কবার্তা: এআই ডিপফেক অডিওর মাধ্যমে ভুয়ো প্রচার শনাক্ত",
-    "language": "bn",
+    "text": "Unverified reports claim potential nationwide internet shutdown scheduled for tomorrow. (Variant #16)",
     "media_type": "image",
-    "author": "@gujarat_varta_now",
-    "timestamp": "2026-09-18T23:55:12.304458+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "REDDIT-1x07aon",
-    "platform": "reddit",
-    "text": "Built a 20+ feature, privacy-first pregnancy companion app tailored for Indian mothers & doctors (ourpregnancy.in)",
-    "language": "en",
+    "id": "P017",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:17:15",
+    "language": "hi-Latn",
+    "text": "Sarkar internet bandh kar rahi hai kal se. Confirm news guys share fast! (Variant #17)",
     "media_type": "text",
-    "author": "u/Material-Quote-9562",
-    "timestamp": "2026-10-07T20:26:39+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "REDDIT-1x078s4",
-    "platform": "reddit",
-    "text": "Mother of Democracy Uplifting Opposition",
+    "id": "P018",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:18:15",
+    "language": "hi",
+    "text": "सरकार द्वारा इंटरनेट निलंबन का आधिकारिक गुप्त आदेश जारी हुआ। (Variant #18)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P019",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:19:15",
+    "language": "bn",
+    "text": "জরুরী: সরকার আগামীকাল ইন্টারনেট পরিষেবা বন্ধ করে দেবে। এখনই শেয়ার করুন। (Variant #19)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P020",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:20:15",
     "language": "en",
+    "text": "ALERT: Telecom providers instructed to throttle 4G/5G networks starting 00:00 UTC. (Variant #20)",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P021",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:21:15",
+    "language": "en",
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately! (Variant #21)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P022",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T09:22:15",
+    "language": "en",
+    "text": "BREAKING: Total internet suspension ordered by government starting midnight tonight. (Variant #22)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P023",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:23:15",
+    "language": "hi",
+    "text": "कल से पूरे देश में इंटरनेट बंद होने वाला है। तुरंत सभी व्हाट्सएप ग्रुप में भेजें। (Variant #23)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P024",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T09:24:15",
+    "language": "hi-Latn",
+    "text": "Sarkar kal internet band karne wali hai. Sabko immediately forward karo. (Variant #24)",
+    "media_type": "image",
+    "ocr_text": "INTERNET SHUT DOWN TMROW!! PLS SHARE FAST",
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P025",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T09:25:15",
+    "language": "ta",
+    "text": "அவசரம்: நாளை முதல் இணைய சேவை நிறுத்தப்படும் என அரசு அறிவித்துள்ளது. உடனடியாக பகிரவும். (Variant #25)",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
+  },
+  {
+    "id": "P026",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:52:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें!",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P027",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:54:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks.",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P028",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:56:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle!",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P029",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:58:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज।",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P030",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:00:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit.",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P031",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:02:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें! [Verified Warning Ref #31]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P032",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:04:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks. [Verified Warning Ref #32]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P033",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:06:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle! [Verified Warning Ref #33]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P034",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:08:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज। [Verified Warning Ref #34]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P035",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:10:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit. [Verified Warning Ref #35]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P036",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:12:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें! [Verified Warning Ref #36]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P037",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:14:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks. [Verified Warning Ref #37]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P038",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:16:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle! [Verified Warning Ref #38]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P039",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:18:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज। [Verified Warning Ref #39]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P040",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:20:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit. [Verified Warning Ref #40]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P041",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T11:22:00",
+    "language": "hi",
+    "text": "RBI का नया नियम: आज रात 12 बजे के बाद ₹500 के नोट अमान्य घोषित। तुरंत बदलें! [Verified Warning Ref #41]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P042",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:24:00",
+    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight. Massive panic in banks. [Verified Warning Ref #42]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P043",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T11:26:00",
+    "language": "hi-Latn",
+    "text": "Sabhi 500 ke note jaldi exchange karlo bank band hone se pehle! [Verified Warning Ref #43]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P044",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T11:28:00",
+    "language": "hi",
+    "text": "बैंकों में भारी भीड़! ₹500 के पुराने नोट जमा करने की अंतिम तिथि आज। [Verified Warning Ref #44]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P045",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T11:30:00",
+    "language": "en",
+    "text": "Urgent notice: All bank ATMs will be locked down for 72 hours due to currency audit. [Verified Warning Ref #45]",
+    "media_type": "text",
+    "campaign_cluster": "CAMPAIGN_011"
+  },
+  {
+    "id": "P046",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:18:30",
+    "language": "en",
+    "text": "WHAT A WIN! India wins the World Cup final in a stunning last-over thriller! 🇮🇳🏆",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P047",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T14:21:30",
+    "language": "hi",
+    "text": "भारत बना विश्व विजेता! शानदार प्रदर्शन, पूरी टीम को बधाई। 🎉",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P048",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T14:24:30",
+    "language": "en",
+    "text": "Unbelievable match! Captain leads from the front to secure historic trophy.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P049",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:27:30",
+    "language": "hi-Latn",
+    "text": "India jeet gayi World Cup!! Epic performance by the bowlers in death overs!",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P050",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T14:30:30",
+    "language": "en",
+    "text": "Congratulations Team India on winning the championship! Proud moment.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P051",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:33:30",
+    "language": "en",
+    "text": "WHAT A WIN! India wins the World Cup final in a stunning last-over thriller! 🇮🇳🏆",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P052",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T14:36:30",
+    "language": "hi",
+    "text": "भारत बना विश्व विजेता! शानदार प्रदर्शन, पूरी टीम को बधाई। 🎉",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P053",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T14:39:30",
+    "language": "en",
+    "text": "Unbelievable match! Captain leads from the front to secure historic trophy.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P054",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:42:30",
+    "language": "hi-Latn",
+    "text": "India jeet gayi World Cup!! Epic performance by the bowlers in death overs!",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P055",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T14:45:30",
+    "language": "en",
+    "text": "Congratulations Team India on winning the championship! Proud moment.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P056",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:48:30",
+    "language": "en",
+    "text": "WHAT A WIN! India wins the World Cup final in a stunning last-over thriller! 🇮🇳🏆",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P057",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T14:51:30",
+    "language": "hi",
+    "text": "भारत बना विश्व विजेता! शानदार प्रदर्शन, पूरी टीम को बधाई। 🎉",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P058",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T14:54:30",
+    "language": "en",
+    "text": "Unbelievable match! Captain leads from the front to secure historic trophy.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P059",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T14:57:30",
+    "language": "hi-Latn",
+    "text": "India jeet gayi World Cup!! Epic performance by the bowlers in death overs!",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P060",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T14:00:30",
+    "language": "en",
+    "text": "Congratulations Team India on winning the championship! Proud moment.",
+    "media_type": "text",
+    "campaign_cluster": "ORGANIC_NEWS_001"
+  },
+  {
+    "id": "P061",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:04:45",
+    "language": "hi-Latn",
+    "text": "[Audio Transcript 0:42]: Bhai news me sunne ko mila hai ki kal petrol pumps pe rationing hogi. Pura tank bharwa lo.",
+    "media_type": "audio",
+    "ocr_text": null,
+    "campaign_cluster": "EDGE_AUDIO_001"
+  },
+  {
+    "id": "P062",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:08:45",
+    "language": "hi-Latn",
+    "text": "Arrey yar, chennai la internet slow aa irukku! Is government blocking servers?",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "EDGE_MIXED_001"
+  },
+  {
+    "id": "P063",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:12:45",
+    "language": "hi",
+    "text": "[Image Intercept]",
+    "media_type": "image",
+    "ocr_text": "सरकारी योजना: सभी नागरिकों को मिलेंगे ₹50000 सहायता राशि। इस लिंक पर क्लिक करें।",
+    "campaign_cluster": "EDGE_OCR_001"
+  },
+  {
+    "id": "P064",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:16:45",
+    "language": "en",
+    "text": "Does anyone know the official schedule for tomorrow's metro maintenance work?",
+    "media_type": "text",
+    "ocr_text": null,
+    "campaign_cluster": "NEUTRAL_QUERY"
+  },
+  {
+    "id": "P065",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T16:20:45",
+    "language": "en",
+    "text": "[Video Analysis]: AI Deepfake video of official news anchor spreading fake stock market crash alert.",
     "media_type": "video",
-    "author": "u/TwoSouthern8459",
-    "timestamp": "2026-10-07T20:24:48+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "EDGE_DEEPFAKE_001"
   },
   {
-    "id": "REDDIT-1x077n4",
-    "platform": "reddit",
-    "text": "Hello guys I need your help for a social cause",
+    "id": "P066",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:24:45",
     "language": "en",
-    "media_type": "video",
-    "author": "u/Altruistic_Gur_4251",
-    "timestamp": "2026-10-07T20:23:40+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x06meo",
-    "platform": "reddit",
-    "text": "Advocating Civic Sense is a Crime in this Country",
-    "language": "en",
+    "text": "URGENT: Government is shutting down internet services tomorrow across all states. Share immediately!",
     "media_type": "text",
-    "author": "u/Early_Secret_860",
-    "timestamp": "2026-10-07T20:03:44+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "REDDIT-1x0676i",
-    "platform": "reddit",
-    "text": "Budget under ₹30k (with some EMI flexibility), leaving Motorola after 10 years. Pixel 9a or Edge 70 Fusion? *Note: I used AI to help improve the wording of this post.* Hey everyone, I've used Motorola for 10 years. It's been a great experience, but I'm feeling brand fatigue and want something fresh, with a new software experience. I'm not considering any Chinese brands. **My situation:** * **Budget:** Under ₹30,000 after offers. I might stretch a little with EMI if the phone is clearly worth it. * **Travel:** I travel once or twice a year, mostly during festivals. Last time, my battery died at an important moment, and that stuck with me. So battery matters more than I first thought, though I don't need multi-day endurance. * **Camera:** I don't use it much, but I want good photos when I do, especially at festivals and family events, without fiddling with settings. * **Durability:** I'm a bit clumsy, so I'll use a thick case. I want a flat screen and at least IP67 water resistance. * **Daily use:** YouTube, browsing, Instagram, and Reddit. * **Storage:** Currently 64GB. 128GB is fine, 256GB is nice to have. * **First 5G phone:** This will be my first time on 5G, so I'm excited about that. **What I'm considering:** * **Google Pixel 9a** (launched March 2025): Clean Android, flat screen, IP68, 5,100mAh battery, 23W charging. Price is uncertain. Sale reports show roughly ₹34,999 to ₹39,999 after offers, so I'd need to stretch with EMI to reach that. * **Motorola Edge 70 Fusion** (launched March 2026): 7,000mAh battery and 68W charging, but a curved screen. **My question:** Is the Pixel 9a worth stretching the budget for, given that battery is a bigger concern than I expected? Or should I pick the Edge 70 Fusion's bigger battery instead? Also, if you've used EMI on a Pixel or Motorola during a sale, was it worth it? I'm currently leaning about 75% toward the Pixel because it's a newer-feeling phone with a fresh look and a new software ecosystem, which is what I'm craving after 10 years. Motorola is again in consideration because I felt it is kind of providing value for money Thanks! **TL;DR:** Leaving Motorola after 10 years for something fresh. Budget under ₹30k, with some EMI flexibility. Battery matters more than I thought since it died on me during a trip. Choosing between Pixel 9a (clean Android, flat, 5,100mAh, price uncertain) and Edge 70 Fusion (7,000mAh, curved). Leaning Pixel about 75%. Which should I get?",
-    "language": "en",
+    "id": "P067",
+    "platform": "telegram",
+    "timestamp": "2026-08-16T16:28:45",
+    "language": "hi",
+    "text": "🚨🚨 इमेरजेंसी नोटिस 🚨🚨 बंद होगा बैंक सर्वर! 😱😱 शेयर करें ➡️ ➡️ ➡️",
     "media_type": "text",
-    "author": "u/StatusCartographer89",
-    "timestamp": "2026-10-07T19:46:23+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
   },
   {
-    "id": "REDDIT-1x060h9",
-    "platform": "reddit",
-    "text": "A retired engineer was kept on video call for 3 days under “digital arrest” — he ended up losing ₹33.83 lakh",
-    "language": "en",
+    "id": "P068",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:32:45",
+    "language": "ta",
+    "text": "நாளை முதல் அனைத்து ஏடிஎம்களும் மூடப்படும் என ரிசர்வ் வங்கி தெரிவித்துள்ளது.",
     "media_type": "text",
-    "author": "u/PurvSainik",
-    "timestamp": "2026-10-07T19:38:16+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
   },
   {
-    "id": "REDDIT-1x05h93",
-    "platform": "reddit",
-    "text": "Any tips before visiting india (rohtak)",
+    "id": "P069",
+    "platform": "news",
+    "timestamp": "2026-08-16T16:36:45",
     "language": "en",
+    "text": "Fringe Alert: Domain resolving to bulletproof hosting subnet 185.220.x.x posting fake emergency advisories.",
     "media_type": "text",
-    "author": "u/Best-Literature-9858",
-    "timestamp": "2026-10-07T19:14:32+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   },
   {
-    "id": "REDDIT-1x059ls",
-    "platform": "reddit",
-    "text": "What happened to bribes.fyi?",
-    "language": "en",
+    "id": "P070",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:40:45",
+    "language": "hi-Latn",
+    "text": "Breaking news 🚨 Kal se 500 note ban ho gaya boss!! Viral news forward fast 🔥",
     "media_type": "text",
-    "author": "u/cdrfrk",
-    "timestamp": "2026-10-07T19:06:17+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
   },
   {
-    "id": "REDDIT-1x04pm5",
-    "platform": "reddit",
-    "text": "Using stone for piles relief, Kanpur man lands in OT",
+    "id": "P071",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:44:45",
     "language": "en",
-    "media_type": "link",
-    "author": "u/stankmanly",
-    "timestamp": "2026-10-07T18:45:24+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x03zho",
-    "platform": "reddit",
-    "text": "Why did Instagram did not give reach to cjp protests 2.0",
-    "language": "en",
+    "text": "???",
     "media_type": "text",
-    "author": "u/Thukralnidhish",
-    "timestamp": "2026-10-07T18:17:17+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "NOISE"
   },
   {
-    "id": "REDDIT-1x03na1",
-    "platform": "reddit",
-    "text": "Dhruv rathi joined cjp",
+    "id": "P072",
+    "platform": "news",
+    "timestamp": "2026-08-16T16:48:45",
     "language": "en",
-    "media_type": "video",
-    "author": "u/muna_116",
-    "timestamp": "2026-10-07T18:04:32+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x03mli",
-    "platform": "reddit",
-    "text": "Man caught on camera during ‘bestiality bid’ near Coimbatore; handed over to police",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/stankmanly",
-    "timestamp": "2026-10-07T18:03:55+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x03m32",
-    "platform": "reddit",
-    "text": "UPI DOWNFALL?",
-    "language": "en",
+    "text": "OFFICIAL PRESS RELEASE: Press Information Bureau issues clarification regarding false rumors circulating on social messaging platforms. Citizens are advised to rely only on official handles.",
     "media_type": "text",
-    "author": "u/Jazzlike_College_853",
-    "timestamp": "2026-10-07T18:03:22+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "OFFICIAL_PRESS_RELEASE"
   },
   {
-    "id": "REDDIT-1x03kaq",
-    "platform": "reddit",
-    "text": "Downfall of UPI",
-    "language": "en",
+    "id": "P073",
+    "platform": "facebook",
+    "timestamp": "2026-08-16T16:52:45",
+    "language": "bn",
+    "text": "জরুরি খবর: আগামীকাল ব্যাঙ্ক বন্ধ থাকবে, আজই টাকা তুলুন।",
     "media_type": "text",
-    "author": "u/Jazzlike_College_853",
-    "timestamp": "2026-10-07T18:01:38+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
   },
   {
-    "id": "REDDIT-1x03eik",
-    "platform": "reddit",
-    "text": "Epic Crossover: Dhruv Rathee, Prakash Raj & Abhijeet Dipke Urge People to Gather at Bengaluru’s Freedom Park on October 8 Ahead of the October 10 Protest at Jantar Mantar Delhi",
+    "id": "P074",
+    "platform": "twitter",
+    "timestamp": "2026-08-16T16:56:45",
     "language": "en",
-    "media_type": "link",
-    "author": "u/KaalaAadmi69",
-    "timestamp": "2026-10-07T17:55:46+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x03brn",
-    "platform": "reddit",
-    "text": "Is Rahul Gandhi's latest protest actually about fixing the problem—or about creating political optics? Before anyone jumps in with “protest is democratic,” yes, obviously it is. I’m not arguing that politicians shouldn't protest. My question is what comes before the protest when you're making a serious allegation about the integrity of India's elections? Rahul Gandhi has repeatedly accused the Election Commission of “vote chori” and alleged large-scale irregularities in electoral rolls. These are extremely serious allegations. The Election Commission has repeatedly asked him to provide specific evidence and, in earlier instances, even asked him to submit declarations/affidavits supporting the allegations. So why not make the legal and institutional challenge absolutely airtight first? Submit the evidence. Name the allegedly fraudulent voters. File the required affidavits. Approach the courts where appropriate. Demand an investigation through the proper mechanisms. And if those institutions fail to act, then take the issue to the streets. That would be incredibly powerful. Instead, we get a highly choreographed political confrontation where Rahul Gandhi climbs barricades, slogans are shouted, cameras are everywhere, and the entire thing becomes political content for social media. And there's another interesting detail from the October 6 protest: the Election Commission said that no political party had sought an appointment with the Commission until 4 PM that day. Later, a request for a delegation led by Rahul Gandhi was communicated through Delhi Police. That doesn't prove that his allegations are false. It doesn't prove that the ECI is right either. But if you're claiming that Indian democracy is being destroyed through electoral manipulation, shouldn't your first priority be building an undeniable legal case rather than producing the most dramatic protest footage possible? That's my issue with Rahul Gandhi. I don't mind the protest. I mind the apparent prioritisation of political optics over institutional follow-through. If there is genuine “vote chori,” then prove it so comprehensively that nobody can dismiss it as politics. Don't just give us the photoshoot. Give us the case.",
-    "language": "en",
+    "text": "ALERT: RBI revoking validity of 500 Rupee currency notes starting tonight [Bot Retry #09]",
     "media_type": "text",
-    "author": "u/bhavitej",
-    "timestamp": "2026-10-07T17:52:51+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_011"
   },
   {
-    "id": "REDDIT-1x039tu",
-    "platform": "reddit",
-    "text": "Epic Crossover: Dhruv Rathee, Prakash Raj & Abhijeet Dipke Urge People to Gather at Bengaluru’s Freedom Park on October 8 Ahead of the October 10 Protest at Jantar Mantar Delhi",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/KaalaAadmi69",
-    "timestamp": "2026-10-07T17:50:43+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x033o0",
-    "platform": "reddit",
-    "text": "The Mysterious 16.18 Lakh Voters Added to Uttar Pradesh's Roll",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/Minimum_Juice69",
-    "timestamp": "2026-10-07T17:44:11+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x02qzv",
-    "platform": "reddit",
-    "text": "Gyanesh it's done bro👍",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/ronakdakal",
-    "timestamp": "2026-10-07T17:31:14+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x02goa",
-    "platform": "reddit",
-    "text": "Nuvvunakunachaav Visual Recreation|Venkatesh|Aarthiagarwal|thivikram",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/BHARGAV_7835",
-    "timestamp": "2026-10-07T17:20:07+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x02e6z",
-    "platform": "reddit",
-    "text": "Avengers Assemble 🔥🔥🔥",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/notthebiggestfan1",
-    "timestamp": "2026-10-07T17:17:29+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x02b7r",
-    "platform": "reddit",
-    "text": "Trump Admin Proposes $70,000 Fee for Foreign Graduates to Work in US",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/ladyorion2021",
-    "timestamp": "2026-10-07T17:14:24+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x029d6",
-    "platform": "reddit",
-    "text": "What’s the point of protesting if Gyanesh Kumar resigns? Is the real aim to create instability in India? Who’s funding or backing these protests?",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/Unlikely_Citron6590",
-    "timestamp": "2026-10-07T17:12:22+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x027cp",
-    "platform": "reddit",
-    "text": "Prakash Raj reveals Dhruv Rathee will attend anti-SIR protest in Bengaluru on October 8, urges people to join in large numbers",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/No-Strawberry7",
-    "timestamp": "2026-10-07T17:10:17+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x01twy",
-    "platform": "reddit",
-    "text": "Anyone else feeling conflicted about everything happening around Premanand Maharaj Ji?",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/Correct_Monitor_6229",
-    "timestamp": "2026-10-07T16:56:37+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x01ryf",
-    "platform": "reddit",
-    "text": "*Banasthali Grape Case🍇*",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/taylorpaglu",
-    "timestamp": "2026-10-07T16:54:30+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x01pvo",
-    "platform": "reddit",
-    "text": "Bro became DGP (Prisons), allegedly slept with a convict’s wife, forged an SC order and got the life convict released 💀",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/cathosyrra",
-    "timestamp": "2026-10-07T16:52:17+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x01l54",
-    "platform": "reddit",
-    "text": "The Rupee took the hardest hit among major currencies since 2014 - losing ~40%",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/traditional_ant_56",
-    "timestamp": "2026-10-07T16:47:17+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x01ix5",
-    "platform": "reddit",
-    "text": "The Rupee took the hardest hit among major currencies since 2014 - losing ~40%",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/traditional_ant_56",
-    "timestamp": "2026-10-07T16:44:54+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x01i9j",
-    "platform": "reddit",
-    "text": "*banasthali Grape Case🍇*",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/taylorpaglu",
-    "timestamp": "2026-10-07T16:44:12+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x01fsr",
-    "platform": "reddit",
-    "text": "*BANASTHALI GRAPE*",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/taylorpaglu",
-    "timestamp": "2026-10-07T16:41:33+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x00upy",
-    "platform": "reddit",
-    "text": "Musk vs Ambani: Round 1",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/RB-reMarkable98",
-    "timestamp": "2026-10-07T16:19:22+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x00t8k",
-    "platform": "reddit",
-    "text": "Nothing was there for text , so i built one.",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/codingkakeeda",
-    "timestamp": "2026-10-07T16:17:48+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x00ndy",
-    "platform": "reddit",
-    "text": "Elon Musk accuses unnamed Indian \"oligarchs\" of blocking Starlink in India",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/Dr_Doom_here",
-    "timestamp": "2026-10-07T16:11:39+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x00lk7",
-    "platform": "reddit",
-    "text": "The organized cyber-racket in the Indian YouTube/Kick community turning Indian youth into digital products. I am a practicing advocate handling these types of cybercrime cases across India for several months now, and what is currently happening on platforms like YouTube and Kick within the Indian streaming community is a full-blown, organized racket. Streamers in the Indian cyberspace are actively manipulating young Indian women on live streams, playing psychological games with them to extract their personal Instagram and Snapchat IDs. These Indian women are then literally treated and traded as digital products. From a strict legal standpoint under Indian jurisdiction: whether this is done with or without the victim's initial consent, it constitutes a serious cybercrime. The actual exploitation and monetization happen behind closed doors, primarily on YouTube Memberships and Discord servers. Streamers sell these personal IDs and private interactions to desperate young Indian men who pay heavy amounts in Rupees to access them. These private conversations are secretly recorded and then resold for profit on Telegram, the dark web, and regular internet forums. It is a massive racket where both the manipulated women and the desperate boys paying for this content are becoming victims of a vicious cycle in our country. I am sharing this strictly to raise social awareness in Indian society. This is a critical issue that ruins lives permanently. Please take this seriously, keep an eye out, and protect your friends and younger siblings from falling into this trap. Note: Mainstream Indian media hasn't covered this emerging racket yet, so I'm sharing from my direct professional experience handling these cases. You can verify the relevant Indian IT Act sections (66E, 67) and report these crimes at the official Government of India portal: https://cybercrime.gov.in/",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/mathurabhi02",
-    "timestamp": "2026-10-07T16:09:45+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x00jok",
-    "platform": "reddit",
-    "text": "Built for societal good and high productivity",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/codingkakeeda",
-    "timestamp": "2026-10-07T16:07:43+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x007to",
-    "platform": "reddit",
-    "text": "The organized Digital Product cyber-racket behind Omegle-style streams that is ruining lives. Hi everyone. I am a practicing advocate and recently, I've had to deal with 4-5 real-life cases involving a highly organized cyber racket operating through Omegle-style live streams on YouTube and other platforms. I am sharing this here because there is a severe lack of public awareness, and people are consuming active cybercrimes as casual entertainment. Here is what is actually happening on the ground that live streamers manipulate normal, sometimes vulnerable people into unscripted interactions where they expose their faces and personal lives. These private moments are secretly recorded. Then, they are monetized through live auctions, sold via private channel memberships, and eventually leaked on Telegram for desperate users who pay extra for viral clips. Legally speaking, this is not just harmless fun. This involves the unauthorized capture and publishing of private images, voyeurism, and transmission of obscene material. These are direct, serious violations of the IT Act (specifically Sections 66E, 67, and potentially 67A). The harsh reality of my profession is seeing victims approach us only after their digital footprint is permanent and their lives are practically ruined. The police rarely take suo-moto cognizance of these channels without massive public outrage or mass reporting. We as a society need to stop treating this exploitation as content. If you come across such streams, mass-report them and file complaints on the National Cyber Crime Portal. Please warn your younger siblings and friends about this trap. Has anyone else noticed this growing toxic trend lately? Note: Since this is a new organized racket without much media coverage, I am sharing my first-hand legal experience. For official reference on IT Act violations and reporting, visit: https://cybercrime.gov.in/",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/mathurabhi02",
-    "timestamp": "2026-10-07T15:55:37+00:00",
-    "ai_assistance": {
-      "ai_probability": 33,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [
-        "Uniform sentence length distribution characteristic of LLM generation"
-      ],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x004yj",
-    "platform": "reddit",
-    "text": "Anyone using a porter app",
-    "language": "en",
-    "media_type": "text",
-    "author": "[deleted]",
-    "timestamp": "2026-10-07T15:52:28+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1x000nz",
-    "platform": "reddit",
-    "text": "‘6-7 police stations called me’: Mumbai, Nagpur CJP members allege pressure",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/morose_coder",
-    "timestamp": "2026-10-07T15:47:53+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzzwla",
-    "platform": "reddit",
-    "text": "Tata Crucible still worth?",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/Striking-Shower2550",
-    "timestamp": "2026-10-07T15:43:24+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzzweu",
-    "platform": "reddit",
-    "text": "‘We will do it’—Modi drops new mantra for Viksit Bharat 2047 as he completes 25 yrs in public office",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/ZeroContext1010",
-    "timestamp": "2026-10-07T15:43:12+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzzofp",
-    "platform": "reddit",
-    "text": "Small Wins Wednesday (7 Oct 2026): share something that went okay Got out of bed? Ate a proper meal? Said no to something? Called a friend back? It counts. Share a win from this week, however small it seems. Recovery is mostly made of small days. And if this week had no wins, that's okay too — tell us what you're hoping for next week. **Thread guidelines:** be kind, listen first, and only give advice if someone asks for it. Please don't DM people from this thread unless they invite it. --- **If you're in crisis or thinking about suicide, please reach out right now:** * **Tele-MANAS** (Govt. of India, free, 24/7, many languages): **14416** or **1-800-891-4416** * **Vandrevala Foundation** (24/7, call or WhatsApp): **+91 9999 666 555** * **iCall** (TISS, Mon–Sat, 10am–8pm): **9152987821** * **AASRA** (24/7): **+91-22-2754-6669** * In an emergency, call **112**. *This is a peer-support thread, not a substitute for professional care.*",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/viksi",
-    "timestamp": "2026-10-07T15:34:43+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzzbnj",
-    "platform": "reddit",
-    "text": "Living with a rare disorder, My Sons little Subhajit & Sudarshan **Hello India Reddit** **Family,** My name is **Pinky,** and I am a mother of two boys : **Subhajit (13 years)** and **Sudarshan (1 year)**. [**Video explaining Subhajit and Sudarshan’s medical condition by Dr. Anjan Bhattacharya**](https://youtu.be/8e3zEgQ2HRo) Donation Link : [**https://www.impactguru.com/fundraiser/help-subhajit-and-sudarshan**](https://www.impactguru.com/fundraiser/help-subhajit-and-sudarshan) Both of my children have been diagnosed with **Lesch–Nyhan Syndrome (LNS)** \\- a rare and severe neurological and metabolic genetic disorder that progressively affects the brain, muscles, and overall development. **Currently, Subhajit and Sudarshan are undergoing treatment at Apollo Hospital, Kolkata.** **💔 Our Reality** My elder son, Subhajit, is completely dependent on caregivers. He lives with constant pain, severe muscle stiffness, involuntary movements, and neurological complications. >**During the Birth of my Second Child, We didn't have any Medical Information about LNS.** Now our 1-year-old baby, Sudarshan, has begun showing the same symptoms. Doctors have warned us that without **immediate and continuous treatment**, his condition will progressively worsen. Watching one child suffer was heartbreaking. Facing the same diagnosis again with our baby has shattered us. **📊 Fundraiser Status** **Goal:** ₹2,67,70,000 **Raised so far:** ₹6,79,006 **Still needed:** ₹2,60,90,994 **Total donors:** 496 🔗 **ImpactGuru Donation Link:** [https://www.impactguru.com/fundraiser/help-subhajit-and-sudarshan](https://www.impactguru.com/fundraiser/help-subhajit-and-sudarshan) *Those who are working in Multinational Companies can also Donate Via Benevity* 👉 **Benevity Link:** [https://causes.benevity.org/projects/704607](https://causes.benevity.org/projects/704607) **📞 Live Verification: I am fully open and available for a Live Video Call** This appeal is shared solely to seek help for life-saving treatment, with complete transparency. [**📄 Medical documents and reports are available.**](https://drive.google.com/drive/folders/1dt0TbvX-eAIvsJSbpHnTVe5WJL_amg12?usp=drive_link) [**🎥 My appeal video with Doctor of Apollo Hospital Kolkata is available on YouTube.**](https://youtu.be/WhiP-QGHMTI) **👨👩👦 Our Situation** My husband works as a **Zomato delivery partner**, and I am a full-time caregiver. We have exhausted our savings and taken loans that we cannot repay. Both children require: * Regular blood investigations * Neurological monitoring * Physiotherapy * Long-term supportive and metabolic care The financial burden is far beyond what we can manage alone. **🙏 How You Can Help** Any contribution - whether by donating or sharing this post, helps us reach more people who may support our children’s treatment. Even ₹100 / ₹500 / ₹1000 makes a difference when many people come together. ***Thank you for taking the time to read our story.*** ***Your kindness, prayers, and support mean more to us than words can express. 🙏*** **- Pinky, (mother of Subhajit and Sudarshan).**",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/quite_hope_mom",
-    "timestamp": "2026-10-07T15:20:52+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzz29n",
-    "platform": "reddit",
-    "text": "If Congress comes to power, what would Muslims do to BJP hindus?",
-    "language": "en",
-    "media_type": "text",
-    "author": "[deleted]",
-    "timestamp": "2026-10-07T15:10:45+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzyz0f",
-    "platform": "reddit",
-    "text": "Chami Murmu 🫡",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/paninieywa",
-    "timestamp": "2026-10-07T15:07:12+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzyyzm",
-    "platform": "reddit",
-    "text": "i want to sell my artwork which platform should i use ??{Krishn ji feet painting with 3d fairy lights }",
-    "language": "en",
-    "media_type": "video",
-    "author": "u/arttsypallaviii",
-    "timestamp": "2026-10-07T15:07:11+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzyynu",
-    "platform": "reddit",
-    "text": "Wow mods what a way to suppressing free speech 😂",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/lowkey-Retard",
-    "timestamp": "2026-10-07T15:06:50+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzyxx5",
-    "platform": "reddit",
-    "text": "I'm a new YouTuber looking for feedback on my first video",
-    "language": "en",
-    "media_type": "text",
-    "author": "u/Fit-Report-1660",
-    "timestamp": "2026-10-07T15:06:06+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzyx8k",
-    "platform": "reddit",
-    "text": "How did we let this o e slide?",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/exploring_yet",
-    "timestamp": "2026-10-07T15:05:25+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
-  },
-  {
-    "id": "REDDIT-1wzyv4n",
-    "platform": "reddit",
-    "text": "Why did we let this one slide?",
-    "language": "en",
-    "media_type": "link",
-    "author": "u/exploring_yet",
-    "timestamp": "2026-10-07T15:03:15+00:00",
-    "ai_assistance": {
-      "ai_probability": 5,
-      "status": "Organic / Low Synthetic Signals",
-      "indicators": [],
-      "is_elevated": false
-    }
+    "id": "P075",
+    "platform": "whatsapp_tipline",
+    "timestamp": "2026-08-16T16:00:45",
+    "language": "hi-Latn",
+    "text": "[Audio Transcript 1:15]: Voice recording claiming military lockdown in northern sector.",
+    "media_type": "audio",
+    "ocr_text": null,
+    "campaign_cluster": "CAMPAIGN_007"
   }
 ]

@@ -187,11 +187,12 @@ ROLE_CAMPAIGNS = {
             "summary": "Old training video republished with deceptive subtitles claiming electronic voting machine server anomalies.",
             "authorized_actions": ["publish_factcheck"]
         }
+    ],
     "system_admin": [
         {
             "id": "CMP-007",
             "title": "Infrastructure Shutdown & Civil Unrest Narrative",
-            "status": "SEC 69A ACTIVE",
+            "status": "ACTIVE CRITICAL",
             "category": "National Security / Disinformation Warfare",
             "threat_score": 94,
             "confidence": "HIGH",
@@ -420,43 +421,133 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
         ]
     }
 
+CLUSTERED_CAMPAIGNS_FILE = BASE_DIR / "data" / "processed" / "clustered_campaigns.json"
+_CACHED_ARCHIVED_CAMPAIGNS = None
+
+def get_archived_ml_campaigns() -> List[Dict[str, Any]]:
+    """Loads and caches campaigns discovered by ML clustering models on historical datasets."""
+    global _CACHED_ARCHIVED_CAMPAIGNS
+    if _CACHED_ARCHIVED_CAMPAIGNS is not None:
+        return _CACHED_ARCHIVED_CAMPAIGNS
+    
+    if CLUSTERED_CAMPAIGNS_FILE.exists():
+        try:
+            with open(CLUSTERED_CAMPAIGNS_FILE, "r", encoding="utf-8") as f:
+                raw_clusters = json.load(f)
+                archived = []
+                for idx, c in enumerate(raw_clusters):
+                    c_id = c.get("id") or f"CMP-ML-{idx+1:03d}"
+                    title = c.get("title") or "Cross-Platform Narrative Cluster"
+                    title = title.strip()
+                    threat_score = round(float(c.get("threat_score") or c.get("risk_assessment", {}).get("base_risk", 50.0)), 1)
+                    
+                    archived.append({
+                        "id": c_id,
+                        "title": title,
+                        "status": "ARCHIVED / CONTAINED",
+                        "type": "archived",
+                        "category": c.get("category") or "ML Disinformation Cluster",
+                        "threat_score": threat_score,
+                        "overall_threat_min": c.get("overall_threat_min", max(0.0, threat_score - 10)),
+                        "overall_threat_max": c.get("overall_threat_max", min(100.0, threat_score + 10)),
+                        "confidence": c.get("confidence") or "HIGH",
+                        "coordination_score": c.get("coordination_score", 75),
+                        "ai_probability": c.get("ai_probability", 65),
+                        "cross_platform_sync": c.get("cross_platform_sync", 80),
+                        "primary_language": c.get("primary_language") or "hi",
+                        "languages_detected": c.get("languages_detected") or ["hi", "en"],
+                        "platforms": c.get("platforms") or ["twitter", "telegram"],
+                        "post_count": c.get("post_count") or len(c.get("posts", [])),
+                        "target": c.get("target") or "Public Information Space & Civic Trust",
+                        "summary": c.get("summary") or f"Historical campaign identified via Multilingual Embeddings + HDBSCAN clustering containing {c.get('post_count', 0)} coordinated signals.",
+                        "authorized_actions": c.get("authorized_actions") or ["inter_agency_dossier", "blockchain_notarize"],
+                        "risk_assessment": c.get("risk_assessment"),
+                        "evidence": c.get("evidence"),
+                        "posts": c.get("posts", [])[:8]
+                    })
+                _CACHED_ARCHIVED_CAMPAIGNS = archived
+                return _CACHED_ARCHIVED_CAMPAIGNS
+        except Exception as e:
+            logger.error(f"Error loading clustered campaigns: {e}")
+            return []
+    return []
+
 @router.get("/campaigns")
 def get_campaigns(
     role: Optional[str] = Query(default="investigation_bureau"),
+    status: Optional[str] = Query(default=None),
     x_user_role: Optional[str] = Header(default=None)
 ):
-    """Return campaign intelligence list filtered by active user persona/role clearance."""
+    """
+    Return comprehensive campaign intelligence filtered by user role and lifecycle state:
+    - Ongoing Campaigns: Active coordinated threats requiring real-time response
+    - Archived Campaigns: Historical operations discovered and clustered by ML models
+    """
     active_role = role or x_user_role or "investigation_bureau"
     
-    # Try PostgreSQL first if available
-    if is_db_available():
-        db_campaigns = get_campaigns_from_db()
-        if db_campaigns:
-            return db_campaigns
-
-    # Fallback to persona partitioned campaigns
-    if active_role in ROLE_CAMPAIGNS:
-        return ROLE_CAMPAIGNS[active_role]
-    return ROLE_CAMPAIGNS["investigation_bureau"]
+    ongoing_raw = ROLE_CAMPAIGNS.get(active_role, ROLE_CAMPAIGNS["investigation_bureau"])
+    ongoing_list = []
+    for c in ongoing_raw:
+        c_copy = dict(c)
+        c_copy["type"] = "ongoing"
+        if not c_copy.get("status"):
+            c_copy["status"] = "ACTIVE CRITICAL"
+        ongoing_list.append(c_copy)
+        
+    archived_list = get_archived_ml_campaigns()
+    
+    if status == "ongoing":
+        return ongoing_list
+    elif status == "archived":
+        return archived_list
+    
+    # Return structured object containing both ongoing and ML-clustered archived campaigns
+    return {
+        "ongoing": ongoing_list,
+        "archived": archived_list,
+        "total_count": len(ongoing_list) + len(archived_list),
+        "ongoing_count": len(ongoing_list),
+        "archived_count": len(archived_list)
+    }
 
 @router.get("/campaigns/{campaign_id}")
 def get_campaign(campaign_id: str, role: Optional[str] = Query(default="investigation_bureau")):
-    """Fetch specific campaign with role authorization checks and DB lookup."""
+    """Fetch specific campaign with role authorization checks and ML cluster lookup."""
+    active_role = role if role in ROLE_CAMPAIGNS else "investigation_bureau"
+    
+    # Check in active role campaigns
+    for c in ROLE_CAMPAIGNS.get(active_role, []):
+        if c["id"].lower() == campaign_id.lower():
+            c_copy = dict(c)
+            c_copy["type"] = "ongoing"
+            return c_copy
+            
+    # Check across all ongoing role campaigns
+    for r_campaigns in ROLE_CAMPAIGNS.values():
+        for c in r_campaigns:
+            if c["id"].lower() == campaign_id.lower():
+                c_copy = dict(c)
+                c_copy["type"] = "ongoing"
+                return c_copy
+                
+    # Check in ML archived campaigns
+    archived_list = get_archived_ml_campaigns()
+    for c in archived_list:
+        if c["id"].lower() == campaign_id.lower():
+            return c
+            
+    # Check in database if available
     if is_db_available():
         db_camp = get_campaign_by_id_from_db(campaign_id)
         if db_camp:
             return db_camp
-
-    active_role = role if role in ROLE_CAMPAIGNS else "investigation_bureau"
-    for c in ROLE_CAMPAIGNS[active_role]:
-        if c["id"].lower() == campaign_id.lower():
-            return c
             
     # Check default AI clusterer fallback
     campaign = CampaignClusterer.get_campaign_by_id(campaign_id)
     if not campaign:
         raise HTTPException(status_code=404, detail="Campaign not found under current clearance partition")
     return campaign
+
 
 @router.post("/analyst/action")
 def execute_analyst_action(
