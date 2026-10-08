@@ -145,22 +145,6 @@ ROLE_CAMPAIGNS = {
             "target": "Defense Aspirants & Armed Forces Logistics Portals",
             "summary": "Coordinated social engineering swarm distributing counterfeit MoD recruitment circulars embedded with malicious credential-harvesting APK links.",
             "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
-        },
-        {
-            "id": "CMP-030",
-            "title": "Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm",
-            "status": "TRIAGED",
-            "category": "Public Transit & Infrastructure Disinformation",
-            "threat_score": 78,
-            "confidence": "MEDIUM",
-            "primary_language": "hi",
-            "languages_detected": ["Hindi", "Hinglish", "English"],
-            "platforms": ["twitter", "instagram", "telegram"],
-            "post_count": 510,
-            "cross_platform_sync": 83,
-            "target": "Urban Mass Transit & Commuter Safety",
-            "summary": "Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.",
-            "authorized_actions": ["inter_agency_dossier", "sec69a_takedown"]
         }
     ],
     "corporate_enterprise": [
@@ -391,22 +375,6 @@ ROLE_CAMPAIGNS = {
             "target": "Defense Aspirants & Armed Forces Logistics Portals",
             "summary": "Coordinated social engineering swarm distributing counterfeit MoD recruitment circulars embedded with malicious credential-harvesting APK links.",
             "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
-        },
-        {
-            "id": "CMP-030",
-            "title": "Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm",
-            "status": "TRIAGED",
-            "category": "Public Transit & Infrastructure Disinformation",
-            "threat_score": 78,
-            "confidence": "MEDIUM",
-            "primary_language": "hi",
-            "languages_detected": ["Hindi", "Hinglish", "English"],
-            "platforms": ["twitter", "instagram", "telegram"],
-            "post_count": 510,
-            "cross_platform_sync": 83,
-            "target": "Urban Mass Transit & Commuter Safety",
-            "summary": "Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.",
-            "authorized_actions": ["inter_agency_dossier", "sec69a_takedown"]
         }
     ]
 }
@@ -563,13 +531,10 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
 CLUSTERED_CAMPAIGNS_FILE = BASE_DIR / "data" / "processed" / "clustered_campaigns.json"
 _CACHED_ARCHIVED_CAMPAIGNS = None
 
-ACTIVE_ONGOING_IDS = {
-    "CMP-007", "CMP-011", "CMP-003", "CMP-029", "CMP-001", "CMP-015", "CMP-030",
-    "CMP-TATA-009", "CMP-TATA-014", "CMP-TATA-022", "FACT-007", "FACT-011", "FACT-033"
-}
+MOVED_FROM_ARCHIVED_IDS = {"CMP-029", "CMP-001", "CMP-015"}
 
 def get_archived_ml_campaigns() -> List[Dict[str, Any]]:
-    """Loads and caches campaigns discovered by ML clustering models on historical datasets, excluding active ongoing campaigns."""
+    """Loads and caches campaigns discovered by ML clustering models on historical datasets, excluding campaigns moved to ongoing."""
     global _CACHED_ARCHIVED_CAMPAIGNS
     if _CACHED_ARCHIVED_CAMPAIGNS is not None:
         return _CACHED_ARCHIVED_CAMPAIGNS
@@ -581,7 +546,7 @@ def get_archived_ml_campaigns() -> List[Dict[str, Any]]:
                 archived = []
                 for idx, c in enumerate(raw_clusters):
                     c_id = c.get("id") or f"CMP-ML-{idx+1:03d}"
-                    if c_id in ACTIVE_ONGOING_IDS:
+                    if c_id in MOVED_FROM_ARCHIVED_IDS:
                         continue
                     title = c.get("title") or "Cross-Platform Narrative Cluster"
                     title = title.strip()

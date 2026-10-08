@@ -146,26 +146,6 @@ export default function CampaignView() {
         ]
       },
       {
-        id: 'CMP-030',
-        title: 'Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm',
-        category: 'Public Transit & Infrastructure Disinformation',
-        status: 'TRIAGED',
-        type: 'ongoing',
-        threat_score: 78,
-        confidence: 'MEDIUM',
-        primary_language: 'hi',
-        languages_detected: ['Hindi', 'Hinglish', 'English'],
-        platforms: ['twitter', 'instagram', 'telegram'],
-        post_count: 510,
-        cross_platform_sync: 83,
-        target: 'Urban Mass Transit & Commuter Safety',
-        summary: 'Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.',
-        posts: [
-          { platform: 'twitter', timestamp: '14m ago', text: 'Major technical breakdown reported across Metro Yellow Line. Commuters advised to avoid stations.' },
-          { platform: 'instagram', timestamp: '45m ago', text: 'Emergency shutdown visuals circulating from Central Secretariat station.' }
-        ]
-      },
-      {
         id: 'CMP-TATA-009',
         title: 'Tata Motors EV & TCS Disinformation Swarm',
         category: 'Market Manipulation',
@@ -300,26 +280,6 @@ export default function CampaignView() {
         posts: [
           { platform: 'telegram', timestamp: '15m ago', text: 'Direct MoD recruitment portal open for 10,000 logistics staff. Apply via instant APK download.' },
           { platform: 'instagram', timestamp: '30m ago', text: 'Viral Reel: Ministry of Defence urgent recruitment notification link in bio.' }
-        ]
-      },
-      {
-        id: 'CMP-030',
-        title: 'Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm',
-        category: 'Public Transit & Infrastructure Disinformation',
-        status: 'TRIAGED',
-        type: 'ongoing',
-        threat_score: 78,
-        confidence: 'MEDIUM',
-        primary_language: 'hi',
-        languages_detected: ['Hindi', 'Hinglish', 'English'],
-        platforms: ['twitter', 'instagram', 'telegram'],
-        post_count: 510,
-        cross_platform_sync: 83,
-        target: 'Urban Mass Transit & Commuter Safety',
-        summary: 'Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.',
-        posts: [
-          { platform: 'twitter', timestamp: '14m ago', text: 'Major technical breakdown reported across Metro Yellow Line. Commuters advised to avoid stations.' },
-          { platform: 'instagram', timestamp: '45m ago', text: 'Emergency shutdown visuals circulating from Central Secretariat station.' }
         ]
       }
     ],
