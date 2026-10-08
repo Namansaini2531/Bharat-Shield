@@ -34,12 +34,22 @@ try:
 except ImportError:
     pass
 
-import httpx
+try:
+    import httpx
+except ImportError:
+    httpx = None
+
 from fastapi import FastAPI, APIRouter, Request, Response, HTTPException, Query, Header, Body
 from fastapi.responses import PlainTextResponse, JSONResponse
-from ai.pipeline import BharatShieldIntelligencePipeline
+
+try:
+    from ai.pipeline import BharatShieldIntelligencePipeline
+    from ai.embeddings import MultilingualEmbedder
+except Exception:
+    BharatShieldIntelligencePipeline = None
+    MultilingualEmbedder = None
+
 from database.db import is_db_available, insert_signal, insert_audit_entry, search_similar_signals
-from ai.embeddings import MultilingualEmbedder
 
 # Logging Configuration
 logging.basicConfig(

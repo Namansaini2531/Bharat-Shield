@@ -3,8 +3,13 @@ import json
 import logging
 from pathlib import Path
 from typing import List, Dict, Any, Optional
-import psycopg2
-from psycopg2.extras import RealDictCursor, execute_values
+try:
+    import psycopg2
+    from psycopg2.extras import RealDictCursor, execute_values
+except ImportError:
+    psycopg2 = None
+    RealDictCursor = None
+    execute_values = None
 
 logger = logging.getLogger("bharat_shield.db")
 
@@ -26,6 +31,8 @@ DB_PASS = os.getenv("POSTGRES_PASSWORD", "postgres")
 
 def get_connection(connect_timeout: int = 3):
     """Obtain a new connection to PostgreSQL."""
+    if not psycopg2:
+        raise RuntimeError("psycopg2 is not installed.")
     return psycopg2.connect(
         host=DB_HOST,
         port=DB_PORT,
@@ -37,6 +44,8 @@ def get_connection(connect_timeout: int = 3):
 
 def is_db_available() -> bool:
     """Fast check to verify if PostgreSQL is online and accepting connections."""
+    if not psycopg2:
+        return False
     try:
         conn = get_connection(connect_timeout=2)
         with conn.cursor() as cur:

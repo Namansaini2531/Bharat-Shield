@@ -8,11 +8,22 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Body, Header, HTTPException, Query
 
-from ai.clustering.clusterer import CampaignClusterer
-from ai.embeddings import MultilingualEmbedder
-from ai.pipeline import BharatShieldIntelligencePipeline
+try:
+    from ai.clustering.clusterer import CampaignClusterer
+    from ai.embeddings import MultilingualEmbedder
+    from ai.pipeline import BharatShieldIntelligencePipeline
+except Exception:
+    CampaignClusterer = None
+    MultilingualEmbedder = None
+    BharatShieldIntelligencePipeline = None
+
 from backend.app.models.schemas import Campaign, EvidencePackage
-from blockchain.evidence.hasher import EvidenceHasher
+
+try:
+    from blockchain.evidence.hasher import EvidenceHasher
+except Exception:
+    EvidenceHasher = None
+
 from database.db import (
     get_audit_ledger_from_db,
     get_campaign_by_id_from_db,
@@ -187,6 +198,7 @@ ROLE_CAMPAIGNS = {
             "summary": "Old training video republished with deceptive subtitles claiming electronic voting machine server anomalies.",
             "authorized_actions": ["publish_factcheck"]
         }
+    ],
     "system_admin": [
         {
             "id": "CMP-007",

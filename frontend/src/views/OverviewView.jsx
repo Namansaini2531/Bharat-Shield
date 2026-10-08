@@ -1,5 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { BarChart, Bar, ResponsiveContainer, XAxis, Tooltip } from 'recharts';
+import { 
+  BarChart, 
+  Bar, 
+  AreaChart, 
+  Area, 
+  LineChart,
+  Line,
+  ResponsiveContainer, 
+  XAxis, 
+  YAxis, 
+  Tooltip, 
+  CartesianGrid, 
+  Legend 
+} from 'recharts';
 import {
   Activity,
   AlertOctagon,
@@ -8,13 +21,31 @@ import {
   MapPin,
   TrendingDown,
   TrendingUp,
-  RefreshCw
+  RefreshCw,
+  Filter,
+  BarChart3,
+  LineChart as LineChartIcon,
+  Layers,
+  Sparkles,
+  Zap,
+  Globe,
+  Flame,
+  Radio,
+  Clock,
+  CheckCircle2,
+  SlidersHorizontal,
+  ChevronDown
 } from 'lucide-react';
 import { useAuth, ROLES } from '../context/AuthContext';
 import { useWebSocket } from '../context/WebSocketContext';
 
 export default function OverviewView({ onNavigate }) {
-  const [timeRange, setTimeRange] = useState('7D');
+  // Filter States
+  const [timeRange, setTimeRange] = useState('7D'); // '24H', '7D', '30D', 'ALL'
+  const [metricFilter, setMetricFilter] = useState('ALL'); // 'ALL', 'HIGH_RISK', 'BOTNET', 'CROSS_PLATFORM'
+  const [selectedChannel, setSelectedChannel] = useState('ALL'); // 'ALL', 'twitter', 'reddit', 'instagram', 'telegram', 'whatsapp'
+  const [chartType, setChartType] = useState('bar'); // 'bar', 'area', 'line'
+  
   const { currentRole } = useAuth();
   const { isConnected, liveSignals } = useWebSocket();
 
@@ -79,20 +110,12 @@ export default function OverviewView({ onNavigate }) {
           { label: 'Cluster Nodes Online', value: '4 / 4', color: '#10b981' },
           { label: 'Court Evidences Sealed', value: '89', color: '#10b981' }
         ],
-        timeline: [
-          { time: '00:00', count: 14 + Math.round(liveCount * 0.1), highRisk: 3 },
-          { time: '04:00', count: 16 + Math.round(liveCount * 0.15), highRisk: 4 },
-          { time: '08:00', count: 64 + Math.round(liveCount * 0.3), highRisk: 24 },
-          { time: '12:00', count: 128 + Math.round(liveCount * 0.4), highRisk: 92 },
-          { time: '16:00', count: 98 + Math.round(liveCount * 0.2), highRisk: 62 },
-          { time: '20:00', count: 56 + Math.round(liveCount * 0.1), highRisk: 22 },
-        ],
-        sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ name: s.name, pct: `${s.percentage}%`, color: s.color })) : [
-          { name: 'X (Twitter)', pct: '37%', color: 'var(--sticker-sky)' },
-          { name: 'Reddit Ingestion', pct: '28%', color: 'var(--sticker-orange)' },
-          { name: 'Instagram Reels', pct: '28%', color: 'var(--sticker-pink)' },
-          { name: 'Telegram Dark Web', pct: '5%', color: 'var(--sticker-purple)' },
-          { name: 'WhatsApp Tiplines', pct: '2%', color: 'var(--sticker-teal)' }
+        sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
+          { key: 'twitter', name: 'X (Twitter)', pct: '37%', rawPct: 37, color: 'var(--sticker-sky, #38bdf8)' },
+          { key: 'reddit', name: 'Reddit Ingestion', pct: '28%', rawPct: 28, color: 'var(--sticker-orange, #fb923c)' },
+          { key: 'instagram', name: 'Instagram Reels', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
+          { key: 'telegram', name: 'Telegram Dark Web', pct: '5%', rawPct: 5, color: 'var(--sticker-purple, #c084fc)' },
+          { key: 'whatsapp', name: 'WhatsApp Tiplines', pct: '2%', rawPct: 2, color: 'var(--sticker-teal, #2dd4bf)' }
         ],
         hotspots: [
           { name: 'DELHI / NCR ROOT COMMAND', top: '35%', left: '40%', color: '#ef4444' },
@@ -117,22 +140,14 @@ export default function OverviewView({ onNavigate }) {
           { label: 'Active Foreign Operations', value: '12', color: 'var(--text-heading)' },
           { label: 'Critical Threat Vectors', value: '5', color: '#ef4444', isDanger: true },
           { label: 'Classified Intercepts', value: totalIntercepts, color: 'var(--text-heading)' },
-          { label: 'Proxy Bot Farms Tracked', value: '42', color: 'var(--sticker-orange)' },
+          { label: 'Proxy Bot Farms Tracked', value: '42', color: 'var(--sticker-orange, #fb923c)' },
           { label: 'Court Evidences Sealed', value: '89', color: '#10b981' }
         ],
-        timeline: [
-          { time: '00:00', count: 18 + Math.round(liveCount * 0.1), highRisk: 4 },
-          { time: '04:00', count: 22 + Math.round(liveCount * 0.15), highRisk: 6 },
-          { time: '08:00', count: 92 + Math.round(liveCount * 0.3), highRisk: 48 },
-          { time: '12:00', count: 165 + Math.round(liveCount * 0.4), highRisk: 104 },
-          { time: '16:00', count: 120 + Math.round(liveCount * 0.2), highRisk: 74 },
-          { time: '20:00', count: 56 + Math.round(liveCount * 0.1), highRisk: 22 },
-        ],
-        sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ name: s.name, pct: `${s.percentage}%`, color: s.color })) : [
-          { name: 'X (Twitter Botnets)', pct: '37%', color: 'var(--sticker-sky)' },
-          { name: 'Reddit Disinfo Swarms', pct: '28%', color: 'var(--sticker-orange)' },
-          { name: 'Instagram Visual Ops', pct: '28%', color: 'var(--sticker-pink)' },
-          { name: 'Dark Telegram Channels', pct: '7%', color: 'var(--sticker-purple)' }
+        sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
+          { key: 'twitter', name: 'X (Twitter Botnets)', pct: '37%', rawPct: 37, color: 'var(--sticker-sky, #38bdf8)' },
+          { key: 'reddit', name: 'Reddit Disinfo Swarms', pct: '28%', rawPct: 28, color: 'var(--sticker-orange, #fb923c)' },
+          { key: 'instagram', name: 'Instagram Visual Ops', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
+          { key: 'telegram', name: 'Dark Telegram Channels', pct: '7%', rawPct: 7, color: 'var(--sticker-purple, #c084fc)' }
         ],
         hotspots: [
           { name: 'J&K SECTOR COMMAND', top: '22%', left: '36%', color: '#ef4444' },
@@ -149,36 +164,28 @@ export default function OverviewView({ onNavigate }) {
 
       return {
         roleId: 'corporate_enterprise',
-        title: 'Tata Sons — Brand Defense & Market Risk Radar',
-        subtitle: 'Real-time detection of coordinated corporate smear campaigns, stock sabotage, EV battery hoaxes, TCS hiring rumors & executive deepfakes',
+        title: 'Adani Group — Brand Defense & Market Risk Radar',
+        subtitle: 'Real-time detection of coordinated corporate smear campaigns, stock sabotage, energy & port hoaxes, and executive deepfakes',
         classificationBadge: 'ENTERPRISE TIER-1 RESTRICTED',
-        classificationColor: '#dd5b00',
+        classificationColor: '#f59e0b',
         stats: [
           { label: 'Active Brand Attacks', value: '4', color: 'var(--text-heading)' },
           { label: 'High Risk Market Threats', value: '2', color: '#ef4444', isDanger: true },
           { label: 'Corporate Posts Analyzed', value: totalPosts, color: 'var(--text-heading)' },
-          { label: 'Executive Deepfakes', value: '3', color: 'var(--sticker-orange)' },
-          { label: 'Sentiment Sabotage Index', value: '-62%', color: 'var(--sticker-pink)' }
+          { label: 'Executive Deepfakes', value: '3', color: 'var(--sticker-orange, #fb923c)' },
+          { label: 'Sentiment Sabotage Index', value: '-62%', color: 'var(--sticker-pink, #f472b6)' }
         ],
-        timeline: [
-          { time: '00:00', count: 8 + Math.round(liveCount * 0.05), highRisk: 1 },
-          { time: '04:00', count: 12 + Math.round(liveCount * 0.1), highRisk: 2 },
-          { time: '08:00', count: 65 + Math.round(liveCount * 0.3), highRisk: 38 },
-          { time: '12:00', count: 98 + Math.round(liveCount * 0.4), highRisk: 72 },
-          { time: '16:00', count: 82 + Math.round(liveCount * 0.25), highRisk: 54 },
-          { time: '20:00', count: 45 + Math.round(liveCount * 0.1), highRisk: 22 },
-        ],
-        sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ name: s.name, pct: `${s.percentage}%`, color: s.color })) : [
-          { name: 'X / FinTwit Clusters', pct: '38%', color: 'var(--sticker-sky)' },
-          { name: 'Instagram Viral Reels', pct: '28%', color: 'var(--sticker-pink)' },
-          { name: 'Reddit Investor Hubs', pct: '20%', color: 'var(--sticker-orange)' },
-          { name: 'Telegram Shadow Groups', pct: '14%', color: 'var(--sticker-purple)' }
+        sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
+          { key: 'twitter', name: 'X / FinTwit Clusters', pct: '38%', rawPct: 38, color: 'var(--sticker-sky, #38bdf8)' },
+          { key: 'instagram', name: 'Instagram Viral Reels', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
+          { key: 'reddit', name: 'Reddit Investor Hubs', pct: '20%', rawPct: 20, color: 'var(--sticker-orange, #fb923c)' },
+          { key: 'telegram', name: 'Telegram Shadow Groups', pct: '14%', rawPct: 14, color: 'var(--sticker-purple, #c084fc)' }
         ],
         hotspots: [
-          { name: 'BOMBAY HOUSE / MUMBAI', top: '58%', left: '30%', color: '#ef4444' },
-          { name: 'PUNE AUTO & EV HUB', top: '65%', left: '32%', color: '#f59e0b' },
-          { name: 'JAMSHEDPUR STEEL HUB', top: '46%', left: '72%', color: '#10b981' },
-          { name: 'BSE / FINANCIAL DISTRICT', top: '54%', left: '28%', color: '#f59e0b' }
+          { name: 'ADANI CORPORATE HQ / AHMEDABAD', top: '48%', left: '26%', color: '#ef4444' },
+          { name: 'MUNDRA PORT & LOGISTICS', top: '45%', left: '22%', color: '#f59e0b' },
+          { name: 'KHAVDA RENEWABLE ENERGY PARK', top: '42%', left: '20%', color: '#10b981' },
+          { name: 'BSE / FINANCIAL DISTRICT MUMBAI', top: '58%', left: '30%', color: '#f59e0b' }
         ]
       };
     }
@@ -192,36 +199,125 @@ export default function OverviewView({ onNavigate }) {
       title: 'National Press Consortium — Fact-Check & Virality Monitor',
       subtitle: 'Cross-lingual rumor genealogies, viral WhatsApp forwards, manipulated media & pre-publication debunk verification',
       classificationBadge: 'PRESS ACCREDITED // VERIFICATION DESK',
-      classificationColor: '#0075de',
+      classificationColor: '#3b82f6',
       stats: [
         { label: 'Viral Rumors Tracked', value: '23', color: 'var(--text-heading)' },
         { label: 'Critical Debunk Priority', value: '6', color: '#ef4444', isDanger: true },
         { label: 'Citizen Tipline Submissions', value: totalTipline, color: 'var(--text-heading)' },
-        { label: 'Multilingual Variants', value: '78', color: 'var(--notion-blue)' },
-        { label: 'AI Generative Fakes', value: '11', color: 'var(--sticker-orange)' }
+        { label: 'Multilingual Variants', value: '78', color: '#3b82f6' },
+        { label: 'AI Generative Fakes', value: '11', color: 'var(--sticker-orange, #fb923c)' }
       ],
-      timeline: [
-        { time: '00:00', count: 20 + Math.round(liveCount * 0.1), highRisk: 6 },
-        { time: '04:00', count: 24 + Math.round(liveCount * 0.15), highRisk: 8 },
-        { time: '08:00', count: 110 + Math.round(liveCount * 0.35), highRisk: 58 },
-        { time: '12:00', count: 180 + Math.round(liveCount * 0.4), highRisk: 112 },
-        { time: '16:00', count: 135 + Math.round(liveCount * 0.25), highRisk: 78 },
-        { time: '20:00', count: 70 + Math.round(liveCount * 0.1), highRisk: 30 },
-      ],
-      sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ name: s.name, pct: `${s.percentage}%`, color: s.color })) : [
-        { name: 'WhatsApp Citizen Tipline', pct: '38%', color: 'var(--sticker-teal)' },
-        { name: 'Instagram Viral Reels', pct: '28%', color: 'var(--sticker-pink)' },
-        { name: 'Reddit Rumor Threads', pct: '20%', color: 'var(--sticker-orange)' },
-        { name: 'X / Public Feeds', pct: '14%', color: 'var(--sticker-sky)' }
+      sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
+        { key: 'whatsapp', name: 'WhatsApp Citizen Tipline', pct: '38%', rawPct: 38, color: 'var(--sticker-teal, #2dd4bf)' },
+        { key: 'instagram', name: 'Instagram Viral Reels', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
+        { key: 'reddit', name: 'Reddit Rumor Threads', pct: '20%', rawPct: 20, color: 'var(--sticker-orange, #fb923c)' },
+        { key: 'twitter', name: 'X / Public Feeds', pct: '14%', rawPct: 14, color: 'var(--sticker-sky, #38bdf8)' }
       ],
       hotspots: [
-        { name: 'DELHI MEDIA DESK', top: '35%', left: '40%', color: '#0075de' },
-        { name: 'MUMBAI METRO', top: '60%', left: '30%', color: '#ff64c8' },
-        { name: 'BENGALURU FACT DESK', top: '75%', left: '45%', color: '#0075de' },
+        { name: 'DELHI MEDIA DESK', top: '35%', left: '40%', color: '#3b82f6' },
+        { name: 'MUMBAI METRO', top: '60%', left: '30%', color: '#f472b6' },
+        { name: 'BENGALURU FACT DESK', top: '75%', left: '45%', color: '#3b82f6' },
         { name: 'KOLKATA PRESS BUREAU', top: '48%', left: '70%', color: '#10b981' }
       ]
     };
   }, [currentRole, backendOverview, liveSignals.length]);
+
+  // =========================================================================
+  // DYNAMIC COMPUTED GRAPH DATA (Reacts to timeRange, metricFilter, and selectedChannel)
+  // =========================================================================
+  const graphData = useMemo(() => {
+    const liveCount = liveSignals.length;
+
+    // Platform channel scale multipliers
+    const channelMultiplier = {
+      'ALL': 1.0,
+      'twitter': 0.38,
+      'reddit': 0.28,
+      'instagram': 0.25,
+      'telegram': 0.14,
+      'whatsapp': 0.18
+    }[selectedChannel] || 1.0;
+
+    // Metric weighting factors
+    const metricFactor = {
+      'ALL': { totalScale: 1.0, highRiskScale: 1.0, botScale: 1.0 },
+      'HIGH_RISK': { totalScale: 0.5, highRiskScale: 1.2, botScale: 0.6 },
+      'BOTNET': { totalScale: 0.6, highRiskScale: 0.7, botScale: 1.4 },
+      'CROSS_PLATFORM': { totalScale: 0.8, highRiskScale: 0.9, botScale: 0.9 }
+    }[metricFilter] || { totalScale: 1.0, highRiskScale: 1.0, botScale: 1.0 };
+
+    let basePoints = [];
+
+    if (timeRange === '24H') {
+      basePoints = [
+        { label: '00:00', baseTotal: 22, baseHigh: 4, baseBot: 8 },
+        { label: '04:00', baseTotal: 34, baseHigh: 8, baseBot: 14 },
+        { label: '08:00', baseTotal: 96, baseHigh: 42, baseBot: 56 },
+        { label: '12:00', baseTotal: 184, baseHigh: 112, baseBot: 120 },
+        { label: '16:00', baseTotal: 142, baseHigh: 84, baseBot: 92 },
+        { label: '20:00', baseTotal: 86, baseHigh: 38, baseBot: 48 },
+        { label: '23:59', baseTotal: 48, baseHigh: 14, baseBot: 22 }
+      ];
+    } else if (timeRange === '7D') {
+      basePoints = [
+        { label: 'Mon', baseTotal: 420, baseHigh: 180, baseBot: 240 },
+        { label: 'Tue', baseTotal: 580, baseHigh: 240, baseBot: 310 },
+        { label: 'Wed', baseTotal: 890, baseHigh: 460, baseBot: 520 },
+        { label: 'Thu', baseTotal: 1240, baseHigh: 720, baseBot: 810 },
+        { label: 'Fri', baseTotal: 980, baseHigh: 540, baseBot: 620 },
+        { label: 'Sat', baseTotal: 640, baseHigh: 310, baseBot: 380 },
+        { label: 'Sun', baseTotal: 510, baseHigh: 210, baseBot: 290 }
+      ];
+    } else if (timeRange === '30D') {
+      basePoints = [
+        { label: 'Week 1', baseTotal: 3400, baseHigh: 1420, baseBot: 1890 },
+        { label: 'Week 2', baseTotal: 4800, baseHigh: 2100, baseBot: 2750 },
+        { label: 'Week 3', baseTotal: 6900, baseHigh: 3450, baseBot: 4200 },
+        { label: 'Week 4', baseTotal: 8200, baseHigh: 4600, baseBot: 5400 },
+        { label: 'Current', baseTotal: 5100 + (liveCount * 12), baseHigh: 2800 + (liveCount * 5), baseBot: 3200 + (liveCount * 7) }
+      ];
+    } else { // 'ALL'
+      basePoints = [
+        { label: 'Q1 (Jan-Mar)', baseTotal: 14200, baseHigh: 6800, baseBot: 8900 },
+        { label: 'Q2 (Apr-Jun)', baseTotal: 19800, baseHigh: 9400, baseBot: 12400 },
+        { label: 'Q3 (Jul-Sep)', baseTotal: 26400, baseHigh: 14100, baseBot: 18200 },
+        { label: 'Q4 (Active)', baseTotal: 31200 + (liveCount * 25), baseHigh: 18400 + (liveCount * 10), baseBot: 21900 + (liveCount * 15) }
+      ];
+    }
+
+    return basePoints.map((pt, idx) => {
+      const liveFactor = timeRange === '24H' ? Math.round(liveCount * 0.15) : Math.round(liveCount * 2);
+      const totalSignals = Math.max(1, Math.round((pt.baseTotal + liveFactor) * channelMultiplier * metricFactor.totalScale));
+      const highRisk = Math.max(0, Math.min(totalSignals, Math.round((pt.baseHigh + (liveFactor * 0.5)) * channelMultiplier * metricFactor.highRiskScale)));
+      const botnetBurst = Math.max(0, Math.min(totalSignals, Math.round((pt.baseBot + (liveFactor * 0.6)) * channelMultiplier * metricFactor.botScale)));
+      const normalVolume = Math.max(0, totalSignals - highRisk);
+
+      return {
+        time: pt.label,
+        totalSignals,
+        highRisk,
+        botnetBurst,
+        normalVolume,
+        velocityRate: `+${Math.round((highRisk / (totalSignals || 1)) * 100)}%`
+      };
+    });
+  }, [timeRange, metricFilter, selectedChannel, liveSignals.length]);
+
+  // Aggregate stats from the current graph view
+  const graphSummary = useMemo(() => {
+    const totalVolume = graphData.reduce((acc, d) => acc + d.totalSignals, 0);
+    const totalHighRisk = graphData.reduce((acc, d) => acc + d.highRisk, 0);
+    const totalBotBurst = graphData.reduce((acc, d) => acc + d.botnetBurst, 0);
+    const peakInterval = [...graphData].sort((a, b) => b.totalSignals - a.totalSignals)[0]?.time || 'N/A';
+
+    return {
+      totalVolume,
+      totalHighRisk,
+      totalBotBurst,
+      peakInterval,
+      riskRatio: totalVolume > 0 ? Math.round((totalHighRisk / totalVolume) * 100) : 0
+    };
+  }, [graphData]);
 
   // Merge real campaigns from backend with role-partitioned campaigns
   const displayCampaigns = useMemo(() => {
@@ -238,12 +334,11 @@ export default function OverviewView({ onNavigate }) {
       }));
     }
 
-    // Fallback default campaign list if backend unreachable
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return [
-        { id: 'TATA-009', title: 'Tata Motors EV & TCS Disinformation Swarm', risk: '89-95', coord: '94', aiAsst: '88', status: 'DEFENSE ACTIVE', statusColor: 'danger', focus: 'EV & Placement Disinformation' },
-        { id: 'TATA-014', title: 'Air India & Executive Deepfake Audio on Reels', risk: '82-91', coord: '78', aiAsst: '96', status: 'FORENSICS LOCKED', statusColor: 'danger', focus: 'Synthetic Voice Impersonation' },
-        { id: 'TATA-022', title: 'Tata Steel Environmental ESG Fabrications', risk: '58-71', coord: '62', aiAsst: '34', status: 'MONITORING', statusColor: 'secondary', focus: 'Foreign NGO Regulatory Hoax' }
+        { id: 'ADANI-009', title: 'Adani Energy & Port Infrastructure Smear Campaign', risk: '89-95', coord: '94', aiAsst: '88', status: 'DEFENSE ACTIVE', statusColor: 'danger', focus: 'Market Sabotage & Short Disinfo' },
+        { id: 'ADANI-014', title: 'Executive Deepfake Audio on Reels & Telegram', risk: '82-91', coord: '78', aiAsst: '96', status: 'FORENSICS LOCKED', statusColor: 'danger', focus: 'Synthetic Voice Impersonation' },
+        { id: 'ADANI-022', title: 'Adani Green Energy Regulatory Hoax & ESG Claims', risk: '58-71', coord: '62', aiAsst: '34', status: 'MONITORING', statusColor: 'secondary', focus: 'Foreign Media Regulatory Smear' }
       ];
     }
     if (currentRole === ROLES.JOURNALIST_MEDIA) {
@@ -260,10 +355,51 @@ export default function OverviewView({ onNavigate }) {
     ];
   }, [backendCampaigns, currentRole]);
 
+  // Custom Chart Tooltip
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div style={{
+          backgroundColor: 'var(--bg-card, #161822)',
+          border: '1px solid var(--border-color, #2a2d3d)',
+          borderRadius: '8px',
+          padding: '12px 14px',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+          fontSize: '12px',
+          color: 'var(--text-heading, #ffffff)'
+        }}>
+          <div style={{ fontWeight: 700, fontSize: '13px', borderBottom: '1px solid var(--border-color, #2a2d3d)', paddingBottom: '4px', marginBottom: '8px', display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
+            <span>Interval: {label}</span>
+            <span style={{ color: '#ef4444' }}>Risk: {data.velocityRate}</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+              <span style={{ color: 'var(--notion-blue, #3b82f6)' }}>● Total Signals:</span>
+              <strong style={{ fontFamily: 'JetBrains Mono' }}>{data.totalSignals.toLocaleString()}</strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+              <span style={{ color: '#ef4444' }}>● High Risk Threats:</span>
+              <strong style={{ fontFamily: 'JetBrains Mono', color: '#ef4444' }}>{data.highRisk.toLocaleString()}</strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+              <span style={{ color: '#f59e0b' }}>● Bot / Swarm Bursts:</span>
+              <strong style={{ fontFamily: 'JetBrains Mono', color: '#f59e0b' }}>{data.botnetBurst.toLocaleString()}</strong>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div>
-      {/* Page Header with Persona Context */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+      
+      {/* ========================================================================= */}
+      {/* PAGE HEADER WITH PERSONA CONTEXT & REAL-TIME CONTROLS                     */}
+      {/* ========================================================================= */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span style={{
@@ -285,23 +421,23 @@ export default function OverviewView({ onNavigate }) {
                 fontWeight: 600,
                 padding: '2px 8px',
                 borderRadius: '9999px',
-                backgroundColor: 'rgba(0, 117, 222, 0.12)',
-                color: 'var(--notion-blue)',
-                border: '1px solid rgba(0, 117, 222, 0.3)',
+                backgroundColor: 'rgba(59, 130, 246, 0.12)',
+                color: '#3b82f6',
+                border: '1px solid rgba(59, 130, 246, 0.3)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '5px',
                 fontFamily: 'JetBrains Mono'
               }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0075de', boxShadow: '0 0 6px #0075de' }} />
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#3b82f6', boxShadow: '0 0 6px #3b82f6' }} />
                 +{liveSignals.length} LIVE SIGNALS
               </span>
             )}
           </div>
-          <h2 style={{ fontSize: '26px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.5px', margin: 0 }}>
             {personaData.title}
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px', maxWidth: '800px', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px', maxWidth: '850px', lineHeight: 1.5 }}>
             {personaData.subtitle}
           </p>
         </div>
@@ -311,9 +447,9 @@ export default function OverviewView({ onNavigate }) {
           <button
             onClick={fetchRealData}
             disabled={isRefreshing}
-            className="button-utility"
+            className="bs-button bs-button-secondary"
             title="Refresh real-time intelligence feeds"
-            style={{ fontSize: '12px', padding: '6px 12px' }}
+            style={{ fontSize: '12px', padding: '6px 12px', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <RefreshCw size={13} className={isRefreshing ? "animate-spin" : ""} />
             <span>{isRefreshing ? 'Syncing...' : 'Live Sync'}</span>
@@ -322,23 +458,23 @@ export default function OverviewView({ onNavigate }) {
       </div>
 
       {/* ========================================================================= */}
-      {/* TOP 5 STAT CARDS (Classic Card Design with 100% Real Live Data)           */}
+      {/* TOP 5 STAT CARDS                                                          */}
       {/* ========================================================================= */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
         {personaData.stats.map((st, idx) => (
           <div 
             key={idx} 
             className="bs-card" 
             style={{ 
-              padding: '18px',
+              padding: '16px',
               borderColor: st.isDanger ? 'rgba(239, 68, 68, 0.4)' : undefined,
               background: st.isDanger ? 'rgba(239, 68, 68, 0.04)' : undefined
             }}
           >
-            <div style={{ color: st.isDanger ? '#ef4444' : 'var(--text-secondary)', fontSize: '12px', fontWeight: 600 }}>
+            <div style={{ color: st.isDanger ? '#ef4444' : 'var(--text-secondary)', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' }}>
               <span>{st.label}</span>
             </div>
-            <div style={{ fontSize: '32px', fontWeight: 700, color: st.color || 'var(--text-heading)', marginTop: '8px', fontFamily: 'JetBrains Mono', letterSpacing: '-1px' }}>
+            <div style={{ fontSize: '28px', fontWeight: 800, color: st.color || 'var(--text-heading)', marginTop: '6px', fontFamily: 'JetBrains Mono', letterSpacing: '-0.5px' }}>
               {st.value}
             </div>
           </div>
@@ -346,77 +482,251 @@ export default function OverviewView({ onNavigate }) {
       </div>
 
       {/* ========================================================================= */}
-      {/* MIDDLE ROW: TIMELINE CHART & PARTITIONED INGESTION SOURCES                */}
+      {/* INTERACTIVE TIMELINE GRAPH & CHANNEL DISTRIBUTION CARD                    */}
       {/* ========================================================================= */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2.2fr 1fr', gap: '20px' }}>
 
-        {/* Timeline Chart */}
-        <div className="bs-card" style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px', fontWeight: 600, color: 'var(--text-heading)' }}>
-              <Activity size={18} style={{ color: 'var(--notion-blue)' }} />
-              <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Brand Attack Velocity & Stock Volatility Timeline' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Viral Rumor Forward Velocity Timeline' : 'National Threat Activity Timeline'}</span>
-            </div>
-            {/* Pill-shaped Tabs */}
-            <div style={{ display: 'flex', gap: '6px' }}>
-              <button
-                onClick={() => setTimeRange('24H')}
-                className={`pill-tab ${timeRange === '24H' ? 'active' : ''}`}
-              >
-                24H
-              </button>
-              <button
-                onClick={() => setTimeRange('7D')}
-                className={`pill-tab ${timeRange === '7D' ? 'active' : ''}`}
-              >
-                7D
-              </button>
-              <button
-                onClick={() => setTimeRange('30D')}
-                className={`pill-tab ${timeRange === '30D' ? 'active' : ''}`}
-              >
-                30D
-              </button>
-            </div>
-          </div>
-
-          <div style={{ height: '220px', width: '100%' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={personaData.timeline} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <XAxis dataKey="time" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                <Tooltip
-                  contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)', borderRadius: '8px', boxShadow: 'var(--shadow-soft)', color: 'var(--text-heading)' }}
-                  cursor={{ fill: 'rgba(0, 117, 222, 0.04)' }}
-                />
-                <Bar dataKey="count" fill="var(--notion-blue)" radius={[4, 4, 0, 0]} barSize={14} />
-                <Bar dataKey="highRisk" fill="#ef4444" radius={[4, 4, 0, 0]} barSize={14} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Source Distribution Card */}
-        <div className="bs-card" style={{ padding: '24px' }}>
-          <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
-            <Database size={18} style={{ color: 'var(--sticker-teal)' }} />
-            <span>Partitioned Ingestion Channels</span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            {personaData.sources.map((src, idx) => (
-              <div key={idx}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: src.color, display: 'inline-block' }}></span>
-                    <span style={{ color: 'var(--text-primary)' }}>{src.name}</span>
-                  </span>
-                  <span style={{ fontWeight: 600, fontFamily: 'JetBrains Mono', color: 'var(--text-primary)' }}>{src.pct}</span>
-                </div>
-                <div style={{ height: '6px', backgroundColor: 'var(--inner-box-bg)', borderRadius: '9999px', overflow: 'hidden' }}>
-                  <div style={{ width: src.pct, height: '100%', backgroundColor: src.color, borderRadius: '9999px' }}></div>
+        {/* Timeline Chart Container */}
+        <div className="bs-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          
+          {/* Top Bar of Graph: Title and Multi-Layer Filter Controls */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '14px' }}>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Activity size={18} style={{ color: '#3b82f6' }} />
+              <div>
+                <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-heading)' }}>
+                  {currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Brand Attack Velocity & Stock Sabotage Timeline' 
+                    : currentRole === ROLES.JOURNALIST_MEDIA ? 'Viral Rumor Forward Velocity Timeline' 
+                    : 'National Threat Activity Timeline'}
+                </span>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                  Filtered: <strong>{selectedChannel === 'ALL' ? 'All Channels' : selectedChannel.toUpperCase()}</strong> • Range: <strong>{timeRange}</strong> • View: <strong>{metricFilter}</strong>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Filter Controls Row */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              
+              {/* Chart Type Toggle: Bar / Area / Line */}
+              <div style={{ display: 'flex', backgroundColor: 'var(--bg-muted, #1a1d2d)', borderRadius: '6px', padding: '2px', border: '1px solid var(--border-color)' }}>
+                <button
+                  onClick={() => setChartType('bar')}
+                  title="Histogram Volume Bar Chart"
+                  style={{
+                    padding: '4px 8px',
+                    borderRadius: '4px',
+                    border: 'none',
+                    backgroundColor: chartType === 'bar' ? '#3b82f6' : 'transparent',
+                    color: chartType === 'bar' ? '#ffffff' : 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <BarChart3 size={13} />
+                </button>
+                <button
+                  onClick={() => setChartType('area')}
+                  title="Gradient Velocity Area Chart"
+                  style={{
+                    padding: '4px 8px',
+                    borderRadius: '4px',
+                    border: 'none',
+                    backgroundColor: chartType === 'area' ? '#3b82f6' : 'transparent',
+                    color: chartType === 'area' ? '#ffffff' : 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <LineChartIcon size={13} />
+                </button>
+              </div>
+
+              {/* Metric Mode Filter Dropdown/Pills */}
+              <div style={{ display: 'flex', gap: '4px' }}>
+                {[
+                  { id: 'ALL', label: 'All Signals' },
+                  { id: 'HIGH_RISK', label: 'High Risk (Score > 80)' },
+                  { id: 'BOTNET', label: 'Bot Swarms' }
+                ].map(m => (
+                  <button
+                    key={m.id}
+                    onClick={() => setMetricFilter(m.id)}
+                    style={{
+                      padding: '4px 8px',
+                      fontSize: '11px',
+                      fontWeight: metricFilter === m.id ? 700 : 500,
+                      borderRadius: '4px',
+                      border: `1px solid ${metricFilter === m.id ? '#3b82f6' : 'var(--border-color)'}`,
+                      backgroundColor: metricFilter === m.id ? 'rgba(59, 130, 246, 0.15)' : 'var(--bg-muted, #1a1d2d)',
+                      color: metricFilter === m.id ? '#3b82f6' : 'var(--text-secondary)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Time Range Pills */}
+              <div style={{ display: 'flex', gap: '4px', borderLeft: '1px solid var(--border-color)', paddingLeft: '8px' }}>
+                {['24H', '7D', '30D', 'ALL'].map(tr => (
+                  <button
+                    key={tr}
+                    onClick={() => setTimeRange(tr)}
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: '11px',
+                      fontWeight: timeRange === tr ? 700 : 500,
+                      borderRadius: '4px',
+                      border: `1px solid ${timeRange === tr ? '#10b981' : 'var(--border-color)'}`,
+                      backgroundColor: timeRange === tr ? 'rgba(16, 185, 129, 0.15)' : 'var(--bg-muted, #1a1d2d)',
+                      color: timeRange === tr ? '#10b981' : 'var(--text-secondary)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {tr}
+                  </button>
+                ))}
+              </div>
+
+            </div>
+          </div>
+
+          {/* Quick Metrics Bar directly above graph */}
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', fontSize: '12px', backgroundColor: 'var(--inner-box-bg, rgba(255,255,255,0.02))', padding: '8px 12px', borderRadius: '6px' }}>
+            <span>Filtered Volume: <strong style={{ color: '#3b82f6', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalVolume.toLocaleString()}</strong></span>
+            <span>•</span>
+            <span>High-Risk Flags: <strong style={{ color: '#ef4444', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalHighRisk.toLocaleString()} ({graphSummary.riskRatio}%)</strong></span>
+            <span>•</span>
+            <span>Bot Swarm Bursts: <strong style={{ color: '#f59e0b', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalBotBurst.toLocaleString()}</strong></span>
+            <span>•</span>
+            <span>Peak Activity Interval: <strong style={{ color: 'var(--text-heading)', fontFamily: 'JetBrains Mono' }}>{graphSummary.peakInterval}</strong></span>
+          </div>
+
+          {/* Real Recharts Interactive Visualization */}
+          <div style={{ height: '260px', width: '100%', marginTop: '4px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              {chartType === 'bar' ? (
+                <BarChart data={graphData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
+                  <XAxis dataKey="time" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(59, 130, 246, 0.05)' }} />
+                  <Legend 
+                    verticalAlign="top" 
+                    align="right" 
+                    iconType="circle" 
+                    wrapperStyle={{ paddingBottom: '10px', fontSize: '11px' }} 
+                  />
+                  <Bar dataKey="totalSignals" name="Total Signals" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={16} />
+                  <Bar dataKey="highRisk" name="High Risk Threats" fill="#ef4444" radius={[4, 4, 0, 0]} barSize={16} />
+                  <Bar dataKey="botnetBurst" name="Bot Swarms" fill="#f59e0b" radius={[4, 4, 0, 0]} barSize={16} />
+                </BarChart>
+              ) : (
+                <AreaChart data={graphData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0}/>
+                    </linearGradient>
+                    <linearGradient id="highGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.5}/>
+                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
+                  <XAxis dataKey="time" stroke="#94a3b8" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend 
+                    verticalAlign="top" 
+                    align="right" 
+                    iconType="circle" 
+                    wrapperStyle={{ paddingBottom: '10px', fontSize: '11px' }} 
+                  />
+                  <Area type="monotone" dataKey="totalSignals" name="Total Signals" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#totalGrad)" />
+                  <Area type="monotone" dataKey="highRisk" name="High Risk Threats" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#highGrad)" />
+                  <Line type="monotone" dataKey="botnetBurst" name="Bot Swarms" stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} />
+                </AreaChart>
+              )}
+            </ResponsiveContainer>
+          </div>
+
+        </div>
+
+        {/* Partitioned Ingestion Channels & Interactive Channel Filter */}
+        <div className="bs-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontSize: '14px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
+              <Database size={16} style={{ color: '#10b981' }} />
+              <span>Channel Filter & Breakdown</span>
+            </div>
+            {selectedChannel !== 'ALL' && (
+              <button
+                onClick={() => setSelectedChannel('ALL')}
+                style={{
+                  fontSize: '11px',
+                  color: '#3b82f6',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 600
+                }}
+              >
+                Reset All
+              </button>
+            )}
+          </div>
+
+          <p style={{ fontSize: '11px', color: 'var(--text-secondary)', margin: 0 }}>
+            Click any channel below to filter the timeline graph strictly to that ingestion pipeline:
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {personaData.sources.map((src, idx) => {
+              const isSelected = selectedChannel === src.key;
+              return (
+                <div 
+                  key={idx}
+                  onClick={() => setSelectedChannel(isSelected ? 'ALL' : src.key)}
+                  style={{
+                    padding: '8px 10px',
+                    borderRadius: '6px',
+                    border: `1px solid ${isSelected ? src.color : 'var(--border-color)'}`,
+                    backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.08)' : 'var(--inner-box-bg, transparent)',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: src.color, display: 'inline-block' }}></span>
+                      <span style={{ color: isSelected ? 'var(--text-heading)' : 'var(--text-primary)', fontWeight: isSelected ? 700 : 500 }}>
+                        {src.name}
+                      </span>
+                    </span>
+                    <span style={{ fontWeight: 700, fontFamily: 'JetBrains Mono', color: isSelected ? src.color : 'var(--text-primary)' }}>
+                      {src.pct}
+                    </span>
+                  </div>
+                  <div style={{ height: '4px', backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: '9999px', overflow: 'hidden' }}>
+                    <div style={{ width: src.pct, height: '100%', backgroundColor: src.color, borderRadius: '9999px' }}></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ marginTop: 'auto', borderTop: '1px solid var(--border-color)', paddingTop: '10px', fontSize: '11px', color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>Active Channel: <strong style={{ color: '#3b82f6' }}>{selectedChannel.toUpperCase()}</strong></span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#10b981' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10b981' }} />
+              STREAM LIVE
+            </span>
           </div>
         </div>
 
@@ -425,19 +735,19 @@ export default function OverviewView({ onNavigate }) {
       {/* ========================================================================= */}
       {/* BOTTOM ROW: PRIORITY CAMPAIGNS TABLE & REGIONAL HOTSPOTS MAP              */}
       {/* ========================================================================= */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2.2fr 1fr', gap: '20px' }}>
 
         {/* Priority Campaigns Table */}
-        <div className="bs-card" style={{ padding: '24px' }}>
-          <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="bs-card" style={{ padding: '20px' }}>
+          <div style={{ fontSize: '15px', fontWeight: 700, marginBottom: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
               <AlertOctagon size={18} style={{ color: '#ef4444' }} />
               <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Targeted Corporate Smear Campaigns' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Viral Rumor Verification Queue' : 'Priority Threat Campaigns'}</span>
             </div>
             <button 
               onClick={() => onNavigate && onNavigate('campaigns')}
-              className="button-utility"
-              style={{ fontSize: '12px' }}
+              className="bs-button bs-button-secondary"
+              style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}
             >
               <span>View All Campaigns</span>
               <ArrowRight size={12} />
@@ -447,7 +757,7 @@ export default function OverviewView({ onNavigate }) {
           <div style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--border-color)', backgroundColor: 'var(--inner-box-bg)', color: 'var(--text-secondary)', fontSize: '11px', textTransform: 'uppercase' }}>
+                <tr style={{ borderBottom: '1px solid var(--border-color)', backgroundColor: 'var(--inner-box-bg, rgba(255,255,255,0.02))', color: 'var(--text-secondary)', fontSize: '11px', textTransform: 'uppercase' }}>
                   <th style={{ padding: '10px 14px' }}>ID</th>
                   <th style={{ padding: '10px 14px' }}>NARRATIVE FOCUS</th>
                   <th style={{ padding: '10px 14px' }}>RISK RANGE</th>
@@ -471,7 +781,7 @@ export default function OverviewView({ onNavigate }) {
                       </div>
                     </td>
                     <td style={{ padding: '12px 14px', fontFamily: 'JetBrains Mono' }}>{cmp.coord}%</td>
-                    <td style={{ padding: '12px 14px', fontFamily: 'JetBrains Mono', color: 'var(--sticker-orange)', fontWeight: 600 }}>{cmp.aiAsst}%</td>
+                    <td style={{ padding: '12px 14px', fontFamily: 'JetBrains Mono', color: '#f59e0b', fontWeight: 600 }}>{cmp.aiAsst}%</td>
                     <td style={{ padding: '12px 14px', textAlign: 'right' }}>
                       <button
                         onClick={() => onNavigate && onNavigate('campaigns')}
@@ -489,15 +799,15 @@ export default function OverviewView({ onNavigate }) {
         </div>
 
         {/* Regional Hotspot Preview */}
-        <div className="bs-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontSize: '15px', fontWeight: 600, marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
-            <MapPin size={18} style={{ color: 'var(--sticker-pink)' }} />
-            <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Asset & Financial Center Hotspots' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Citizen Tipline Regional Nodes' : 'National Hotspot Clusters'}</span>
+        <div className="bs-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
+            <MapPin size={16} style={{ color: '#ec4899' }} />
+            <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Asset & Port Infrastructure Nodes' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Citizen Tipline Regional Nodes' : 'National Hotspot Clusters'}</span>
           </div>
 
           <div style={{
             flex: 1,
-            backgroundColor: 'var(--inner-box-bg)',
+            backgroundColor: 'var(--inner-box-bg, rgba(0,0,0,0.2))',
             border: '1px solid var(--border-color)',
             borderRadius: '8px',
             position: 'relative',
