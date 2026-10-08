@@ -567,45 +567,7 @@ export default function LoginView() {
             </div>
           )}
 
-          {/* Active Clearance Badge Card */}
-          <div style={{
-            backgroundColor: `${selectedAccount?.badgeColor || '#10b981'}10`,
-            border: `1px solid ${selectedAccount?.badgeColor || '#10b981'}30`,
-            borderRadius: '12px',
-            padding: '12px 14px',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <div>
-              <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Active Clearance Persona
-              </div>
-              <div style={{ fontSize: '13px', fontWeight: 800, color: selectedAccount?.badgeColor || '#10b981', marginTop: '2px' }}>
-                {selectedAccount?.name} • {selectedAccount?.badgeText}
-              </div>
-            </div>
 
-            <button
-              type="button"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              style={{
-                fontSize: '11px',
-                fontWeight: 700,
-                color: '#2563eb',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}
-            >
-              <span>Switch</span>
-              <ChevronDown size={13} />
-            </button>
-          </div>
 
           {/* Server / Auth Error Banner */}
           {serverError && (
@@ -681,18 +643,15 @@ export default function LoginView() {
 
             {/* PASSWORD INPUT */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <label style={{
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  color: '#1e293b'
-                }}>
-                  Operational Password
-                </label>
-                <span style={{ fontSize: '11px', color: '#64748b' }}>
-                  Master: <code style={{ color: '#0f172a', fontWeight: 600 }}>Naman@16#</code>
-                </span>
-              </div>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#1e293b',
+                marginBottom: '6px'
+              }}>
+                Operational Password
+              </label>
               
               <div 
                 className="input-box"
@@ -748,7 +707,7 @@ export default function LoginView() {
             </div>
 
             {/* REMEMBER ME */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: '#475569' }}>
                 <input
                   type="checkbox"
@@ -758,10 +717,6 @@ export default function LoginView() {
                 />
                 <span>Persist operational session</span>
               </label>
-
-              <span style={{ fontSize: '12px', color: '#64748b', fontFamily: 'JetBrains Mono' }}>
-                EVM Auth Ready
-              </span>
             </div>
 
             {/* SIGN IN BUTTON */}

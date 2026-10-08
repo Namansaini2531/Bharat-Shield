@@ -298,78 +298,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           </div>
         </div>
 
-        {/* Active Role Quick Card in Sidebar */}
-        {!isCollapsed && (
-          <div style={{
-            margin: '8px 10px',
-            padding: '10px 12px',
-            borderRadius: '8px',
-            backgroundColor: 'var(--inner-box-bg)',
-            border: '1px solid var(--border-color)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '8px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-              <div style={{
-                width: '28px',
-                height: '28px',
-                borderRadius: '6px',
-                backgroundColor: `${currentUser.badgeColor}20`,
-                color: currentUser.badgeColor,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                <RoleIcon size={16} />
-              </div>
-              <div style={{ minWidth: 0, overflow: 'hidden' }}>
-                <div style={{ 
-                  fontSize: '11px', 
-                  fontWeight: 700, 
-                  color: 'var(--text-heading)',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                  overflow: 'hidden'
-                }}>
-                  {currentUser?.organization || 'Cyber Operations Command'}
-                </div>
-                <div style={{ fontSize: '9px', color: currentUser?.badgeColor || '#10b981', fontWeight: 600 }}>
-                  {currentUser?.badgeText || 'OPERATOR'}
-                </div>
-              </div>
-            </div>
 
-            <button
-              onClick={() => setIsAuthModalOpen(true)}
-              title="Switch RBAC Persona"
-              style={{
-                background: 'transparent',
-                border: '1px solid var(--border-color)',
-                borderRadius: '4px',
-                color: 'var(--text-muted)',
-                cursor: 'pointer',
-                padding: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--text-primary)';
-                e.currentTarget.style.borderColor = 'var(--accent-blue)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--text-muted)';
-                e.currentTarget.style.borderColor = 'var(--border-color)';
-              }}
-            >
-              <RefreshCw size={12} />
-            </button>
-          </div>
-        )}
 
         {/* Sidebar Navigation Content */}
         <div style={{ 
