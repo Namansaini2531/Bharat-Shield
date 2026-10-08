@@ -396,19 +396,22 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
     total_analyzed = (db_stats["total_signals"] if db_stats and db_stats["total_signals"] > 0 else 72080) + len(IN_MEMORY_SIGNALS)
 
     if role in ["system_admin", "admin", "super_admin"]:
+        sys_camps = ROLE_CAMPAIGNS.get("system_admin", ROLE_CAMPAIGNS["investigation_bureau"])
+        active_camps_count = len(sys_camps)
+        high_risk_count = sum(1 for c in sys_camps if (c.get("threat_score") or 0) >= 88 or "CRITICAL" in c.get("status", ""))
+
         return {
             "role": "system_admin",
             "organization": "National Cyber Coordination Centre (NCCC) & MoD",
             "clearance": "Level 5+ (Supreme Root Authority)",
             "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
             "stats": {
-                "active_campaigns": 17,
-                "high_risk_campaigns": 5,
+                "active_campaigns": active_camps_count,
+                "high_risk_campaigns": high_risk_count,
                 "content_analyzed": total_analyzed,
                 "tipline_submissions": 2000 + len(IN_MEMORY_SIGNALS),
                 "ai_suspected": 89,
-                "cluster_nodes_online": "4 / 4",
-                "court_evidences_sealed": 89
+                "cluster_nodes_online": "4 / 4"
             },
             "timeline": {
                 "24H": [
@@ -491,6 +494,10 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
             ]
         }
 
+    ib_camps = ROLE_CAMPAIGNS.get("investigation_bureau", [])
+    ib_active_count = len(ib_camps)
+    ib_critical_count = sum(1 for c in ib_camps if (c.get("threat_score") or 0) >= 88 or "CRITICAL" in c.get("status", ""))
+
     # Default: Investigation Bureau of India (IB / LEA)
     return {
         "role": "investigation_bureau",
@@ -498,8 +505,8 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
         "clearance": "Level 5 Top Secret",
         "storage_engine": "PostgreSQL (pgvector)" if is_db_available() else "In-Memory Optimized",
         "stats": {
-            "active_campaigns": db_stats["total_campaigns"] if db_stats and db_stats["total_campaigns"] > 0 else 12,
-            "high_risk_campaigns": db_stats["high_risk_campaigns"] if db_stats else 5,
+            "active_campaigns": ib_active_count,
+            "high_risk_campaigns": ib_critical_count,
             "content_analyzed": total_analyzed,
             "tipline_submissions": 3850 + len(IN_MEMORY_SIGNALS),
             "ai_suspected": 89

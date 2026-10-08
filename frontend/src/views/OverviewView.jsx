@@ -94,8 +94,8 @@ export default function OverviewView({ onNavigate }) {
     if (currentRole === ROLES.SYSTEM_ADMIN) {
       const baseIntercepts = backendOverview?.stats?.content_analyzed || 72080;
       const totalIntercepts = (baseIntercepts + liveCount).toLocaleString();
-      const activeCamps = backendOverview?.stats?.active_campaigns || 17;
-      const criticalThreats = backendOverview?.stats?.high_risk_campaigns || 5;
+      const activeCamps = backendOverview?.stats?.active_campaigns ?? 6;
+      const criticalThreats = backendOverview?.stats?.high_risk_campaigns ?? 3;
 
       return {
         roleId: 'system_admin',
@@ -107,8 +107,7 @@ export default function OverviewView({ onNavigate }) {
           { label: 'Active Cyber Campaigns', value: String(activeCamps), color: 'var(--text-heading)' },
           { label: 'Critical National Threats', value: String(criticalThreats), color: '#ef4444', isDanger: true },
           { label: 'Raw Intercepts Ingested', value: totalIntercepts, color: 'var(--text-heading)' },
-          { label: 'Cluster Nodes Online', value: '4 / 4', color: '#10b981' },
-          { label: 'Court Evidences Sealed', value: '89', color: '#10b981' }
+          { label: 'Cluster Nodes Online', value: '4 / 4', color: '#10b981' }
         ],
         sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
           { key: 'twitter', name: 'X (Twitter)', pct: '37%', rawPct: 37, color: 'var(--sticker-sky, #38bdf8)' },
@@ -129,6 +128,8 @@ export default function OverviewView({ onNavigate }) {
     if (currentRole === ROLES.INVESTIGATION_BUREAU) {
       const baseIntercepts = backendOverview?.stats?.content_analyzed || 72080;
       const totalIntercepts = (baseIntercepts + liveCount).toLocaleString();
+      const activeCamps = backendOverview?.stats?.active_campaigns ?? 6;
+      const criticalThreats = backendOverview?.stats?.high_risk_campaigns ?? 3;
 
       return {
         roleId: 'investigation_bureau',
@@ -137,11 +138,10 @@ export default function OverviewView({ onNavigate }) {
         classificationBadge: 'LEVEL 5 TOP SECRET / LEA',
         classificationColor: '#ef4444',
         stats: [
-          { label: 'Active Foreign Operations', value: '12', color: 'var(--text-heading)' },
-          { label: 'Critical Threat Vectors', value: '5', color: '#ef4444', isDanger: true },
+          { label: 'Active Foreign Operations', value: String(activeCamps), color: 'var(--text-heading)' },
+          { label: 'Critical Threat Vectors', value: String(criticalThreats), color: '#ef4444', isDanger: true },
           { label: 'Classified Intercepts', value: totalIntercepts, color: 'var(--text-heading)' },
-          { label: 'Proxy Bot Farms Tracked', value: '42', color: 'var(--sticker-orange, #fb923c)' },
-          { label: 'Court Evidences Sealed', value: '89', color: '#10b981' }
+          { label: 'Proxy Bot Farms Tracked', value: '42', color: 'var(--sticker-orange, #fb923c)' }
         ],
         sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
           { key: 'twitter', name: 'X (Twitter Botnets)', pct: '37%', rawPct: 37, color: 'var(--sticker-sky, #38bdf8)' },
@@ -161,19 +161,20 @@ export default function OverviewView({ onNavigate }) {
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       const basePosts = backendOverview?.stats?.content_analyzed || 14280;
       const totalPosts = (basePosts + liveCount).toLocaleString();
+      const activeCamps = backendOverview?.stats?.active_campaigns ?? 3;
+      const criticalThreats = backendOverview?.stats?.high_risk_campaigns ?? 2;
 
       return {
         roleId: 'corporate_enterprise',
-        title: 'Adani Group — Brand Defense & Market Risk Radar',
+        title: 'Tata Sons — Brand Defense & Market Risk Radar',
         subtitle: 'Real-time detection of coordinated corporate smear campaigns, stock sabotage, energy & port hoaxes, and executive deepfakes',
         classificationBadge: 'ENTERPRISE TIER-1 RESTRICTED',
         classificationColor: '#f59e0b',
         stats: [
-          { label: 'Active Brand Attacks', value: '4', color: 'var(--text-heading)' },
-          { label: 'High Risk Market Threats', value: '2', color: '#ef4444', isDanger: true },
+          { label: 'Active Brand Attacks', value: String(activeCamps), color: 'var(--text-heading)' },
+          { label: 'High Risk Market Threats', value: String(criticalThreats), color: '#ef4444', isDanger: true },
           { label: 'Corporate Posts Analyzed', value: totalPosts, color: 'var(--text-heading)' },
-          { label: 'Executive Deepfakes', value: '3', color: 'var(--sticker-orange, #fb923c)' },
-          { label: 'Sentiment Sabotage Index', value: '-62%', color: 'var(--sticker-pink, #f472b6)' }
+          { label: 'Executive Deepfakes', value: '3', color: 'var(--sticker-orange, #fb923c)' }
         ],
         sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
           { key: 'twitter', name: 'X / FinTwit Clusters', pct: '38%', rawPct: 38, color: 'var(--sticker-sky, #38bdf8)' },
@@ -182,10 +183,10 @@ export default function OverviewView({ onNavigate }) {
           { key: 'telegram', name: 'Telegram Shadow Groups', pct: '14%', rawPct: 14, color: 'var(--sticker-purple, #c084fc)' }
         ],
         hotspots: [
-          { name: 'ADANI CORPORATE HQ / AHMEDABAD', top: '48%', left: '26%', color: '#ef4444' },
-          { name: 'MUNDRA PORT & LOGISTICS', top: '45%', left: '22%', color: '#f59e0b' },
-          { name: 'KHAVDA RENEWABLE ENERGY PARK', top: '42%', left: '20%', color: '#10b981' },
-          { name: 'BSE / FINANCIAL DISTRICT MUMBAI', top: '58%', left: '30%', color: '#f59e0b' }
+          { name: 'TATA SONS HQ / BOMBAY HOUSE', top: '58%', left: '30%', color: '#ef4444' },
+          { name: 'TATA MOTORS PUNE PLANT', top: '60%', left: '32%', color: '#f59e0b' },
+          { name: 'TCS TECH CORRIDOR BENGALURU', top: '75%', left: '45%', color: '#10b981' },
+          { name: 'TATA STEEL JAMSHEDPUR', top: '48%', left: '72%', color: '#f59e0b' }
         ]
       };
     }
@@ -193,6 +194,8 @@ export default function OverviewView({ onNavigate }) {
     // Default: Journalist / Media
     const baseTipline = backendOverview?.stats?.tipline_submissions || 9424;
     const totalTipline = (baseTipline + liveCount).toLocaleString();
+    const activeCamps = backendOverview?.stats?.active_campaigns ?? 3;
+    const criticalThreats = backendOverview?.stats?.high_risk_campaigns ?? 2;
 
     return {
       roleId: 'journalist_media',
@@ -201,11 +204,10 @@ export default function OverviewView({ onNavigate }) {
       classificationBadge: 'PRESS ACCREDITED // VERIFICATION DESK',
       classificationColor: '#3b82f6',
       stats: [
-        { label: 'Viral Rumors Tracked', value: '23', color: 'var(--text-heading)' },
-        { label: 'Critical Debunk Priority', value: '6', color: '#ef4444', isDanger: true },
+        { label: 'Viral Rumors Tracked', value: String(activeCamps), color: 'var(--text-heading)' },
+        { label: 'Critical Debunk Priority', value: String(criticalThreats), color: '#ef4444', isDanger: true },
         { label: 'Citizen Tipline Submissions', value: totalTipline, color: 'var(--text-heading)' },
-        { label: 'Multilingual Variants', value: '78', color: '#3b82f6' },
-        { label: 'AI Generative Fakes', value: '11', color: 'var(--sticker-orange, #fb923c)' }
+        { label: 'Multilingual Variants', value: '78', color: '#3b82f6' }
       ],
       sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
         { key: 'whatsapp', name: 'WhatsApp Citizen Tipline', pct: '38%', rawPct: 38, color: 'var(--sticker-teal, #2dd4bf)' },
