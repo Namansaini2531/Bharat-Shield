@@ -20,7 +20,7 @@ import { useAuth, ROLES } from '../context/AuthContext';
 
 export default function OverviewView({ onNavigate }) {
   const [timeRange, setTimeRange] = useState('7D');
-  const { currentRole, currentUser, setIsAuthModalOpen } = useAuth();
+  const { currentRole } = useAuth();
 
   // Role-partitioned data feeds
   const getRoleDashboardData = () => {
@@ -276,75 +276,14 @@ export default function OverviewView({ onNavigate }) {
 
   return (
     <div>
-      {/* Top Tenant Clearance Banner */}
-      <div style={{
-        backgroundColor: `${data.classificationColor}10`,
-        border: `1px solid ${data.classificationColor}30`,
-        borderRadius: '10px',
-        padding: '10px 16px',
-        marginBottom: '20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '12px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            backgroundColor: data.classificationColor,
-            boxShadow: `0 0 8px ${data.classificationColor}`
-          }} />
-          <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>
-            CURRENT ACCESS SCOPE: {currentUser?.roleTitle || 'Super Administrator'}
-          </span>
-          <span style={{
-            fontSize: '10px',
-            fontWeight: 700,
-            padding: '2px 8px',
-            borderRadius: '4px',
-            backgroundColor: `${data.classificationColor}20`,
-            color: data.classificationColor
-          }}>
-            {data.classificationBadge}
-          </span>
-        </div>
-
-        <button
-          onClick={() => setIsAuthModalOpen(true)}
-          style={{
-            background: 'transparent',
-            border: `1px solid ${data.classificationColor}50`,
-            borderRadius: '6px',
-            color: data.classificationColor,
-            padding: '4px 10px',
-            fontSize: '11px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-        >
-          <span>Switch Organization Persona</span>
-          <ArrowUpRight size={13} />
-        </button>
-      </div>
-
       {/* Page Title Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-        <div>
-          <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
-            {data.title}
-          </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-            {data.subtitle}
-          </p>
-        </div>
-        <div className="bs-badge bs-badge-blue" style={{ padding: '6px 12px', fontSize: '10px' }}>
-          AI INFERENCE ENGINE ACTIVE
-        </div>
+      <div style={{ marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
+          {data.title}
+        </h2>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+          {data.subtitle}
+        </p>
       </div>
 
       {/* Top 5 Stat Cards */}
