@@ -31,7 +31,12 @@ import {
   Flame,
   Zap,
   Radio,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Key,
+  Copy,
+  RefreshCw,
+  Send,
+  Info
 } from 'lucide-react';
 import { useAuth, ROLES } from '../context/AuthContext';
 
@@ -42,8 +47,22 @@ export default function ThreatAssessmentsView() {
   const [campaigns, setCampaigns] = useState([]);
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerActiveTab, setDrawerActiveTab] = useState('breakdown'); // 'breakdown' | 'checklist' | 'linguistics' | 'propagation' | 'actions'
+  const [drawerActiveTab, setDrawerActiveTab] = useState('groq_ai'); // 'groq_ai' | 'breakdown' | 'checklist' | 'linguistics' | 'propagation' | 'actions'
   
+  // Groq AI State & User Key Storage
+  const [groqApiKey, setGroqApiKey] = useState(() => {
+    try {
+      return localStorage.getItem('bharat_shield_groq_api_key') || '';
+    } catch {
+      return '';
+    }
+  });
+  const [showKeyModal, setShowKeyModal] = useState(false);
+  const [tempApiKey, setTempApiKey] = useState('');
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [aiStrategyData, setAiStrategyData] = useState({});
+  const [copiedIndex, setCopiedIndex] = useState(null);
+
   // Filter & Search State
   const [searchQuery, setSearchQuery] = useState('');
   const [severityFilter, setSeverityFilter] = useState('all'); // 'all' | 'critical' | 'high' | 'medium'
@@ -515,7 +534,6 @@ export default function ThreatAssessmentsView() {
 
   // Helper to enrich any raw backend campaign with deep explainability assessment
   const enrichCampaignWithAssessment = (campaign, role) => {
-    // Check if it already has rich breakdown
     if (campaign.breakdown && campaign.checklist) return campaign;
 
     const score = campaign.threat_score || 85;
@@ -608,44 +626,80 @@ export default function ThreatAssessmentsView() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Filtered campaigns
-  const filteredCampaigns = useMemo(() => {
-    return campaigns.filter(c => {
-      // Search
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const mId = c.id?.toLowerCase().includes(q);
-        const mTitle = c.title?.toLowerCase().includes(q);
-        const mCat = c.category?.toLowerCase().includes(q);
-        const mTarget = c.target?.toLowerCase().includes(q);
-        if (!mId && !mTitle && !mCat && !mTarget) return false;
+  // Fetch Groq AI Counter-Strategy for Selected Campaign
+  const fetchGroqStrategy = async (campaign) => {
+    if (!campaign) return;
+    setIsAiLoading(true);
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/ai/counter-strategy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-role': currentRole
+        },
+        body: JSON.stringify({
+          campaign_id: campaign.id,
+          title: campaign.title,
+          category: campaign.category,
+          target: campaign.target,
+          threat_score: campaign.threat_score || 90,
+          primary_language: campaign.primary_language || 'hi-Latn',
+          languages_detected: campaign.languages_detected || ['Hindi', 'English'],
+          summary: campaign.summary || '',
+          role: currentRole,
+          custom_groq_api_key: groqApiKey || undefined
+        })
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.strategy) {
+          setAiStrategyData(prev => ({ ...prev, [campaign.id]: json.strategy }));
+        }
       }
+    } catch (err) {
+      console.warn('Groq Strategy fetch error:', err);
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
 
-      // Severity Filter
-      if (severityFilter === 'critical' && (c.threat_score || 0) < 90) return false;
-      if (severityFilter === 'high' && ((c.threat_score || 0) < 80 || (c.threat_score || 0) >= 90)) return false;
-      if (severityFilter === 'medium' && (c.threat_score || 0) >= 80) return false;
-
-      // Platform Filter
-      if (platformFilter !== 'all') {
-        if (!c.platforms?.includes(platformFilter)) return false;
-      }
-
-      return true;
-    });
-  }, [campaigns, searchQuery, severityFilter, platformFilter]);
-
-  // Open Sliding Window
+  // Open Sliding Window stretching right up to the sidebar
   const openDrawer = (campaign) => {
     setSelectedCampaign(campaign);
-    setDrawerActiveTab('breakdown');
+    setDrawerActiveTab('groq_ai');
     setActionFeedback(null);
     setIsDrawerOpen(true);
+
+    // Fetch Groq Strategy if not cached
+    if (!aiStrategyData[campaign.id]) {
+      fetchGroqStrategy(campaign);
+    }
   };
 
   // Close Sliding Window
   const closeDrawer = () => {
     setIsDrawerOpen(false);
+  };
+
+  // Save Groq API Key
+  const handleSaveApiKey = () => {
+    const cleanKey = tempApiKey.trim();
+    setGroqApiKey(cleanKey);
+    try {
+      localStorage.setItem('bharat_shield_groq_api_key', cleanKey);
+    } catch (e) {}
+    setShowKeyModal(false);
+    if (selectedCampaign) {
+      fetchGroqStrategy(selectedCampaign);
+    }
+  };
+
+  // Copy to clipboard helper
+  const handleCopyText = (text, index) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
   };
 
   // Execute Protected / Directive Action
@@ -675,19 +729,45 @@ export default function ThreatAssessmentsView() {
     }
   };
 
-  // Stats calculation
+  // Filtered campaigns
+  const filteredCampaigns = useMemo(() => {
+    return campaigns.filter(c => {
+      // Search
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const mId = c.id?.toLowerCase().includes(q);
+        const mTitle = c.title?.toLowerCase().includes(q);
+        const mCat = c.category?.toLowerCase().includes(q);
+        const mTarget = c.target?.toLowerCase().includes(q);
+        if (!mId && !mTitle && !mCat && !mTarget) return false;
+      }
+
+      // Severity Filter
+      if (severityFilter === 'critical' && (c.threat_score || 0) < 90) return false;
+      if (severityFilter === 'high' && ((c.threat_score || 0) < 80 || (c.threat_score || 0) >= 90)) return false;
+      if (severityFilter === 'medium' && (c.threat_score || 0) >= 80) return false;
+
+      // Platform Filter
+      if (platformFilter !== 'all') {
+        if (!c.platforms?.includes(platformFilter)) return false;
+      }
+
+      return true;
+    });
+  }, [campaigns, searchQuery, severityFilter, platformFilter]);
+
+  const currentStrategy = selectedCampaign ? (aiStrategyData[selectedCampaign.id] || null) : null;
   const totalCount = campaigns.length;
   const criticalCount = campaigns.filter(c => (c.threat_score || 0) >= 90).length;
   const highCount = campaigns.filter(c => (c.threat_score || 0) >= 80 && (c.threat_score || 0) < 90).length;
-  const avgConfidence = '96.2%';
 
   return (
-    <div style={{ maxWidth: '1480px', margin: '0 auto', position: 'relative' }}>
+    <div style={{ maxWidth: '100%', margin: '0 auto', position: 'relative' }}>
       
       {/* Header Banner */}
       <div style={{ marginBottom: '22px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span style={{ 
               backgroundColor: 'rgba(59, 130, 246, 0.15)', 
               color: '#3b82f6', 
@@ -701,41 +781,61 @@ export default function ThreatAssessmentsView() {
             }}>
               <Activity size={13} /> EXPLAINABLE THREAT TELEMETRY
             </span>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              • Multi-Signal Algorithmic Scoring
+            <span style={{ 
+              backgroundColor: groqApiKey ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)', 
+              color: groqApiKey ? '#10b981' : '#f59e0b', 
+              padding: '4px 10px', 
+              borderRadius: '6px', 
+              fontSize: '11px', 
+              fontWeight: 800,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}>
+              <Zap size={13} /> {groqApiKey ? 'GROQ LLaMA-3.3 70B CONNECTED' : 'EXPERT HEURISTIC ADVISOR'}
             </span>
           </div>
-          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.4px', margin: '6px 0 0 0' }}>
-            Explainable Threat Assessment Ledger
+
+          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.4px', margin: '8px 0 0 0' }}>
+            Explainable Threat Assessment & AI Counter-Disinformation Ledger
           </h2>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-            Automated multi-signal algorithmic breakdown of identified cognitive manipulation vectors for {currentUser?.roleTitle || 'National Threat Intelligence'}.
+            Automated multi-signal algorithmic breakdown and Groq AI counter-measure playbooks for {currentUser?.roleTitle || 'Threat Intelligence'}.
           </p>
         </div>
 
-        {/* Quick KPI Bar */}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          <div className="bs-card" style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px', minWidth: '130px' }}>
-            <ShieldAlert size={18} style={{ color: '#ef4444' }} />
-            <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>CRITICAL VECTORS</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#ef4444', fontFamily: 'JetBrains Mono' }}>{criticalCount}</div>
-            </div>
-          </div>
+        {/* Action Button: Configure Groq API Key */}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => {
+              setTempApiKey(groqApiKey);
+              setShowKeyModal(true);
+            }}
+            style={{
+              padding: '8px 14px',
+              borderRadius: '8px',
+              fontSize: '12px',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              backgroundColor: groqApiKey ? 'rgba(16, 185, 129, 0.12)' : 'var(--accent-blue)',
+              color: groqApiKey ? '#10b981' : '#ffffff',
+              border: `1px solid ${groqApiKey ? 'rgba(16, 185, 129, 0.3)' : 'var(--accent-blue)'}`,
+              cursor: 'pointer',
+              boxShadow: 'var(--shadow-sm)'
+            }}
+          >
+            <Key size={14} />
+            <span>{groqApiKey ? 'Groq Key Configured (Edit)' : 'Connect Groq API Key'}</span>
+          </button>
 
-          <div className="bs-card" style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px', minWidth: '130px' }}>
-            <AlertTriangle size={18} style={{ color: '#f59e0b' }} />
+          {/* KPI Widget */}
+          <div className="bs-card" style={{ padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ShieldAlert size={16} style={{ color: '#ef4444' }} />
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>HIGH RISK</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#f59e0b', fontFamily: 'JetBrains Mono' }}>{highCount}</div>
-            </div>
-          </div>
-
-          <div className="bs-card" style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px', minWidth: '130px' }}>
-            <Cpu size={18} style={{ color: '#10b981' }} />
-            <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>AVG CONFIDENCE</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#10b981', fontFamily: 'JetBrains Mono' }}>{avgConfidence}</div>
+              <div style={{ fontSize: '9px', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase' }}>CRITICAL THREATS</div>
+              <div style={{ fontSize: '15px', fontWeight: 800, color: '#ef4444', fontFamily: 'JetBrains Mono' }}>{criticalCount} Active</div>
             </div>
           </div>
         </div>
@@ -851,7 +951,7 @@ export default function ThreatAssessmentsView() {
                 <th style={{ padding: '14px 18px', fontWeight: 700 }}>Threat Index</th>
                 <th style={{ padding: '14px 18px', fontWeight: 700 }}>Linguistic Vectors</th>
                 <th style={{ padding: '14px 18px', fontWeight: 700 }}>Telemetry & Sync</th>
-                <th style={{ padding: '14px 18px', fontWeight: 700, textAlign: 'right' }}>Explainable Assessment</th>
+                <th style={{ padding: '14px 18px', fontWeight: 700, textAlign: 'right' }}>AI Counter-Strategy</th>
               </tr>
             </thead>
             <tbody>
@@ -1004,7 +1104,8 @@ export default function ThreatAssessmentsView() {
                             e.currentTarget.style.borderColor = 'var(--border-color)';
                           }}
                         >
-                          <span>Inspect Deep Assessment</span>
+                          <Sparkles size={13} style={{ color: '#f59e0b' }} />
+                          <span>AI Counter-Strategy</span>
                           <ArrowRight size={13} />
                         </button>
                       </td>
@@ -1019,7 +1120,7 @@ export default function ThreatAssessmentsView() {
       </div>
 
       {/* ========================================================================= */}
-      {/* WIDE SLIDING WINDOW (DRAWER / SLIDE-OVER FORENSIC TELEMETRY PANEL)        */}
+      {/* WIDE SLIDING WINDOW — EXTENDING ALL THE WAY UP TO THE SIDEBAR!             */}
       {/* ========================================================================= */}
       {isDrawerOpen && (
         <div 
@@ -1032,7 +1133,7 @@ export default function ThreatAssessmentsView() {
             bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.65)',
             backdropFilter: 'blur(5px)',
-            zIndex: 1000,
+            zIndex: 999,
             display: 'flex',
             justifyContent: 'flex-end',
             transition: 'opacity 0.25s ease'
@@ -1041,11 +1142,13 @@ export default function ThreatAssessmentsView() {
           <div 
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: 'min(980px, 94vw)',
+              // Stretching width right up to the sidebar border!
+              width: 'calc(100vw - 260px)',
+              maxWidth: 'calc(100vw - 68px)',
               height: '100%',
               backgroundColor: 'var(--bg-card)',
-              borderLeft: '1px solid var(--border-color)',
-              boxShadow: '-10px 0 35px rgba(0, 0, 0, 0.6)',
+              borderLeft: '2px solid var(--border-color)',
+              boxShadow: '-12px 0 40px rgba(0, 0, 0, 0.7)',
               overflowY: 'auto',
               display: 'flex',
               flexDirection: 'column',
@@ -1055,15 +1158,17 @@ export default function ThreatAssessmentsView() {
             
             {/* Drawer Top Header & Navigation */}
             <div style={{
-              padding: '20px 28px',
+              padding: '18px 28px',
               borderBottom: '1px solid var(--border-color)',
               backgroundColor: 'var(--bg-sidebar)',
               position: 'sticky',
               top: 0,
-              zIndex: 10,
+              zIndex: 20,
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '12px'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span className="bs-badge bs-badge-blue" style={{ fontSize: '11px', fontWeight: 800 }}>
@@ -1083,32 +1188,71 @@ export default function ThreatAssessmentsView() {
                 }}>
                   <Check size={12} /> {selectedCampaign?.confidence || 'HIGH (96.5%)'}
                 </span>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                  • {currentUser?.roleTitle || 'Threat Intelligence'}
+                
+                {/* Groq Engine Badge */}
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: currentStrategy?.is_live_llm ? '#10b981' : '#f59e0b',
+                  backgroundColor: currentStrategy?.is_live_llm ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
+                  border: `1px solid ${currentStrategy?.is_live_llm ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}>
+                  <Zap size={12} />
+                  <span>{currentStrategy?.engine || (groqApiKey ? 'Groq LLaMA-3.3 70B' : 'Expert Heuristic Engine')}</span>
                 </span>
               </div>
 
-              {/* Close Button with Esc shortcut indicator */}
-              <button
-                onClick={closeDrawer}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  border: '1px solid var(--border-color)',
-                  backgroundColor: 'var(--bg-muted)',
-                  color: 'var(--text-primary)',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  cursor: 'pointer'
-                }}
-              >
-                <span>Close</span>
-                <kbd style={{ fontSize: '10px', backgroundColor: 'var(--bg-card)', padding: '1px 5px', borderRadius: '4px', border: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>ESC</kbd>
-                <X size={14} />
-              </button>
+              {/* Action Buttons: Configure Key & Close */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <button
+                  onClick={() => {
+                    setTempApiKey(groqApiKey);
+                    setShowKeyModal(true);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 10px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-muted)',
+                    color: 'var(--text-secondary)',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Key size={13} style={{ color: '#f59e0b' }} />
+                  <span>API Key</span>
+                </button>
+
+                <button
+                  onClick={closeDrawer}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-muted)',
+                    color: 'var(--text-primary)',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <span>Close</span>
+                  <kbd style={{ fontSize: '10px', backgroundColor: 'var(--bg-card)', padding: '1px 5px', borderRadius: '4px', border: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>ESC</kbd>
+                  <X size={14} />
+                </button>
+              </div>
             </div>
 
             {/* Drawer Hero Banner */}
@@ -1120,7 +1264,7 @@ export default function ThreatAssessmentsView() {
               borderLeft: `5px solid ${selectedCampaign?.threat_color || '#ef4444'}`
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-                <div style={{ flex: '1 1 500px' }}>
+                <div style={{ flex: '1 1 560px' }}>
                   <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.6px', textTransform: 'uppercase' }}>
                     {selectedCampaign?.category}
                   </div>
@@ -1134,7 +1278,7 @@ export default function ThreatAssessmentsView() {
                   {/* Quick Telemetry Pills */}
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '14px' }}>
                     <span style={{ fontSize: '11px', backgroundColor: 'var(--bg-muted)', padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
-                      <strong>Target:</strong> {selectedCampaign?.target}
+                      <strong>Target Domain:</strong> {selectedCampaign?.target}
                     </span>
                     <span style={{ fontSize: '11px', backgroundColor: 'var(--bg-muted)', padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
                       <strong>Swarm Sync:</strong> {selectedCampaign?.cross_platform_sync}%
@@ -1146,7 +1290,7 @@ export default function ThreatAssessmentsView() {
                 </div>
 
                 {/* Score Meter Widget */}
-                <div style={{ textAlign: 'right', minWidth: '140px' }}>
+                <div style={{ textAlign: 'right', minWidth: '160px' }}>
                   <div style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase' }}>
                     ALGORITHMIC THREAT INDEX
                   </div>
@@ -1161,6 +1305,29 @@ export default function ThreatAssessmentsView() {
                       {selectedCampaign?.threat_label || 'CRITICAL'}
                     </span>
                   </div>
+
+                  {/* Regenerate AI Button */}
+                  <button
+                    onClick={() => fetchGroqStrategy(selectedCampaign)}
+                    disabled={isAiLoading}
+                    style={{
+                      marginTop: '12px',
+                      padding: '6px 12px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      borderRadius: '6px',
+                      backgroundColor: 'var(--bg-muted)',
+                      border: '1px solid var(--border-color)',
+                      color: 'var(--text-primary)',
+                      cursor: isAiLoading ? 'not-allowed' : 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <RefreshCw size={12} className={isAiLoading ? 'animate-spin' : ''} style={{ color: '#f59e0b' }} />
+                    <span>{isAiLoading ? 'Analyzing...' : 'Regenerate Strategy'}</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -1174,6 +1341,7 @@ export default function ThreatAssessmentsView() {
               overflowX: 'auto'
             }}>
               {[
+                { id: 'groq_ai', label: 'Groq AI Counter-Playbook', icon: Sparkles, badge: 'AI' },
                 { id: 'breakdown', label: 'Multi-Signal Breakdown', icon: FileText },
                 { id: 'checklist', label: 'Forensic Audit Checklist', icon: CheckCircle2 },
                 { id: 'linguistics', label: 'Linguistic & Slang Radar', icon: Languages },
@@ -1204,8 +1372,13 @@ export default function ThreatAssessmentsView() {
                       transition: 'all 0.15s ease'
                     }}
                   >
-                    <Icon size={14} />
+                    <Icon size={14} style={{ color: tab.id === 'groq_ai' ? '#f59e0b' : undefined }} />
                     <span>{tab.label}</span>
+                    {tab.badge && (
+                      <span style={{ fontSize: '9px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px', backgroundColor: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b' }}>
+                        {tab.badge}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -1234,7 +1407,205 @@ export default function ThreatAssessmentsView() {
                 </div>
               )}
 
-              {/* TAB 1: Multi-Signal Breakdown */}
+              {/* ========================================================================= */}
+              {/* TAB 1: GROQ AI COUNTER-DISINFORMATION PLAYBOOK (PRIMARY)                 */}
+              {/* ========================================================================= */}
+              {drawerActiveTab === 'groq_ai' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+                  
+                  {/* Executive Diagnosis Card */}
+                  <div className="bs-card" style={{ 
+                    padding: '20px', 
+                    backgroundColor: 'var(--inner-box-bg)',
+                    borderLeft: '4px solid #f59e0b'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 800, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Bot size={14} /> COGNITIVE VECTOR DIAGNOSIS & THREAT TRAJECTORY
+                      </div>
+                      <span style={{ 
+                        fontSize: '10px', 
+                        fontWeight: 800, 
+                        color: '#ef4444', 
+                        backgroundColor: 'rgba(239, 68, 68, 0.15)', 
+                        padding: '3px 8px', 
+                        borderRadius: '4px',
+                        border: '1px solid rgba(239, 68, 68, 0.3)'
+                      }}>
+                        URGENCY: {currentStrategy?.urgency_rating || 'IMMEDIATE (0-30 MINS)'}
+                      </span>
+                    </div>
+
+                    <p style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.5, margin: '6px 0 0 0' }}>
+                      {currentStrategy?.executive_diagnosis || 'Analyzing cognitive manipulation patterns across regional ingestion channels...'}
+                    </p>
+                  </div>
+
+                  {/* Immediate Tactical Interventions */}
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Zap size={16} style={{ color: '#f59e0b' }} />
+                      <span>Immediate Tactical Mitigation Interventions</span>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
+                      {currentStrategy?.tactical_interventions?.map((item, idx) => (
+                        <div key={idx} className="bs-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>
+                                {item.action}
+                              </span>
+                              <span style={{ 
+                                fontSize: '9px', 
+                                fontWeight: 800, 
+                                color: item.priority === 'CRITICAL' ? '#ef4444' : '#f59e0b',
+                                backgroundColor: item.priority === 'CRITICAL' ? 'rgba(239, 68, 68, 0.12)' : 'rgba(245, 158, 11, 0.12)',
+                                padding: '2px 6px',
+                                borderRadius: '4px'
+                              }}>
+                                {item.priority}
+                              </span>
+                            </div>
+                            <p style={{ fontSize: '11px', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                              {item.description}
+                            </p>
+                          </div>
+
+                          <button
+                            onClick={() => handleExecuteAction(`tactical_${idx}`)}
+                            style={{
+                              marginTop: '12px',
+                              padding: '6px 10px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              borderRadius: '6px',
+                              backgroundColor: 'var(--bg-muted)',
+                              border: '1px solid var(--border-color)',
+                              color: 'var(--text-primary)',
+                              cursor: 'pointer',
+                              textAlign: 'center'
+                            }}
+                          >
+                            Trigger Action Protocol →
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Pre-Drafted Multilingual Counter-Narratives */}
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Languages size={16} style={{ color: '#3b82f6' }} />
+                      <span>Pre-Drafted Multilingual Counter-Narrative Scripts (Ready to Deploy)</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                      {currentStrategy?.counter_narratives?.map((item, idx) => (
+                        <div key={idx} className="bs-card" style={{ padding: '18px', backgroundColor: 'var(--inner-box-bg)' }}>
+                          
+                          {/* Card Top Metadata */}
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ fontSize: '11px', fontWeight: 800, backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', padding: '3px 8px', borderRadius: '4px' }}>
+                                {item.language}
+                              </span>
+                              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                                Channel: <strong>{item.channel}</strong>
+                              </span>
+                            </div>
+
+                            {/* Copy Button */}
+                            <button
+                              onClick={() => handleCopyText(`${item.headline}\n\n${item.message}\n\n${item.call_to_action}`, idx)}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                padding: '5px 10px',
+                                borderRadius: '6px',
+                                border: '1px solid var(--border-color)',
+                                backgroundColor: copiedIndex === idx ? '#10b981' : 'var(--bg-muted)',
+                                color: copiedIndex === idx ? '#ffffff' : 'var(--text-primary)',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                transition: 'all 0.15s ease'
+                              }}
+                            >
+                              {copiedIndex === idx ? <Check size={12} /> : <Copy size={12} />}
+                              <span>{copiedIndex === idx ? 'Copied to Clipboard!' : 'Copy Script'}</span>
+                            </button>
+                          </div>
+
+                          {/* Headline */}
+                          <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '6px' }}>
+                            {item.headline}
+                          </div>
+
+                          {/* Message Body */}
+                          <div style={{ 
+                            fontSize: '12px', 
+                            color: 'var(--text-primary)', 
+                            backgroundColor: 'var(--bg-card)', 
+                            padding: '12px 14px', 
+                            borderRadius: '8px', 
+                            border: '1px solid var(--border-color)',
+                            lineHeight: 1.5,
+                            whiteSpace: 'pre-line'
+                          }}>
+                            {item.message}
+                          </div>
+
+                          {/* Call to action */}
+                          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ color: '#10b981', fontWeight: 700 }}>Citizen Action:</span> {item.call_to_action}
+                          </div>
+
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Psychological Prebunking & Inoculation */}
+                  <div className="bs-card" style={{ padding: '18px', backgroundColor: 'var(--bg-muted)' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Shield size={16} style={{ color: '#10b981' }} />
+                      <span>Psychological Inoculation & Prebunking Advisory</span>
+                    </div>
+                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
+                      {currentStrategy?.psychological_prebunking || 'Educate target demographics on the adversary deception mechanism to build cognitive immunity.'}
+                    </p>
+                  </div>
+
+                  {/* Channel Deployment Timeline Matrix */}
+                  <div className="bs-card" style={{ padding: '18px' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '12px' }}>
+                      Cross-Channel Response Timeline & Routing
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
+                      {currentStrategy?.channel_matrix?.map((ch, idx) => (
+                        <div key={idx} style={{ backgroundColor: 'var(--bg-muted)', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>{ch.channel}</span>
+                            <span style={{ fontSize: '10px', color: '#f59e0b', fontWeight: 700 }}>{ch.recommended_timeframe}</span>
+                          </div>
+                          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.3 }}>
+                            {ch.tactic}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+              )}
+
+              {/* ========================================================================= */}
+              {/* TAB 2: MULTI-SIGNAL BREAKDOWN                                            */}
+              {/* ========================================================================= */}
               {drawerActiveTab === 'breakdown' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   
@@ -1276,7 +1647,9 @@ export default function ThreatAssessmentsView() {
                 </div>
               )}
 
-              {/* TAB 2: Forensic Audit Checklist */}
+              {/* ========================================================================= */}
+              {/* TAB 3: FORENSIC AUDIT CHECKLIST                                          */}
+              {/* ========================================================================= */}
               {drawerActiveTab === 'checklist' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                   <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
@@ -1329,7 +1702,9 @@ export default function ThreatAssessmentsView() {
                 </div>
               )}
 
-              {/* TAB 3: Linguistic & Slang Radar */}
+              {/* ========================================================================= */}
+              {/* TAB 4: LINGUISTIC & SLANG RADAR                                          */}
+              {/* ========================================================================= */}
               {drawerActiveTab === 'linguistics' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                   
@@ -1396,7 +1771,9 @@ export default function ThreatAssessmentsView() {
                 </div>
               )}
 
-              {/* TAB 4: Multi-Hop Propagation Trace */}
+              {/* ========================================================================= */}
+              {/* TAB 5: MULTI-HOP PROPAGATION TRACE                                       */}
+              {/* ========================================================================= */}
               {drawerActiveTab === 'propagation' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                   
@@ -1475,7 +1852,9 @@ export default function ThreatAssessmentsView() {
                 </div>
               )}
 
-              {/* TAB 5: Persona Directives & Actions */}
+              {/* ========================================================================= */}
+              {/* TAB 6: PERSONA DIRECTIVES & ACTION EXECUTION                              */}
+              {/* ========================================================================= */}
               {drawerActiveTab === 'actions' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   
@@ -1587,6 +1966,104 @@ export default function ThreatAssessmentsView() {
 
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* GROQ API KEY CONFIGURATION MODAL                                         */}
+      {/* ========================================================================= */}
+      {showKeyModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          backdropFilter: 'blur(6px)',
+          zIndex: 1100,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px'
+        }}>
+          <div className="bs-card" style={{ width: '100%', maxWidth: '480px', padding: '24px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Key size={18} style={{ color: '#f59e0b' }} />
+                <h3 style={{ fontSize: '16px', fontWeight: 800, margin: 0, color: 'var(--text-heading)' }}>
+                  Configure Groq API Key
+                </h3>
+              </div>
+              <button onClick={() => setShowKeyModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.4, marginBottom: '16px' }}>
+              Enter your Groq API key (<code>gsk_...</code>) to enable real-time neural counter-disinformation synthesis powered by <strong>LLaMA-3.3 70B Versatile</strong> at ultra-low inference latency.
+            </p>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                GROQ API KEY
+              </label>
+              <input
+                type="password"
+                placeholder="gsk_..."
+                value={tempApiKey}
+                onChange={(e) => setTempApiKey(e.target.value)}
+                style={{
+                  width: '100%',
+                  marginTop: '6px',
+                  padding: '10px 12px',
+                  fontSize: '13px',
+                  fontFamily: 'JetBrains Mono',
+                  borderRadius: '6px',
+                  border: '1px solid var(--border-color)',
+                  backgroundColor: 'var(--bg-muted)',
+                  color: 'var(--text-primary)',
+                  outline: 'none'
+                }}
+              />
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Info size={12} /> Key is stored securely in your local browser session.
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+              <button
+                onClick={() => setShowKeyModal(false)}
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--border-color)',
+                  backgroundColor: 'var(--bg-muted)',
+                  color: 'var(--text-primary)',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveApiKey}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: 'var(--accent-blue)',
+                  color: '#ffffff',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                Save & Connect Key
+              </button>
+            </div>
           </div>
         </div>
       )}

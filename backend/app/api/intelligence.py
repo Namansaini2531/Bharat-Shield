@@ -1082,3 +1082,47 @@ def verify_evm_evidence(sha256_hash: str):
     return EVMAnchorService.verify_on_chain(sha256_hex=sha256_hash)
 
 
+@router.post("/ai/counter-strategy")
+def generate_ai_counter_strategy(
+    payload: Dict[str, Any] = Body(...),
+    x_user_role: Optional[str] = Header(default="investigation_bureau")
+):
+    """
+    Generates persona-tailored counter-disinformation strategies, multilingual debunk drafts, 
+    and statutory response steps using Groq LLaMA-3.3-70B.
+    """
+    from ai.groq_advisor import GroqCounterAdvisor
+
+    campaign_id = payload.get("campaign_id", "CMP-007")
+    title = payload.get("title", "Coordinated Disinformation Vector")
+    category = payload.get("category", "Disinformation Operation")
+    target = payload.get("target", "National Information Space")
+    threat_score = int(payload.get("threat_score", 90))
+    primary_language = payload.get("primary_language", "hi-Latn")
+    languages_detected = payload.get("languages_detected", ["Hindi", "English"])
+    summary = payload.get("summary", "")
+    role = payload.get("role") or x_user_role or "investigation_bureau"
+    custom_groq_api_key = payload.get("custom_groq_api_key") or payload.get("groq_api_key")
+
+    strategy = GroqCounterAdvisor.generate_strategy(
+        campaign_id=campaign_id,
+        title=title,
+        category=category,
+        target=target,
+        threat_score=threat_score,
+        primary_language=primary_language,
+        languages_detected=languages_detected,
+        summary=summary,
+        role=role,
+        custom_key=custom_groq_api_key
+    )
+
+    return {
+        "status": "SUCCESS",
+        "campaign_id": campaign_id,
+        "role": role,
+        "strategy": strategy
+    }
+
+
+
