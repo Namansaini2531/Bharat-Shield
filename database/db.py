@@ -294,18 +294,31 @@ def insert_audit_entry(
     event_type: str,
     details: str,
     analyst_id: Optional[str] = "SYSTEM",
-    role: Optional[str] = "investigation_bureau"
+    role: Optional[str] = "investigation_bureau",
+    tx_hash: Optional[str] = None,
+    block_number: Optional[int] = None,
+    contract_address: Optional[str] = None
 ) -> bool:
-    """Log an immutable audit trail entry into PostgreSQL."""
+    """Log an immutable audit trail entry into PostgreSQL including EVM Smart Contract proof."""
     try:
         conn = get_connection()
         with conn.cursor() as cur:
+            # Ensure new columns exist
+            cur.execute("""
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS role VARCHAR(64);
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS tx_hash VARCHAR(128);
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS block_number BIGINT;
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS contract_address VARCHAR(64);
+                ALTER TABLE audit_ledger ALTER COLUMN sha256_hash TYPE VARCHAR(128);
+                ALTER TABLE audit_ledger ALTER COLUMN package_id TYPE VARCHAR(128);
+                ALTER TABLE audit_ledger ALTER COLUMN analyst_id TYPE VARCHAR(128);
+            """)
             cur.execute("""
                 INSERT INTO audit_ledger (
-                    package_id, campaign_id, sha256_hash,
+                    package_id, campaign_id, sha256_hash, tx_hash, block_number, contract_address,
                     event_type, details, analyst_id, role
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s);
-            """, (package_id, campaign_id, sha256_hash, event_type, details, analyst_id, role))
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            """, (package_id, campaign_id, sha256_hash, tx_hash, block_number, contract_address, event_type, details, analyst_id, role))
             conn.commit()
         conn.close()
         return True
@@ -314,13 +327,19 @@ def insert_audit_entry(
         return False
 
 def get_audit_ledger_from_db(limit: int = 50, role: Optional[str] = None) -> List[Dict[str, Any]]:
-    """Retrieve audit ledger logs with optional role partition."""
+    """Retrieve audit ledger logs with optional role partition and EVM Proof details."""
     try:
         conn = get_connection()
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS role VARCHAR(64);
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS tx_hash VARCHAR(128);
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS block_number BIGINT;
+                ALTER TABLE audit_ledger ADD COLUMN IF NOT EXISTS contract_address VARCHAR(64);
+            """)
             if role and role != "investigation_bureau" and role != "system_admin":
                 cur.execute("""
-                    SELECT id, package_id, campaign_id, sha256_hash,
+                    SELECT id, package_id, campaign_id, sha256_hash, tx_hash, block_number, contract_address,
                            event_type, details, analyst_id, role, recorded_at
                     FROM audit_ledger
                     WHERE role = %s
@@ -329,7 +348,7 @@ def get_audit_ledger_from_db(limit: int = 50, role: Optional[str] = None) -> Lis
                 """, (role, limit))
             else:
                 cur.execute("""
-                    SELECT id, package_id, campaign_id, sha256_hash,
+                    SELECT id, package_id, campaign_id, sha256_hash, tx_hash, block_number, contract_address,
                            event_type, details, analyst_id, role, recorded_at
                     FROM audit_ledger
                     ORDER BY recorded_at DESC

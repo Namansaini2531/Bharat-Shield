@@ -100,10 +100,10 @@ class ErrorBoundary extends React.Component {
             }}>
               ⚠️
             </div>
-            <h2 style={{ fontSize: '20px', fontWeight: 800, margin: '0 0 8px 0', color: '#ffffff' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, margin: '0 0 8px 0', color: 'var(--text-heading)' }}>
               Security Partition Initialization Notice
             </h2>
-            <p style={{ fontSize: '13px', color: '#9ca3af', lineHeight: 1.5, marginBottom: '20px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '20px' }}>
               The application encountered a state conflict during session hydration. Click below to clear cache and reload cleanly.
             </p>
             <div style={{
@@ -147,7 +147,13 @@ class ErrorBoundary extends React.Component {
 
 function MainAppContent() {
   const [currentNav, setCurrentNav] = useState('overview');
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('bharat_shield_theme') || 'light';
+    } catch {
+      return 'light';
+    }
+  });
   const { isAuthenticated, currentRole, hasAccessToNav } = useAuth();
 
   // Reset to overview if user switches to a role that lacks access to the current view
@@ -169,6 +175,9 @@ function MainAppContent() {
       return () => mediaQuery.removeEventListener('change', applySystemTheme);
     } else {
       document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem('bharat_shield_theme', theme);
+      } catch {}
     }
   }, [theme]);
 

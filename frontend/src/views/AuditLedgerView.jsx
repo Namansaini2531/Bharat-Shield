@@ -108,7 +108,7 @@ export default function AuditLedgerView() {
               <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono', textTransform: 'uppercase', marginBottom: '6px' }}>
                 ACTIVE ROOT STATE SHA-256 HASH
               </div>
-              <div style={{ fontSize: '13px', fontFamily: 'JetBrains Mono', color: '#60a5fa', wordBreak: 'break-all' }}>
+              <div style={{ fontSize: '13px', fontFamily: 'JetBrains Mono', color: 'var(--accent-blue)', wordBreak: 'break-all' }}>
                 {hashString}
               </div>
             </div>

@@ -1,65 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth, ROLES } from '../context/AuthContext';
 import { 
   AlertTriangle, 
   Share2, 
   Bot, 
-  Radio,
-  RefreshCw, 
   Download, 
-  ZoomIn, 
-  FileText, 
-  Clock, 
-  Languages, 
-  Server,
-  ShieldAlert,
-  Building2,
-  Newspaper,
-  CheckCircle2,
-  Sparkles,
-  ArrowRight,
+  CheckCircle2, 
+  Sparkles, 
+  ArrowRight, 
+  Lock, 
+  Layers, 
+  Search, 
+  Archive, 
+  Flame, 
+  ChevronRight,
+  Eye,
+  Languages,
+  X,
   ExternalLink,
-  Lock,
-  Layers
+  ShieldAlert,
+  Radio,
+  Clock
 } from 'lucide-react';
 
 export default function CampaignView() {
   const { currentRole, currentUser, executeProtectedAction, can } = useAuth();
-  const [campaigns, setCampaigns] = useState([]);
-  const [selectedCampaignId, setSelectedCampaignId] = useState('');
-  const [loading, setLoading] = useState(true);
+  
+  // Data State
+  const [ongoingCampaigns, setOngoingCampaigns] = useState([]);
+  const [archivedCampaigns, setArchivedCampaigns] = useState([]);
+  const [selectedCampaign, setSelectedCampaign] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('ongoing'); // 'ongoing' | 'archived'
+  
+  // Filter & Search State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [platformFilter, setPlatformFilter] = useState('all');
+  
+  // UI State
   const [actionStatus, setActionStatus] = useState(null);
 
-  // Fetch role-specific campaigns from backend
-  useEffect(() => {
-    async function loadCampaigns() {
-      setLoading(true);
-      try {
-        const res = await fetch(`http://127.0.0.1:8000/api/campaigns?role=${currentRole}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            setCampaigns(data);
-            setSelectedCampaignId(data[0].id);
-          }
-        }
-      } catch (e) {
-        console.warn('Backend fetch failed, using role fallback campaigns', e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadCampaigns();
-  }, [currentRole]);
-
-  // Fallback defaults if backend is unreachable
-  const fallbackCampaignsByRole = {
+  // Fallback Ongoing Campaigns by Role
+  const fallbackOngoingByRole = {
     [ROLES.SYSTEM_ADMIN]: [
       {
         id: 'CMP-007',
         title: 'Infrastructure Shutdown & Civil Unrest Narrative',
-        category: 'National Security / Disinformation Warfare',
+        category: 'National Security / Disinformation',
         status: 'ACTIVE CRITICAL',
+        type: 'ongoing',
         threat_score: 94,
         confidence: 'HIGH',
         primary_language: 'hi-Latn',
@@ -67,14 +56,20 @@ export default function CampaignView() {
         platforms: ['twitter', 'telegram', 'whatsapp'],
         post_count: 842,
         cross_platform_sync: 96,
-        target: 'National Critical Infrastructure & Public Law & Order',
-        summary: 'State-sponsored coordinated synthetic campaign spreading false claims of nationwide communication blackout to trigger civic panic and bank runs.'
+        target: 'Critical Infrastructure & Public Order',
+        summary: 'State-sponsored synthetic campaign spreading claims of nationwide communication blackout to induce civic panic.',
+        posts: [
+          { platform: 'telegram', timestamp: '10m ago', text: 'URGENT: All telecom towers in northern sector shutting down at midnight.' },
+          { platform: 'twitter', timestamp: '18m ago', text: 'National grid frequency dropping sharply. Power blackout expected across 6 states.' },
+          { platform: 'whatsapp', timestamp: '24m ago', text: 'आपातकालीन सूचना: दूरसंचार और बैंकिंग सर्वर अगले 48 घंटों के लिए बंद रहेंगे।' }
+        ]
       },
       {
         id: 'CMP-011',
         title: 'Government Identity Spoofing & Phishing Matrix',
-        category: 'Credential Harvesting Farm',
+        category: 'Credential Harvesting',
         status: 'MONITORING',
+        type: 'ongoing',
         threat_score: 83,
         confidence: 'HIGH',
         primary_language: 'en',
@@ -82,14 +77,18 @@ export default function CampaignView() {
         platforms: ['twitter', 'telegram'],
         post_count: 412,
         cross_platform_sync: 89,
-        target: 'Defense Personnel & Northern Logistics Hubs',
-        summary: 'Coordinated bot network deploying deepfake operational orders targeting border transit networks.'
+        target: 'Defense Logistics & Transit Hubs',
+        summary: 'Bot network deploying counterfeit operational transit advisories targeting border supply networks.',
+        posts: [
+          { platform: 'twitter', timestamp: '42m ago', text: 'Official directive issued: Defense logistics re-routing via NH-44.' }
+        ]
       },
       {
         id: 'CMP-TATA-009',
         title: 'Tata Motors EV & TCS Disinformation Swarm',
-        category: 'Market Manipulation & Short Sabotage',
+        category: 'Market Manipulation',
         status: 'DEFENSE ACTIVE',
+        type: 'ongoing',
         threat_score: 91,
         confidence: 'HIGH',
         primary_language: 'en',
@@ -97,16 +96,20 @@ export default function CampaignView() {
         platforms: ['twitter', 'telegram', 'instagram'],
         post_count: 1280,
         cross_platform_sync: 93,
-        target: 'Tata Motors EV Safety & TCS Campus Recruitment',
-        summary: 'Synchronized release of fabricated EV battery explosion videos and counterfeit TCS hiring freeze memos across shadow Telegram & Instagram channels.'
+        target: 'Tata Motors EV Safety & TCS Recruitment',
+        summary: 'Synchronized release of fabricated EV battery defect videos and counterfeit hiring freeze circulars.',
+        posts: [
+          { platform: 'instagram', timestamp: '15m ago', text: 'Viral Reel: Fabricated EV battery thermal defect footage.' }
+        ]
       }
     ],
     [ROLES.INVESTIGATION_BUREAU]: [
       {
         id: 'CMP-007',
-        title: 'Operation Echo: Telecom & Critical Grid Sabotage',
-        category: 'National Security / Disinformation Warfare',
-        status: 'ACTIVE_CRITICAL',
+        title: 'Telecom & Critical Grid Sabotage Narrative',
+        category: 'National Security / Disinformation',
+        status: 'ACTIVE CRITICAL',
+        type: 'ongoing',
         threat_score: 94,
         confidence: 'HIGH',
         primary_language: 'hi-Latn',
@@ -114,14 +117,18 @@ export default function CampaignView() {
         platforms: ['twitter', 'telegram', 'whatsapp'],
         post_count: 842,
         cross_platform_sync: 96,
-        target: 'National Critical Infrastructure & Public Law & Order',
-        summary: 'Coordinated synthetic campaign spreading false claims of nationwide communication blackout to trigger civic panic and bank runs.'
+        target: 'Critical Infrastructure & Law & Order',
+        summary: 'Synthetic campaign claiming imminent nationwide communications blackout to provoke panic withdrawals.',
+        posts: [
+          { platform: 'telegram', timestamp: '10m ago', text: 'URGENT: Northern sector telecom blackout scheduled tonight.' }
+        ]
       },
       {
         id: 'CMP-011',
-        title: 'Operation Redacted: Border Sector Coordinated Proxy Swarm',
-        category: 'Cross-Border Cyber Operations',
+        title: 'Border Sector Coordinated Proxy Swarm',
+        category: 'Cyber Intelligence Ops',
         status: 'MONITORING',
+        type: 'ongoing',
         threat_score: 88,
         confidence: 'HIGH',
         primary_language: 'en',
@@ -129,16 +136,36 @@ export default function CampaignView() {
         platforms: ['twitter', 'telegram'],
         post_count: 412,
         cross_platform_sync: 89,
-        target: 'Defense Personnel & Northern Logistics Hubs',
-        summary: 'Coordinated bot network deploying deepfake operational orders targeting border transit networks.'
+        target: 'Northern Logistics & Security Forces',
+        summary: 'Automated cluster broadcasting fabricated operational directives across border district channels.',
+        posts: [
+          { platform: 'twitter', timestamp: '35m ago', text: 'False deployment orders circulating on regional channels.' }
+        ]
+      },
+      {
+        id: 'CMP-003',
+        title: 'Subsea Cable Sabotage Rumor Tree',
+        category: 'State-Sponsored Warfare',
+        status: 'TRIAGED',
+        type: 'ongoing',
+        threat_score: 79,
+        confidence: 'MEDIUM',
+        primary_language: 'en',
+        languages_detected: ['English', 'Tamil', 'Hindi'],
+        platforms: ['twitter', 'telegram'],
+        post_count: 218,
+        cross_platform_sync: 84,
+        target: 'Coastal Data Centers & Banking Backbone',
+        summary: 'Synthetic technical advisories alleging undersea fiber cuts to trigger financial market panic.'
       }
     ],
     [ROLES.CORPORATE_ENTERPRISE]: [
       {
         id: 'CMP-TATA-009',
-        title: 'Coordinated Disinformation Swarm (Tata Motors EV & TCS)',
-        category: 'Market Manipulation & Short Sabotage',
-        status: 'ACTIVE_HIGH',
+        title: 'Tata Motors EV & TCS Disinformation Swarm',
+        category: 'Market & Brand Sabotage',
+        status: 'ACTIVE HIGH',
+        type: 'ongoing',
         threat_score: 91,
         confidence: 'HIGH',
         primary_language: 'en',
@@ -146,46 +173,58 @@ export default function CampaignView() {
         platforms: ['twitter', 'telegram', 'instagram'],
         post_count: 1280,
         cross_platform_sync: 93,
-        target: 'Tata Motors & TCS Share Price & Brand Trust',
-        summary: 'Synchronized release of fabricated EV battery defect videos and counterfeit hiring freeze notices on shadow Telegram channels prior to market opening.'
+        target: 'Tata Motors EV & TCS Share Value',
+        summary: 'Fabricated EV fire video clips coordinated with fake campus hiring freeze circulars.',
+        posts: [
+          { platform: 'instagram', timestamp: '15m ago', text: 'Counterfeit video showing synthetic EV battery smoke.' }
+        ]
       },
       {
         id: 'CMP-TATA-014',
-        title: 'Deepfake Voice Note Attack on Executive Leadership',
-        category: 'Executive Deepfake Phishing & Defamation',
-        status: 'FORENSIC_TRIAGE',
+        title: 'Deepfake Voice Note on Executive Leadership',
+        category: 'Executive Phishing & Defamation',
+        status: 'FORENSIC TRIAGE',
+        type: 'ongoing',
         threat_score: 87,
         confidence: 'HIGH',
         primary_language: 'hi',
         languages_detected: ['Hindi', 'English'],
-        platforms: ['whatsapp', 'telegram', 'instagram'],
+        platforms: ['whatsapp', 'telegram'],
         post_count: 520,
         cross_platform_sync: 88,
-        target: 'Tata Sons Leadership & Air India Operational Solvency',
-        summary: 'AI voice synthesis impersonating aviation management and Group CFO discussing fictional credit default swaps.'
+        target: 'Group CFO & Aviation Solvency',
+        summary: 'AI voice synthesis impersonating Group CFO discussing fictional credit rating downgrades.',
+        posts: [
+          { platform: 'whatsapp', timestamp: '40m ago', text: 'Cloned audio note alleging liquidity constraints.' }
+        ]
       }
     ],
     [ROLES.JOURNALIST_MEDIA]: [
       {
         id: 'FACT-007',
-        title: 'Nationwide Internet & Power Shutdown Hoax Mutation Tree',
-        category: 'Citizen WhatsApp Debunk & Fact-Check',
-        status: 'VIRAL_SPIKE',
+        title: 'Nationwide Internet & Power Shutdown Forward',
+        category: 'Citizen Debunk & Fact-Check',
+        status: 'VIRAL SPIKE',
+        type: 'ongoing',
         threat_score: 89,
         confidence: 'HIGH',
         primary_language: 'hi-Latn',
-        languages_detected: ['Hindi', 'Hinglish', 'Bengali', 'Marathi', 'English'],
-        platforms: ['whatsapp', 'telegram', 'facebook'],
+        languages_detected: ['Hindi', 'Hinglish', 'Bengali', 'English'],
+        platforms: ['whatsapp', 'telegram'],
         post_count: 3490,
         cross_platform_sync: 94,
-        target: 'General Public & Civic Communities',
-        summary: 'Multi-lingual viral forward falsely citing Department of Telecom order to induce emergency ATM withdrawals and fuel hoarding.'
+        target: 'Public Social Communities',
+        summary: 'Viral WhatsApp forward falsely citing government gazette order to incite ATM cash hoarding.',
+        posts: [
+          { platform: 'whatsapp', timestamp: '5m ago', text: 'Fake DoT circular warning of 3-day internet blackout.' }
+        ]
       },
       {
         id: 'FACT-011',
-        title: 'Synthetic Audio Clip Claiming Regional Bank Moratorium',
-        category: 'Financial Disinformation Fact-Check',
+        title: 'Synthetic Audio of RBI Governor Moratorium',
+        category: 'Financial Fact-Check',
         status: 'DEBUNKED',
+        type: 'ongoing',
         threat_score: 82,
         confidence: 'HIGH',
         primary_language: 'hi',
@@ -193,481 +232,909 @@ export default function CampaignView() {
         platforms: ['whatsapp', 'twitter'],
         post_count: 1840,
         cross_platform_sync: 91,
-        target: 'Retail Depositors & Urban Cooperatives',
-        summary: 'Fabricated voice clip of RBI Governor allegedly restricting cash withdrawals in northern states.'
+        target: 'Retail Depositors',
+        summary: 'Cloned voice note claiming regional cooperative bank deposit freeze.',
+        posts: [
+          { platform: 'whatsapp', timestamp: '1h ago', text: 'Cloned voice clip claiming bank branch closure.' }
+        ]
       }
     ]
   };
 
-  const activeCampaignsList = campaigns.length > 0 ? campaigns : (fallbackCampaignsByRole[currentRole] || fallbackCampaignsByRole[ROLES.INVESTIGATION_BUREAU]);
-  const activeCampaign = activeCampaignsList.find(c => c.id === selectedCampaignId) || activeCampaignsList[0];
+  // Fetch campaigns from backend
+  useEffect(() => {
+    async function loadCampaigns() {
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/api/campaigns?role=${currentRole}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && typeof data === 'object' && !Array.isArray(data)) {
+            if (Array.isArray(data.ongoing) && data.ongoing.length > 0) {
+              setOngoingCampaigns(data.ongoing);
+            } else {
+              setOngoingCampaigns(fallbackOngoingByRole[currentRole] || fallbackOngoingByRole[ROLES.INVESTIGATION_BUREAU]);
+            }
+            if (Array.isArray(data.archived) && data.archived.length > 0) {
+              setArchivedCampaigns(data.archived);
+            }
+          } else if (Array.isArray(data)) {
+            const ongoing = data.filter(c => c.type !== 'archived' && !c.status?.includes('ARCHIVED'));
+            const archived = data.filter(c => c.type === 'archived' || c.status?.includes('ARCHIVED'));
+            setOngoingCampaigns(ongoing.length > 0 ? ongoing : (fallbackOngoingByRole[currentRole] || fallbackOngoingByRole[ROLES.INVESTIGATION_BUREAU]));
+            setArchivedCampaigns(archived);
+          }
+        } else {
+          setOngoingCampaigns(fallbackOngoingByRole[currentRole] || fallbackOngoingByRole[ROLES.INVESTIGATION_BUREAU]);
+        }
+      } catch (e) {
+        setOngoingCampaigns(fallbackOngoingByRole[currentRole] || fallbackOngoingByRole[ROLES.INVESTIGATION_BUREAU]);
+      }
+    }
+    loadCampaigns();
+  }, [currentRole]);
 
+  // Handle Escape key to close drawer
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsDrawerOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Determine current active list
+  const currentList = activeTab === 'ongoing' ? ongoingCampaigns : archivedCampaigns;
+
+  // Filtered campaigns
+  const filteredCampaigns = useMemo(() => {
+    return currentList.filter(c => {
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const mId = c.id?.toLowerCase().includes(q);
+        const mTitle = c.title?.toLowerCase().includes(q);
+        const mCat = c.category?.toLowerCase().includes(q);
+        const mTarget = c.target?.toLowerCase().includes(q);
+        if (!mId && !mTitle && !mCat && !mTarget) return false;
+      }
+      if (platformFilter !== 'all') {
+        if (!c.platforms?.includes(platformFilter)) return false;
+      }
+      return true;
+    });
+  }, [currentList, searchQuery, platformFilter]);
+
+  // Open Sliding Drawer
+  const openDrawer = (campaign) => {
+    setSelectedCampaign(campaign);
+    setIsDrawerOpen(true);
+  };
+
+  // Close Sliding Drawer
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
+  // Action execution
   const handleExecuteAction = async (actionType) => {
-    setActionStatus({ loading: true, message: 'Verifying RBAC clearance and executing...' });
+    if (!selectedCampaign) return;
+    setActionStatus({ loading: true, message: 'Executing directive...' });
     try {
-      const res = await executeProtectedAction(actionType, activeCampaign.id);
+      const res = await executeProtectedAction(actionType, selectedCampaign.id);
       setActionStatus({
         success: true,
         loading: false,
-        message: res.message || 'Action executed successfully!',
-        txHash: res.cryptographic_signature
+        message: res?.message || 'Directive executed successfully',
+        txHash: res?.cryptographic_signature
       });
-      setTimeout(() => setActionStatus(null), 5000);
+      setTimeout(() => setActionStatus(null), 4000);
     } catch (err) {
       setActionStatus({
         success: false,
         loading: false,
-        message: err.message || 'Execution failed due to RBAC restrictions'
+        message: err.message || 'Execution failed'
       });
-      setTimeout(() => setActionStatus(null), 5000);
+      setTimeout(() => setActionStatus(null), 4000);
     }
   };
 
+  // Status color helper
+  const getStatusBadgeStyle = (status = '') => {
+    const s = status.toUpperCase();
+    if (s.includes('CRITICAL') || s.includes('ACTIVE')) {
+      return { bg: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' };
+    }
+    if (s.includes('VIRAL') || s.includes('HIGH')) {
+      return { bg: 'rgba(249, 115, 22, 0.12)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)' };
+    }
+    if (s.includes('CONTAINED') || s.includes('ARCHIVED') || s.includes('DEBUNKED')) {
+      return { bg: 'rgba(16, 185, 129, 0.12)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)' };
+    }
+    return { bg: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.3)' };
+  };
+
   return (
-    <div>
-      {/* Workspace Header with Persona Clearance & Campaign Selector */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '11px', color: currentUser.badgeColor, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>
-              {currentUser.badgeText}
-            </span>
-            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>•</span>
-            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-              {currentUser.clearance}
-            </span>
+    <div style={{ maxWidth: '1440px', margin: '0 auto', position: 'relative' }}>
+      
+      {/* 1. Header Toolbar */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+        
+        {/* Title & Pill Tabs */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-heading)', margin: 0, letterSpacing: '-0.3px' }}>
+            Campaign Ledger
+          </h2>
+
+          <div style={{ display: 'flex', backgroundColor: 'var(--inner-box-bg)', padding: '3px', borderRadius: '8px', border: '1px solid var(--border-color)', gap: '3px' }}>
+            <button
+              onClick={() => setActiveTab('ongoing')}
+              style={{
+                padding: '5px 14px',
+                borderRadius: '6px',
+                fontSize: '12px',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: activeTab === 'ongoing' ? 'var(--bg-card)' : 'transparent',
+                color: activeTab === 'ongoing' ? '#ef4444' : 'var(--text-secondary)',
+                boxShadow: activeTab === 'ongoing' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444' }} />
+              <span>Ongoing ({ongoingCampaigns.length})</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('archived')}
+              style={{
+                padding: '5px 14px',
+                borderRadius: '6px',
+                fontSize: '12px',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: activeTab === 'archived' ? 'var(--bg-card)' : 'transparent',
+                color: activeTab === 'archived' ? '#10b981' : 'var(--text-secondary)',
+                boxShadow: activeTab === 'archived' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <Archive size={12} />
+              <span>Archived ({archivedCampaigns.length})</span>
+            </button>
           </div>
+        </div>
+
+        {/* Search, Filter & Role */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
-            <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
-              Campaign Intelligence Graph
-            </h2>
+          <div style={{ position: 'relative', width: '240px' }}>
+            <Search size={13} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+            <input
+              type="text"
+              placeholder="Search by ID, title, target..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '6px 10px 6px 30px',
+                borderRadius: '6px',
+                border: '1px solid var(--border-color)',
+                backgroundColor: 'var(--bg-card)',
+                color: 'var(--text-heading)',
+                fontSize: '12px',
+                outline: 'none'
+              }}
+            />
           </div>
 
-          {/* Campaign Selector Pills */}
-          <div style={{ display: 'flex', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
-            {activeCampaignsList.map(c => (
-              <button
-                key={c.id}
-                onClick={() => setSelectedCampaignId(c.id)}
-                style={{
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  border: selectedCampaignId === c.id ? `1px solid ${currentUser.badgeColor}` : '1px solid var(--border-color)',
-                  backgroundColor: selectedCampaignId === c.id ? 'rgba(59, 130, 246, 0.12)' : 'var(--bg-card)',
-                  color: selectedCampaignId === c.id ? 'var(--text-heading)' : 'var(--text-secondary)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                <span style={{ fontFamily: 'JetBrains Mono', color: currentUser.badgeColor }}>{c.id}</span>
-                <span>{c.title.split(':')[0]}</span>
-              </button>
-            ))}
+          <select
+            value={platformFilter}
+            onChange={(e) => setPlatformFilter(e.target.value)}
+            style={{
+              padding: '6px 10px',
+              borderRadius: '6px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-card)',
+              color: 'var(--text-heading)',
+              fontSize: '11px',
+              fontWeight: 600,
+              outline: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="all">All Channels</option>
+            <option value="twitter">X (Twitter)</option>
+            <option value="telegram">Telegram</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="instagram">Instagram</option>
+            <option value="reddit">Reddit</option>
+          </select>
+
+          <div style={{
+            padding: '4px 10px',
+            fontSize: '11px',
+            fontWeight: 600,
+            borderRadius: '6px',
+            backgroundColor: 'var(--inner-box-bg)',
+            border: '1px solid var(--border-color)',
+            color: currentUser.badgeColor,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: currentUser.badgeColor }} />
+            <span>{currentUser.roleTitle.split('—')[0].trim()}</span>
           </div>
         </div>
 
-        {/* Priority Badge */}
-        <div style={{
-          padding: '8px 16px',
-          fontSize: '11px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          borderRadius: '9999px',
-          backgroundColor: 'rgba(239, 68, 68, 0.12)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
-          color: '#ef4444'
-        }}>
-          <AlertTriangle size={14} />
-          <span>OPERATIONAL CLEARANCE: {currentUser.roleTitle.split('—')[0]}</span>
-        </div>
       </div>
 
-      {/* Action Status Toast Banner */}
+      {/* Action Toast Banner */}
       {actionStatus && (
         <div style={{
-          padding: '12px 18px',
-          borderRadius: '10px',
-          marginBottom: '18px',
-          backgroundColor: actionStatus.success ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+          padding: '10px 14px',
+          borderRadius: '8px',
+          marginBottom: '14px',
+          backgroundColor: actionStatus.success ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
           border: actionStatus.success ? '1px solid #10b981' : '1px solid #ef4444',
           color: actionStatus.success ? '#10b981' : '#ef4444',
+          fontSize: '12px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          fontSize: '13px'
+          gap: '8px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            {actionStatus.success ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}
-            <span>{actionStatus.message}</span>
-          </div>
+          <CheckCircle2 size={15} />
+          <span>{actionStatus.message}</span>
           {actionStatus.txHash && (
-            <span style={{ fontFamily: 'JetBrains Mono', fontSize: '11px', color: 'var(--text-muted)' }}>
-              TX: {actionStatus.txHash.slice(0, 18)}...
+            <span style={{ fontFamily: 'JetBrains Mono', fontSize: '10px', color: 'var(--text-muted)', marginLeft: 'auto' }}>
+              TX: {actionStatus.txHash.slice(0, 16)}...
             </span>
           )}
         </div>
       )}
 
-      {/* Top Metric Gauges (Tailored to Active Campaign) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '20px' }}>
-        
-        {/* Metric 1 */}
-        <div className="bs-card" style={{ padding: '18px' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            THREAT SEVERITY SCORE
-          </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '8px' }}>
-            <span style={{ fontSize: '28px', fontWeight: 800, color: '#ef4444', fontFamily: 'JetBrains Mono' }}>
-              {activeCampaign.threat_score || 94}
-            </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>/100 (CONF: {activeCampaign.confidence || 'HIGH'})</span>
-          </div>
-          <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', marginTop: '12px', overflow: 'hidden' }}>
-            <div style={{ width: `${activeCampaign.threat_score || 94}%`, height: '100%', backgroundColor: '#ef4444', borderRadius: '9999px' }} />
-          </div>
-        </div>
+      {/* 2. Full-Width Ledger Table */}
+      <div className="bs-card" style={{ padding: '0', overflow: 'hidden' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '12px' }}>
+            <thead>
+              <tr style={{ backgroundColor: 'var(--inner-box-bg)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.5px' }}>
+                <th style={{ padding: '12px 16px', fontWeight: 700 }}>ID</th>
+                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Status</th>
+                <th style={{ padding: '12px 14px', fontWeight: 700, width: '42%' }}>Operational Narrative</th>
+                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Category</th>
+                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Threat Score</th>
+                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Signals</th>
+                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Channels</th>
+                <th style={{ padding: '12px 16px', fontWeight: 700, textAlign: 'right' }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCampaigns.length === 0 ? (
+                <tr>
+                  <td colSpan={8} style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    No campaigns found matching your filter criteria
+                  </td>
+                </tr>
+              ) : (
+                filteredCampaigns.map((camp) => {
+                  const score = camp.threat_score || 50;
+                  const badgeStyle = getStatusBadgeStyle(camp.status);
+                  
+                  return (
+                    <tr
+                      key={camp.id}
+                      onClick={() => openDrawer(camp)}
+                      style={{
+                        borderBottom: '1px solid var(--border-color)',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.12s ease'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--inner-box-bg)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      {/* ID */}
+                      <td style={{ padding: '12px 16px', whiteSpace: 'nowrap' }}>
+                        <span style={{ 
+                          fontFamily: 'JetBrains Mono', 
+                          fontWeight: 700, 
+                          color: activeTab === 'ongoing' ? '#ef4444' : '#10b981' 
+                        }}>
+                          {camp.id}
+                        </span>
+                      </td>
 
-        {/* Metric 2 */}
-        <div className="bs-card" style={{ padding: '18px' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            CROSS-PLATFORM SYNC
-          </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '8px' }}>
-            <span style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-heading)', fontFamily: 'JetBrains Mono' }}>
-              {activeCampaign.cross_platform_sync || 93}%
-            </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>temporal burst</span>
-          </div>
-          <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', marginTop: '12px', overflow: 'hidden' }}>
-            <div style={{ width: `${activeCampaign.cross_platform_sync || 93}%`, height: '100%', backgroundColor: '#3b82f6', borderRadius: '9999px' }} />
-          </div>
-        </div>
+                      {/* Status */}
+                      <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>
+                        <span style={{
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          padding: '2px 7px',
+                          borderRadius: '4px',
+                          backgroundColor: badgeStyle.bg,
+                          color: badgeStyle.color,
+                          border: badgeStyle.border
+                        }}>
+                          {camp.status || (activeTab === 'ongoing' ? 'ACTIVE' : 'CONTAINED')}
+                        </span>
+                      </td>
 
-        {/* Metric 3 */}
-        <div className="bs-card" style={{ padding: '18px' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            POSTS & SIGNALS CAPTURED
-          </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '8px' }}>
-            <span style={{ fontSize: '28px', fontWeight: 800, color: '#f59e0b', fontFamily: 'JetBrains Mono' }}>
-              {activeCampaign.post_count?.toLocaleString() || 842}
-            </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>nodes</span>
-          </div>
-          <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', marginTop: '12px', overflow: 'hidden' }}>
-            <div style={{ width: '85%', height: '100%', backgroundColor: '#f59e0b', borderRadius: '9999px' }} />
-          </div>
-        </div>
+                      {/* Title & Target */}
+                      <td style={{ padding: '12px 14px' }}>
+                        <div style={{ fontWeight: 600, color: 'var(--text-heading)', lineHeight: 1.35, marginBottom: '2px' }}>
+                          {camp.title}
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                          Target: {camp.target?.split('&')[0]?.trim() || 'Civil space'}
+                        </div>
+                      </td>
 
-        {/* Metric 4 */}
-        <div className="bs-card" style={{ padding: '18px' }}>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            DETECTED JURISDICTION
-          </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '8px' }}>
-            <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {activeCampaign.languages_detected?.join(', ') || 'Hindi, English'}
-            </span>
-          </div>
-          <div style={{ height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '9999px', marginTop: '12px', overflow: 'hidden' }}>
-            <div style={{ width: '100%', height: '100%', backgroundColor: '#8b5cf6', borderRadius: '9999px' }} />
-          </div>
-        </div>
+                      {/* Category */}
+                      <td style={{ padding: '12px 14px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                        {camp.category}
+                      </td>
 
+                      {/* Threat Score */}
+                      <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ 
+                            fontFamily: 'JetBrains Mono', 
+                            fontWeight: 800, 
+                            color: score >= 85 ? '#ef4444' : score >= 70 ? '#f59e0b' : '#3b82f6',
+                            minWidth: '24px'
+                          }}>
+                            {score}
+                          </span>
+                          <div style={{ width: '50px', height: '4px', backgroundColor: 'var(--border-color)', borderRadius: '2px', overflow: 'hidden' }}>
+                            <div style={{ 
+                              width: `${Math.min(100, score)}%`, 
+                              height: '100%', 
+                              backgroundColor: score >= 85 ? '#ef4444' : score >= 70 ? '#f59e0b' : '#3b82f6' 
+                            }} />
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Signals / Posts */}
+                      <td style={{ padding: '12px 14px', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono', whiteSpace: 'nowrap' }}>
+                        {camp.post_count?.toLocaleString() || 1}
+                      </td>
+
+                      {/* Platforms */}
+                      <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                          {camp.platforms?.slice(0, 3).map(p => (
+                            <span 
+                              key={p} 
+                              style={{ 
+                                fontSize: '9px', 
+                                fontWeight: 700, 
+                                padding: '1px 5px', 
+                                borderRadius: '3px', 
+                                backgroundColor: 'var(--inner-box-bg)', 
+                                border: '1px solid var(--border-color)',
+                                color: 'var(--text-secondary)' 
+                              }}
+                            >
+                              {p.toUpperCase().slice(0, 4)}
+                            </span>
+                          ))}
+                          {(camp.platforms?.length || 0) > 3 && (
+                            <span style={{ fontSize: '9px', color: 'var(--text-muted)' }}>
+                              +{camp.platforms.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+
+                      {/* Inspect Button */}
+                      <td style={{ padding: '12px 16px', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openDrawer(camp);
+                          }}
+                          className="bs-button bs-button-secondary"
+                          style={{ padding: '4px 8px', fontSize: '11px', gap: '4px' }}
+                        >
+                          <span>Inspect</span>
+                          <ChevronRight size={12} />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* Main Investigation Row: Propagation Topology Map & Investigation Vectors */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '20px' }}>
-        
-        {/* Graph Card */}
-        <div className="bs-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <div style={{ fontSize: '14px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Share2 size={16} style={{ color: '#06b6d4' }} />
-              <span>Multi-Hop Propagation Topology ({activeCampaign.id})</span>
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button className="bs-button bs-button-secondary" style={{ padding: '6px 10px', fontSize: '11px', gap: '6px' }}>
-                <Download size={12} /> Export Graph
-              </button>
-            </div>
-          </div>
+      {/* 3. Sliding Window / Drawer from Right */}
+      {isDrawerOpen && (
+        <>
+          {/* Backdrop Overlay */}
+          <div 
+            onClick={closeDrawer}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              backdropFilter: 'blur(3px)',
+              zIndex: 999,
+              transition: 'opacity 0.2s ease'
+            }}
+          />
 
-          {/* Interactive Topology Graph Area */}
-          <div style={{ 
-            flex: 1, 
-            minHeight: '360px', 
-            backgroundColor: 'var(--inner-box-bg)', 
-            border: '1px solid var(--border-color)', 
-            borderRadius: 'var(--radius-lg)',
-            position: 'relative',
-            overflow: 'hidden',
-            padding: '20px',
+          {/* Slide-out Drawer Panel */}
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: '880px',
+            maxWidth: '94vw',
+            height: '100vh',
+            backgroundColor: 'var(--bg-card)',
+            borderLeft: '1px solid var(--border-color)',
+            boxShadow: '-12px 0 40px rgba(0,0,0,0.35)',
+            zIndex: 1000,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between'
+            overflowY: 'auto',
+            animation: 'slideInRight 0.22s cubic-bezier(0.16, 1, 0.3, 1)'
           }}>
-            {/* Top Node Legend */}
-            <div style={{ display: 'flex', gap: '14px', fontSize: '11px', color: 'var(--text-secondary)' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444' }} /> Root Botnet Seed
-              </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#3b82f6' }} /> Relay Node (Telegram / X)
-              </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10b981' }} /> Ingested Tipline Intercept
-              </span>
-            </div>
-
-            {/* Campaign Visual Topology Representation */}
+            
+            {/* Drawer Header */}
             <div style={{
+              padding: '16px 20px',
+              borderBottom: '1px solid var(--border-color)',
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center',
-              justifyContent: 'space-around',
-              padding: '30px 10px'
+              backgroundColor: 'var(--inner-box-bg)',
+              position: 'sticky',
+              top: 0,
+              zIndex: 10
             }}>
-              {/* Seed Node */}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #ef4444, #b91c1c)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  margin: '0 auto 8px',
-                  boxShadow: '0 0 20px rgba(239, 68, 68, 0.4)'
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ 
+                  fontFamily: 'JetBrains Mono', 
+                  fontSize: '12px', 
+                  fontWeight: 800, 
+                  color: selectedCampaign?.type === 'ongoing' || activeTab === 'ongoing' ? '#ef4444' : '#10b981',
+                  backgroundColor: 'var(--bg-card)',
+                  padding: '2px 8px',
+                  borderRadius: '4px',
+                  border: '1px solid var(--border-color)'
                 }}>
-                  <Bot size={26} />
-                </div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>Origin Seed</div>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Cross-Border IP Cluster</div>
-              </div>
+                  {selectedCampaign?.id}
+                </span>
 
-              <div style={{ height: '2px', flex: 1, backgroundColor: '#3b82f6', margin: '0 10px', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '-10px', left: '40%', fontSize: '9px', color: '#60a5fa', backgroundColor: 'var(--bg-card)', padding: '1px 6px', borderRadius: '4px' }}>
-                  +96.2% sync
-                </div>
-              </div>
-
-              {/* Amplification Layer */}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  margin: '0 auto 8px',
-                  boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)'
+                <span style={{
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  padding: '2px 7px',
+                  borderRadius: '4px',
+                  ...getStatusBadgeStyle(selectedCampaign?.status)
                 }}>
-                  <Share2 size={24} />
-                </div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>Synthetic Swarm</div>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>42 Coordinated Bots</div>
+                  {selectedCampaign?.status || (activeTab === 'ongoing' ? 'ACTIVE' : 'CONTAINED')}
+                </span>
               </div>
 
-              <div style={{ height: '2px', flex: 1, backgroundColor: '#10b981', margin: '0 10px', position: 'relative' }}>
-                <div style={{ position: 'absolute', top: '-10px', left: '40%', fontSize: '9px', color: '#34d399', backgroundColor: 'var(--bg-card)', padding: '1px 6px', borderRadius: '4px' }}>
-                  Cross-Lingual
-                </div>
-              </div>
-
-              {/* Target / Victim Domain */}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #10b981, #047857)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  margin: '0 auto 8px',
-                  boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)'
-                }}>
-                  <Layers size={24} />
-                </div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>Target Domain</div>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{activeCampaign.target.split('&')[0]}</div>
-              </div>
-            </div>
-
-            {/* Bottom Target Context Box */}
-            <div style={{
-              padding: '12px',
-              backgroundColor: 'var(--bg-card)',
-              borderRadius: '8px',
-              border: '1px solid var(--border-color)',
-              fontSize: '12px',
-              lineHeight: 1.4,
-              color: 'var(--text-secondary)'
-            }}>
-              <strong style={{ color: 'var(--text-heading)' }}>Operational Narrative: </strong>
-              {activeCampaign.summary}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Role-Authorized Countermeasures */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          
-          <div className="bs-card" style={{ padding: '20px' }}>
-            <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
-              <Sparkles size={16} style={{ color: currentUser.badgeColor }} />
-              <span>Authorized Response Toolkit</span>
-            </div>
-
-            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-              Actions permitted under <strong style={{ color: currentUser.badgeColor }}>{currentUser.roleTitle}</strong>:
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              
-              {/* Action 1: Incident Remediation */}
-              {can('canIssueSec69A') && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <button
-                  onClick={() => handleExecuteAction('sec69a_takedown')}
-                  className="bs-button"
-                  style={{
-                    backgroundColor: '#ef4444',
-                    color: '#ffffff',
-                    border: 'none',
-                    padding: '10px 14px',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderRadius: '8px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <span>Dispatch Threat Remediation Directive</span>
-                  <ArrowRight size={14} />
-                </button>
-              )}
-
-              {/* Action 2: SEBI / Corporate Counter-Brief (Corporate Only) */}
-              {can('canGenerateSEBIDisclosure') && (
-                <button
-                  onClick={() => handleExecuteAction('bse_clarification')}
-                  className="bs-button"
-                  style={{
-                    backgroundColor: '#f59e0b',
-                    color: '#000000',
-                    border: 'none',
-                    padding: '10px 14px',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderRadius: '8px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <span>Dispatch BSE/NSE Clarification Dossier</span>
-                  <ArrowRight size={14} />
-                </button>
-              )}
-
-              {/* Action 3: Fact-Check Debunk Publish (Media Only) */}
-              {can('canPublishFactCheck') && (
-                <button
-                  onClick={() => handleExecuteAction('publish_factcheck')}
-                  className="bs-button"
-                  style={{
-                    backgroundColor: '#3b82f6',
-                    color: '#ffffff',
-                    border: 'none',
-                    padding: '10px 14px',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderRadius: '8px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <span>Broadcast Fact-Check Debunk Card</span>
-                  <ArrowRight size={14} />
-                </button>
-              )}
-
-              {/* Action 4: Notarize Blockchain Evidence (IB & Corporate) */}
-              {can('canSignBlockchainEvidence') && (
-                <button
-                  onClick={() => handleExecuteAction('blockchain_notarize')}
+                  onClick={() => alert(`Exporting dossier for ${selectedCampaign?.id}...`)}
                   className="bs-button bs-button-secondary"
+                  style={{ padding: '5px 10px', fontSize: '11px', gap: '4px' }}
+                >
+                  <Download size={12} />
+                  <span>Dossier</span>
+                </button>
+
+                <button
+                  onClick={closeDrawer}
                   style={{
-                    padding: '9px 14px',
-                    fontSize: '12px',
-                    fontWeight: 600,
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '6px',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-card)',
+                    color: 'var(--text-muted)',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderRadius: '8px',
+                    justifyContent: 'center',
                     cursor: 'pointer'
                   }}
                 >
-                  <span>Notarize on EVM Blockchain</span>
-                  <Lock size={14} />
+                  <X size={14} />
                 </button>
-              )}
+              </div>
             </div>
 
-            {/* Clearance Footer */}
-            <div style={{
-              marginTop: '16px',
-              paddingTop: '12px',
-              borderTop: '1px solid var(--border-color)',
-              fontSize: '11px',
-              color: 'var(--text-muted)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}>
-              <CheckCircle2 size={13} style={{ color: '#10b981' }} />
-              <span>Cryptographic digital signature verified for {currentUser.name}</span>
-            </div>
+            {/* Drawer Body with Balanced 2-Column Layout */}
+            {selectedCampaign && (
+              <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                
+                {/* 1. Top Section: Title, Target & Narrative Header */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '16px', alignItems: 'stretch' }}>
+                  
+                  {/* Left Box: Narrative & Target Profile */}
+                  <div style={{
+                    padding: '16px 18px',
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--inner-box-bg)',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>CATEGORY:</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 700, backgroundColor: 'var(--bg-card)', padding: '2px 8px', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                          {selectedCampaign.category}
+                        </span>
+                      </div>
+
+                      <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-heading)', margin: '0 0 10px 0', lineHeight: 1.35 }}>
+                        {selectedCampaign.title}
+                      </h3>
+
+                      <div style={{ fontSize: '12px', lineHeight: 1.5, color: 'var(--text-secondary)' }}>
+                        <strong style={{ color: 'var(--text-heading)' }}>Operational Narrative: </strong>
+                        {selectedCampaign.summary}
+                      </div>
+                    </div>
+
+                    <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid var(--border-color)', fontSize: '11px', color: 'var(--text-muted)' }}>
+                      <strong>Target Vector: </strong>
+                      <span style={{ color: currentUser.badgeColor, fontWeight: 600 }}>{selectedCampaign.target || 'National Critical Domain'}</span>
+                    </div>
+                  </div>
+
+                  {/* Right Box: Threat Scorecard & Telemetry Metrics */}
+                  <div style={{
+                    padding: '16px 18px',
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--inner-box-bg)',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        THREAT SEVERITY SCORECARD
+                      </div>
+                      
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '8px 0' }}>
+                        <span style={{ fontSize: '36px', fontWeight: 900, color: (selectedCampaign.threat_score || 50) >= 85 ? '#ef4444' : (selectedCampaign.threat_score || 50) >= 70 ? '#f59e0b' : '#3b82f6', fontFamily: 'JetBrains Mono' }}>
+                          {selectedCampaign.threat_score || 94}
+                        </span>
+                        <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>/100</span>
+                        <span style={{ fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '4px', backgroundColor: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', marginLeft: 'auto' }}>
+                          {selectedCampaign.confidence || 'HIGH'} CONFIDENCE
+                        </span>
+                      </div>
+
+                      <div style={{ height: '6px', backgroundColor: 'var(--border-color)', borderRadius: '3px', overflow: 'hidden', marginBottom: '14px' }}>
+                        <div style={{ width: `${selectedCampaign.threat_score || 94}%`, height: '100%', backgroundColor: '#ef4444', borderRadius: '3px' }} />
+                      </div>
+                    </div>
+
+                    {/* 3 Metric Pills */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                      <div style={{ padding: '8px', borderRadius: '6px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', textAlign: 'center' }}>
+                        <div style={{ fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>BURST SYNC</div>
+                        <div style={{ fontSize: '14px', fontWeight: 800, color: '#3b82f6', fontFamily: 'JetBrains Mono', marginTop: '2px' }}>
+                          {selectedCampaign.cross_platform_sync || 93}%
+                        </div>
+                      </div>
+                      <div style={{ padding: '8px', borderRadius: '6px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', textAlign: 'center' }}>
+                        <div style={{ fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>SIGNALS</div>
+                        <div style={{ fontSize: '14px', fontWeight: 800, color: '#f59e0b', fontFamily: 'JetBrains Mono', marginTop: '2px' }}>
+                          {selectedCampaign.post_count || 842}
+                        </div>
+                      </div>
+                      <div style={{ padding: '8px', borderRadius: '6px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', textAlign: 'center' }}>
+                        <div style={{ fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>DIALECTS</div>
+                        <div style={{ fontSize: '14px', fontWeight: 800, color: '#10b981', fontFamily: 'JetBrains Mono', marginTop: '2px' }}>
+                          {selectedCampaign.languages_detected?.length || 4}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* 2. Middle Section: 2-Column Split (Topology Graph Left, Intercepted Signals Right) */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  
+                  {/* Left: Vertical Multi-Hop Topology Network */}
+                  <div style={{
+                    padding: '16px 18px',
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--inner-box-bg)',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Share2 size={14} style={{ color: '#06b6d4' }} />
+                      <span>Multi-Hop Propagation Network</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      
+                      {/* Step 1: Origin Seed */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '6px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
+                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <Bot size={18} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>Origin Seed Cluster</div>
+                          <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Coordinated Darknet IP Range</div>
+                        </div>
+                        <span style={{ fontSize: '10px', color: '#ef4444', fontWeight: 700, fontFamily: 'JetBrains Mono' }}>SEED-01</span>
+                      </div>
+
+                      {/* Link 1 */}
+                      <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '28px', gap: '8px' }}>
+                        <div style={{ width: '2px', height: '18px', backgroundColor: '#3b82f6' }} />
+                        <span style={{ fontSize: '10px', color: '#3b82f6', fontWeight: 600, backgroundColor: 'var(--bg-card)', padding: '1px 6px', borderRadius: '3px', border: '1px solid var(--border-color)' }}>
+                          +{selectedCampaign.cross_platform_sync || 96}% Temporal Synchronization
+                        </span>
+                      </div>
+
+                      {/* Step 2: Relay Swarm */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '6px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
+                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <Share2 size={18} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>Relay Amplification Swarm</div>
+                          <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{selectedCampaign.post_count || 42} Nodes across X & Telegram</div>
+                        </div>
+                        <span style={{ fontSize: '10px', color: '#3b82f6', fontWeight: 700, fontFamily: 'JetBrains Mono' }}>SWARM-42</span>
+                      </div>
+
+                      {/* Link 2 */}
+                      <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '28px', gap: '8px' }}>
+                        <div style={{ width: '2px', height: '18px', backgroundColor: '#10b981' }} />
+                        <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 600, backgroundColor: 'var(--bg-card)', padding: '1px 6px', borderRadius: '3px', border: '1px solid var(--border-color)' }}>
+                          Multi-Dialect Translation Mutation
+                        </span>
+                      </div>
+
+                      {/* Step 3: Target Domain */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '6px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
+                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <Layers size={18} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)' }}>Target Domain</div>
+                          <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{selectedCampaign.target?.split('&')[0]?.trim() || 'Civil Space'}</div>
+                        </div>
+                        <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700, fontFamily: 'JetBrains Mono' }}>TARGET</span>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  {/* Right: Intercepted Signal Payloads Feed */}
+                  <div style={{
+                    padding: '16px 18px',
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--inner-box-bg)',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Eye size={14} style={{ color: '#f59e0b' }} />
+                        <span>Intercepted Signals in Cluster</span>
+                      </div>
+                      <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono' }}>
+                        {selectedCampaign.posts?.length || 3} captured
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto', maxHeight: '250px', paddingRight: '2px' }}>
+                      {(selectedCampaign.posts || [
+                        { platform: 'telegram', timestamp: '10m ago', language: 'hi-Latn', text: 'URGENT: All communication nodes shutting down tonight.' },
+                        { platform: 'twitter', timestamp: '18m ago', language: 'en', text: 'Breaking: National grid frequency dropping sharply across northern sector.' }
+                      ]).map((p, idx) => (
+                        <div key={idx} style={{ padding: '10px 12px', borderRadius: '6px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', fontSize: '11px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                            <span style={{ fontWeight: 700, color: '#3b82f6', textTransform: 'uppercase', fontSize: '9px', backgroundColor: 'rgba(59, 130, 246, 0.1)', padding: '1px 5px', borderRadius: '3px' }}>
+                              {p.platform || 'CHANNEL'}
+                            </span>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '9px', fontFamily: 'JetBrains Mono' }}>
+                              {p.timestamp || 'Recent'} • {p.language || 'en'}
+                            </span>
+                          </div>
+                          <div style={{ color: 'var(--text-heading)', lineHeight: 1.4 }}>{p.text}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* 3. Bottom Section: 2-Column Action Toolkit & Blockchain Evidence Anchor */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '16px' }}>
+                  
+                  {/* Action Execution Card */}
+                  <div style={{
+                    padding: '16px 18px',
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--inner-box-bg)',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div>
+                      <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Sparkles size={14} style={{ color: currentUser.badgeColor }} />
+                        <span>Authorized Operational Countermeasures</span>
+                      </div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '12px' }}>
+                        Clearance: <strong style={{ color: currentUser.badgeColor }}>{currentUser.roleTitle}</strong>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                      {activeTab === 'ongoing' && can('canIssueSec69A') && (
+                        <button
+                          onClick={() => handleExecuteAction('sec69a_takedown')}
+                          className="bs-button"
+                          style={{
+                            backgroundColor: '#ef4444',
+                            color: '#ffffff',
+                            border: 'none',
+                            padding: '10px 16px',
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            flex: '1 1 auto'
+                          }}
+                        >
+                          <span>Dispatch Threat Remediation Directive</span>
+                          <ArrowRight size={14} />
+                        </button>
+                      )}
+
+                      {activeTab === 'ongoing' && can('canGenerateSEBIDisclosure') && (
+                        <button
+                          onClick={() => handleExecuteAction('bse_clarification')}
+                          className="bs-button"
+                          style={{
+                            backgroundColor: '#f59e0b',
+                            color: '#000000',
+                            border: 'none',
+                            padding: '10px 16px',
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            flex: '1 1 auto'
+                          }}
+                        >
+                          <span>Dispatch BSE/NSE Clarification</span>
+                          <ArrowRight size={14} />
+                        </button>
+                      )}
+
+                      {activeTab === 'ongoing' && can('canPublishFactCheck') && (
+                        <button
+                          onClick={() => handleExecuteAction('publish_factcheck')}
+                          className="bs-button"
+                          style={{
+                            backgroundColor: '#3b82f6',
+                            color: '#ffffff',
+                            border: 'none',
+                            padding: '10px 16px',
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            flex: '1 1 auto'
+                          }}
+                        >
+                          <span>Broadcast Fact-Check Debunk</span>
+                          <ArrowRight size={14} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Blockchain Evidence Anchor Card */}
+                  <div style={{
+                    padding: '16px 18px',
+                    borderRadius: '8px',
+                    backgroundColor: 'var(--inner-box-bg)',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}>
+                    <div>
+                      <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Lock size={14} style={{ color: '#10b981' }} />
+                        <span>Cryptographic Evidence Seal</span>
+                      </div>
+                      <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono', marginBottom: '8px' }}>
+                        SHA-256: {selectedCampaign.evidence?.sha256_hash?.slice(0, 24) || 'a399d57364ceaba5fffb5bbd'}...
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleExecuteAction('blockchain_notarize')}
+                      className="bs-button bs-button-secondary"
+                      style={{
+                        padding: '9px 14px',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%'
+                      }}
+                    >
+                      <span>{activeTab === 'ongoing' ? 'Anchor on Blockchain' : 'Verify Merkle Root'}</span>
+                      <CheckCircle2 size={13} style={{ color: '#10b981' }} />
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+            )}
+
           </div>
+        </>
+      )}
 
-          {/* Target Impact Summary Card */}
-          <div className="bs-card" style={{ padding: '20px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '10px' }}>
-              Target Asset Vector
-            </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-              <div style={{ marginBottom: '6px' }}>
-                <strong>Classification:</strong> {activeCampaign.category}
-              </div>
-              <div style={{ marginBottom: '6px' }}>
-                <strong>Primary Vector:</strong> {activeCampaign.target}
-              </div>
-              <div>
-                <strong>Supported Platforms:</strong> {activeCampaign.platforms?.map(p => p.toUpperCase()).join(', ')}
-              </div>
-            </div>
-          </div>
+      {/* Global CSS animation for smooth drawer slide-in */}
+      <style>{`
+        @keyframes slideInRight {
+          from {
+            transform: translateX(100%);
+          }
+          to {
+            transform: translateX(0);
+          }
+        }
+      `}</style>
 
-        </div>
-
-      </div>
     </div>
   );
 }

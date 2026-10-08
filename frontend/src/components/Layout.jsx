@@ -319,25 +319,24 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
             }}
             title={isCollapsed ? "Expand BHARAT-SHIELD Sidebar (Ctrl+B)" : undefined}
           >
-            <div style={{
-              width: '38px',
-              height: '38px',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              filter: 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.45))'
+            <div style={{ 
+              width: '38px', 
+              height: '38px', 
+              borderRadius: '8px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              flexShrink: 0
             }}>
-              <img
-                src={logoImg}
-                alt="Bharat-Shield Sentinel"
-                style={{
-                  width: '100%',
-                  height: '100%',
+              <img 
+                src={logoImg} 
+                alt="Bharat-Shield Sentinel" 
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
                   objectFit: 'contain',
                   borderRadius: '6px'
-                }}
+                }} 
               />
             </div>
 

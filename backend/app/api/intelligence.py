@@ -203,7 +203,7 @@ ROLE_CAMPAIGNS = {
         {
             "id": "CMP-007",
             "title": "Infrastructure Shutdown & Civil Unrest Narrative",
-            "status": "SEC 69A ACTIVE",
+            "status": "ACTIVE CRITICAL",
             "category": "National Security / Disinformation Warfare",
             "threat_score": 94,
             "confidence": "HIGH",
@@ -432,43 +432,133 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
         ]
     }
 
+CLUSTERED_CAMPAIGNS_FILE = BASE_DIR / "data" / "processed" / "clustered_campaigns.json"
+_CACHED_ARCHIVED_CAMPAIGNS = None
+
+def get_archived_ml_campaigns() -> List[Dict[str, Any]]:
+    """Loads and caches campaigns discovered by ML clustering models on historical datasets."""
+    global _CACHED_ARCHIVED_CAMPAIGNS
+    if _CACHED_ARCHIVED_CAMPAIGNS is not None:
+        return _CACHED_ARCHIVED_CAMPAIGNS
+    
+    if CLUSTERED_CAMPAIGNS_FILE.exists():
+        try:
+            with open(CLUSTERED_CAMPAIGNS_FILE, "r", encoding="utf-8") as f:
+                raw_clusters = json.load(f)
+                archived = []
+                for idx, c in enumerate(raw_clusters):
+                    c_id = c.get("id") or f"CMP-ML-{idx+1:03d}"
+                    title = c.get("title") or "Cross-Platform Narrative Cluster"
+                    title = title.strip()
+                    threat_score = round(float(c.get("threat_score") or c.get("risk_assessment", {}).get("base_risk", 50.0)), 1)
+                    
+                    archived.append({
+                        "id": c_id,
+                        "title": title,
+                        "status": "ARCHIVED / CONTAINED",
+                        "type": "archived",
+                        "category": c.get("category") or "ML Disinformation Cluster",
+                        "threat_score": threat_score,
+                        "overall_threat_min": c.get("overall_threat_min", max(0.0, threat_score - 10)),
+                        "overall_threat_max": c.get("overall_threat_max", min(100.0, threat_score + 10)),
+                        "confidence": c.get("confidence") or "HIGH",
+                        "coordination_score": c.get("coordination_score", 75),
+                        "ai_probability": c.get("ai_probability", 65),
+                        "cross_platform_sync": c.get("cross_platform_sync", 80),
+                        "primary_language": c.get("primary_language") or "hi",
+                        "languages_detected": c.get("languages_detected") or ["hi", "en"],
+                        "platforms": c.get("platforms") or ["twitter", "telegram"],
+                        "post_count": c.get("post_count") or len(c.get("posts", [])),
+                        "target": c.get("target") or "Public Information Space & Civic Trust",
+                        "summary": c.get("summary") or f"Historical campaign identified via Multilingual Embeddings + HDBSCAN clustering containing {c.get('post_count', 0)} coordinated signals.",
+                        "authorized_actions": c.get("authorized_actions") or ["inter_agency_dossier", "blockchain_notarize"],
+                        "risk_assessment": c.get("risk_assessment"),
+                        "evidence": c.get("evidence"),
+                        "posts": c.get("posts", [])[:8]
+                    })
+                _CACHED_ARCHIVED_CAMPAIGNS = archived
+                return _CACHED_ARCHIVED_CAMPAIGNS
+        except Exception as e:
+            logger.error(f"Error loading clustered campaigns: {e}")
+            return []
+    return []
+
 @router.get("/campaigns")
 def get_campaigns(
     role: Optional[str] = Query(default="investigation_bureau"),
+    status: Optional[str] = Query(default=None),
     x_user_role: Optional[str] = Header(default=None)
 ):
-    """Return campaign intelligence list filtered by active user persona/role clearance."""
+    """
+    Return comprehensive campaign intelligence filtered by user role and lifecycle state:
+    - Ongoing Campaigns: Active coordinated threats requiring real-time response
+    - Archived Campaigns: Historical operations discovered and clustered by ML models
+    """
     active_role = role or x_user_role or "investigation_bureau"
     
-    # Try PostgreSQL first if available
-    if is_db_available():
-        db_campaigns = get_campaigns_from_db()
-        if db_campaigns:
-            return db_campaigns
-
-    # Fallback to persona partitioned campaigns
-    if active_role in ROLE_CAMPAIGNS:
-        return ROLE_CAMPAIGNS[active_role]
-    return ROLE_CAMPAIGNS["investigation_bureau"]
+    ongoing_raw = ROLE_CAMPAIGNS.get(active_role, ROLE_CAMPAIGNS["investigation_bureau"])
+    ongoing_list = []
+    for c in ongoing_raw:
+        c_copy = dict(c)
+        c_copy["type"] = "ongoing"
+        if not c_copy.get("status"):
+            c_copy["status"] = "ACTIVE CRITICAL"
+        ongoing_list.append(c_copy)
+        
+    archived_list = get_archived_ml_campaigns()
+    
+    if status == "ongoing":
+        return ongoing_list
+    elif status == "archived":
+        return archived_list
+    
+    # Return structured object containing both ongoing and ML-clustered archived campaigns
+    return {
+        "ongoing": ongoing_list,
+        "archived": archived_list,
+        "total_count": len(ongoing_list) + len(archived_list),
+        "ongoing_count": len(ongoing_list),
+        "archived_count": len(archived_list)
+    }
 
 @router.get("/campaigns/{campaign_id}")
 def get_campaign(campaign_id: str, role: Optional[str] = Query(default="investigation_bureau")):
-    """Fetch specific campaign with role authorization checks and DB lookup."""
+    """Fetch specific campaign with role authorization checks and ML cluster lookup."""
+    active_role = role if role in ROLE_CAMPAIGNS else "investigation_bureau"
+    
+    # Check in active role campaigns
+    for c in ROLE_CAMPAIGNS.get(active_role, []):
+        if c["id"].lower() == campaign_id.lower():
+            c_copy = dict(c)
+            c_copy["type"] = "ongoing"
+            return c_copy
+            
+    # Check across all ongoing role campaigns
+    for r_campaigns in ROLE_CAMPAIGNS.values():
+        for c in r_campaigns:
+            if c["id"].lower() == campaign_id.lower():
+                c_copy = dict(c)
+                c_copy["type"] = "ongoing"
+                return c_copy
+                
+    # Check in ML archived campaigns
+    archived_list = get_archived_ml_campaigns()
+    for c in archived_list:
+        if c["id"].lower() == campaign_id.lower():
+            return c
+            
+    # Check in database if available
     if is_db_available():
         db_camp = get_campaign_by_id_from_db(campaign_id)
         if db_camp:
             return db_camp
-
-    active_role = role if role in ROLE_CAMPAIGNS else "investigation_bureau"
-    for c in ROLE_CAMPAIGNS[active_role]:
-        if c["id"].lower() == campaign_id.lower():
-            return c
             
     # Check default AI clusterer fallback
     campaign = CampaignClusterer.get_campaign_by_id(campaign_id)
     if not campaign:
         raise HTTPException(status_code=404, detail="Campaign not found under current clearance partition")
     return campaign
+
 
 @router.post("/analyst/action")
 def execute_analyst_action(
@@ -687,15 +777,18 @@ def ingest_tipline_signal(payload: Dict[str, Any] = Body(...)):
             embedding=embedding
         )
 
-        # Log evidence record to PostgreSQL audit_ledger
+        evm_pkg = analysis.get("evidence_package", {})
         insert_audit_entry(
             package_id=signal_id,
             campaign_id="CMP-007" if threat_level > 80 else None,
             sha256_hash=sha256_hash,
-            event_type="SIGNAL_INGESTION_SEALED",
-            details=f"Ingested from {platform} ({lang}) with Threat Score {threat_level}/100",
+            event_type="SIGNAL_EVM_SEALED",
+            details=f"Ingested from {platform} ({lang}) with Threat Score {threat_level}/100. EVM Tx: {evm_pkg.get('tx_hash', 'N/A')}",
             analyst_id="SENTINEL_AI_INGEST",
-            role="investigation_bureau"
+            role="investigation_bureau",
+            tx_hash=evm_pkg.get("tx_hash"),
+            block_number=evm_pkg.get("block_number"),
+            contract_address=evm_pkg.get("contract_address")
         )
 
         # Query pgvector for cosine similarity matches
@@ -837,4 +930,48 @@ def generate_intelligence_report(
         "status": "DOSSIER_COMPILED_SUCCESSFULLY",
         "dossier": dossier
     }
+
+@router.post("/evidence/anchor")
+def anchor_campaign_evidence(payload: Dict[str, Any] = Body(...)):
+    """
+    On-Chain EVM Smart Contract Evidence Anchoring Endpoint:
+    Packages canonical JSON evidence and anchors SHA-256 digest on Polygon Amoy / EVM smart contract.
+    """
+    campaign_id = payload.get("campaign_id", "CMP-007")
+    posts = payload.get("posts", [{"id": "SIG-001"}, {"id": "SIG-002"}])
+    risk_data = payload.get("risk_data", {"base_risk": 94, "confidence": "HIGH", "signals": [{"name": "panic_inducement"}]})
+
+    evidence_package = EvidenceHasher.generate_evidence_package(
+        campaign_id=campaign_id,
+        posts=posts,
+        risk_data=risk_data
+    )
+
+    if is_db_available():
+        insert_audit_entry(
+            package_id=evidence_package["evidence_id"],
+            campaign_id=campaign_id,
+            sha256_hash=evidence_package["sha256_hash"],
+            tx_hash=evidence_package["tx_hash"],
+            block_number=evidence_package["block_number"],
+            contract_address=evidence_package["contract_address"],
+            event_type="EVM_SMART_CONTRACT_SEALED",
+            details=f"Anchored on {evidence_package['blockchain_network']} in Tx {evidence_package['tx_hash']}",
+            analyst_id="SYSTEM_EVM_NOTARY",
+            role="investigation_bureau"
+        )
+
+    return {
+        "status": "EVIDENCE_SEALED_ON_EVM",
+        "package": evidence_package
+    }
+
+@router.get("/evidence/verify/{sha256_hash}")
+def verify_evm_evidence(sha256_hash: str):
+    """
+    Verify whether a given SHA-256 digest is valid and anchored on the EVM Smart Contract.
+    """
+    from blockchain.evidence.evm_anchor import EVMAnchorService
+    return EVMAnchorService.verify_on_chain(sha256_hex=sha256_hash)
+
 
