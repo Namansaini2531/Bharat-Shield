@@ -97,6 +97,70 @@ ROLE_CAMPAIGNS = {
             "target": "Coastal Data Centers & Banking Backbone",
             "summary": "Synthetic technical advisories alleging undersea fiber cuts to trigger financial market panic.",
             "authorized_actions": ["inter_agency_dossier"]
+        },
+        {
+            "id": "CMP-029",
+            "title": "Operation Petro-Panic: Refinery Blast & Fuel Rationing Disinformation",
+            "status": "ACTIVE_CRITICAL",
+            "category": "Critical Infrastructure / Energy Disinformation",
+            "threat_score": 91,
+            "confidence": "HIGH",
+            "primary_language": "hi-Latn",
+            "languages_detected": ["Hindi", "Hinglish", "Punjabi", "English"],
+            "platforms": ["twitter", "telegram", "whatsapp", "instagram"],
+            "post_count": 1420,
+            "cross_platform_sync": 94,
+            "target": "National Oil Refineries & Public Fuel Supplies",
+            "summary": "Coordinated disinformation network recirculating out-of-context industrial fire footage with fabricated claims of nationwide refinery sabotage and emergency fuel rationing.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-001",
+            "title": "Operation Currency Shock: Fabricated ₹500 Demonetization Circular",
+            "status": "VIRAL_SPIKE",
+            "category": "Financial Disinformation & Economic Warfare",
+            "threat_score": 93,
+            "confidence": "HIGH",
+            "primary_language": "te",
+            "languages_detected": ["Telugu", "Hindi", "Tamil", "English"],
+            "platforms": ["whatsapp", "twitter", "telegram"],
+            "post_count": 2840,
+            "cross_platform_sync": 96,
+            "target": "Banking Backbone & Retail Cash Depositors",
+            "summary": "Synthetic circular bearing counterfeit Ministry of Finance watermarks alleging immediate invalidation of ₹500 currency notes to incite ATM rushes and digital banking bottlenecks.",
+            "authorized_actions": ["publish_factcheck", "sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-015",
+            "title": "Operation Sovereign Cloud: Defense Recruitment Phishing & Portal Spoofing",
+            "status": "MONITORING",
+            "category": "State-Sponsored Cyber Espionage",
+            "threat_score": 85,
+            "confidence": "HIGH",
+            "primary_language": "en",
+            "languages_detected": ["English", "Hindi", "Urdu"],
+            "platforms": ["twitter", "telegram", "instagram"],
+            "post_count": 640,
+            "cross_platform_sync": 88,
+            "target": "Defense Aspirants & Armed Forces Logistics Portals",
+            "summary": "Coordinated social engineering swarm distributing counterfeit MoD recruitment circulars embedded with malicious credential-harvesting APK links.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-030",
+            "title": "Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm",
+            "status": "TRIAGED",
+            "category": "Public Transit & Infrastructure Disinformation",
+            "threat_score": 78,
+            "confidence": "MEDIUM",
+            "primary_language": "hi",
+            "languages_detected": ["Hindi", "Hinglish", "English"],
+            "platforms": ["twitter", "instagram", "telegram"],
+            "post_count": 510,
+            "cross_platform_sync": 83,
+            "target": "Urban Mass Transit & Commuter Safety",
+            "summary": "Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.",
+            "authorized_actions": ["inter_agency_dossier", "sec69a_takedown"]
         }
     ],
     "corporate_enterprise": [
@@ -279,6 +343,70 @@ ROLE_CAMPAIGNS = {
             "target": "General Public & Civic Communities",
             "summary": "Multi-lingual viral forward falsely citing Department of Telecom order to induce emergency ATM withdrawals and fuel hoarding.",
             "authorized_actions": ["publish_factcheck", "generate_debunk_bulletin"]
+        },
+        {
+            "id": "CMP-029",
+            "title": "Operation Petro-Panic: Refinery Blast & Fuel Rationing Disinformation",
+            "status": "ACTIVE CRITICAL",
+            "category": "Critical Infrastructure / Energy Disinformation",
+            "threat_score": 91,
+            "confidence": "HIGH",
+            "primary_language": "hi-Latn",
+            "languages_detected": ["Hindi", "Hinglish", "Punjabi", "English"],
+            "platforms": ["twitter", "telegram", "whatsapp", "instagram"],
+            "post_count": 1420,
+            "cross_platform_sync": 94,
+            "target": "National Oil Refineries & Public Fuel Supplies",
+            "summary": "Coordinated disinformation network recirculating out-of-context industrial fire footage with fabricated claims of nationwide refinery sabotage and emergency fuel rationing.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-001",
+            "title": "Operation Currency Shock: Fabricated ₹500 Demonetization Circular",
+            "status": "VIRAL SPIKE",
+            "category": "Financial Disinformation & Economic Warfare",
+            "threat_score": 93,
+            "confidence": "HIGH",
+            "primary_language": "te",
+            "languages_detected": ["Telugu", "Hindi", "Tamil", "English"],
+            "platforms": ["whatsapp", "twitter", "telegram"],
+            "post_count": 2840,
+            "cross_platform_sync": 96,
+            "target": "Banking Backbone & Retail Cash Depositors",
+            "summary": "Synthetic circular bearing counterfeit Ministry of Finance watermarks alleging immediate invalidation of ₹500 currency notes to incite ATM rushes and digital banking bottlenecks.",
+            "authorized_actions": ["publish_factcheck", "sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-015",
+            "title": "Operation Sovereign Cloud: Defense Recruitment Phishing & Portal Spoofing",
+            "status": "MONITORING",
+            "category": "State-Sponsored Cyber Espionage",
+            "threat_score": 85,
+            "confidence": "HIGH",
+            "primary_language": "en",
+            "languages_detected": ["English", "Hindi", "Urdu"],
+            "platforms": ["twitter", "telegram", "instagram"],
+            "post_count": 640,
+            "cross_platform_sync": 88,
+            "target": "Defense Aspirants & Armed Forces Logistics Portals",
+            "summary": "Coordinated social engineering swarm distributing counterfeit MoD recruitment circulars embedded with malicious credential-harvesting APK links.",
+            "authorized_actions": ["sec69a_takedown", "inter_agency_dossier", "blockchain_notarize"]
+        },
+        {
+            "id": "CMP-030",
+            "title": "Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm",
+            "status": "TRIAGED",
+            "category": "Public Transit & Infrastructure Disinformation",
+            "threat_score": 78,
+            "confidence": "MEDIUM",
+            "primary_language": "hi",
+            "languages_detected": ["Hindi", "Hinglish", "English"],
+            "platforms": ["twitter", "instagram", "telegram"],
+            "post_count": 510,
+            "cross_platform_sync": 83,
+            "target": "Urban Mass Transit & Commuter Safety",
+            "summary": "Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.",
+            "authorized_actions": ["inter_agency_dossier", "sec69a_takedown"]
         }
     ]
 }
@@ -435,8 +563,13 @@ def get_overview(role: Optional[str] = Query(default="investigation_bureau")):
 CLUSTERED_CAMPAIGNS_FILE = BASE_DIR / "data" / "processed" / "clustered_campaigns.json"
 _CACHED_ARCHIVED_CAMPAIGNS = None
 
+ACTIVE_ONGOING_IDS = {
+    "CMP-007", "CMP-011", "CMP-003", "CMP-029", "CMP-001", "CMP-015", "CMP-030",
+    "CMP-TATA-009", "CMP-TATA-014", "CMP-TATA-022", "FACT-007", "FACT-011", "FACT-033"
+}
+
 def get_archived_ml_campaigns() -> List[Dict[str, Any]]:
-    """Loads and caches campaigns discovered by ML clustering models on historical datasets."""
+    """Loads and caches campaigns discovered by ML clustering models on historical datasets, excluding active ongoing campaigns."""
     global _CACHED_ARCHIVED_CAMPAIGNS
     if _CACHED_ARCHIVED_CAMPAIGNS is not None:
         return _CACHED_ARCHIVED_CAMPAIGNS
@@ -448,6 +581,8 @@ def get_archived_ml_campaigns() -> List[Dict[str, Any]]:
                 archived = []
                 for idx, c in enumerate(raw_clusters):
                     c_id = c.get("id") or f"CMP-ML-{idx+1:03d}"
+                    if c_id in ACTIVE_ONGOING_IDS:
+                        continue
                     title = c.get("title") or "Cross-Platform Narrative Cluster"
                     title = title.strip()
                     threat_score = round(float(c.get("threat_score") or c.get("risk_assessment", {}).get("base_risk", 50.0)), 1)

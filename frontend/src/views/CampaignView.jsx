@@ -84,6 +84,88 @@ export default function CampaignView() {
         ]
       },
       {
+        id: 'CMP-029',
+        title: 'Operation Petro-Panic: Refinery Blast & Fuel Rationing Disinformation',
+        category: 'Critical Infrastructure / Energy Disinformation',
+        status: 'ACTIVE CRITICAL',
+        type: 'ongoing',
+        threat_score: 91,
+        confidence: 'HIGH',
+        primary_language: 'hi-Latn',
+        languages_detected: ['Hindi', 'Hinglish', 'Punjabi', 'English'],
+        platforms: ['twitter', 'telegram', 'whatsapp', 'instagram'],
+        post_count: 1420,
+        cross_platform_sync: 94,
+        target: 'National Oil Refineries & Public Fuel Supplies',
+        summary: 'Coordinated disinformation network recirculating out-of-context industrial fire footage with fabricated claims of nationwide refinery sabotage and emergency fuel rationing.',
+        posts: [
+          { platform: 'telegram', timestamp: '12m ago', text: 'ALERT: Northern oil pipeline compromised. Fuel supplies halted for 72 hours across 5 states.' },
+          { platform: 'twitter', timestamp: '20m ago', text: 'Refinery blast video going viral. Citizens rushing to gas stations in Delhi-NCR.' },
+          { platform: 'whatsapp', timestamp: '35m ago', text: 'आपातकालीन संदेश: सभी पेट्रोल पंप आज रात 10 बजे से बंद हो रहे हैं। तुरंत पेट्रोल भरवा लें।' }
+        ]
+      },
+      {
+        id: 'CMP-001',
+        title: 'Operation Currency Shock: Fabricated ₹500 Demonetization Circular',
+        category: 'Financial Disinformation & Economic Warfare',
+        status: 'VIRAL SPIKE',
+        type: 'ongoing',
+        threat_score: 93,
+        confidence: 'HIGH',
+        primary_language: 'te',
+        languages_detected: ['Telugu', 'Hindi', 'Tamil', 'English'],
+        platforms: ['whatsapp', 'twitter', 'telegram'],
+        post_count: 2840,
+        cross_platform_sync: 96,
+        target: 'Banking Backbone & Retail Cash Depositors',
+        summary: 'Synthetic circular bearing counterfeit Ministry of Finance watermarks alleging immediate invalidation of ₹500 currency notes to incite ATM rushes and digital banking bottlenecks.',
+        posts: [
+          { platform: 'whatsapp', timestamp: '8m ago', text: '₹500 నోట్ల రద్దు అంటూ సర్క్యులేట్ అవుతున్న నోటీస్ - వెంటనే ఏటీఎం నుంచి డబ్బులు తీసుకోండి!' },
+          { platform: 'twitter', timestamp: '25m ago', text: 'Breaking: MoF reportedly phasing out ₹500 notes starting midnight. High queue at bank ATMs.' },
+          { platform: 'telegram', timestamp: '40m ago', text: 'Download official gazette PDF copy: Demonetization order 2026.' }
+        ]
+      },
+      {
+        id: 'CMP-015',
+        title: 'Operation Sovereign Cloud: Defense Recruitment Phishing & Portal Spoofing',
+        category: 'State-Sponsored Cyber Espionage',
+        status: 'MONITORING',
+        type: 'ongoing',
+        threat_score: 85,
+        confidence: 'HIGH',
+        primary_language: 'en',
+        languages_detected: ['English', 'Hindi', 'Urdu'],
+        platforms: ['twitter', 'telegram', 'instagram'],
+        post_count: 640,
+        cross_platform_sync: 88,
+        target: 'Defense Aspirants & Armed Forces Logistics Portals',
+        summary: 'Coordinated social engineering swarm distributing counterfeit MoD recruitment circulars embedded with malicious credential-harvesting APK links.',
+        posts: [
+          { platform: 'telegram', timestamp: '15m ago', text: 'Direct MoD recruitment portal open for 10,000 logistics staff. Apply via instant APK download.' },
+          { platform: 'instagram', timestamp: '30m ago', text: 'Viral Reel: Ministry of Defence urgent recruitment notification link in bio.' }
+        ]
+      },
+      {
+        id: 'CMP-030',
+        title: 'Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm',
+        category: 'Public Transit & Infrastructure Disinformation',
+        status: 'TRIAGED',
+        type: 'ongoing',
+        threat_score: 78,
+        confidence: 'MEDIUM',
+        primary_language: 'hi',
+        languages_detected: ['Hindi', 'Hinglish', 'English'],
+        platforms: ['twitter', 'instagram', 'telegram'],
+        post_count: 510,
+        cross_platform_sync: 83,
+        target: 'Urban Mass Transit & Commuter Safety',
+        summary: 'Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.',
+        posts: [
+          { platform: 'twitter', timestamp: '14m ago', text: 'Major technical breakdown reported across Metro Yellow Line. Commuters advised to avoid stations.' },
+          { platform: 'instagram', timestamp: '45m ago', text: 'Emergency shutdown visuals circulating from Central Secretariat station.' }
+        ]
+      },
+      {
         id: 'CMP-TATA-009',
         title: 'Tata Motors EV & TCS Disinformation Swarm',
         category: 'Market Manipulation',
@@ -107,7 +189,7 @@ export default function CampaignView() {
       {
         id: 'CMP-007',
         title: 'Telecom & Critical Grid Sabotage Narrative',
-        category: 'National Security / Disinformation',
+        category: 'National Security / Disinformation Warfare',
         status: 'ACTIVE CRITICAL',
         type: 'ongoing',
         threat_score: 94,
@@ -157,6 +239,88 @@ export default function CampaignView() {
         cross_platform_sync: 84,
         target: 'Coastal Data Centers & Banking Backbone',
         summary: 'Synthetic technical advisories alleging undersea fiber cuts to trigger financial market panic.'
+      },
+      {
+        id: 'CMP-029',
+        title: 'Operation Petro-Panic: Refinery Blast & Fuel Rationing Disinformation',
+        category: 'Critical Infrastructure / Energy Disinformation',
+        status: 'ACTIVE CRITICAL',
+        type: 'ongoing',
+        threat_score: 91,
+        confidence: 'HIGH',
+        primary_language: 'hi-Latn',
+        languages_detected: ['Hindi', 'Hinglish', 'Punjabi', 'English'],
+        platforms: ['twitter', 'telegram', 'whatsapp', 'instagram'],
+        post_count: 1420,
+        cross_platform_sync: 94,
+        target: 'National Oil Refineries & Public Fuel Supplies',
+        summary: 'Coordinated disinformation network recirculating out-of-context industrial fire footage with fabricated claims of nationwide refinery sabotage and emergency fuel rationing.',
+        posts: [
+          { platform: 'telegram', timestamp: '12m ago', text: 'ALERT: Northern oil pipeline compromised. Fuel supplies halted for 72 hours across 5 states.' },
+          { platform: 'twitter', timestamp: '20m ago', text: 'Refinery blast video going viral. Citizens rushing to gas stations in Delhi-NCR.' },
+          { platform: 'whatsapp', timestamp: '35m ago', text: 'आपातकालीन संदेश: सभी पेट्रोल पंप आज रात 10 बजे से बंद हो रहे हैं। तुरंत पेट्रोल भरवा लें।' }
+        ]
+      },
+      {
+        id: 'CMP-001',
+        title: 'Operation Currency Shock: Fabricated ₹500 Demonetization Circular',
+        category: 'Financial Disinformation & Economic Warfare',
+        status: 'VIRAL SPIKE',
+        type: 'ongoing',
+        threat_score: 93,
+        confidence: 'HIGH',
+        primary_language: 'te',
+        languages_detected: ['Telugu', 'Hindi', 'Tamil', 'English'],
+        platforms: ['whatsapp', 'twitter', 'telegram'],
+        post_count: 2840,
+        cross_platform_sync: 96,
+        target: 'Banking Backbone & Retail Cash Depositors',
+        summary: 'Synthetic circular bearing counterfeit Ministry of Finance watermarks alleging immediate invalidation of ₹500 currency notes to incite ATM rushes and digital banking bottlenecks.',
+        posts: [
+          { platform: 'whatsapp', timestamp: '8m ago', text: '₹500 నోట్ల రద్దు అంటూ సర్క్యులేట్ అవుతున్న నోటీస్ - వెంటనే ఏటీఎం నుంచి డబ్బులు తీసుకోండి!' },
+          { platform: 'twitter', timestamp: '25m ago', text: 'Breaking: MoF reportedly phasing out ₹500 notes starting midnight. High queue at bank ATMs.' },
+          { platform: 'telegram', timestamp: '40m ago', text: 'Download official gazette PDF copy: Demonetization order 2026.' }
+        ]
+      },
+      {
+        id: 'CMP-015',
+        title: 'Operation Sovereign Cloud: Defense Recruitment Phishing & Portal Spoofing',
+        category: 'State-Sponsored Cyber Espionage',
+        status: 'MONITORING',
+        type: 'ongoing',
+        threat_score: 85,
+        confidence: 'HIGH',
+        primary_language: 'en',
+        languages_detected: ['English', 'Hindi', 'Urdu'],
+        platforms: ['twitter', 'telegram', 'instagram'],
+        post_count: 640,
+        cross_platform_sync: 88,
+        target: 'Defense Aspirants & Armed Forces Logistics Portals',
+        summary: 'Coordinated social engineering swarm distributing counterfeit MoD recruitment circulars embedded with malicious credential-harvesting APK links.',
+        posts: [
+          { platform: 'telegram', timestamp: '15m ago', text: 'Direct MoD recruitment portal open for 10,000 logistics staff. Apply via instant APK download.' },
+          { platform: 'instagram', timestamp: '30m ago', text: 'Viral Reel: Ministry of Defence urgent recruitment notification link in bio.' }
+        ]
+      },
+      {
+        id: 'CMP-030',
+        title: 'Operation Transit-Blackout: NCR Metro Sabotage & Grid Rumor Swarm',
+        category: 'Public Transit & Infrastructure Disinformation',
+        status: 'TRIAGED',
+        type: 'ongoing',
+        threat_score: 78,
+        confidence: 'MEDIUM',
+        primary_language: 'hi',
+        languages_detected: ['Hindi', 'Hinglish', 'English'],
+        platforms: ['twitter', 'instagram', 'telegram'],
+        post_count: 510,
+        cross_platform_sync: 83,
+        target: 'Urban Mass Transit & Commuter Safety',
+        summary: 'Automated bot accounts pushing manipulated broadcast clips claiming structural failures and emergency service shutdowns across urban metro networks.',
+        posts: [
+          { platform: 'twitter', timestamp: '14m ago', text: 'Major technical breakdown reported across Metro Yellow Line. Commuters advised to avoid stations.' },
+          { platform: 'instagram', timestamp: '45m ago', text: 'Emergency shutdown visuals circulating from Central Secretariat station.' }
+        ]
       }
     ],
     [ROLES.CORPORATE_ENTERPRISE]: [
