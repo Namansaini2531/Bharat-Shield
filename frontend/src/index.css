@@ -59,43 +59,81 @@
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-/* Light Theme Variables Override — Warm Paper Soft Canvas (#f6f5f4) */
+/* Light Theme Variables Override - Crisp Black & High Contrast Light Palette */
 [data-theme="light"] {
-  --bg-dark: #f6f5f4;
+  --bg-dark: #f8fafc;
   --bg-sidebar: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #f0eeec;
-  --border-color: #e4e2df;
-  --border-light: #d2cfca;
+  --bg-card-hover: #f1f5f9;
+  --border-color: #e2e8f0;
+  --border-light: #cbd5e1;
+  
+  --text-primary: #000000;
+  --text-secondary: #0f172a;
+  --text-muted: #334155;
+  --text-heading: #000000;
 
-  --text-primary: #222020;
-  --text-secondary: #555250;
-  --text-muted: #888480;
-  --text-heading: #111113;
+  --accent-blue: #1d4ed8;
+  --accent-cyan: #0e7490;
+  --accent-pink: #be185d;
+  --accent-amber: #b45309;
+  --accent-red: #b91c1c;
+  --accent-green: #047857;
+  --accent-purple: #6d28d9;
 
-  --ink: #222020;
-  --ink-secondary: #555250;
-  --ink-muted: #888480;
-  --ink-faint: #b5b0ab;
-
-  --notion-blue: #0075de;
-  --notion-blue-hover: #0060b8;
-
-  --accent-blue: #0075de;
-  --accent-cyan: #0891b2;
-  --accent-pink: #db2777;
-  --accent-amber: #d97706;
-  --accent-red: #dc2626;
-  --accent-green: #059669;
-  --accent-purple: #7c3aed;
-
-  --inner-box-bg: #edece9;
+  --inner-box-bg: #f1f5f9;
   --input-bg: #ffffff;
-  --bg-muted: #edece9;
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
-  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --bg-muted: #f1f5f9;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
 }
+
+/* Explicit Light Mode Black Text Overrides */
+[data-theme="light"] body,
+[data-theme="light"] .bs-main-layout,
+[data-theme="light"] .bs-card,
+[data-theme="light"] .bs-sidebar {
+  color: #000000;
+}
+
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+  color: #000000 !important;
+}
+
+[data-theme="light"] p,
+[data-theme="light"] label,
+[data-theme="light"] th,
+[data-theme="light"] td,
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  color: #000000;
+}
+
+[data-theme="light"] .sidebar-menu-btn {
+  color: #000000;
+}
+
+[data-theme="light"] .sidebar-menu-btn:hover {
+  color: #000000;
+  background-color: #f1f5f9;
+}
+
+[data-theme="light"] .sidebar-brand-text {
+  color: #000000;
+}
+
+[data-theme="light"] .kbd-badge {
+  background-color: #e2e8f0;
+  color: #000000;
+  border-color: #cbd5e1;
+}
+
 
 * {
   box-sizing: border-box;

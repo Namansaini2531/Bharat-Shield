@@ -479,14 +479,9 @@ export default function LoginView() {
             width: '54px',
             height: '54px',
             borderRadius: '12px',
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            padding: '4px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 25px rgba(59, 130, 246, 0.45)',
-            backdropFilter: 'blur(8px)',
             flexShrink: 0
           }}>
             <img src={logoImg} alt="Bharat-Shield Emblem" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
@@ -495,7 +490,7 @@ export default function LoginView() {
             <div style={{ fontSize: '26px', fontWeight: 900, color: '#ffffff', letterSpacing: '1.5px', textTransform: 'uppercase', lineHeight: 1.1 }}>
               BHARAT-SHIELD
             </div>
-            <div style={{ fontSize: '11px', color: '#38bdf8', letterSpacing: '2px', fontWeight: 700, marginTop: '4px', fontFamily: 'JetBrains Mono, monospace' }}>
+            <div style={{ fontSize: '11px', color: '#94a3b8', letterSpacing: '2px', fontWeight: 700, marginTop: '4px', fontFamily: 'JetBrains Mono, monospace' }}>
               COGNITIVE DEFENSE SENTINEL
             </div>
           </div>

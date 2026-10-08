@@ -6,10 +6,10 @@ export default function ThreatAssessmentsView() {
     <div>
       {/* Header */}
       <div style={{ marginBottom: '20px' }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.5px' }}>
+        <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
           Explainable Threat Assessment
         </h2>
-        <p style={{ fontSize: '13px', color: '#8c9ba5', marginTop: '2px' }}>
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
           Automated algorithmic breakdown of identified cognitive manipulation vectors.
         </p>
       </div>
@@ -33,13 +33,13 @@ export default function ThreatAssessmentsView() {
               </span>
             </div>
 
-            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', marginTop: '10px', letterSpacing: '-0.5px' }}>
+            <h3 style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-heading)', marginTop: '10px', letterSpacing: '-0.5px' }}>
               Coordinated Disinformation Vector: Operation Echo
             </h3>
           </div>
 
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '11px', color: '#8c9ba5', fontWeight: 600, textTransform: 'uppercase' }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
               THREAT LEVEL
             </div>
             <div style={{ fontSize: '32px', fontWeight: 800, color: '#ef4444', fontFamily: 'JetBrains Mono' }}>

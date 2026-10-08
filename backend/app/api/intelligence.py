@@ -766,15 +766,18 @@ def ingest_tipline_signal(payload: Dict[str, Any] = Body(...)):
             embedding=embedding
         )
 
-        # Log evidence record to PostgreSQL audit_ledger
+        evm_pkg = analysis.get("evidence_package", {})
         insert_audit_entry(
             package_id=signal_id,
             campaign_id="CMP-007" if threat_level > 80 else None,
             sha256_hash=sha256_hash,
-            event_type="SIGNAL_INGESTION_SEALED",
-            details=f"Ingested from {platform} ({lang}) with Threat Score {threat_level}/100",
+            event_type="SIGNAL_EVM_SEALED",
+            details=f"Ingested from {platform} ({lang}) with Threat Score {threat_level}/100. EVM Tx: {evm_pkg.get('tx_hash', 'N/A')}",
             analyst_id="SENTINEL_AI_INGEST",
-            role="investigation_bureau"
+            role="investigation_bureau",
+            tx_hash=evm_pkg.get("tx_hash"),
+            block_number=evm_pkg.get("block_number"),
+            contract_address=evm_pkg.get("contract_address")
         )
 
         # Query pgvector for cosine similarity matches
@@ -916,4 +919,48 @@ def generate_intelligence_report(
         "status": "DOSSIER_COMPILED_SUCCESSFULLY",
         "dossier": dossier
     }
+
+@router.post("/evidence/anchor")
+def anchor_campaign_evidence(payload: Dict[str, Any] = Body(...)):
+    """
+    On-Chain EVM Smart Contract Evidence Anchoring Endpoint:
+    Packages canonical JSON evidence and anchors SHA-256 digest on Polygon Amoy / EVM smart contract.
+    """
+    campaign_id = payload.get("campaign_id", "CMP-007")
+    posts = payload.get("posts", [{"id": "SIG-001"}, {"id": "SIG-002"}])
+    risk_data = payload.get("risk_data", {"base_risk": 94, "confidence": "HIGH", "signals": [{"name": "panic_inducement"}]})
+
+    evidence_package = EvidenceHasher.generate_evidence_package(
+        campaign_id=campaign_id,
+        posts=posts,
+        risk_data=risk_data
+    )
+
+    if is_db_available():
+        insert_audit_entry(
+            package_id=evidence_package["evidence_id"],
+            campaign_id=campaign_id,
+            sha256_hash=evidence_package["sha256_hash"],
+            tx_hash=evidence_package["tx_hash"],
+            block_number=evidence_package["block_number"],
+            contract_address=evidence_package["contract_address"],
+            event_type="EVM_SMART_CONTRACT_SEALED",
+            details=f"Anchored on {evidence_package['blockchain_network']} in Tx {evidence_package['tx_hash']}",
+            analyst_id="SYSTEM_EVM_NOTARY",
+            role="investigation_bureau"
+        )
+
+    return {
+        "status": "EVIDENCE_SEALED_ON_EVM",
+        "package": evidence_package
+    }
+
+@router.get("/evidence/verify/{sha256_hash}")
+def verify_evm_evidence(sha256_hash: str):
+    """
+    Verify whether a given SHA-256 digest is valid and anchored on the EVM Smart Contract.
+    """
+    from blockchain.evidence.evm_anchor import EVMAnchorService
+    return EVMAnchorService.verify_on_chain(sha256_hex=sha256_hash)
+
 
