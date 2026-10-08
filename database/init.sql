@@ -50,9 +50,13 @@ CREATE TABLE IF NOT EXISTS audit_ledger (
     package_id VARCHAR(64) NOT NULL,
     campaign_id VARCHAR(64),
     sha256_hash VARCHAR(128) NOT NULL,
+    tx_hash VARCHAR(128),
+    block_number BIGINT,
+    contract_address VARCHAR(64),
     event_type VARCHAR(64) NOT NULL,
     details TEXT,
     analyst_id VARCHAR(64),
     role VARCHAR(64),
     recorded_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+

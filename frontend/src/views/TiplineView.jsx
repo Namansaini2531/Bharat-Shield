@@ -153,7 +153,7 @@ export default function TiplineView({ onNavigate }) {
             alignItems: 'center', 
             gap: '8px', 
             fontSize: '11px', 
-            color: isConnected ? '#10b981' : '#ef4444', 
+            color: isConnected ? 'var(--accent-green)' : 'var(--accent-red)', 
             backgroundColor: isConnected ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
             padding: '6px 14px', 
             border: `1px solid ${isConnected ? 'rgba(16, 185, 129, 0.25)' : 'rgba(239, 68, 68, 0.25)'}`, 
@@ -205,7 +205,7 @@ export default function TiplineView({ onNavigate }) {
         
         {/* Left Column: Signal Ingestion Table */}
         <div className="bs-card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: '1fr 1fr 0.8fr 1.2fr', fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: '1fr 1fr 0.8fr 1.2fr', fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
             <span>Signal ID</span>
             <span>Source</span>
             <span>Time</span>
@@ -225,21 +225,21 @@ export default function TiplineView({ onNavigate }) {
                     gridTemplateColumns: '1fr 1fr 0.8fr 1.2fr',
                     padding: '14px 16px',
                     borderBottom: '1px solid var(--border-color)',
-                    backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+                    backgroundColor: isSelected ? 'var(--bg-card-hover)' : 'transparent',
                     cursor: 'pointer',
                     transition: 'background-color 0.15s ease',
                     alignItems: 'center'
                   }}
                 >
-                  <span style={{ fontFamily: 'JetBrains Mono', fontSize: '12px', fontWeight: 600, color: isSelected ? '#60a5fa' : 'var(--text-heading)' }}>
+                  <span style={{ fontFamily: 'JetBrains Mono', fontSize: '12px', fontWeight: 600, color: isSelected ? 'var(--accent-blue)' : 'var(--text-heading)' }}>
                     {sig.id}
                   </span>
 
                   <span style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Icon size={14} style={{ color: sig.source.toLowerCase().includes('whatsapp') ? '#10b981' : '#3b82f6' }} /> {sig.source}
+                    <Icon size={14} style={{ color: sig.source.toLowerCase().includes('whatsapp') ? 'var(--accent-green)' : 'var(--accent-blue)' }} /> {sig.source}
                   </span>
 
-                  <span style={{ fontFamily: 'JetBrains Mono', fontSize: '11px', color: 'var(--text-muted)' }}>
+                  <span style={{ fontFamily: 'JetBrains Mono', fontSize: '11px', color: 'var(--text-secondary)' }}>
                     {sig.time}
                   </span>
 
@@ -247,11 +247,11 @@ export default function TiplineView({ onNavigate }) {
                     <span style={{ 
                       fontSize: '10px', 
                       fontWeight: 600,
-                      color: sig.statusType === 'danger' ? '#ef4444' : sig.statusType === 'warning' ? '#f59e0b' : 'var(--text-muted)' 
+                      color: sig.statusType === 'danger' ? 'var(--accent-red)' : sig.statusType === 'warning' ? 'var(--accent-amber)' : 'var(--text-secondary)' 
                     }}>
                       {sig.status}
                     </span>
-                    <span style={{ marginLeft: '6px', fontSize: '9px', padding: '1px 4px', backgroundColor: 'var(--inner-box-bg)', border: '1px solid var(--border-color)', borderRadius: '2px', color: 'var(--text-secondary)' }}>
+                    <span style={{ marginLeft: '6px', fontSize: '9px', padding: '1px 4px', backgroundColor: 'var(--bg-muted)', border: '1px solid var(--border-color)', borderRadius: '2px', color: 'var(--text-secondary)' }}>
                       {sig.tag}
                     </span>
                   </div>
@@ -269,12 +269,12 @@ export default function TiplineView({ onNavigate }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '16px', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <MessageSquare size={18} style={{ color: '#3b82f6' }} />
+                  <MessageSquare size={18} style={{ color: 'var(--accent-blue)' }} />
                   <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-heading)', margin: 0, fontFamily: 'JetBrains Mono' }}>
                     Signal: {activeSig.id}
                   </h3>
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', gap: '12px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px', display: 'flex', gap: '12px' }}>
                   <span>Ingested: {activeSig.time} UTC</span>
                   <span>• Cryptographically Sealed</span>
                 </div>
@@ -293,7 +293,7 @@ export default function TiplineView({ onNavigate }) {
             {/* Raw Intercept Payload Card */}
             <div style={{ marginBottom: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
                   Raw Intercept Payload
                 </span>
                 <span className="bs-badge bs-badge-amber" style={{ fontSize: '9px' }}>
@@ -308,7 +308,7 @@ export default function TiplineView({ onNavigate }) {
                 padding: '14px',
                 fontFamily: 'JetBrains Mono',
                 fontSize: '13px',
-                color: '#f59e0b',
+                color: 'var(--accent-amber)',
                 position: 'relative',
                 lineHeight: 1.4
               }}>
@@ -325,7 +325,7 @@ export default function TiplineView({ onNavigate }) {
                     color: 'var(--text-secondary)', 
                     cursor: 'pointer' 
                   }}>
-                  {copied ? <Check size={14} style={{ color: '#10b981' }} /> : <Copy size={14} />}
+                  {copied ? <Check size={14} style={{ color: 'var(--accent-green)' }} /> : <Copy size={14} />}
                 </button>
               </div>
             </div>
@@ -338,7 +338,7 @@ export default function TiplineView({ onNavigate }) {
                 <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Detected Language</div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
                   <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)' }}>{activeSig.detectedLang}</span>
-                  <span style={{ fontSize: '11px', color: '#60a5fa', fontFamily: 'JetBrains Mono' }}>{activeSig.confidence} Conf.</span>
+                  <span style={{ fontSize: '11px', color: 'var(--accent-blue)', fontFamily: 'JetBrains Mono' }}>{activeSig.confidence} Conf.</span>
                 </div>
               </div>
 
@@ -346,8 +346,8 @@ export default function TiplineView({ onNavigate }) {
               <div style={{ backgroundColor: 'var(--inner-box-bg)', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '14px' }}>
                 <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>Intent Classification</div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
-                  <span style={{ fontSize: '16px', fontWeight: 700, color: '#ef4444' }}>{activeSig.intent}</span>
-                  <span style={{ fontSize: '10px', color: '#ef4444', textTransform: 'uppercase', fontWeight: 600 }}>{activeSig.severity}</span>
+                  <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--accent-red)' }}>{activeSig.intent}</span>
+                  <span style={{ fontSize: '10px', color: 'var(--accent-red)', textTransform: 'uppercase', fontWeight: 600 }}>{activeSig.severity}</span>
                 </div>
               </div>
 
@@ -379,13 +379,13 @@ export default function TiplineView({ onNavigate }) {
                 width: '56px', 
                 height: '56px', 
                 borderRadius: '50%', 
-                border: '3px solid #ef4444', 
+                border: '3px solid var(--accent-red)', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
                 fontWeight: 800,
                 fontSize: '14px',
-                color: '#ef4444',
+                color: 'var(--accent-red)',
                 fontFamily: 'JetBrains Mono',
                 boxShadow: '0 0 12px rgba(239, 68, 68, 0.2)'
               }}>
@@ -394,12 +394,12 @@ export default function TiplineView({ onNavigate }) {
 
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#ef4444', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--accent-red)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <AlertTriangle size={12} /> Campaign Correlation Matrix
                   </div>
                   <button 
                     onClick={() => onNavigate && onNavigate('campaigns')}
-                    style={{ background: 'transparent', border: 'none', color: '#60a5fa', fontSize: '11px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    style={{ background: 'transparent', border: 'none', color: 'var(--accent-blue)', fontSize: '11px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     View Campaign Matrix <ExternalLink size={10} />
                   </button>
                 </div>

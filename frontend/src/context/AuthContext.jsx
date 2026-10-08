@@ -184,13 +184,7 @@ export const USER_PROFILES = {
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    try {
-      return localStorage.getItem('bharat_shield_authenticated') === 'true';
-    } catch {
-      return false;
-    }
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [currentRole, setCurrentRole] = useState(() => {
     try {
