@@ -106,34 +106,43 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
 
   // Role-specific dynamic navigation definitions
   const getNavGroups = () => {
-    // Dedicated System Admin / Platform Supervision Navigation
     if (currentRole === ROLES.SYSTEM_ADMIN) {
       return [
         {
-          label: 'SUPERVISION & MONITORING',
+          label: 'ROOT COMMAND',
           items: [
-            { id: 'overview', label: 'Command Overview', icon: LayoutDashboard, badge: 'SUPERVISOR', badgeColor: 'green' },
-            { id: 'admin-subscribers', label: 'Subscriber Telemetry', icon: Activity, badge: '3 ACTIVE', badgeColor: 'blue' }
+            { id: 'overview', label: 'Command Center', icon: LayoutDashboard },
+            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '17 ACT', badgeColor: 'red' }
           ]
         },
         {
-          label: 'MODERATION & GOVERNANCE',
+          label: 'THREAT MATRIX',
           items: [
-            { id: 'admin-moderation', label: 'Tenant Access & Quotas', icon: Sliders },
-            { id: 'admin-guardrails', label: 'Statutory Guardrails', icon: ShieldCheck, badge: '5 RULES', badgeColor: 'green' }
+            { id: 'narratives', label: 'Cluster Graph', icon: GitFork },
+            { id: 'threats', label: 'Deepfake Radar', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
+            { id: 'report-generator', label: 'Dossier Engine', icon: FileText }
           ]
         },
         {
-          label: 'INFRASTRUCTURE & HEALTH',
+          label: 'EVIDENCE & AUDIT',
           items: [
-            { id: 'admin-maintenance', label: 'System Health & Maintenance', icon: Server, badge: 'HEALTHY', badgeColor: 'green' },
-            { id: 'admin-audit', label: 'Diagnostic Event Logs', icon: Terminal }
+            { id: 'evidence', label: 'Court Evidence', icon: FileCheck, badge: 'SHA-256', badgeColor: 'green' },
+            { id: 'audit', label: 'Audit Ledger', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
           ]
         },
         {
-          label: 'SETTINGS & SYSTEM',
+          label: 'SYSTEM OPS',
           items: [
-            { id: 'settings', label: 'System Preferences', icon: Settings }
+            { id: 'admin', label: 'Root Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' },
+            { id: 'settings', label: 'System Policies', icon: Settings }
+          ]
+        },
+        {
+          label: 'FEEDS & TELEMETRY',
+          items: [
+            { id: 'live', label: 'Live Stream', icon: Radio, badge: 'LIVE', badgeColor: 'green' },
+            { id: 'tipline', label: 'Dialect Desk', icon: PhoneCall, badge: '22 LNG', badgeColor: 'blue' }
           ]
         }
       ];
@@ -164,15 +173,15 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           ]
         },
         {
-          label: 'FEEDS & TELEMETRY',
+          label: 'SYSTEM OPS',
           items: [
-            { id: 'live', label: 'Market Intel', icon: Radio, badge: 'ACTIVE', badgeColor: 'orange' }
+            { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
           ]
         },
         {
-          label: 'PREFERENCES',
+          label: 'FEEDS & TELEMETRY',
           items: [
-            { id: 'settings', label: 'Settings', icon: Settings }
+            { id: 'live', label: 'Market Intel', icon: Radio, badge: 'ACTIVE', badgeColor: 'orange' }
           ]
         }
       ];
@@ -197,16 +206,16 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           ]
         },
         {
+          label: 'SYSTEM OPS',
+          items: [
+            { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+          ]
+        },
+        {
           label: 'FEEDS & TELEMETRY',
           items: [
             { id: 'live', label: 'Viral Feed', icon: Radio, badge: 'VIRAL', badgeColor: 'blue' },
             { id: 'tipline', label: 'Tipline Feed', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
-          ]
-        },
-        {
-          label: 'PREFERENCES',
-          items: [
-            { id: 'settings', label: 'Settings', icon: Settings }
           ]
         }
       ];
@@ -238,16 +247,16 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         ]
       },
       {
+        label: 'SYSTEM OPS',
+        items: [
+          { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+        ]
+      },
+      {
         label: 'FEEDS & TELEMETRY',
         items: [
           { id: 'live', label: 'Classified Stream', icon: Radio, badge: 'INTEL', badgeColor: 'red' },
           { id: 'tipline', label: 'Intercept Tipline', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
-        ]
-      },
-      {
-        label: 'PREFERENCES',
-        items: [
-          { id: 'settings', label: 'Settings', icon: Settings }
         ]
       }
     ];
