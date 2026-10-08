@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Sun, Moon, Monitor, Check } from 'lucide-react';
 
 const themes = [
-  { id: 'dark',   label: 'Dark Mode',    icon: Moon,    color: '#818cf8' },
-  { id: 'light',  label: 'Light Mode',   icon: Sun,     color: '#f59e0b' },
+  { id: 'dark', label: 'Dark Mode', icon: Moon, color: '#818cf8' },
+  { id: 'light', label: 'Light Mode', icon: Sun, color: '#f59e0b' },
   { id: 'system', label: 'System Theme', icon: Monitor, color: '#10b981' },
 ];
 
@@ -35,24 +35,26 @@ export default function ThemeToggle({ theme, setTheme }) {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="button-icon-circular"
-        title="Toggle Theme"
         style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '9999px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          height: '32px',
+          padding: '0 8px',
           fontSize: '12px',
+          fontWeight: 500,
+          fontFamily: 'inherit',
           color: 'var(--text-primary)',
           background: 'var(--bg-card)',
           border: '1px solid var(--border-color)',
+          borderRadius: 'var(--radius-sm)',
           boxShadow: 'var(--shadow-sm)',
           cursor: 'pointer',
           outline: 'none',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'all 0.15s ease'
+          transition: 'border-color 0.15s, box-shadow 0.15s',
+          whiteSpace: 'nowrap',
         }}
+        onFocus={(e) => (e.currentTarget.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.25)')}
+        onBlur={(e) => (e.currentTarget.style.boxShadow = 'var(--shadow-sm)')}
         onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--border-light)')}
         onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-color)')}
       >

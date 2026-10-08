@@ -4,16 +4,16 @@ import ThemeToggle from './ThemeToggle';
 import RoleSwitchModal from './RoleSwitchModal';
 import { useAuth, ROLES } from '../context/AuthContext';
 import logoImg from '../assets/logo.png';
-import { 
+import {
 
-  LayoutDashboard, 
-  ShieldAlert, 
-  Radio, 
-  PhoneCall, 
-  GitFork, 
-  FileCheck, 
-  AlertTriangle, 
-  BookOpen, 
+  LayoutDashboard,
+  ShieldAlert,
+  Radio,
+  PhoneCall,
+  GitFork,
+  FileCheck,
+  AlertTriangle,
+  BookOpen,
   Settings,
   Bell,
   Search,
@@ -42,7 +42,7 @@ import {
 
 export default function Layout({ currentNav, setCurrentNav, theme, setTheme, children }) {
   const { currentRole, currentUser, isAuthModalOpen, setIsAuthModalOpen, logout } = useAuth();
-  
+
   const [isCollapsed, setIsCollapsed] = useState(() => {
     try {
       return localStorage.getItem('bharat_shield_sidebar_collapsed') === 'true';
@@ -63,7 +63,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       const next = !prev;
       try {
         localStorage.setItem('bharat_shield_sidebar_collapsed', String(next));
-      } catch {}
+      } catch { }
       return next;
     });
   };
@@ -215,35 +215,35 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
   const RoleIcon = getRoleIcon();
 
   const notificationsList = [
-    { 
-      id: 1, 
-      title: currentRole === ROLES.CORPORATE_ENTERPRISE 
-        ? 'Deepfake Audio of CFO Detected' 
-        : currentRole === ROLES.JOURNALIST_MEDIA 
-          ? 'Viral WhatsApp Forward Spike (+420%)' 
-          : 'Campaign #007 Cross-Border Surge', 
-      desc: currentRole === ROLES.CORPORATE_ENTERPRISE 
+    {
+      id: 1,
+      title: currentRole === ROLES.CORPORATE_ENTERPRISE
+        ? 'Deepfake Audio of CFO Detected'
+        : currentRole === ROLES.JOURNALIST_MEDIA
+          ? 'Viral WhatsApp Forward Spike (+420%)'
+          : 'Campaign #007 Cross-Border Surge',
+      desc: currentRole === ROLES.CORPORATE_ENTERPRISE
         ? 'Synthetic Hindi/English voice note attacking port solvency circulating on Telegram.'
-        : currentRole === ROLES.JOURNALIST_MEDIA 
+        : currentRole === ROLES.JOURNALIST_MEDIA
           ? 'Unverified blackout rumor translated into 4 regional languages.'
-          : 'High coordination burst across 36 proxy nodes detected in J&K sector.', 
-      time: '2m ago', 
-      unread: true 
+          : 'High coordination burst across 36 proxy nodes detected in J&K sector.',
+      time: '2m ago',
+      unread: true
     },
-    { 
-      id: 2, 
-      title: 'Evidence Package Timestamped', 
-      desc: 'SHA-256 Digest registered with court-admissible audit metadata.', 
-      time: '14m ago', 
-      unread: true 
+    {
+      id: 2,
+      title: 'Evidence Package Timestamped',
+      desc: 'SHA-256 Digest registered with court-admissible audit metadata.',
+      time: '14m ago',
+      unread: true
     }
   ];
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      minHeight: '100vh', 
-      backgroundColor: 'var(--bg-dark)', 
+    <div style={{
+      display: 'flex',
+      minHeight: '100vh',
+      backgroundColor: 'var(--bg-dark)',
       color: 'var(--text-primary)',
       transition: 'background-color 0.25s ease, color 0.25s ease'
     }}>
@@ -256,41 +256,41 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       <aside className={`bs-sidebar ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
         {/* Sidebar Header / Brand */}
         <div className="sidebar-brand-container">
-          <div 
+          <div
             onClick={isCollapsed ? toggleSidebar : undefined}
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '12px', 
-              minWidth: 0, 
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              minWidth: 0,
               width: '100%',
               cursor: isCollapsed ? 'pointer' : 'default',
               justifyContent: isCollapsed ? 'center' : 'flex-start'
             }}
             title={isCollapsed ? "Expand BHARAT-SHIELD Sidebar (Ctrl+B)" : undefined}
           >
-            <div style={{ 
-              width: '38px', 
-              height: '38px', 
-              borderRadius: '8px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               flexShrink: 0,
               filter: 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.45))'
             }}>
-              <img 
-                src={logoImg} 
-                alt="Bharat-Shield Sentinel" 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
+              <img
+                src={logoImg}
+                alt="Bharat-Shield Sentinel"
+                style={{
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'contain',
                   borderRadius: '6px'
-                }} 
+                }}
               />
             </div>
-            
+
             <div className="sidebar-brand-text">
               <span>BHARAT-SHIELD</span>
             </div>
@@ -301,9 +301,9 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
 
 
         {/* Sidebar Navigation Content */}
-        <div style={{ 
-          flex: 1, 
-          padding: '8px 8px', 
+        <div style={{
+          flex: 1,
+          padding: '8px 8px',
           overflowY: 'auto',
           overflowX: 'hidden',
           display: 'flex',
@@ -315,11 +315,11 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
               <div className="sidebar-group-label">
                 {group.label}
               </div>
-              
+
               {isCollapsed && groupIdx > 0 && (
                 <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '6px 4px' }} />
               )}
-              
+
               {group.items.map((item) => {
                 const Icon = item.icon;
                 const isActive = currentNav === item.id;
@@ -349,8 +349,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         </div>
 
         {/* Sidebar Footer: Settings */}
-        <div style={{ 
-          padding: '10px 8px', 
+        <div style={{
+          padding: '10px 8px',
           borderTop: '1px solid var(--border-color)',
           backgroundColor: 'var(--bg-sidebar)',
           display: 'flex',
@@ -377,12 +377,12 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       {/* ========================================================================= */}
       <div className={`bs-main-layout ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
         {/* Top Sticky Header */}
-        <header style={{ 
-          height: '60px', 
-          borderBottom: '1px solid var(--border-color)', 
-          backgroundColor: 'var(--bg-sidebar)', 
-          display: 'flex', 
-          alignItems: 'center', 
+        <header style={{
+          height: '60px',
+          borderBottom: '1px solid var(--border-color)',
+          backgroundColor: 'var(--bg-sidebar)',
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 20px',
           position: 'sticky',
@@ -434,16 +434,16 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
 
           {/* Right Header Section: Role Persona Switcher Pill, Search, Notifications, Theme, Account */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-            
-            {/* RBAC Persona Switcher Pill Button */}
+
+            {/* RBAC Persona Switcher Quick Button */}
             <button
               onClick={() => setIsAuthModalOpen(true)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '6px 14px',
-                borderRadius: '9999px',
+                padding: '5px 12px',
+                borderRadius: '8px',
                 backgroundColor: `${currentUser?.badgeColor || '#10b981'}15`,
                 border: `1px solid ${currentUser?.badgeColor || '#10b981'}40`,
                 color: currentUser?.badgeColor || '#10b981',
@@ -463,8 +463,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
               <span>{currentUser?.roleTitle ? currentUser.roleTitle.split('—')[0] : 'Super Administrator'}</span>
               <span style={{
                 fontSize: '9px',
-                padding: '1px 7px',
-                borderRadius: '9999px',
+                padding: '1px 6px',
+                borderRadius: '4px',
                 backgroundColor: currentUser?.badgeColor || '#10b981',
                 color: '#ffffff',
                 fontWeight: 700
@@ -473,56 +473,54 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
               </span>
             </button>
 
-            {/* Global Quick Search Pill */}
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '8px', 
-              backgroundColor: 'var(--bg-card)', 
-              border: '1px solid var(--border-color)', 
-              borderRadius: '9999px',
-              padding: '6px 14px',
-              width: '190px',
+            {/* Global Quick Search Input */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              backgroundColor: 'var(--bg-card)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '8px',
+              padding: '5px 10px',
+              width: '180px',
               transition: 'border-color 0.15s ease'
             }}>
               <Search size={14} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-              <input 
+              <input
                 ref={searchInputRef}
-                type="text" 
-                placeholder="Search..." 
+                type="text"
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ 
-                  background: 'transparent', 
-                  border: 'none', 
-                  color: 'var(--text-primary)', 
-                  fontSize: '12px', 
-                  outline: 'none', 
-                  width: '100%',
-                  fontFamily: 'DM Sans, sans-serif'
-                }} 
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--text-primary)',
+                  fontSize: '12px',
+                  outline: 'none',
+                  width: '100%'
+                }}
               />
-              <div className="kbd-badge" style={{ borderRadius: '4px' }}>
+              <div className="kbd-badge">
                 <span>Ctrl</span>
                 <span>K</span>
               </div>
             </div>
 
-            {/* Notification Bell Button */}
+            {/* Notification Bell */}
             <div ref={notificationRef} style={{ position: 'relative' }}>
-              <button 
+              <button
                 onClick={() => setShowNotifications(prev => !prev)}
-                style={{ 
-                  background: 'transparent', 
-                  border: '1px solid var(--border-color)', 
-                  borderRadius: '9999px',
-                  color: 'var(--text-secondary)', 
-                  cursor: 'pointer', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  color: 'var(--text-secondary)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  width: '36px',
-                  height: '36px',
+                  padding: '6px 8px',
                   position: 'relative',
                   transition: 'all 0.15s ease'
                 }}
@@ -587,7 +585,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
 
                   <div style={{ maxHeight: '280px', overflowY: 'auto' }}>
                     {notificationsList.map(item => (
-                      <div 
+                      <div
                         key={item.id}
                         style={{
                           padding: '10px 14px',
@@ -654,8 +652,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  padding: '3px 12px 3px 4px',
-                  borderRadius: '9999px',
+                  padding: '3px 8px 3px 4px',
+                  borderRadius: '8px',
                   border: '1px solid',
                   borderColor: showUserMenu ? 'var(--border-light)' : 'var(--border-color)',
                   background: showUserMenu ? 'var(--bg-card-hover)' : 'var(--bg-card)',
@@ -678,9 +676,9 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                 }}
               >
                 <div style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '9999px',
+                  width: '26px',
+                  height: '26px',
+                  borderRadius: '6px',
                   background: `linear-gradient(135deg, ${currentUser.badgeColor}, #06b6d4)`,
                   color: '#ffffff',
                   display: 'flex',
@@ -724,13 +722,13 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                     <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '1px' }}>
                       {currentUser?.email || 'a.sharma@sentinel.gov.in'}
                     </div>
-                    <div style={{ 
-                      fontSize: '10px', 
-                      color: currentUser?.badgeColor || '#10b981', 
-                      fontWeight: 600, 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: '5px', 
+                    <div style={{
+                      fontSize: '10px',
+                      color: currentUser?.badgeColor || '#10b981',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
                       marginTop: '6px',
                       padding: '3px 8px',
                       backgroundColor: `${currentUser?.badgeColor || '#10b981'}15`,
@@ -743,7 +741,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                   </div>
 
                   <div style={{ padding: '6px 0' }}>
-                    <button 
+                    <button
                       onClick={() => { setIsAuthModalOpen(true); setShowUserMenu(false); }}
                       style={{
                         width: '100%',
@@ -768,11 +766,11 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                         e.currentTarget.style.backgroundColor = 'transparent';
                       }}
                     >
-                      <Fingerprint size={14} /> 
+                      <Fingerprint size={14} />
                       <span>Switch RBAC Persona...</span>
                     </button>
 
-                    <button 
+                    <button
                       onClick={() => { setCurrentNav('overview'); setShowUserMenu(false); }}
                       style={{
                         width: '100%',
@@ -798,11 +796,11 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                         e.currentTarget.style.color = 'var(--text-secondary)';
                       }}
                     >
-                      <Shield size={14} style={{ color: 'var(--accent-cyan)' }} /> 
+                      <Shield size={14} style={{ color: 'var(--accent-cyan)' }} />
                       <span>Command Dashboard</span>
                     </button>
 
-                    <button 
+                    <button
                       onClick={() => { logout(); setShowUserMenu(false); }}
                       style={{
                         width: '100%',
@@ -827,7 +825,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                         e.currentTarget.style.backgroundColor = 'transparent';
                       }}
                     >
-                      <LogOut size={14} /> 
+                      <LogOut size={14} />
                       <span>Lock & Sign Out</span>
                     </button>
                   </div>
@@ -838,10 +836,10 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         </header>
 
         {/* Content Body Container */}
-        <main style={{ 
-          flex: 1, 
-          padding: '24px 28px', 
-          backgroundColor: 'var(--bg-dark)', 
+        <main style={{
+          flex: 1,
+          padding: '24px 28px',
+          backgroundColor: 'var(--bg-dark)',
           transition: 'background-color 0.2s ease',
           minWidth: 0
         }}>
