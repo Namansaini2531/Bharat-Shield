@@ -104,35 +104,82 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
 
   // Role-specific dynamic navigation definitions
   const getNavGroups = () => {
+    if (currentRole === ROLES.SYSTEM_ADMIN) {
+      return [
+        {
+          label: 'ROOT COMMAND',
+          items: [
+            { id: 'overview', label: 'Command Center', icon: LayoutDashboard },
+            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '17 ACT', badgeColor: 'red' }
+          ]
+        },
+        {
+          label: 'THREAT MATRIX',
+          items: [
+            { id: 'narratives', label: 'Cluster Graph', icon: GitFork },
+            { id: 'threats', label: 'Deepfake Radar', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
+            { id: 'report-generator', label: 'Dossier Engine', icon: FileText }
+          ]
+        },
+        {
+          label: 'EVIDENCE & AUDIT',
+          items: [
+            { id: 'evidence', label: 'Court Evidence', icon: FileCheck, badge: 'SHA-256', badgeColor: 'green' },
+            { id: 'audit', label: 'Audit Ledger', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
+          ]
+        },
+        {
+          label: 'SYSTEM OPS',
+          items: [
+            { id: 'admin', label: 'Root Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' },
+            { id: 'settings', label: 'System Policies', icon: Settings }
+          ]
+        },
+        {
+          label: 'FEEDS & TELEMETRY',
+          items: [
+            { id: 'live', label: 'Live Stream', icon: Radio, badge: 'LIVE', badgeColor: 'green' },
+            { id: 'tipline', label: 'Dialect Desk', icon: PhoneCall, badge: '22 LNG', badgeColor: 'blue' }
+          ]
+        }
+      ];
+    }
+
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return [
         {
-          label: 'CORPORATE BRAND RADAR',
+          label: 'BRAND RADAR',
           items: [
-            { id: 'overview', label: 'Executive Dashboard', icon: LayoutDashboard },
-            { id: 'live', label: 'Market Sentiment & Intel', icon: Radio, badge: 'ACTIVE', badgeColor: 'orange' }
+            { id: 'overview', label: 'Executive Desk', icon: LayoutDashboard },
+            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '4 ACT', badgeColor: 'red' }
           ]
         },
         {
-          label: 'BRAND THREATS & SMEAR OPS',
+          label: 'BRAND THREATS',
           items: [
-            { id: 'campaigns', label: 'Adani Smear Campaign', icon: ShieldAlert, badge: '91%', badgeColor: 'red' },
             { id: 'narratives', label: 'Sabotage Clusters', icon: GitFork },
-            { id: 'threats', label: 'Market Volatility Risk', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'BSE/NSE Clarification', icon: Sparkles },
-            { id: 'report-generator', label: 'Executive Briefing', icon: FileText }
+            { id: 'threats', label: 'Volatility Risk', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'NSE/BSE Dispatch', icon: Sparkles },
+            { id: 'report-generator', label: 'Executive Dossier', icon: FileText }
           ]
         },
         {
-          label: 'LEGAL & EVIDENCE',
+          label: 'LEGAL EVIDENCE',
           items: [
-            { id: 'evidence', label: 'Defamation Evidence', icon: FileCheck }
+            { id: 'evidence', label: 'Legal Evidence', icon: FileCheck }
           ]
         },
         {
-          label: 'SYSTEM & GOVERNANCE',
+          label: 'SYSTEM OPS',
           items: [
-            { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+            { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+          ]
+        },
+        {
+          label: 'FEEDS & TELEMETRY',
+          items: [
+            { id: 'live', label: 'Market Intel', icon: Radio, badge: 'ACTIVE', badgeColor: 'orange' }
           ]
         }
       ];
@@ -141,27 +188,32 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
     if (currentRole === ROLES.JOURNALIST_MEDIA) {
       return [
         {
-          label: 'MEDIA VIRALITY RADAR',
+          label: 'MEDIA RADAR',
           items: [
-            { id: 'overview', label: 'Newsroom Overview', icon: LayoutDashboard },
-            { id: 'live', label: 'Viral Feed & Trends', icon: Radio, badge: 'VIRAL', badgeColor: 'blue' },
-            { id: 'tipline', label: 'WhatsApp Tipline', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
+            { id: 'overview', label: 'Newsroom Desk', icon: LayoutDashboard },
+            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: 'HOT', badgeColor: 'red' }
           ]
         },
         {
-          label: 'FACT-CHECK INVESTIGATION',
+          label: 'INVESTIGATION',
           items: [
-            { id: 'campaigns', label: 'Rumor Origin Tracker', icon: ShieldAlert, badge: 'HOT', badgeColor: 'red' },
-            { id: 'narratives', label: 'Narrative Mutation Tree', icon: GitFork },
-            { id: 'threats', label: 'Viral Reach Metrics', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Fact-Check Debunk Card', icon: Sparkles },
-            { id: 'report-generator', label: 'Press Debunk Bulletin', icon: FileText }
+            { id: 'narratives', label: 'Mutation Tree', icon: GitFork },
+            { id: 'threats', label: 'Reach Metrics', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'Debunk Center', icon: Sparkles },
+            { id: 'report-generator', label: 'Press Bulletin', icon: FileText }
           ]
         },
         {
-          label: 'SYSTEM & GOVERNANCE',
+          label: 'SYSTEM OPS',
           items: [
-            { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+            { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+          ]
+        },
+        {
+          label: 'FEEDS & TELEMETRY',
+          items: [
+            { id: 'live', label: 'Viral Feed', icon: Radio, badge: 'VIRAL', badgeColor: 'blue' },
+            { id: 'tipline', label: 'Tipline Feed', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
           ]
         }
       ];
@@ -170,34 +222,39 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
     // Default: Investigation Bureau of India (Full Classified Access)
     return [
       {
-        label: 'NATIONAL THREAT RECON',
+        label: 'THREAT RECON',
         items: [
-          { id: 'overview', label: 'Command Dashboard', icon: LayoutDashboard },
-          { id: 'live', label: 'Classified Intel Stream', icon: Radio, badge: 'INTEL', badgeColor: 'red' },
+          { id: 'overview', label: 'Command Desk', icon: LayoutDashboard },
+          { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '94%', badgeColor: 'red' }
+        ]
+      },
+      {
+        label: 'CAMPAIGNS',
+        items: [
+          { id: 'narratives', label: 'Border Clusters', icon: GitFork },
+          { id: 'threats', label: 'Security Risk', icon: AlertTriangle },
+          { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
+          { id: 'report-generator', label: 'Agency Dossiers', icon: FileText }
+        ]
+      },
+      {
+        label: 'FORENSICS',
+        items: [
+          { id: 'evidence', label: 'Court Evidence', icon: FileCheck },
+          { id: 'audit', label: 'Audit Ledger', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
+        ]
+      },
+      {
+        label: 'SYSTEM OPS',
+        items: [
+          { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+        ]
+      },
+      {
+        label: 'FEEDS & TELEMETRY',
+        items: [
+          { id: 'live', label: 'Classified Stream', icon: Radio, badge: 'INTEL', badgeColor: 'red' },
           { id: 'tipline', label: 'Intercept Tipline', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
-        ]
-      },
-      {
-        label: 'CAMPAIGN INVESTIGATION',
-        items: [
-          { id: 'campaigns', label: 'Campaign #007 (Cyber Ops)', icon: ShieldAlert, badge: '94%', badgeColor: 'red' },
-          { id: 'narratives', label: 'Cross-Border Clusters', icon: GitFork },
-          { id: 'threats', label: 'National Security Risk', icon: AlertTriangle },
-          { id: 'analyst-response', label: 'Sec 69A IT Escalation', icon: Sparkles },
-          { id: 'report-generator', label: 'Inter-Agency Dossier', icon: FileText }
-        ]
-      },
-      {
-        label: 'FORENSICS & LEDGER',
-        items: [
-          { id: 'evidence', label: 'Court Evidence Vault', icon: FileCheck },
-          { id: 'audit', label: 'EVM Blockchain Audit', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
-        ]
-      },
-      {
-        label: 'SYSTEM & GOVERNANCE',
-        items: [
-          { id: 'admin', label: 'Admin & Software Management', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
         ]
       }
     ];
@@ -432,46 +489,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
             </div>
           </div>
 
-          {/* Right Header Section: Role Persona Switcher Pill, Search, Notifications, Theme, Account */}
+          {/* Right Header Section: Search, Notifications, Theme, Account */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-
-            {/* RBAC Persona Switcher Quick Button */}
-            <button
-              onClick={() => setIsAuthModalOpen(true)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '5px 12px',
-                borderRadius: '8px',
-                backgroundColor: `${currentUser?.badgeColor || '#10b981'}15`,
-                border: `1px solid ${currentUser?.badgeColor || '#10b981'}40`,
-                color: currentUser?.badgeColor || '#10b981',
-                cursor: 'pointer',
-                fontSize: '12px',
-                fontWeight: 600,
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = `${currentUser?.badgeColor || '#10b981'}25`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = `${currentUser?.badgeColor || '#10b981'}15`;
-              }}
-            >
-              <RoleIcon size={15} />
-              <span>{currentUser?.roleTitle ? currentUser.roleTitle.split('—')[0] : 'Super Administrator'}</span>
-              <span style={{
-                fontSize: '9px',
-                padding: '1px 6px',
-                borderRadius: '4px',
-                backgroundColor: currentUser?.badgeColor || '#10b981',
-                color: '#ffffff',
-                fontWeight: 700
-              }}>
-                {currentUser?.badgeText || 'ROOT'}
-              </span>
-            </button>
 
             {/* Global Quick Search Input */}
             <div style={{

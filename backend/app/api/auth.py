@@ -70,17 +70,17 @@ USER_PROFILES = {
         "scope_title": "National Security & Inter-Agency Threat Matrix"
     },
     "corporate_enterprise": {
-        "id": "user_adani_007",
+        "id": "user_tata_007",
         "name": "Rajesh Singhania",
-        "email": "ciso.defense@adani.com",
+        "email": "ciso.defense@tata.com",
         "role": "corporate_enterprise",
-        "role_title": "Adani Group — Brand Defense & Market Risk",
-        "organization": "Adani Corporate Security & Threat Intelligence",
+        "role_title": "Tata Sons — Brand Defense & Market Risk",
+        "organization": "Tata Corporate Security & Threat Intelligence",
         "clearance": "Enterprise Tier-1 (Corporate Risk & Security)",
         "clearance_level": 3,
         "badge_color": "#f59e0b",
         "badge_text": "ENTERPRISE RISK",
-        "avatar_initials": "AG",
+        "avatar_initials": "TG",
         "allowed_navs": [
             "overview", "live", "campaigns", "narratives", 
             "threats", "analyst-response", "report-generator", "evidence", "admin", "settings"
@@ -149,7 +149,7 @@ AUDIT_LOGS = [
         "actor": "Rajesh Singhania",
         "role": "corporate_enterprise",
         "action": "SEBI_DISCLOSURE_DRAFTED",
-        "target": "Adani Stock Volatility Telemetry",
+        "target": "Tata Motors & TCS Stock Volatility Telemetry",
         "status": "AUTHORIZED",
         "hash": "0x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"
     }

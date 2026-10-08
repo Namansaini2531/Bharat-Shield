@@ -1,110 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 /* ========================================================================= */
-/* NOTION DESIGN SYSTEM TOKENS (Design.md)                                   */
+/* NOTION DESIGN SYSTEM TOKENS — Bharat-Shield Sentinel                      */
 /* ========================================================================= */
 
 :root {
-  /* Brand & Single Structural Accent */
-  --notion-blue: #0075de;
-  --notion-blue-active: #005bab;
-  --deep-indigo: #213183;
-  --primary: #0075de;
-  --primary-active: #005bab;
-  --secondary: #213183;
+  /* Core Notion Canvas & Chrome (Dark Mode default) */
+  --bg-dark: #121214;
+  --bg-sidebar: #16161a;
+  --bg-card: #1a1a1e;
+  --bg-card-hover: #232328;
+  --border-color: #2a2b30;
+  --border-light: #3a3b42;
 
-  /* Playful Multi-Colour Decorative Sticker Palette (Decoration Only) */
-  --sticker-sky: #62aef0;
-  --sticker-purple: #d6b6f6;
-  --sticker-purple-deep: #391c57;
-  --sticker-pink: #ff64c8;
-  --sticker-orange: #dd5b00;
-  --sticker-orange-deep: #793400;
-  --sticker-teal: #2a9d99;
-  --sticker-green: #1aae39;
-  --sticker-brown: #523410;
-
-  /* Default Dark Mode Theme */
-  --bg-dark: #0d1117;
-  --bg-sidebar: #131924;
-  --bg-card: #182030;
-  --bg-card-hover: #1f2a3e;
-  --border-color: #243046;
-  --border-light: #33435f;
-  --inner-box-bg: #0f1522;
-  --input-bg: #182030;
-  --bg-muted: #1e293b;
-
-  --ink: #ffffff;
-  --ink-secondary: #cbd5e1;
-  --ink-muted: #94a3b8;
-  --ink-faint: #64748b;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
   --text-heading: #ffffff;
 
-  /* Legacy Accent Aliases */
+  /* Notion Primary Structural Accent */
+  --notion-blue: #0075de;
+  --notion-blue-hover: #0060b8;
+
+  /* Notion Multi-Colour Sticker Palette */
+  --sticker-purple: #7934c9;
+  --sticker-teal: #1fa971;
+  --sticker-orange: #dd5b00;
+  --sticker-pink: #ff64c8;
+  --sticker-sky: #0075de;
+  --sticker-green: #1aae39;
+
+  /* Ink semantic aliases */
+  --ink: #f7f6f5;
+  --ink-secondary: #9ca3af;
+  --ink-muted: #6b7280;
+  --ink-faint: #4b5563;
+
+  /* General accents */
   --accent-blue: #0075de;
-  --accent-cyan: #2a9d99;
-  --accent-pink: #ff64c8;
-  --accent-amber: #dd5b00;
+  --accent-cyan: #06b6d4;
+  --accent-pink: #ec4899;
+  --accent-amber: #f59e0b;
   --accent-red: #ef4444;
-  --accent-green: #1aae39;
-  --accent-purple: #d6b6f6;
+  --accent-green: #10b981;
+  --accent-purple: #8b5cf6;
 
-  /* Shapes: Border Radius Scale per Notion Design.md */
-  --radius-xs: 4px;      /* Form fields, small tags, inline chips */
-  --radius-sm: 5px;      /* Menu items, list rows, status pills */
-  --radius-md: 8px;      /* Utility / nav buttons, smaller cards */
-  --radius-lg: 12px;     /* Feature cards, illustration frames, content tiles */
-  --radius-xl: 16px;     /* Large containers, image wells */
-  --radius-full: 9999px; /* Marketing pill CTAs, badges, circular buttons */
+  --inner-box-bg: #121214;
+  --input-bg: #16161a;
+  --bg-muted: #18181b;
 
-  /* Elevation: Barely-There Layered Micro-Shadows */
-  --shadow-flat: none;
-  --shadow-soft: rgba(0, 0, 0, 0.2) 0 0.8px 2.9px, rgba(0, 0, 0, 0.25) 0 4px 18px;
-  --shadow-elevated: rgba(0, 0, 0, 0.45) 0 23px 52px;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
-  --shadow-card: var(--shadow-soft);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.25);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-/* Light Theme Variables Override - Signature Warm Paper-Soft Canvas */
+/* Light Theme Variables Override — Warm Paper Soft Canvas (#f6f5f4) */
 [data-theme="light"] {
-  /* Warm paper-soft off-white canvas (#f6f5f4) */
   --bg-dark: #f6f5f4;
   --bg-sidebar: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #f9f8f7;
-  --border-color: #e6e6e6;
-  --border-light: #dcdbd9;
-  --inner-box-bg: #f6f5f4;
+  --bg-card-hover: #f0eeec;
+  --border-color: #e4e2df;
+  --border-light: #d2cfca;
+
+  --text-primary: #222020;
+  --text-secondary: #555250;
+  --text-muted: #888480;
+  --text-heading: #111113;
+
+  --ink: #222020;
+  --ink-secondary: #555250;
+  --ink-muted: #888480;
+  --ink-faint: #b5b0ab;
+
+  --notion-blue: #0075de;
+  --notion-blue-hover: #0060b8;
+
+  --accent-blue: #0075de;
+  --accent-cyan: #0891b2;
+  --accent-pink: #db2777;
+  --accent-amber: #d97706;
+  --accent-red: #dc2626;
+  --accent-green: #059669;
+  --accent-purple: #7c3aed;
+
+  --inner-box-bg: #edece9;
   --input-bg: #ffffff;
-  --bg-muted: #f6f5f4;
-
-  /* Typography Text Tokens */
-  --ink: #000000;
-  --ink-secondary: #31302e;
-  --ink-muted: #615d59;
-  --ink-faint: #a39e98;
-  --text-primary: #31302e;
-  --text-secondary: #615d59;
-  --text-muted: #a39e98;
-  --text-heading: #000000;
-
-  /* Layered 4-stop micro-shadow from Notion spec */
-  --shadow-soft: rgba(0, 0, 0, 0.01) 0 0.175px 1.041px,
-                 rgba(0, 0, 0, 0.02) 0 0.8px 2.925px,
-                 rgba(0, 0, 0, 0.027) 0 2.025px 7.847px,
-                 rgba(0, 0, 0, 0.04) 0 4px 18px;
-  --shadow-elevated: rgba(0, 0, 0, 0.05) 0 23px 52px;
-  --shadow-sm: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
-  --shadow-card: var(--shadow-soft);
+  --bg-muted: #edece9;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
-
-/* ========================================================================= */
-/* BASE & GLOBAL TYPOGRAPHY (NotionInter / Inter)                            */
-/* ========================================================================= */
 
 * {
   box-sizing: border-box;
@@ -112,97 +103,23 @@
   padding: 0;
 }
 
-body {
-  font-family: 'Inter', -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+body,
+button,
+input,
+select,
+textarea {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  font-feature-settings: 'lnum' 1, 'locl' 1;
   overflow-x: hidden;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-code, .font-mono {
+code,
+.font-mono {
   font-family: 'JetBrains Mono', monospace;
-}
-
-/* Notion Typography Hierarchy Tokens */
-.display-1 {
-  font-size: 64px;
-  font-weight: 700;
-  line-height: 1.0;
-  letter-spacing: -2.125px;
-}
-
-.display-2 {
-  font-size: 54px;
-  font-weight: 700;
-  line-height: 1.04;
-  letter-spacing: -1.875px;
-}
-
-.heading-1 {
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -1px;
-}
-
-.heading-2 {
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.23;
-  letter-spacing: -0.625px;
-}
-
-.heading-3 {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.27;
-  letter-spacing: -0.25px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: -0.125px;
-}
-
-.body-md {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-
-.body-sm {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.33;
-  letter-spacing: 0;
-}
-
-.button-type {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-
-.caption {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.43;
-  letter-spacing: 0;
-}
-
-.eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.33;
-  letter-spacing: +0.125px;
 }
 
 /* Custom Scrollbars */
@@ -210,98 +127,113 @@ code, .font-mono {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-dark);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-light);
 }
 
 /* ========================================================================= */
-/* BUTTONS: NOTION BLUE PILL & 8px UTILITY BUTTONS                           */
+/* NOTION SIGNATURE HERO NIGHT BAND & DUAL-CTA SYSTEM                        */
 /* ========================================================================= */
 
-/* Primary CTA ("Get Notion free" style) — Notion Blue #0075de */
-.button-primary,
-.bs-button-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 22px;
-  border-radius: var(--radius-full);
-  background-color: var(--notion-blue);
+.hero-band {
+  background: linear-gradient(135deg, #192564 0%, #213183 55%, #152054 100%);
   color: #ffffff;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.5;
-  border: 1px solid transparent;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: background-color 0.15s ease, transform 0.1s ease;
-  gap: 8px;
+  border-radius: 16px;
+  padding: 30px 34px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(33, 49, 131, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  margin-bottom: 28px;
 }
 
-.button-primary:hover,
-.bs-button-primary:hover {
-  background-color: var(--notion-blue-active);
+.sticker-constellation {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
-.button-primary:active,
-.bs-button-primary:active {
-  background-color: var(--notion-blue-active);
-  transform: scale(0.97);
-}
-
-/* Secondary CTA ("Request a demo" style) — White pill with soft shadow */
-.button-secondary,
-.bs-button-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.button-primary {
+  background-color: #0075de;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
   padding: 10px 22px;
-  border-radius: var(--radius-full);
-  background-color: var(--bg-card);
-  color: var(--ink);
-  border: 1px solid var(--border-color);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: var(--shadow-soft);
-  transition: all 0.15s ease;
-  gap: 8px;
-}
-
-.button-secondary:hover,
-.bs-button-secondary:hover {
-  background-color: var(--bg-card-hover);
-  border-color: var(--border-light);
-}
-
-.button-secondary:active,
-.bs-button-secondary:active {
-  transform: scale(0.97);
-}
-
-/* Utility / Nav button — Tighter 8px radius per Design.md */
-.button-utility {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 4px 14px;
-  border-radius: var(--radius-md);
-  background-color: var(--bg-card);
-  color: var(--ink);
-  border: 1px solid var(--border-color);
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 117, 222, 0.4);
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.button-primary:hover {
+  background-color: #0060b8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 117, 222, 0.5);
+}
+
+.button-primary:active {
+  transform: translateY(0);
+}
+
+.button-secondary {
+  background-color: #ffffff;
+  color: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 9999px;
+  padding: 10px 22px;
   font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.button-secondary:hover {
+  background-color: #f6f5f4;
+  transform: translateY(-1px);
+}
+
+.button-secondary:active {
+  transform: translateY(0);
+}
+
+.button-utility {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
   gap: 6px;
+  transition: all 0.15s ease;
 }
 
 .button-utility:hover {
@@ -309,290 +241,311 @@ code, .font-mono {
   border-color: var(--border-light);
 }
 
-/* Circular utility button (36x36) */
-.button-icon-circular {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-full);
+/* ========================================================================= */
+/* NOTION 12px FEATURE CARDS & STICKER HEADER BANDS                          */
+/* ========================================================================= */
+
+.feature-card {
   background-color: var(--bg-card);
-  color: var(--ink);
   border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Dark mode sticker headers */
+.sticker-header-purple {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #2b1d3d;
+  color: #c084fc;
+  border-bottom: 1px solid rgba(192, 132, 252, 0.2);
+}
+
+.sticker-header-teal {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #163327;
+  color: #34d399;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.sticker-header-orange {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #3b2314;
+  color: #fb923c;
+  border-bottom: 1px solid rgba(251, 146, 60, 0.2);
+}
+
+.sticker-header-pink {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #3d1a31;
+  color: #f472b6;
+  border-bottom: 1px solid rgba(244, 114, 182, 0.2);
+}
+
+.sticker-header-sky {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #142942;
+  color: #38bdf8;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.sticker-header-green {
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: #14351d;
+  color: #4ade80;
+  border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+/* Light mode sticker header overrides */
+[data-theme="light"] .sticker-header-purple {
+  background: #efe7f6;
+  color: #7934c9;
+  border-bottom: 1px solid rgba(121, 52, 201, 0.15);
+}
+
+[data-theme="light"] .sticker-header-teal {
+  background: #e6f5ee;
+  color: #1fa971;
+  border-bottom: 1px solid rgba(31, 169, 113, 0.15);
+}
+
+[data-theme="light"] .sticker-header-orange {
+  background: #fbede3;
+  color: #dd5b00;
+  border-bottom: 1px solid rgba(221, 91, 0, 0.15);
+}
+
+[data-theme="light"] .sticker-header-pink {
+  background: #fdf0f8;
+  color: #d43f9a;
+  border-bottom: 1px solid rgba(212, 63, 154, 0.15);
+}
+
+[data-theme="light"] .sticker-header-sky {
+  background: #e6f1fb;
+  color: #0075de;
+  border-bottom: 1px solid rgba(0, 117, 222, 0.15);
+}
+
+[data-theme="light"] .sticker-header-green {
+  background: #e7f7ec;
+  color: #1aae39;
+  border-bottom: 1px solid rgba(26, 174, 57, 0.15);
+}
+
+/* ========================================================================= */
+/* PILL TABS & BADGES                                                        */
+/* ========================================================================= */
+
+.badge-pill {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  padding: 3px 10px;
+  background-color: var(--inner-box-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.pill-tab {
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-color: var(--inner-box-bg);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.button-icon-circular:hover {
-  background-color: var(--bg-card-hover);
+.pill-tab:hover {
+  color: var(--text-primary);
   border-color: var(--border-light);
 }
 
-.button-icon-circular:active {
-  transform: scale(0.92);
+.pill-tab.active {
+  background-color: var(--bg-card);
+  color: var(--notion-blue);
+  border-color: var(--border-color);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ========================================================================= */
+/* SHADCN STYLE CARDS & BUTTONS                                              */
+/* ========================================================================= */
+
+.bs-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.bs-card:hover {
+  border-color: var(--border-light);
+}
+
+.bs-card-glow {
+  box-shadow: 0 0 20px rgba(0, 117, 222, 0.1);
+}
+
+.bs-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+.bs-badge-red {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--accent-red);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.bs-badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.bs-badge-blue {
+  background: rgba(0, 117, 222, 0.12);
+  color: var(--accent-blue);
+  border: 1px solid rgba(0, 117, 222, 0.3);
+}
+
+.bs-badge-cyan {
+  background: rgba(6, 182, 212, 0.12);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.bs-badge-purple {
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--accent-purple);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.bs-badge-green {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-green);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .bs-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius-md);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
   border: 1px solid transparent;
-  gap: 6px;
+}
+
+.bs-button-primary {
+  background: #0075de;
+  color: white;
+  border-color: #0060b8;
+  box-shadow: var(--shadow-sm);
+}
+
+.bs-button-primary:hover {
+  background: #0060b8;
+}
+
+.bs-button-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.bs-button-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
 }
 
 .bs-button-danger {
-  background: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-red);
   border-color: rgba(239, 68, 68, 0.3);
 }
 
-/* ========================================================================= */
-/* SIGNATURE NOTION HERO "NIGHT" BAND (Deep Indigo #213183)                  */
-/* ========================================================================= */
-
-.hero-band {
-  background-color: var(--deep-indigo);
-  color: #ffffff;
-  border-radius: var(--radius-xl);
-  padding: 48px 40px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 16px 36px -10px rgba(33, 49, 131, 0.4);
+.bs-button-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
 }
 
-.sticker-constellation {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-  background-size: 24px 24px;
-  opacity: 0.8;
+/* Animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-pulse-slow {
+  animation: pulseGlow 2s infinite ease-in-out;
 }
 
 /* ========================================================================= */
-/* CARDS & CONTAINERS: 12px RADIUS (feature-card) & HAIRLINE EDGES           */
-/* ========================================================================= */
-
-.bs-card,
-.feature-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-}
-
-.bs-card:hover,
-.feature-card:hover {
-  border-color: var(--border-light);
-}
-
-.feature-card-elevated {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-elevated);
-}
-
-/* Decorative Sticker Header Bands on Feature Cards */
-.sticker-header-purple {
-  background-color: var(--sticker-purple);
-  color: var(--sticker-purple-deep);
-  padding: 12px 16px;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
-  font-weight: 700;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sticker-header-teal {
-  background-color: var(--sticker-teal);
-  color: #ffffff;
-  padding: 12px 16px;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
-  font-weight: 700;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sticker-header-orange {
-  background-color: var(--sticker-orange);
-  color: #ffffff;
-  padding: 12px 16px;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
-  font-weight: 700;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sticker-header-pink {
-  background-color: var(--sticker-pink);
-  color: #ffffff;
-  padding: 12px 16px;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
-  font-weight: 700;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sticker-header-sky {
-  background-color: var(--sticker-sky);
-  color: #ffffff;
-  padding: 12px 16px;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
-  font-weight: 700;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sticker-header-green {
-  background-color: var(--sticker-green);
-  color: #ffffff;
-  padding: 12px 16px;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
-  font-weight: 700;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* ========================================================================= */
-/* TABS: PILL & SEGMENTED                                                    */
-/* ========================================================================= */
-
-.pill-tab {
-  background-color: var(--bg-card);
-  color: var(--ink-secondary);
-  border: 1px solid var(--border-color);
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.pill-tab:hover {
-  color: var(--ink);
-  border-color: var(--border-light);
-}
-
-.pill-tab.active,
-.pill-tab-active {
-  background-color: var(--notion-blue);
-  color: #ffffff;
-  border-color: var(--notion-blue);
-  font-weight: 600;
-}
-
-/* ========================================================================= */
-/* BADGES & PILL LABELS                                                      */
-/* ========================================================================= */
-
-.badge-pill,
-.bs-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.33;
-  letter-spacing: +0.125px;
-  transition: all 0.15s ease;
-}
-
-.badge-pill {
-  background-color: var(--bg-card);
-  color: var(--notion-blue);
-  border: 1px solid var(--border-color);
-}
-
-.bs-badge-blue {
-  background: rgba(0, 117, 222, 0.12);
-  color: var(--notion-blue);
-  border: 1px solid rgba(0, 117, 222, 0.3);
-}
-
-.bs-badge-green {
-  background: rgba(26, 174, 57, 0.12);
-  color: var(--sticker-green);
-  border: 1px solid rgba(26, 174, 57, 0.3);
-}
-
-.bs-badge-orange {
-  background: rgba(221, 91, 0, 0.12);
-  color: var(--sticker-orange);
-  border: 1px solid rgba(221, 91, 0, 0.3);
-}
-
-.bs-badge-purple {
-  background: rgba(214, 182, 246, 0.25);
-  color: #7934c9;
-  border: 1px solid rgba(214, 182, 246, 0.5);
-}
-
-.bs-badge-pink {
-  background: rgba(255, 100, 200, 0.12);
-  color: var(--sticker-pink);
-  border: 1px solid rgba(255, 100, 200, 0.3);
-}
-
-.bs-badge-red {
-  background: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-/* ========================================================================= */
-/* INPUTS & FORMS: 4px RADIUS per Design.md                                  */
-/* ========================================================================= */
-
-.text-input,
-.bs-input {
-  background-color: var(--input-bg);
-  color: var(--ink);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xs);
-  padding: 8px 12px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.15s ease;
-  width: 100%;
-}
-
-.text-input:focus,
-.bs-input:focus {
-  border-color: var(--notion-blue);
-  box-shadow: var(--shadow-soft);
-}
-
-/* ========================================================================= */
-/* SIDEBAR & NAVIGATION SYSTEM                                               */
+/* SILKY SMOOTH SIDEBAR DESIGN & ANIMATION SYSTEM                            */
 /* ========================================================================= */
 
 .bs-sidebar {
@@ -657,7 +610,7 @@ code, .font-mono {
   text-overflow: ellipsis;
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: 0.5px;
   color: var(--text-heading);
   line-height: 1.2;
   opacity: 1;
@@ -674,11 +627,11 @@ code, .font-mono {
 }
 
 .sidebar-group-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--text-muted);
   padding: 8px 12px 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -705,17 +658,17 @@ code, .font-mono {
   align-items: center;
   gap: 8px;
   padding: 4px 6px;
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--ink-secondary);
-  font-size: 14px;
-  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  height: 36px;
+  height: 38px;
   box-sizing: border-box;
   text-align: left;
-  transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, padding 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
 }
 
@@ -726,13 +679,13 @@ code, .font-mono {
 }
 
 .sidebar-icon-wrap {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
 }
 
 .sidebar-label-badge-wrap {
@@ -745,7 +698,7 @@ code, .font-mono {
   overflow: hidden;
   opacity: 1;
   transform: translateX(0);
-  max-width: 180px;
+  max-width: 100%;
   transition: opacity 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), max-width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -765,12 +718,13 @@ code, .font-mono {
 
 .sidebar-menu-btn:hover {
   background-color: var(--bg-card-hover);
-  color: var(--ink);
+  color: var(--text-primary);
 }
 
 .sidebar-menu-btn.active {
-  background-color: rgba(0, 117, 222, 0.08);
+  background-color: rgba(0, 117, 222, 0.12);
   color: var(--notion-blue);
+  border-color: rgba(0, 117, 222, 0.25);
   font-weight: 600;
 }
 
@@ -779,24 +733,47 @@ code, .font-mono {
   font-size: 10px;
   font-weight: 600;
   padding: 1px 6px;
-  border-radius: var(--radius-xs);
-  letter-spacing: 0.2px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
   flex-shrink: 0;
 }
 
+.sidebar-user-details {
+  min-width: 0;
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 1;
+  max-width: 150px;
+  transform: translateX(0);
+  transition: opacity 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), max-width 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sidebar-collapsed .sidebar-user-details {
+  opacity: 0;
+  max-width: 0;
+  transform: translateX(-8px);
+  pointer-events: none;
+}
+
 .sidebar-badge-red {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
 .sidebar-badge-blue {
-  background: rgba(0, 117, 222, 0.15);
-  color: var(--notion-blue);
+  background: rgba(0, 117, 222, 0.18);
+  color: #60a5fa;
+  border: 1px solid rgba(0, 117, 222, 0.35);
 }
 
 .sidebar-badge-green {
-  background: rgba(26, 174, 57, 0.15);
-  color: var(--sticker-green);
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 .kbd-badge {
@@ -806,8 +783,8 @@ code, .font-mono {
   padding: 1px 5px;
   background-color: var(--bg-dark);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-xs);
+  border-radius: 3px;
   font-size: 10px;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--ink-faint);
+  color: var(--text-muted);
 }

@@ -37,18 +37,33 @@ export default function ReportGeneratorView() {
   };
 
   const getReportMeta = () => {
+    if (currentRole === ROLES.SYSTEM_ADMIN) {
+      return {
+        docId: 'RPT-ROOT-NCCC-001',
+        title: 'Master National Cyber Threat Assessment & Infrastructure Telemetry Dossier',
+        subtitle: 'Supreme Root Operations Command // Inter-Agency Architecture',
+        classification: 'SUPREME ROOT // LEVEL 5+ // MASTER',
+        classColor: '#10b981',
+        targetCampaign: 'CMP-007',
+        addressee: 'Cabinet Committee on Security (CCS) & Ministry of Defence',
+        summaryText: 'Multi-vector cognitive warfare assessment across 17 active cyber campaigns, including 42 proxy bot farms and 89 sealed cryptographic evidence packages. Automated inter-agency threat mitigation compliance verified at 100%.',
+        statutoryCitation: 'National Cyber Security Strategy 2024 & Section 70A National Critical Information Infrastructure Protection Framework',
+        actNoticeText: `NCCC SUPREME ROOT DIRECTIVE // CABINET SECURITY BRIEF\nMaster Cyber Operations & Infrastructure Integrity Report\nClearance: Level 5+ Supreme Root\nAudit Root: 0x9f4a12ec8930ab5720de018442a\nCluster Health: 4/4 Core Engines Operational`
+      };
+    }
+
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return {
-        docId: 'RPT-CORP-ADANI-009',
+        docId: 'RPT-CORP-TATA-009',
         title: 'SEBI Regulation 30 Brand Defense & Market Risk Dossier',
-        subtitle: 'Adani Strategic Intelligence & Legal Counsel Briefing',
+        subtitle: 'Tata Sons Strategic Intelligence & Legal Counsel Briefing',
         classification: 'ENTERPRISE PRIVILEGED // TIER-1',
         classColor: '#f59e0b',
-        targetCampaign: 'CMP-ADANI-009',
-        addressee: 'BSE / NSE Surveillance & Corporate Governance Board',
-        summaryText: 'Forensic evaluation indicates synthetic short-seller coordination across 42 proxy channels designed to artificially distort trading sentiment prior to market open.',
+        targetCampaign: 'CMP-TATA-009',
+        addressee: 'BSE / NSE Surveillance & Tata Group Corporate Governance Board',
+        summaryText: 'Forensic evaluation indicates synthetic disinformation coordination across 42 proxy channels designed to artificially distort Tata Motors EV & TCS brand trust and sentiment.',
         statutoryCitation: 'Prepared pursuant to SEBI (LODR) Regulations & Indian Penal Code Sec 499 (Corporate Defamation)',
-        actNoticeText: `CONFIDENTIAL & PRIVILEGED LEGAL REPORT\nPursuant to SEBI (LODR) Regulation 30 & IPC Sec 499\nTarget Campaign: CMP-ADANI-009\nEvidence Hash: sha256:d82a44bb01c89f50e7a2b91901a5b82c`
+        actNoticeText: `CONFIDENTIAL & PRIVILEGED LEGAL REPORT\nPursuant to SEBI (LODR) Regulation 30 & IPC Sec 499\nTarget Campaign: CMP-TATA-009\nEvidence Hash: sha256:d82a44bb01c89f50e7a2b91901a5b82c`
       };
     }
 
@@ -70,15 +85,15 @@ export default function ReportGeneratorView() {
     // Default: Investigation Bureau of India
     return {
       docId: 'RPT-IB-C007-992',
-      title: 'Section 69A IT Act Emergency Blocking Requisition Dossier',
+      title: 'National Security Incident Triage & Threat Containment Dossier',
       subtitle: 'Classified Inter-Agency Cyber Threat Intelligence // Court-Admissible',
       classification: 'TOP SECRET // LEA // NATIONAL SECURITY',
       classColor: '#ef4444',
       targetCampaign: 'CMP-007',
       addressee: 'Ministry of Home Affairs & CERT-In Emergency Response Cell',
-      summaryText: 'Multi-platform state-sponsored disinformation swarm detected targeting national telecommunication infrastructure with high cross-platform temporal synchronicity (96%). Immediate emergency takedown requisitioned under Section 69A IT Act 2000.',
-      statutoryCitation: 'Invoked under Section 69A of Information Technology Act 2000 read with IT (Procedure and Safeguards for Blocking of Access) Rules 2009',
-      actNoticeText: `GOVERNMENT OF INDIA // MINISTRY OF ELECTRONICS & IT\nEMERGENCY ORDER UNDER SECTION 69A INFORMATION TECHNOLOGY ACT 2000\n\nTo: Designated Intermediary Grievance Officers (X/Twitter, Telegram, WhatsApp)\nRe: Emergency Sequestration & Takedown of Malicious IO Vector (CMP-007)\n\nEvidence Merkle Root: 0x8e3b44f910a29df14e21a9f2\nForensic SHA-256 Digest: sha256:d82a44bb01c89f50e7a2b91901a5b82c\n\nDirection: Block access immediately within 24 hours under Rule 9 of Blocking Rules 2009.`
+      summaryText: 'Multi-platform state-sponsored disinformation swarm detected targeting national telecommunication infrastructure with high cross-platform temporal synchronicity (96%). Immediate emergency containment directive issued for critical infrastructure protection.',
+      statutoryCitation: 'Invoked under National Cyber Emergency Response Framework and CERT-In Directive 2024',
+      actNoticeText: `GOVERNMENT OF INDIA // CYBER OPERATIONS COMMAND\nEMERGENCY DIRECTIVE FOR THREAT VECTOR CONTAINMENT\n\nTo: Designated Intermediary Compliance Officers (X/Twitter, Telegram, WhatsApp)\nRe: Emergency Sequestration & Takedown of Malicious IO Vector (CMP-007)\n\nEvidence Merkle Root: 0x8e3b44f910a29df14e21a9f2\nForensic SHA-256 Digest: sha256:d82a44bb01c89f50e7a2b91901a5b82c\n\nDirection: Contain access immediately within 24 hours under Emergency Security Guidelines.`
     };
   };
 
@@ -288,7 +303,7 @@ export default function ReportGeneratorView() {
                       <td style={{ padding: '8px 10px', color: '#60a5fa', fontWeight: 600 }}>X (Twitter)</td>
                       <td style={{ padding: '8px 10px', fontFamily: 'JetBrains Mono' }}>@tech_leaks_in</td>
                       <td style={{ padding: '8px 10px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)' }}>sha256:d82a44bb...</td>
-                      <td style={{ padding: '8px 10px', color: '#ef4444', fontWeight: 700 }}>SEC 69A BLOCK</td>
+                      <td style={{ padding: '8px 10px', color: '#ef4444', fontWeight: 700 }}>CRITICAL CONTAIN</td>
                     </tr>
                     <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                       <td style={{ padding: '8px 10px', color: '#38bdf8', fontWeight: 600 }}>Telegram</td>

@@ -84,11 +84,11 @@ CONNECTORS = [
 OPERATORS = [
     {
         "id": "user_admin_000",
-        "name": "Commander Arvind Sharma",
-        "email": "a.sharma@sentinel.gov.in",
+        "name": "Naman Saini",
+        "email": "saininaman643@gmail.com",
         "role": "system_admin",
-        "role_title": "Super Administrator / Chief Cyber Architect",
-        "organization": "National Cyber Coordination Centre (NCCC)",
+        "role_title": "Super Administrator / NCCC Operations Command",
+        "organization": "National Cyber Coordination Centre (NCCC) & MoD",
         "clearance": "Level 5+ (Supreme Root Authority)",
         "clearance_level": 6,
         "status": "ACTIVE",
@@ -111,12 +111,12 @@ OPERATORS = [
         "ip_restricted": True
     },
     {
-        "id": "user_adani_007",
+        "id": "user_tata_007",
         "name": "Rajesh Singhania",
-        "email": "ciso.defense@adani.com",
+        "email": "ciso.defense@tata.com",
         "role": "corporate_enterprise",
-        "role_title": "Adani Group — Brand Defense & Market Risk",
-        "organization": "Adani Corporate Security & Threat Intelligence",
+        "role_title": "Tata Sons — Brand Defense & Market Risk",
+        "organization": "Tata Strategic Threat Intelligence & Brand Protection",
         "clearance": "Enterprise Tier-1 (Corporate Risk & Security)",
         "clearance_level": 3,
         "status": "ACTIVE",

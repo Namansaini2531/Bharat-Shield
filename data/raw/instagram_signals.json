@@ -1,5 +1,100 @@
 [
   {
+    "id": "INSTA-TATA-77401928491",
+    "platform": "instagram",
+    "text": "Breaking Alert: Leaked internal test video alleging Tata Motors EV battery packs failing thermal runaway tests in extreme heat. Automotive Research Association confirms video is manipulated CGI footage. #TataMotors #NexonEV #FactCheck [Visual Infographic OCR Text]: WARNING: TATA EV BATTERY DEFECT HOAX [Spoken Audio Transcript]: [ऑडियो 0:28]: टाटा मोटर्स की ईवी गाड़ियों में बैटरी ब्लास्ट का दावा पूरी तरह फर्जी है।",
+    "language": "hi",
+    "media_type": "video",
+    "author": "@auto_leaks_india",
+    "timestamp": "2026-10-07T14:22:10.000000+00:00",
+    "campaign_cluster": "CMP-TATA-009",
+    "ai_assistance": {
+      "ai_probability": 94,
+      "status": "High Synthetic / AI Generated Manipulation",
+      "indicators": [
+        "Deepfake voice synthesis",
+        "Manipulated CGI frame insertion"
+      ],
+      "is_elevated": true
+    }
+  },
+  {
+    "id": "INSTA-TATA-88319401243",
+    "platform": "instagram",
+    "text": "Fake circular on TCS letterhead claiming cancellation of 25,000 campus placements and pan-India hiring freeze. HR forensics confirms forged digital signatures and counterfeit domain. #TCS #TataConsultancyServices #JobScam #FakeNotice [Visual Infographic OCR Text]: TCS RECRUITMENT NOTICE: ALL FRESHER ONBOARDING SUSPENDED INDEFINITELY",
+    "language": "en",
+    "media_type": "image",
+    "author": "@tech_insider_in",
+    "timestamp": "2026-10-07T16:45:30.000000+00:00",
+    "campaign_cluster": "CMP-TATA-009",
+    "ai_assistance": {
+      "ai_probability": 88,
+      "status": "Coordinated Corporate Disinformation",
+      "indicators": [
+        "Forged document template",
+        "Automated botnet propagation"
+      ],
+      "is_elevated": true
+    }
+  },
+  {
+    "id": "INSTA-TATA-99120485721",
+    "platform": "instagram",
+    "text": "AI voice cloning audio circulating on Instagram reels impersonating Air India chief pilot claiming emergency navigation shutdown on international routes. Forensics analysis confirms 99.6% synthetic voice clone. #AirIndia #TataAviation #DeepfakeAlert [Spoken Audio Transcript]: [Cockpit Audio 0:31]: Mayday simulation audio extracted from training simulator republished as real-time emergency.",
+    "language": "en",
+    "media_type": "video",
+    "author": "@aviation_radar_asia",
+    "timestamp": "2026-10-07T18:10:15.000000+00:00",
+    "campaign_cluster": "CMP-TATA-014",
+    "ai_assistance": {
+      "ai_probability": 99,
+      "status": "Synthetic Voice Clone Verified",
+      "indicators": [
+        "Neural vocoder acoustic artifacts",
+        "Biometric voice mismatch"
+      ],
+      "is_elevated": true
+    }
+  },
+  {
+    "id": "INSTA-TATA-66201948371",
+    "platform": "instagram",
+    "text": "Doctored National Green Tribunal (NGT) order falsely claiming complete shutdown notice for Tata Steel plant in Kalinganagar. State Pollution Control Board confirms document is a counterfeit forgery. #TataSteel #CorporateESG #FactCheck [Visual Infographic OCR Text]: NATIONAL GREEN TRIBUNAL: IMMEDIATE CLOSURE ORDER TATA STEEL KALINGANAGAR",
+    "language": "en",
+    "media_type": "image",
+    "author": "@shadow_finance_in",
+    "timestamp": "2026-10-07T19:30:00.000000+00:00",
+    "campaign_cluster": "CMP-TATA-022",
+    "ai_assistance": {
+      "ai_probability": 82,
+      "status": "Counterfeit Regulatory Notice",
+      "indicators": [
+        "Forged official seal",
+        "Short-seller timing correlation"
+      ],
+      "is_elevated": true
+    }
+  },
+  {
+    "id": "INSTA-TATA-55104928172",
+    "platform": "instagram",
+    "text": "व्हायरल इन्फोग्राफिक: टाटा पॉवर कडून मुंबई आणि पुण्यात पुढील ७२ तास वीज पुरवठा खंडित केला जाईल हा दावा पूर्णपणे खोटा आहे. ग्रीड सुरळीत सुरू आहे. #TataPower #MumbaiFactCheck [Spoken Audio Transcript]: [मराठी ऑडिओ 0:24]: नागरिकांनी अफवांवर विश्वास ठेवू नये, टाटा पॉवरकडून कोणताही वीज खंडित करण्याचा आदेश नाही.",
+    "language": "mr",
+    "media_type": "video",
+    "author": "@maharashtra_live",
+    "timestamp": "2026-10-07T21:05:40.000000+00:00",
+    "campaign_cluster": "CMP-TATA-009",
+    "ai_assistance": {
+      "ai_probability": 78,
+      "status": "Regional Civic Panic Vector",
+      "indicators": [
+        "Cross-lingual forward swarm",
+        "Fabricated utility advisory"
+      ],
+      "is_elevated": true
+    }
+  },
+  {
     "id": "INSTA-2395975062178662",
     "record_seq": 12145,
     "shortcode": "trpq6oLjX85",

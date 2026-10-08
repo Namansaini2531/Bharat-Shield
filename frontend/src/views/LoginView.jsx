@@ -45,17 +45,17 @@ const ACCOUNTS = [
     organization: 'Investigation Bureau & MHA'
   },
   {
-    id: 'adani_corp',
+    id: 'tata_corp',
     role: ROLES.CORPORATE_ENTERPRISE,
     name: 'Rajesh Singhania',
-    email: 'ciso.defense@adani.com',
+    email: 'ciso.defense@tata.com',
     password: 'sentinel@16#',
     title: 'CISO / Brand Defense Lead',
     badgeText: 'ENTERPRISE RISK',
     badgeColor: '#f59e0b',
-    initials: 'AG',
+    initials: 'TG',
     icon: Building2,
-    organization: 'Adani Strategic Intelligence'
+    organization: 'Tata Sons & Strategic Threat Intelligence'
   },
   {
     id: 'media_press',

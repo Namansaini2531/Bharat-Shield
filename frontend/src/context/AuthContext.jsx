@@ -79,20 +79,20 @@ export const USER_PROFILES = {
     }
   },
   [ROLES.CORPORATE_ENTERPRISE]: {
-    id: 'user_adani_007',
+    id: 'user_tata_007',
     name: 'Rajesh Singhania',
-    email: 'ciso.defense@adani.com',
-    phone: '+91 98250 88314',
-    username: 'rsinghania_ag',
+    email: 'ciso.defense@tata.com',
+    phone: '+91 98200 88314',
+    username: 'rsinghania_tata',
     defaultPassword: 'sentinel@16#',
     role: ROLES.CORPORATE_ENTERPRISE,
-    roleTitle: 'Adani Group — Brand Defense & Market Risk',
-    organization: 'Adani Corporate Security & Threat Intelligence',
+    roleTitle: 'Tata Sons — Brand Defense & Market Risk',
+    organization: 'Tata Strategic Threat Intelligence & Brand Protection',
     clearance: 'Enterprise Tier-1 (Corporate Risk & Security)',
     clearanceLevel: 3,
     badgeColor: '#f59e0b',
     badgeText: 'ENTERPRISE RISK',
-    avatarInitials: 'AG',
+    avatarInitials: 'TG',
     allowedNavs: [
       'overview', 'live', 'campaigns', 'narratives', 
       'threats', 'analyst-response', 'report-generator', 'evidence', 'admin', 'settings'
