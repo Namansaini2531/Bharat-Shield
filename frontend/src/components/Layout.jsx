@@ -37,7 +37,9 @@ import {
   UserCheck,
   RefreshCw,
   Fingerprint,
-  Terminal
+  Terminal,
+  Sliders,
+  Server
 } from 'lucide-react';
 
 export default function Layout({ currentNav, setCurrentNav, theme, setTheme, children }) {
