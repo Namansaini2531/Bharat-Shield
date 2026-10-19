@@ -1,6 +1,6 @@
-# 🛡️ Bharat-Shield-Sentinel
+# 🛡️ Bharat-Shield
 
-**Bharat-Shield-Sentinel** is an advanced, enterprise-grade AI and Blockchain-powered Information Operations (IO) & Misinformation Intelligence Sentinel system. Designed for real-time monitoring, multilingual semantic threat classification, cross-platform coordination detection, and tamper-proof evidence preservation.
+**Bharat-Shield** is an advanced, enterprise-grade AI and Blockchain-powered Information Operations (IO) & Misinformation Intelligence Sentinel system. Designed for real-time monitoring, multilingual semantic threat classification, cross-platform coordination detection, and tamper-proof evidence preservation.
 
 ---
 
