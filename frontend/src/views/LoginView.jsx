@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useAuth, ROLES } from '../context/AuthContext';
+import { useAuth, ROLES, PORT_ROLES, PROFILE_CLUSTER_NODES } from '../context/AuthContext';
 import logoImg from '../assets/logo.png';
 import { 
   Eye, 
@@ -75,13 +75,17 @@ const ACCOUNTS = [
 export default function LoginView() {
   const { login } = useAuth();
 
-  // Default to Super Admin (Naman Saini)
-  const [selectedAccount, setSelectedAccount] = useState(ACCOUNTS[0]);
-  const [email, setEmail] = useState(ACCOUNTS[0].email);
-  const [password, setPassword] = useState(ACCOUNTS[0].password);
+  // Find designated default account based on current localhost port or default to Super Admin
+  const currentPort = typeof window !== 'undefined' ? (window.location?.port || '5173') : '5173';
+  const portRole = PORT_ROLES ? PORT_ROLES[currentPort] : null;
+  const initialAccount = ACCOUNTS.find(a => a.role === portRole) || ACCOUNTS[0];
+
+  const [selectedAccount, setSelectedAccount] = useState(initialAccount);
+  const [email, setEmail] = useState(initialAccount.email);
+  const [password, setPassword] = useState(initialAccount.password);
   const [rememberMe, setRememberMe] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(ACCOUNTS[0].role);
+  const [selectedRole, setSelectedRole] = useState(initialAccount.role);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');

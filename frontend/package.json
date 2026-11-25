@@ -5,6 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:all": "node ../scripts/start_4_profiles.mjs",
+    "dev:admin": "vite --port 5173 --strictPort",
+    "dev:ib": "vite --port 5174 --strictPort",
+    "dev:enterprise": "vite --port 5175 --strictPort",
+    "dev:media": "vite --port 5176 --strictPort",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

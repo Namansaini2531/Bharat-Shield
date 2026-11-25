@@ -1,0 +1,295 @@
+[
+  {
+    "signal_id": "MKT-42AF5C48",
+    "timestamp": "2026-10-08T07:12:56.408373+00:00",
+    "source": "Telegram Trading Rooms",
+    "media_type": "pdf_circular",
+    "timing_slot": "PRE_MARKET_0845_0915",
+    "raw_text": "URGENT: SEBI issued show cause notice to Tata Motors over Curvv EV battery recalls",
+    "normalized_text": "URGENT: SEBI issued show cause notice to Tata Motors over Curvv EV battery recalls",
+    "detected_language": "en",
+    "target_entity": {
+      "ticker_key": "TATAMOTORS",
+      "ticker_symbol": "TATAMOTORS.NS",
+      "company_name": "Tata Motors Limited",
+      "group": "Tata Sons",
+      "sector": "Automotive / EV",
+      "market_cap_cr": 340000
+    },
+    "metrics": {
+      "manipulation_score": 91,
+      "threat_level": "CRITICAL",
+      "bear_raid_probability": 91,
+      "pre_market_timing_sync": 94,
+      "synthetic_ai_probability": 82,
+      "estimated_volatility_pct": "6.1% - 9.9%",
+      "estimated_mcap_exposure_cr": "\u20b920,740 Cr - \u20b933,660 Cr",
+      "circuit_breaker_risk": "CRITICAL"
+    },
+    "attack_vectors_detected": [
+      {
+        "vector_id": "REGULATORY_FORGERY",
+        "name": "Forged Regulatory Notice / Circular Impersonation",
+        "severity": 92
+      }
+    ],
+    "regulators_impersonated": [
+      "SEBI",
+      "ED"
+    ],
+    "ai_indicators": {
+      "probability": 82,
+      "verdict": "Elevated Synthetic Markers",
+      "markers": [
+        "Unverified Regulatory Citations",
+        "Urgent Trading Panic Calls",
+        "Pre-Market Timed Burst"
+      ]
+    },
+    "regulatory_disclosures": {
+      "sebi_reg30_draft": "DISCLOSURE UNDER REGULATION 30 OF SEBI (LISTING OBLIGATIONS AND DISCLOSURE REQUIREMENTS) REGULATIONS, 2015\nTo: BSE Limited & National Stock Exchange of India Limited (NSE)\nSubject: Clarification on Fictitious and Malicious Social Media Claims regarding Tata Motors Limited (TATAMOTORS.NS)\n\nWe categorically place on record that the allegations and purported regulatory circulars circulating on social channels and trading forums alleging 'URGENT: SEBI issued show cause notice to Tata Motors over Curvv EV battery recalls...' are completely fraudulent, baseless, and maliciously manufactured with deliberate intent to manipulate market sentiment.\n\nThe Company maintains full operational stability, robust financial health, and continuous compliance with all statutory guidelines. A formal complaint has been lodged with the Cyber Crime Cell and SEBI Surveillance Division under SEBI (Prohibition of Fraudulent and Unfair Trade Practices) Regulations.",
+      "nse_bse_press_advisory": "OFFICIAL PRESS RELEASE \u2014 IMMEDIATE BROADCAST\nMumbai, India \u2014 08 October 2026\n\nTata Motors Limited urges investors and market participants to disregard unauthorized digital rumors circulating on private messaging networks. The Company confirms zero disruptions across all production facilities, operations, and regulatory licenses. Trading desks are advised to rely strictly on verified exchange disclosures at nseindia.com and bseindia.com.",
+      "it_act_sec69a_takedown": "EMERGENCY INTERMEDIARY TAKEDOWN NOTICE\nIssued under Section 69A of Information Technology Act, 2000 read with Rule 3(1)(b) of IT (Intermediary Guidelines) Rules, 2021\nTarget URL / Channel: Telegram Trading Rooms\nThreat Classification: Coordinated Financial Cyber Warfare & Market Destabilization\nMandate: Immediate algorithmic takedown and hash suppression of forged payload (SHA-256 Digest generated).",
+      "statutory_playbook": [
+        {
+          "step": 1,
+          "action": "SEBI Reg 30 Exchange Clarification",
+          "status": "READY_TO_DISPATCH",
+          "urgency": "IMMEDIATE (Within 15 mins)"
+        },
+        {
+          "step": 2,
+          "action": "Intermediary Takedown & Channel Hash Blocking",
+          "status": "GENERATED",
+          "urgency": "FAST-TRACK (IT Act 69A)"
+        },
+        {
+          "step": 3,
+          "action": "EVM Cryptographic Evidence Notarization",
+          "status": "ANCHORED",
+          "urgency": "COMPLETED"
+        },
+        {
+          "step": 4,
+          "action": "Institutional Investor & Market Maker Telemetry Alert",
+          "status": "PREPARED",
+          "urgency": "BEFORE 09:15 BELL"
+        }
+      ]
+    },
+    "blockchain_proof": {
+      "sha256_hash": "sha256:797fef485995693ed88008bf1ff7a371f0b7f6f7a0123466e2b1fc79727645d4",
+      "evm_tx_hash": "0x6f5baf1457f4ef8da14577493e60dc26b71366a9d3939bc1ff307e66dcbd6ae4",
+      "block_number": 19497323,
+      "smart_contract": "0x71C568D5bA64b823e271B78B4f9e1e2d8479A91b",
+      "network": "Polygon / Ethereum Sepolia L2 Sentinel Notary",
+      "tamper_evident_status": "CRYPTOGRAPHICALLY_VERIFIED"
+    },
+    "vector_embedding_preview": {
+      "dimension": 384,
+      "sample_values": [
+        -0.0014,
+        -0.0455,
+        0.0031,
+        0.0063,
+        0.0567,
+        0.0133
+      ]
+    }
+  },
+  {
+    "signal_id": "MKT-C6CAD1F8",
+    "timestamp": "2026-10-08T07:10:59.531895+00:00",
+    "source": "Telegram Trading Channel",
+    "media_type": "text",
+    "timing_slot": "PRE_MARKET_0845_0915",
+    "raw_text": "Forged SEBI circular leaked on Telegram claiming Adani Ports licence cancellation",
+    "normalized_text": "Forged SEBI circular leaked on Telegram claiming Adani Ports licence cancellation",
+    "detected_language": "en",
+    "target_entity": {
+      "ticker_key": "ADANIPORTS",
+      "ticker_symbol": "ADANIPORTS.NS",
+      "company_name": "Adani Ports & Special Economic Zone",
+      "group": "Adani Group",
+      "sector": "Infrastructure & Logistics",
+      "market_cap_cr": 285000
+    },
+    "metrics": {
+      "manipulation_score": 76,
+      "threat_level": "HIGH",
+      "bear_raid_probability": 75,
+      "pre_market_timing_sync": 94,
+      "synthetic_ai_probability": 5,
+      "estimated_volatility_pct": "5.5% - 9.3%",
+      "estimated_mcap_exposure_cr": "\u20b915,675 Cr - \u20b926,505 Cr",
+      "circuit_breaker_risk": "ELEVATED"
+    },
+    "attack_vectors_detected": [
+      {
+        "vector_id": "REGULATORY_FORGERY",
+        "name": "Forged Regulatory Notice / Circular Impersonation",
+        "severity": 92
+      }
+    ],
+    "regulators_impersonated": [
+      "SEBI",
+      "ED"
+    ],
+    "ai_indicators": {
+      "probability": 5,
+      "verdict": "Likely Human Crafted Disinfo",
+      "markers": [
+        "Unverified Regulatory Citations",
+        "Urgent Trading Panic Calls",
+        "Pre-Market Timed Burst"
+      ]
+    },
+    "regulatory_disclosures": {
+      "sebi_reg30_draft": "DISCLOSURE UNDER REGULATION 30 OF SEBI (LISTING OBLIGATIONS AND DISCLOSURE REQUIREMENTS) REGULATIONS, 2015\nTo: BSE Limited & National Stock Exchange of India Limited (NSE)\nSubject: Clarification on Fictitious and Malicious Social Media Claims regarding Adani Ports & Special Economic Zone (ADANIPORTS.NS)\n\nWe categorically place on record that the allegations and purported regulatory circulars circulating on social channels and trading forums alleging 'Forged SEBI circular leaked on Telegram claiming Adani Ports licence cancellation...' are completely fraudulent, baseless, and maliciously manufactured with deliberate intent to manipulate market sentiment.\n\nThe Company maintains full operational stability, robust financial health, and continuous compliance with all statutory guidelines. A formal complaint has been lodged with the Cyber Crime Cell and SEBI Surveillance Division under SEBI (Prohibition of Fraudulent and Unfair Trade Practices) Regulations.",
+      "nse_bse_press_advisory": "OFFICIAL PRESS RELEASE \u2014 IMMEDIATE BROADCAST\nMumbai, India \u2014 08 October 2026\n\nAdani Ports & Special Economic Zone urges investors and market participants to disregard unauthorized digital rumors circulating on private messaging networks. The Company confirms zero disruptions across all production facilities, operations, and regulatory licenses. Trading desks are advised to rely strictly on verified exchange disclosures at nseindia.com and bseindia.com.",
+      "it_act_sec69a_takedown": "EMERGENCY INTERMEDIARY TAKEDOWN NOTICE\nIssued under Section 69A of Information Technology Act, 2000 read with Rule 3(1)(b) of IT (Intermediary Guidelines) Rules, 2021\nTarget URL / Channel: Telegram Trading Channel\nThreat Classification: Coordinated Financial Cyber Warfare & Market Destabilization\nMandate: Immediate algorithmic takedown and hash suppression of forged payload (SHA-256 Digest generated).",
+      "statutory_playbook": [
+        {
+          "step": 1,
+          "action": "SEBI Reg 30 Exchange Clarification",
+          "status": "READY_TO_DISPATCH",
+          "urgency": "IMMEDIATE (Within 15 mins)"
+        },
+        {
+          "step": 2,
+          "action": "Intermediary Takedown & Channel Hash Blocking",
+          "status": "GENERATED",
+          "urgency": "FAST-TRACK (IT Act 69A)"
+        },
+        {
+          "step": 3,
+          "action": "EVM Cryptographic Evidence Notarization",
+          "status": "ANCHORED",
+          "urgency": "COMPLETED"
+        },
+        {
+          "step": 4,
+          "action": "Institutional Investor & Market Maker Telemetry Alert",
+          "status": "PREPARED",
+          "urgency": "BEFORE 09:15 BELL"
+        }
+      ]
+    },
+    "blockchain_proof": {
+      "sha256_hash": "sha256:b7a0f91e9dd19249bba7553e3869c214c3ca3a8bec56d235605007b91625e379",
+      "evm_tx_hash": "0x7698c427c592f026a04725b419666aea99de521e07e80a25634f6cdad2ad6781",
+      "block_number": 19504267,
+      "smart_contract": "0x71C568D5bA64b823e271B78B4f9e1e2d8479A91b",
+      "network": "Polygon / Ethereum Sepolia L2 Sentinel Notary",
+      "tamper_evident_status": "CRYPTOGRAPHICALLY_VERIFIED"
+    },
+    "vector_embedding_preview": {
+      "dimension": 384,
+      "sample_values": [
+        0.0335,
+        0.0051,
+        -0.0296,
+        0.001,
+        0.016,
+        0.001
+      ]
+    }
+  },
+  {
+    "signal_id": "MKT-A7C48FCE",
+    "timestamp": "2026-10-08T07:09:38.612967+00:00",
+    "source": "Telegram Trading Rooms",
+    "media_type": "text",
+    "timing_slot": "PRE_MARKET_0845_0915",
+    "raw_text": "Tata Motors Nexon EV battery fire defect leaked circular ARAI ban",
+    "normalized_text": "Tata Motors Nexon EV battery fire defect leaked circular ARAI ban",
+    "detected_language": "en",
+    "target_entity": {
+      "ticker_key": "TATAMOTORS",
+      "ticker_symbol": "TATAMOTORS.NS",
+      "company_name": "Tata Motors Limited",
+      "group": "Tata Sons",
+      "sector": "Automotive / EV",
+      "market_cap_cr": 340000
+    },
+    "metrics": {
+      "manipulation_score": 73,
+      "threat_level": "HIGH",
+      "bear_raid_probability": 72,
+      "pre_market_timing_sync": 94,
+      "synthetic_ai_probability": 5,
+      "estimated_volatility_pct": "5.4% - 9.2%",
+      "estimated_mcap_exposure_cr": "\u20b918,360 Cr - \u20b931,280 Cr",
+      "circuit_breaker_risk": "CONTROLLED"
+    },
+    "attack_vectors_detected": [
+      {
+        "vector_id": "PRODUCT_SAFETY_HOAX",
+        "name": "Product Defect / Safety Recall Disinformation",
+        "severity": 85
+      }
+    ],
+    "regulators_impersonated": [
+      "ED"
+    ],
+    "ai_indicators": {
+      "probability": 5,
+      "verdict": "Likely Human Crafted Disinfo",
+      "markers": [
+        "Unverified Regulatory Citations",
+        "Urgent Trading Panic Calls",
+        "Pre-Market Timed Burst"
+      ]
+    },
+    "regulatory_disclosures": {
+      "sebi_reg30_draft": "DISCLOSURE UNDER REGULATION 30 OF SEBI (LISTING OBLIGATIONS AND DISCLOSURE REQUIREMENTS) REGULATIONS, 2015\nTo: BSE Limited & National Stock Exchange of India Limited (NSE)\nSubject: Clarification on Fictitious and Malicious Social Media Claims regarding Tata Motors Limited (TATAMOTORS.NS)\n\nWe categorically place on record that the allegations and purported regulatory circulars circulating on social channels and trading forums alleging 'Tata Motors Nexon EV battery fire defect leaked circular ARAI ban...' are completely fraudulent, baseless, and maliciously manufactured with deliberate intent to manipulate market sentiment.\n\nThe Company maintains full operational stability, robust financial health, and continuous compliance with all statutory guidelines. A formal complaint has been lodged with the Cyber Crime Cell and SEBI Surveillance Division under SEBI (Prohibition of Fraudulent and Unfair Trade Practices) Regulations.",
+      "nse_bse_press_advisory": "OFFICIAL PRESS RELEASE \u2014 IMMEDIATE BROADCAST\nMumbai, India \u2014 08 October 2026\n\nTata Motors Limited urges investors and market participants to disregard unauthorized digital rumors circulating on private messaging networks. The Company confirms zero disruptions across all production facilities, operations, and regulatory licenses. Trading desks are advised to rely strictly on verified exchange disclosures at nseindia.com and bseindia.com.",
+      "it_act_sec69a_takedown": "EMERGENCY INTERMEDIARY TAKEDOWN NOTICE\nIssued under Section 69A of Information Technology Act, 2000 read with Rule 3(1)(b) of IT (Intermediary Guidelines) Rules, 2021\nTarget URL / Channel: Telegram Trading Rooms\nThreat Classification: Coordinated Financial Cyber Warfare & Market Destabilization\nMandate: Immediate algorithmic takedown and hash suppression of forged payload (SHA-256 Digest generated).",
+      "statutory_playbook": [
+        {
+          "step": 1,
+          "action": "SEBI Reg 30 Exchange Clarification",
+          "status": "READY_TO_DISPATCH",
+          "urgency": "IMMEDIATE (Within 15 mins)"
+        },
+        {
+          "step": 2,
+          "action": "Intermediary Takedown & Channel Hash Blocking",
+          "status": "GENERATED",
+          "urgency": "FAST-TRACK (IT Act 69A)"
+        },
+        {
+          "step": 3,
+          "action": "EVM Cryptographic Evidence Notarization",
+          "status": "ANCHORED",
+          "urgency": "COMPLETED"
+        },
+        {
+          "step": 4,
+          "action": "Institutional Investor & Market Maker Telemetry Alert",
+          "status": "PREPARED",
+          "urgency": "BEFORE 09:15 BELL"
+        }
+      ]
+    },
+    "blockchain_proof": {
+      "sha256_hash": "sha256:e565abcd67dc2f490e0ed7cea13ec69edbdfc98d936277dcd9758f69311436ff",
+      "evm_tx_hash": "0x79c8a57da018d746fc93e2cb430124430d31135d61c07742764d07a7b96342c5",
+      "block_number": 19508324,
+      "smart_contract": "0x71C568D5bA64b823e271B78B4f9e1e2d8479A91b",
+      "network": "Polygon / Ethereum Sepolia L2 Sentinel Notary",
+      "tamper_evident_status": "CRYPTOGRAPHICALLY_VERIFIED"
+    },
+    "vector_embedding_preview": {
+      "dimension": 384,
+      "sample_values": [
+        0.0869,
+        -0.0214,
+        -0.0012,
+        -0.0391,
+        -0.0947,
+        -0.0605
+      ]
+    }
+  }
+]

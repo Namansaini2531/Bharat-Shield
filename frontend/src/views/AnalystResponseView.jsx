@@ -126,11 +126,7 @@ export default function AnalystResponseView({ onNavigate }) {
   const workflow = getRoleWorkflow();
 
   const handleAction = async (actionType) => {
-    if (actionType === 'report') {
-      if (onNavigate) onNavigate('report-generator');
-      return;
-    }
-    if (actionType === 'evidence') {
+    if (actionType === 'report' || actionType === 'evidence') {
       if (onNavigate) onNavigate('evidence');
       return;
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Breadcrumbs from './Breadcrumbs';
 import ThemeToggle from './ThemeToggle';
 import RoleSwitchModal from './RoleSwitchModal';
-import { useAuth, ROLES } from '../context/AuthContext';
+import { useAuth, ROLES, PROFILE_CLUSTER_NODES } from '../context/AuthContext';
 import logoImg from '../assets/logo.png';
 import {
 
@@ -120,8 +120,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           items: [
             { id: 'narratives', label: 'Cluster Graph', icon: GitFork },
             { id: 'threats', label: 'Deepfake Radar', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
-            { id: 'report-generator', label: 'Dossier Engine', icon: FileText }
+            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles }
           ]
         },
         {
@@ -160,10 +159,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         {
           label: 'BRAND THREATS',
           items: [
-            { id: 'narratives', label: 'Sabotage Clusters', icon: GitFork },
             { id: 'threats', label: 'Volatility Risk', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'NSE/BSE Dispatch', icon: Sparkles },
-            { id: 'report-generator', label: 'Executive Dossier', icon: FileText }
+            { id: 'analyst-response', label: 'NSE/BSE Dispatch', icon: Sparkles }
           ]
         },
         {
@@ -201,8 +198,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           items: [
             { id: 'narratives', label: 'Mutation Tree', icon: GitFork },
             { id: 'threats', label: 'Reach Metrics', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Debunk Center', icon: Sparkles },
-            { id: 'report-generator', label: 'Press Bulletin', icon: FileText }
+            { id: 'analyst-response', label: 'Debunk Center', icon: Sparkles }
           ]
         },
         {
@@ -235,8 +231,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         items: [
           { id: 'narratives', label: 'Border Clusters', icon: GitFork },
           { id: 'threats', label: 'Security Risk', icon: AlertTriangle },
-          { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
-          { id: 'report-generator', label: 'Agency Dossiers', icon: FileText }
+          { id: 'analyst-response', label: 'Threat Response', icon: Sparkles }
         ]
       },
       {
@@ -487,6 +482,77 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
             {/* Breadcrumb Hierarchy */}
             <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
               <Breadcrumbs currentNav={currentNav} onNavigate={setCurrentNav} />
+            </div>
+          </div>
+
+          {/* Multi-Node Cluster Status & Quick Jump Bar */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '4px 10px',
+            borderRadius: '8px',
+            backgroundColor: 'var(--inner-box-bg)',
+            border: '1px solid var(--border-color)',
+            fontSize: '11px',
+            flexShrink: 0
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: currentUser.badgeColor,
+                boxShadow: `0 0 8px ${currentUser.badgeColor}`
+              }} />
+              <span style={{ fontWeight: 700, color: 'var(--text-heading)' }}>
+                Port {typeof window !== 'undefined' ? (window.location.port || '5173') : '5173'}
+              </span>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: 700,
+                padding: '1px 6px',
+                borderRadius: '4px',
+                backgroundColor: `${currentUser.badgeColor}20`,
+                color: currentUser.badgeColor,
+                border: `1px solid ${currentUser.badgeColor}40`
+              }}>
+                {currentUser.roleTitle.split('/')[0].trim()}
+              </span>
+            </div>
+
+            <div style={{ height: '14px', width: '1px', backgroundColor: 'var(--border-color)' }} />
+
+            <span style={{ color: 'var(--text-muted)', fontSize: '10px', whiteSpace: 'nowrap' }}>Cluster Nodes:</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {PROFILE_CLUSTER_NODES.map(node => {
+                const isCurrent = typeof window !== 'undefined' && window.location.port === node.port;
+                return (
+                  <a
+                    key={node.port}
+                    href={node.url}
+                    target={isCurrent ? undefined : "_blank"}
+                    rel="noreferrer"
+                    title={`${node.title} (${node.name}) on Port ${node.port}`}
+                    style={{
+                      padding: '2px 7px',
+                      borderRadius: '5px',
+                      backgroundColor: isCurrent ? `${node.badgeColor}25` : 'var(--bg-card)',
+                      border: `1px solid ${isCurrent ? node.badgeColor : 'var(--border-color)'}`,
+                      color: isCurrent ? node.badgeColor : 'var(--text-secondary)',
+                      textDecoration: 'none',
+                      fontWeight: isCurrent ? 700 : 500,
+                      fontSize: '10px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '3px',
+                      cursor: isCurrent ? 'default' : 'pointer'
+                    }}
+                  >
+                    :{node.port} {node.shortTitle}
+                  </a>
+                );
+              })}
             </div>
           </div>
 

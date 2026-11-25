@@ -28,7 +28,7 @@ export const USER_PROFILES = {
     avatarInitials: 'NS',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
+      'threats', 'analyst-response', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
       canManageSystem: true,
@@ -62,7 +62,7 @@ export const USER_PROFILES = {
     avatarInitials: 'IB',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
+      'threats', 'analyst-response', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: true,
@@ -94,8 +94,8 @@ export const USER_PROFILES = {
     badgeText: 'ENTERPRISE RISK',
     avatarInitials: 'TG',
     allowedNavs: [
-      'overview', 'live', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'admin', 'settings'
+      'overview', 'live', 'campaigns', 
+      'threats', 'analyst-response', 'evidence', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: false,
@@ -128,7 +128,7 @@ export const USER_PROFILES = {
     avatarInitials: 'NP',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'admin', 'settings'
+      'threats', 'analyst-response', 'admin', 'settings'
     ],
     features: {
       canIssueSec69A: false,
@@ -162,7 +162,7 @@ export const USER_PROFILES = {
     avatarInitials: 'NS',
     allowedNavs: [
       'overview', 'live', 'tipline', 'campaigns', 'narratives', 
-      'threats', 'analyst-response', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
+      'threats', 'analyst-response', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
       canManageSystem: true,
@@ -181,21 +181,119 @@ export const USER_PROFILES = {
   }
 };
 
+export const PORT_ROLES = {
+  '5173': ROLES.SYSTEM_ADMIN,
+  '5174': ROLES.INVESTIGATION_BUREAU,
+  '5175': ROLES.CORPORATE_ENTERPRISE,
+  '5176': ROLES.JOURNALIST_MEDIA,
+  '3001': ROLES.SYSTEM_ADMIN,
+  '3002': ROLES.INVESTIGATION_BUREAU,
+  '3003': ROLES.CORPORATE_ENTERPRISE,
+  '3004': ROLES.JOURNALIST_MEDIA
+};
+
+export const PROFILE_CLUSTER_NODES = [
+  {
+    port: '5173',
+    role: ROLES.SYSTEM_ADMIN,
+    name: 'Naman Saini',
+    title: 'Super Administrator',
+    shortTitle: 'Super Admin',
+    badgeText: 'SUPREME ROOT',
+    badgeColor: '#10b981',
+    url: 'http://localhost:5173'
+  },
+  {
+    port: '5174',
+    role: ROLES.INVESTIGATION_BUREAU,
+    name: 'Vikram Rawat',
+    title: 'Investigation Bureau (IB)',
+    shortTitle: 'IB / LEA',
+    badgeText: 'TOP SECRET / LEA',
+    badgeColor: '#ef4444',
+    url: 'http://localhost:5174'
+  },
+  {
+    port: '5175',
+    role: ROLES.CORPORATE_ENTERPRISE,
+    name: 'Rajesh Singhania',
+    title: 'Corporate Enterprise',
+    shortTitle: 'Tata Corp',
+    badgeText: 'ENTERPRISE RISK',
+    badgeColor: '#f59e0b',
+    url: 'http://localhost:5175'
+  },
+  {
+    port: '5176',
+    role: ROLES.JOURNALIST_MEDIA,
+    name: 'Pooja Kashyap',
+    title: 'Journalist / Fact-Checker',
+    shortTitle: 'Press Desk',
+    badgeText: 'PRESS ACCREDITED',
+    badgeColor: '#3b82f6',
+    url: 'http://localhost:5176'
+  }
+];
+
+export function getInitialRoleForEnvironment() {
+  try {
+    if (typeof window !== 'undefined' && window.location) {
+      const params = new URLSearchParams(window.location.search);
+      const queryRole = params.get('role') || params.get('profile');
+      if (queryRole && USER_PROFILES[queryRole]) {
+        return queryRole;
+      }
+      if (queryRole === 'admin') return ROLES.SYSTEM_ADMIN;
+
+      // Check current localhost port
+      const port = window.location.port;
+      if (port && PORT_ROLES[port]) {
+        return PORT_ROLES[port];
+      }
+
+      const saved = localStorage.getItem('bharat_shield_active_role');
+      if (saved && USER_PROFILES[saved]) {
+        return saved;
+      }
+    }
+  } catch (e) {}
+
+  return ROLES.SYSTEM_ADMIN;
+}
+
+export function getInitialAuthState() {
+  try {
+    if (typeof window !== 'undefined' && window.location) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('logout') === 'true') {
+        return false;
+      }
+      const savedAuth = localStorage.getItem('bharat_shield_authenticated');
+      if (savedAuth === 'false') {
+        return false;
+      }
+      // If designated profile port or URL query param, automatically activate session
+      const port = window.location.port;
+      if (port && PORT_ROLES[port]) {
+        return true;
+      }
+      if (params.get('role') || params.get('profile')) {
+        return true;
+      }
+      if (savedAuth === 'true') {
+        return true;
+      }
+    }
+  } catch (e) {}
+  return true;
+}
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const [currentRole, setCurrentRole] = useState(() => {
-    try {
-      const saved = localStorage.getItem('bharat_shield_active_role');
-      return saved && USER_PROFILES[saved] ? saved : ROLES.INVESTIGATION_BUREAU;
-    } catch {
-      return ROLES.INVESTIGATION_BUREAU;
-    }
-  });
-
-  const [currentUser, setCurrentUser] = useState(() => USER_PROFILES[currentRole] || USER_PROFILES[ROLES.INVESTIGATION_BUREAU]);
+  const [currentRole, setCurrentRole] = useState(() => getInitialRoleForEnvironment());
+  const [isAuthenticated, setIsAuthenticated] = useState(() => getInitialAuthState());
+  const [currentUser, setCurrentUser] = useState(() => USER_PROFILES[currentRole] || USER_PROFILES[ROLES.SYSTEM_ADMIN]);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {

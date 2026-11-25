@@ -107,7 +107,7 @@ export default function OverviewView({ onNavigate }) {
           { label: 'Active Cyber Campaigns', value: String(activeCamps), color: 'var(--text-heading)' },
           { label: 'Critical National Threats', value: String(criticalThreats), color: '#ef4444', isDanger: true },
           { label: 'Raw Intercepts Ingested', value: totalIntercepts, color: 'var(--text-heading)' },
-          { label: 'Cluster Nodes Online', value: '4 / 4', color: '#10b981' }
+          { label: 'AI Threat Detection Accuracy', value: '94.8%', color: '#10b981' }
         ],
         sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
           { key: 'twitter', name: 'X (Twitter)', pct: '37%', rawPct: 37, color: 'var(--sticker-sky, #38bdf8)' },

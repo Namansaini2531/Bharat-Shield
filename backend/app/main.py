@@ -12,6 +12,7 @@ from backend.app.api.intelligence import router as intelligence_router
 from backend.app.api.auth import router as auth_router
 from backend.app.api.admin import router as admin_router
 from backend.app.api.websocket import router as websocket_router
+from backend.app.api.market_intel import router as market_intel_router
 from bots.whatsapp.webhook import router as whatsapp_router
 
 app = FastAPI(
@@ -30,6 +31,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(intelligence_router)
+app.include_router(market_intel_router)
 app.include_router(admin_router)
 app.include_router(whatsapp_router)
 app.include_router(websocket_router)
