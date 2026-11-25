@@ -118,9 +118,10 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         {
           label: 'THREAT MATRIX',
           items: [
-            { id: 'narratives', label: 'Cluster Graph', icon: GitFork },
             { id: 'threats', label: 'Deepfake Radar', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles }
+            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
+            { id: 'enterprise', label: 'Enterprise Profiles', icon: Building2, badge: 'SCOPER', badgeColor: 'orange' },
+            { id: 'report-generator', label: 'Dossier Engine', icon: FileText }
           ]
         },
         {
@@ -153,14 +154,16 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           label: 'BRAND RADAR',
           items: [
             { id: 'overview', label: 'Executive Desk', icon: LayoutDashboard },
-            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '4 ACT', badgeColor: 'red' }
+            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '4 ACT', badgeColor: 'red' },
+            { id: 'enterprise', label: 'Enterprise Data Profile', icon: Building2, badge: 'ML SCOPE', badgeColor: 'orange' }
           ]
         },
         {
           label: 'BRAND THREATS',
           items: [
             { id: 'threats', label: 'Volatility Risk', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'NSE/BSE Dispatch', icon: Sparkles }
+            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
+            { id: 'report-generator', label: 'Executive Dossier', icon: FileText }
           ]
         },
         {
@@ -196,9 +199,10 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         {
           label: 'INVESTIGATION',
           items: [
-            { id: 'narratives', label: 'Mutation Tree', icon: GitFork },
             { id: 'threats', label: 'Reach Metrics', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Debunk Center', icon: Sparkles }
+            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
+            { id: 'enterprise', label: 'Corporate Profiles', icon: Building2 },
+            { id: 'report-generator', label: 'Press Bulletin', icon: FileText }
           ]
         },
         {
@@ -229,9 +233,10 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       {
         label: 'CAMPAIGNS',
         items: [
-          { id: 'narratives', label: 'Border Clusters', icon: GitFork },
           { id: 'threats', label: 'Security Risk', icon: AlertTriangle },
-          { id: 'analyst-response', label: 'Threat Response', icon: Sparkles }
+          { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
+          { id: 'enterprise', label: 'Enterprise Entities', icon: Building2 },
+          { id: 'report-generator', label: 'Agency Dossiers', icon: FileText }
         ]
       },
       {
