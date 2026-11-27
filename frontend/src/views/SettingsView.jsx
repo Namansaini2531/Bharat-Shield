@@ -28,9 +28,33 @@ import { useAuth, ROLES } from '../context/AuthContext';
 
 export default function SettingsView() {
   const { currentRole, currentUser, switchRole, setIsAuthModalOpen, allProfiles } = useAuth();
-  const isAdmin = currentRole === ROLES.SYSTEM_ADMIN;
-  const [activeTab, setActiveTab] = useState(isAdmin ? 'rbac' : 'profile');
+  const [activeTab, setActiveTab] = useState('api');
   const [saved, setSaved] = useState(false);
+
+  // Platform API Keys (BYOK) State
+  const [geminiKey, setGeminiKey] = useState(() => {
+    try { return localStorage.getItem('bharat_shield_gemini_key') || ''; } catch { return ''; }
+  });
+  const [youtubeKey, setYoutubeKey] = useState(() => {
+    try { return localStorage.getItem('bharat_shield_youtube_key') || ''; } catch { return ''; }
+  });
+  const [telegramToken, setTelegramToken] = useState(() => {
+    try { return localStorage.getItem('bharat_shield_telegram_token') || ''; } catch { return ''; }
+  });
+  const [ollamaEndpoint, setOllamaEndpoint] = useState(() => {
+    try { return localStorage.getItem('bharat_shield_ollama_endpoint') || 'http://localhost:11434'; } catch { return 'http://localhost:11434'; }
+  });
+
+  const [showKeys, setShowKeys] = useState(false);
+  const [testingService, setTestingService] = useState(null);
+  const [testResults, setTestResults] = useState({});
+
+  // Live Sandbox Verification State
+  const [liveQuery, setLiveQuery] = useState('Viral forward claiming Indian banking system failure next week due to foreign cyber attack');
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [liveVerdict, setLiveVerdict] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [liveSocialPosts, setLiveSocialPosts] = useState(null);
 
   // Form States
   const [threshold, setThreshold] = useState(85);
@@ -41,9 +65,89 @@ export default function SettingsView() {
   const [tiplineSync, setTiplineSync] = useState(true);
   const [retentionDays, setRetentionDays] = useState('90');
 
-  const handleSave = () => {
+  // Test Connector Function
+  const testConnector = async (service, key) => {
+    setTestingService(service);
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/connectors/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ service, key })
+      });
+      const data = await res.json();
+      setTestResults(prev => ({ ...prev, [service]: data }));
+    } catch (e) {
+      setTestResults(prev => ({
+        ...prev,
+        [service]: { valid: false, message: 'Backend unreachable. Ensure desktop sidecar is running.' }
+      }));
+    } finally {
+      setTestingService(null);
+    }
+  };
+
+  // Save All API Keys
+  const handleSave = async () => {
+    try {
+      localStorage.setItem('bharat_shield_gemini_key', geminiKey);
+      localStorage.setItem('bharat_shield_youtube_key', youtubeKey);
+      localStorage.setItem('bharat_shield_telegram_token', telegramToken);
+      localStorage.setItem('bharat_shield_ollama_endpoint', ollamaEndpoint);
+
+      await fetch('http://127.0.0.1:8000/api/connectors/save-keys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gemini: geminiKey,
+          youtube: youtubeKey,
+          telegram: telegramToken,
+          ollama: ollamaEndpoint
+        })
+      });
+    } catch {}
+
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
+  };
+
+  // Run Real-Time AI Forensic Verification
+  const handleLiveVerify = async () => {
+    if (!liveQuery.trim()) return;
+    setIsVerifying(true);
+    setLiveVerdict(null);
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/connectors/live-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: liveQuery, api_key: geminiKey })
+      });
+      const data = await res.json();
+      setLiveVerdict(data);
+    } catch (err) {
+      setLiveVerdict({ error: 'Connection failed: ' + err.message });
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  // Run Real-Time Social Search (YouTube + Reddit)
+  const handleLiveSearch = async () => {
+    if (!liveQuery.trim()) return;
+    setIsSearching(true);
+    setLiveSocialPosts(null);
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/connectors/live-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: liveQuery, youtube_key: youtubeKey })
+      });
+      const data = await res.json();
+      setLiveSocialPosts(data);
+    } catch (err) {
+      setLiveSocialPosts({ error: 'Search failed: ' + err.message });
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   const permissionsList = [
@@ -59,21 +163,14 @@ export default function SettingsView() {
     { key: 'canViewAuditLedger', label: 'Immutable Blockchain Audit Ledger Access' }
   ];
 
-  const adminTabs = [
-    { id: 'rbac', label: 'RBAC & Clearances', icon: Fingerprint },
+  const currentTabs = [
+    { id: 'api', label: 'Platform API Keys (BYOK)', icon: Key },
     { id: 'general', label: 'Threat Engine', icon: Sliders },
     { id: 'blockchain', label: 'EVM & Custody', icon: Shield },
     { id: 'ingestion', label: 'Ingestion Feeds', icon: Radio },
-    { id: 'api', label: 'API Keys & Webhooks', icon: Key },
+    { id: 'rbac', label: 'Personal Lenses & RBAC', icon: Fingerprint },
     { id: 'storage', label: 'Data Retention', icon: Database }
   ];
-
-  const userTabs = [
-    { id: 'profile', label: 'Identity & Clearance', icon: Fingerprint },
-    { id: 'privileges', label: 'Assigned Privileges', icon: ShieldCheck }
-  ];
-
-  const currentTabs = isAdmin ? adminTabs : userTabs;
 
   return (
     <div>
@@ -459,37 +556,521 @@ export default function SettingsView() {
             </div>
           )}
 
-          {/* Tab 4: API Keys */}
+          {/* Tab 4: Platform API Keys (BYOK) */}
           {activeTab === 'api' && (
-            <div className="bs-card" style={{ padding: '24px' }}>
-              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Key size={18} style={{ color: 'var(--accent-amber)' }} />
-                <span>Operational API Credentials</span>
-              </div>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
-                Secret tokens for law enforcement integration and inter-agency threat sharing.
-              </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className="bs-card" style={{ padding: '24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+                  <div>
+                    <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-heading)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Key size={18} style={{ color: 'var(--accent-primary)' }} />
+                      <span>Bring Your Own Key (BYOK) Platform Connectors</span>
+                    </div>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                      Enter your free API keys to enable live real-time web search, AI narrative triage, and video analysis.
+                    </p>
+                  </div>
 
-              <div>
-                <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-heading)', display: 'block', marginBottom: '6px' }}>
-                  Inter-Agency STIX 2.1 Threat Sharing API Token
-                </label>
-                <input 
-                  type="password" 
-                  value="bs_sec_live_99218aef882199042bba"
-                  readOnly
-                  style={{
-                    width: '100%',
-                    padding: '9px 12px',
-                    backgroundColor: 'var(--inner-box-bg)',
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      onClick={() => setShowKeys(!showKeys)}
+                      className="bs-button bs-button-secondary"
+                      style={{ fontSize: '11.5px', padding: '5px 12px' }}
+                    >
+                      {showKeys ? 'Hide Keys' : 'Reveal Keys'}
+                    </button>
+                    <button
+                      onClick={handleSave}
+                      className="bs-button bs-button-primary"
+                      style={{ fontSize: '11.5px', padding: '5px 14px', gap: '6px' }}
+                    >
+                      {saved ? <Check size={14} /> : <Save size={14} />}
+                      <span>{saved ? 'Saved' : 'Save all keys'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Connector Grid */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                  
+                  {/* 1. Google Gemini */}
+                  <div style={{
+                    padding: '16px',
+                    borderRadius: 'var(--radius-card)',
                     border: '1px solid var(--border-color)',
-                    borderRadius: '8px',
-                    color: 'var(--text-primary)',
-                    fontFamily: 'JetBrains Mono',
-                    fontSize: '12px',
-                    outline: 'none'
-                  }}
-                />
+                    backgroundColor: 'var(--bg-input)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Cpu size={16} style={{ color: 'var(--accent-primary)' }} />
+                        <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-heading)' }}>
+                          Google Gemini API Key (Free AI Triage & Deepfake Debunk)
+                        </span>
+                      </div>
+                      <a 
+                        href="https://aistudio.google.com/app/apikey" 
+                        target="_blank" 
+                        rel="noreferrer"
+                        style={{ fontSize: '11.5px', color: 'var(--accent-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      >
+                        Get free Gemini key <ExternalLink size={12} />
+                      </a>
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <input
+                        type={showKeys ? 'text' : 'password'}
+                        placeholder="AIzaSy..."
+                        value={geminiKey}
+                        onChange={(e) => setGeminiKey(e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: '8px 12px',
+                          borderRadius: 'var(--radius-control)',
+                          border: '1px solid var(--border-color)',
+                          backgroundColor: 'var(--bg-card)',
+                          color: 'var(--text-primary)',
+                          fontFamily: 'JetBrains Mono',
+                          fontSize: '12px',
+                          outline: 'none'
+                        }}
+                      />
+                      <button
+                        onClick={() => testConnector('gemini', geminiKey)}
+                        disabled={testingService === 'gemini'}
+                        className="bs-button bs-button-secondary"
+                        style={{ fontSize: '11.5px', padding: '6px 14px' }}
+                      >
+                        {testingService === 'gemini' ? <RefreshCw size={13} className="animate-spin" /> : 'Test Connection'}
+                      </button>
+                    </div>
+                    {testResults.gemini && (
+                      <div style={{
+                        marginTop: '8px',
+                        fontSize: '11.5px',
+                        color: testResults.gemini.valid ? 'var(--risk-verified)' : 'var(--risk-critical)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}>
+                        {testResults.gemini.valid ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                        <span>{testResults.gemini.message}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 2. YouTube Data API */}
+                  <div style={{
+                    padding: '16px',
+                    borderRadius: 'var(--radius-card)',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-input)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Globe size={16} style={{ color: '#ef4444' }} />
+                        <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-heading)' }}>
+                          YouTube Data API v3 Key (Video Search & Viral Shorts)
+                        </span>
+                      </div>
+                      <a 
+                        href="https://console.cloud.google.com/apis/credentials" 
+                        target="_blank" 
+                        rel="noreferrer"
+                        style={{ fontSize: '11.5px', color: 'var(--accent-primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      >
+                        Google Cloud Console <ExternalLink size={12} />
+                      </a>
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <input
+                        type={showKeys ? 'text' : 'password'}
+                        placeholder="AIzaSy..."
+                        value={youtubeKey}
+                        onChange={(e) => setYoutubeKey(e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: '8px 12px',
+                          borderRadius: 'var(--radius-control)',
+                          border: '1px solid var(--border-color)',
+                          backgroundColor: 'var(--bg-card)',
+                          color: 'var(--text-primary)',
+                          fontFamily: 'JetBrains Mono',
+                          fontSize: '12px',
+                          outline: 'none'
+                        }}
+                      />
+                      <button
+                        onClick={() => testConnector('youtube', youtubeKey)}
+                        disabled={testingService === 'youtube'}
+                        className="bs-button bs-button-secondary"
+                        style={{ fontSize: '11.5px', padding: '6px 14px' }}
+                      >
+                        {testingService === 'youtube' ? <RefreshCw size={13} className="animate-spin" /> : 'Test Connection'}
+                      </button>
+                    </div>
+                    {testResults.youtube && (
+                      <div style={{
+                        marginTop: '8px',
+                        fontSize: '11.5px',
+                        color: testResults.youtube.valid ? 'var(--risk-verified)' : 'var(--risk-critical)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}>
+                        {testResults.youtube.valid ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                        <span>{testResults.youtube.message}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 3. Reddit Public Connector */}
+                  <div style={{
+                    padding: '16px',
+                    borderRadius: 'var(--radius-card)',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-input)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}>
+                    <div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-heading)' }}>
+                        Reddit Ingestion (r/india, r/delhi Public Discussions)
+                      </div>
+                      <div style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                        Uses Reddit's open JSON gateway. Ready for instant live sentiment & narrative search.
+                      </div>
+                    </div>
+                    <span style={{
+                      fontSize: '11px',
+                      padding: '3px 10px',
+                      borderRadius: 'var(--radius-badge)',
+                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                      color: 'var(--risk-verified)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      fontFamily: 'JetBrains Mono'
+                    }}>
+                      ● Active (No Key Needed)
+                    </span>
+                  </div>
+
+                  {/* 4. Telegram Bot Token */}
+                  <div style={{
+                    padding: '16px',
+                    borderRadius: 'var(--radius-card)',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-input)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Radio size={16} style={{ color: '#0ea5e9' }} />
+                        <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-heading)' }}>
+                          Telegram Tipline Bot Token (Optional)
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>Created via @BotFather</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <input
+                        type={showKeys ? 'text' : 'password'}
+                        placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ..."
+                        value={telegramToken}
+                        onChange={(e) => setTelegramToken(e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: '8px 12px',
+                          borderRadius: 'var(--radius-control)',
+                          border: '1px solid var(--border-color)',
+                          backgroundColor: 'var(--bg-card)',
+                          color: 'var(--text-primary)',
+                          fontFamily: 'JetBrains Mono',
+                          fontSize: '12px',
+                          outline: 'none'
+                        }}
+                      />
+                      <button
+                        onClick={() => testConnector('telegram', telegramToken)}
+                        disabled={testingService === 'telegram'}
+                        className="bs-button bs-button-secondary"
+                        style={{ fontSize: '11.5px', padding: '6px 14px' }}
+                      >
+                        {testingService === 'telegram' ? <RefreshCw size={13} className="animate-spin" /> : 'Test Connection'}
+                      </button>
+                    </div>
+                    {testResults.telegram && (
+                      <div style={{
+                        marginTop: '8px',
+                        fontSize: '11.5px',
+                        color: testResults.telegram.valid ? 'var(--risk-verified)' : 'var(--risk-critical)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}>
+                        {testResults.telegram.valid ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                        <span>{testResults.telegram.message}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 5. Local Ollama Host */}
+                  <div style={{
+                    padding: '16px',
+                    borderRadius: 'var(--radius-card)',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-input)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Server size={16} style={{ color: 'var(--text-secondary)' }} />
+                        <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-heading)' }}>
+                          Local Ollama Endpoint (100% Offline AI Inference)
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>e.g. llama3 / mistral</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <input
+                        type="text"
+                        value={ollamaEndpoint}
+                        onChange={(e) => setOllamaEndpoint(e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: '8px 12px',
+                          borderRadius: 'var(--radius-control)',
+                          border: '1px solid var(--border-color)',
+                          backgroundColor: 'var(--bg-card)',
+                          color: 'var(--text-primary)',
+                          fontFamily: 'JetBrains Mono',
+                          fontSize: '12px',
+                          outline: 'none'
+                        }}
+                      />
+                      <button
+                        onClick={() => testConnector('ollama', ollamaEndpoint)}
+                        disabled={testingService === 'ollama'}
+                        className="bs-button bs-button-secondary"
+                        style={{ fontSize: '11.5px', padding: '6px 14px' }}
+                      >
+                        {testingService === 'ollama' ? <RefreshCw size={13} className="animate-spin" /> : 'Ping Ollama'}
+                      </button>
+                    </div>
+                    {testResults.ollama && (
+                      <div style={{
+                        marginTop: '8px',
+                        fontSize: '11.5px',
+                        color: testResults.ollama.valid ? 'var(--risk-verified)' : 'var(--risk-critical)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}>
+                        {testResults.ollama.valid ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+                        <span>{testResults.ollama.message}</span>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Live Testing Sandbox */}
+              <div className="bs-card" style={{ padding: '24px' }}>
+                <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '4px' }}>
+                  Live API Testing Sandbox
+                </div>
+                <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginBottom: '14px' }}>
+                  Test your active API keys on any live social media claim or trending narrative in India.
+                </p>
+
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+                  <input
+                    type="text"
+                    value={liveQuery}
+                    onChange={(e) => setLiveQuery(e.target.value)}
+                    placeholder="Enter claim or topic (e.g. 'Viral video claiming bank run in Mumbai')..."
+                    style={{
+                      flex: 1,
+                      padding: '8px 12px',
+                      borderRadius: 'var(--radius-control)',
+                      border: '1px solid var(--border-color)',
+                      backgroundColor: 'var(--bg-input)',
+                      color: 'var(--text-primary)',
+                      fontSize: '12.5px',
+                      outline: 'none'
+                    }}
+                  />
+                  <button
+                    onClick={handleLiveVerify}
+                    disabled={isVerifying || !geminiKey}
+                    className="bs-button bs-button-primary"
+                    style={{ fontSize: '11.5px', padding: '6px 14px', gap: '6px' }}
+                    title={!geminiKey ? "Enter your Gemini API key above first" : undefined}
+                  >
+                    {isVerifying ? <RefreshCw size={13} className="animate-spin" /> : <Cpu size={13} />}
+                    <span>AI Forensic Verify</span>
+                  </button>
+                  <button
+                    onClick={handleLiveSearch}
+                    disabled={isSearching}
+                    className="bs-button bs-button-secondary"
+                    style={{ fontSize: '11.5px', padding: '6px 14px', gap: '6px' }}
+                  >
+                    {isSearching ? <RefreshCw size={13} className="animate-spin" /> : <Globe size={13} />}
+                    <span>Search Web & Reddit</span>
+                  </button>
+                </div>
+
+                {/* AI Verdict Display */}
+                {liveVerdict && (
+                  <div style={{
+                    padding: '16px',
+                    borderRadius: 'var(--radius-card)',
+                    backgroundColor: 'var(--bg-input)',
+                    border: '1px solid var(--border-color)',
+                    marginBottom: '14px'
+                  }}>
+                    {liveVerdict.error ? (
+                      <div style={{ color: 'var(--risk-critical)', fontSize: '12px' }}>{liveVerdict.error}</div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{
+                            padding: '3px 10px',
+                            borderRadius: 'var(--radius-badge)',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            fontFamily: 'JetBrains Mono',
+                            backgroundColor: liveVerdict.risk_score >= 70 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+                            color: liveVerdict.risk_score >= 70 ? 'var(--risk-critical)' : 'var(--risk-verified)'
+                          }}>
+                            VERDICT: {liveVerdict.verdict}
+                          </span>
+                          <span style={{ fontSize: '12px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)' }}>
+                            Risk Score: <strong style={{ color: 'var(--text-heading)' }}>{liveVerdict.risk_score}/100</strong>
+                          </span>
+                        </div>
+                        <p style={{ fontSize: '12.5px', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                          {liveVerdict.debunk_summary}
+                        </p>
+                        {liveVerdict.detected_patterns && (
+                          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                            {liveVerdict.detected_patterns.map((p, i) => (
+                              <span key={i} style={{
+                                fontSize: '10.5px',
+                                padding: '2px 8px',
+                                borderRadius: 'var(--radius-badge)',
+                                backgroundColor: 'var(--bg-raised)',
+                                border: '1px solid var(--border-color)',
+                                color: 'var(--text-secondary)'
+                              }}>
+                                {p}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Live Social Search Posts */}
+                {liveSocialPosts && (
+                  <div style={{
+                    padding: '16px',
+                    borderRadius: 'var(--radius-card)',
+                    backgroundColor: 'var(--bg-input)',
+                    border: '1px solid var(--border-color)'
+                  }}>
+                    <div style={{ fontSize: '12.5px', fontWeight: 600, color: 'var(--text-heading)', marginBottom: '10px' }}>
+                      Live Social Media Matches for "{liveSocialPosts.query}"
+                    </div>
+
+                    {/* Reddit Results */}
+                    {liveSocialPosts.platforms?.reddit?.length > 0 && (
+                      <div style={{ marginBottom: '12px' }}>
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>
+                          Reddit Discussions
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          {liveSocialPosts.platforms.reddit.map((p, idx) => (
+                            <a
+                              key={idx}
+                              href={p.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                padding: '8px 12px',
+                                borderRadius: '6px',
+                                backgroundColor: 'var(--bg-card)',
+                                border: '1px solid var(--border-color)',
+                                textDecoration: 'none',
+                                color: 'var(--text-primary)',
+                                fontSize: '12px'
+                              }}
+                            >
+                              <span style={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginRight: '10px' }}>
+                                {p.title}
+                              </span>
+                              <span style={{ fontSize: '10.5px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono', flexShrink: 0 }}>
+                                {p.score} upvotes • {p.num_comments} comments
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* YouTube Results */}
+                    {liveSocialPosts.platforms?.youtube?.length > 0 ? (
+                      <div>
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '6px', textTransform: 'uppercase', fontFamily: 'JetBrains Mono' }}>
+                          YouTube Video Telemetry
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          {liveSocialPosts.platforms.youtube.map((v, idx) => (
+                            <a
+                              key={idx}
+                              href={v.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                padding: '8px 12px',
+                                borderRadius: '6px',
+                                backgroundColor: 'var(--bg-card)',
+                                border: '1px solid var(--border-color)',
+                                textDecoration: 'none',
+                                color: 'var(--text-primary)',
+                                fontSize: '12px'
+                              }}
+                            >
+                              {v.thumbnail && (
+                                <img src={v.thumbnail} alt="" style={{ width: '40px', height: '24px', objectFit: 'cover', borderRadius: '3px' }} />
+                              )}
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  {v.title}
+                                </div>
+                                <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>{v.channel}</div>
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      !youtubeKey && (
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          (Add your YouTube Data API key above to see live YouTube video search results)
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+
               </div>
             </div>
           )}
