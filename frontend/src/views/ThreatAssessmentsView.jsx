@@ -769,65 +769,63 @@ export default function ThreatAssessmentsView() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span style={{ 
-              backgroundColor: 'rgba(59, 130, 246, 0.15)', 
-              color: '#3b82f6', 
-              padding: '4px 10px', 
-              borderRadius: '6px', 
+              backgroundColor: 'var(--bg-input)', 
+              color: 'var(--text-secondary)', 
+              padding: '2px 7px', 
+              borderRadius: 'var(--radius-badge)', 
               fontSize: '11px', 
-              fontWeight: 800,
+              fontWeight: 500,
+              fontFamily: 'JetBrains Mono',
+              border: '1px solid var(--border-color)',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px'
+              gap: '5px'
             }}>
-              <Activity size={13} /> EXPLAINABLE THREAT TELEMETRY
+              <Activity size={12} /> Threat telemetry
             </span>
             <span style={{ 
-              backgroundColor: groqApiKey ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)', 
-              color: groqApiKey ? '#10b981' : '#f59e0b', 
-              padding: '4px 10px', 
-              borderRadius: '6px', 
+              backgroundColor: groqApiKey ? 'var(--risk-verified-bg)' : 'var(--bg-input)', 
+              color: groqApiKey ? 'var(--risk-verified)' : 'var(--text-muted)', 
+              padding: '2px 7px', 
+              borderRadius: 'var(--radius-badge)', 
               fontSize: '11px', 
-              fontWeight: 800,
+              fontWeight: 500,
+              fontFamily: 'JetBrains Mono',
+              border: `1px solid ${groqApiKey ? 'var(--risk-verified-border)' : 'var(--border-color)'}`,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px'
+              gap: '5px'
             }}>
-              <Zap size={13} /> {groqApiKey ? 'GROQ LLaMA-3.3 70B CONNECTED' : 'EXPERT HEURISTIC ADVISOR'}
+              <Zap size={12} /> {groqApiKey ? 'Groq LLaMA-3.3 connected' : 'Heuristic advisor'}
             </span>
           </div>
 
-          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.4px', margin: '8px 0 0 0' }}>
-            Explainable Threat Assessment & AI Counter-Disinformation Ledger
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', letterSpacing: '-0.01em', margin: '6px 0 0 0' }}>
+            Threat assessments & counter-disinformation ledger
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-            Automated multi-signal algorithmic breakdown and Groq AI counter-measure playbooks for {currentUser?.roleTitle || 'Threat Intelligence'}.
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '4px' }}>
+            Multi-signal algorithmic breakdown and counter-measure playbooks for {currentUser?.roleTitle || 'Threat Intelligence'}.
           </p>
         </div>
 
         {/* Action Button: Configure Groq API Key */}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
           <button
             onClick={() => {
               setTempApiKey(groqApiKey);
               setShowKeyModal(true);
             }}
+            className="bs-button bs-button-secondary"
             style={{
-              padding: '8px 14px',
-              borderRadius: '8px',
-              fontSize: '12px',
-              fontWeight: 700,
+              padding: '5px 12px',
+              fontSize: '11.5px',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              backgroundColor: groqApiKey ? 'rgba(16, 185, 129, 0.12)' : 'var(--accent-blue)',
-              color: groqApiKey ? '#10b981' : '#ffffff',
-              border: `1px solid ${groqApiKey ? 'rgba(16, 185, 129, 0.3)' : 'var(--accent-blue)'}`,
-              cursor: 'pointer',
-              boxShadow: 'var(--shadow-sm)'
+              gap: '6px'
             }}
           >
-            <Key size={14} />
-            <span>{groqApiKey ? 'Groq Key Configured (Edit)' : 'Connect Groq API Key'}</span>
+            <Key size={13} />
+            <span>{groqApiKey ? 'Groq API key (configured)' : 'Configure Groq key'}</span>
           </button>
 
           {/* KPI Widget */}

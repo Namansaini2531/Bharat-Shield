@@ -224,60 +224,59 @@ export default function LiveIntelView({ onNavigate }) {
         borderBottom: '1px solid var(--border-color)'
       }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
             <span style={{ 
-              padding: '4px 8px', 
-              backgroundColor: 'rgba(245, 158, 11, 0.15)', 
-              color: '#f59e0b', 
-              borderRadius: '6px', 
+              padding: '2px 7px', 
+              backgroundColor: 'var(--bg-input)', 
+              color: 'var(--text-secondary)', 
+              borderRadius: 'var(--radius-badge)', 
               fontSize: '11px', 
-              fontWeight: 800, 
+              fontWeight: 500, 
               fontFamily: 'JetBrains Mono',
-              border: '1px solid rgba(245, 158, 11, 0.3)'
+              border: '1px solid var(--border-color)'
             }}>
-              MARKET INTEL RADAR v2.4
+              Market intelligence
             </span>
-            <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.5px', margin: 0 }}>
-              Market Intelligence & Signal Ingestion Engine
-            </h2>
           </div>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '6px', margin: 0 }}>
-            Real-time financial disinformation ingestion, pre-market bear-raid triage, 384-dim vector correlation, and automated SEBI Reg 30 defense generation.
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', letterSpacing: '-0.01em', margin: 0 }}>
+            Market intelligence & signal ingestion
+          </h2>
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '4px', margin: 0 }}>
+            Financial rumor ingestion, pre-market triage, semantic vector correlation, and regulatory disclosure drafting.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           {/* WebSocket Status Indicator */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            padding: '6px 14px',
-            backgroundColor: isConnected ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-            border: `1px solid ${isConnected ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
-            borderRadius: '9999px',
+            gap: '6px',
+            padding: '4px 10px',
+            backgroundColor: 'var(--bg-input)',
+            border: '1px solid var(--border-color)',
+            borderRadius: 'var(--radius-badge)',
             fontSize: '11px',
             fontFamily: 'JetBrains Mono',
-            color: isConnected ? '#10b981' : '#ef4444'
+            color: isConnected ? 'var(--risk-verified)' : 'var(--risk-critical)'
           }}>
             <span style={{
-              width: '8px',
-              height: '8px',
+              width: '6px',
+              height: '6px',
               borderRadius: '50%',
-              backgroundColor: isConnected ? '#10b981' : '#ef4444',
-              boxShadow: isConnected ? '0 0 8px #10b981' : 'none'
+              backgroundColor: isConnected ? 'var(--risk-verified)' : 'var(--risk-critical)'
             }} />
-            <span>{isConnected ? 'NSE / BSE SURVEILLANCE FEED ACTIVE' : 'OFFLINE // RECONNECTING'}</span>
+            <span>{isConnected ? 'BSE/NSE stream active' : 'Offline / reconnecting'}</span>
           </div>
 
           <button
             onClick={handleSimulateBurst}
             disabled={simulating}
-            className="bs-button bs-button-primary"
-            style={{ fontSize: '12px', padding: '6px 14px', gap: '6px' }}
+            className="bs-button bs-button-secondary"
+            style={{ fontSize: '11.5px', padding: '5px 12px', gap: '6px' }}
           >
-            <Zap size={14} className={simulating ? "animate-pulse" : ""} />
-            <span>{simulating ? 'Injecting Stream...' : 'Simulate Intercept Burst'}</span>
+            <Zap size={13} />
+            <span>{simulating ? 'Injecting stream...' : 'Simulate burst'}</span>
           </button>
         </div>
       </div>
@@ -286,7 +285,7 @@ export default function LiveIntelView({ onNavigate }) {
       <div style={{ 
         display: 'flex', 
         alignItems: 'center', 
-        gap: '8px', 
+        gap: '4px', 
         marginBottom: '20px', 
         borderBottom: '1px solid var(--border-color)',
         paddingBottom: '2px'
@@ -297,29 +296,18 @@ export default function LiveIntelView({ onNavigate }) {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '10px 18px',
-            backgroundColor: activeTab === 'market-intel' ? 'var(--bg-card)' : 'transparent',
-            border: 'none',
-            borderBottom: activeTab === 'market-intel' ? '2px solid #3b82f6' : '2px solid transparent',
-            color: activeTab === 'market-intel' ? 'var(--text-heading)' : 'var(--text-secondary)',
-            fontWeight: activeTab === 'market-intel' ? 700 : 500,
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease'
+            padding: '8px 14px',
+            backgroundColor: activeTab === 'market-intel' ? 'var(--bg-raised)' : 'transparent',
+            border: '1px solid ' + (activeTab === 'market-intel' ? 'var(--border-light)' : 'transparent'),
+            borderRadius: 'var(--radius-control)',
+            color: activeTab === 'market-intel' ? 'var(--text-heading)' : 'var(--text-muted)',
+            fontWeight: activeTab === 'market-intel' ? 600 : 400,
+            fontSize: '12.5px',
+            cursor: 'pointer'
           }}
         >
-          <BarChart3 size={16} style={{ color: activeTab === 'market-intel' ? '#3b82f6' : 'inherit' }} />
-          <span>Ingest & Process Market Intel</span>
-          <span style={{ 
-            fontSize: '10px', 
-            padding: '2px 6px', 
-            borderRadius: '4px', 
-            backgroundColor: 'rgba(59, 130, 246, 0.15)', 
-            color: '#60a5fa', 
-            fontWeight: 700 
-          }}>
-            AI PIPELINE
-          </span>
+          <BarChart3 size={14} />
+          <span>Ingest & process</span>
         </button>
 
         <button
@@ -328,29 +316,18 @@ export default function LiveIntelView({ onNavigate }) {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '10px 18px',
-            backgroundColor: activeTab === 'batch-ingest' ? 'var(--bg-card)' : 'transparent',
-            border: 'none',
-            borderBottom: activeTab === 'batch-ingest' ? '2px solid #3b82f6' : '2px solid transparent',
-            color: activeTab === 'batch-ingest' ? 'var(--text-heading)' : 'var(--text-secondary)',
-            fontWeight: activeTab === 'batch-ingest' ? 700 : 500,
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease'
+            padding: '8px 14px',
+            backgroundColor: activeTab === 'batch-ingest' ? 'var(--bg-raised)' : 'transparent',
+            border: '1px solid ' + (activeTab === 'batch-ingest' ? 'var(--border-light)' : 'transparent'),
+            borderRadius: 'var(--radius-control)',
+            color: activeTab === 'batch-ingest' ? 'var(--text-heading)' : 'var(--text-muted)',
+            fontWeight: activeTab === 'batch-ingest' ? 600 : 400,
+            fontSize: '12.5px',
+            cursor: 'pointer'
           }}
         >
-          <Upload size={16} style={{ color: activeTab === 'batch-ingest' ? '#3b82f6' : 'inherit' }} />
-          <span>Dataset Batch Ingest & Clustering</span>
-          <span style={{ 
-            fontSize: '10px', 
-            padding: '2px 6px', 
-            borderRadius: '4px', 
-            backgroundColor: 'rgba(16, 185, 129, 0.15)', 
-            color: '#10b981', 
-            fontWeight: 700 
-          }}>
-            40K+ RECS
-          </span>
+          <Upload size={14} />
+          <span>Batch dataset ingest</span>
         </button>
 
         <button
@@ -359,29 +336,30 @@ export default function LiveIntelView({ onNavigate }) {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '10px 18px',
-            backgroundColor: activeTab === 'live-feed' ? 'var(--bg-card)' : 'transparent',
-            border: 'none',
-            borderBottom: activeTab === 'live-feed' ? '2px solid #3b82f6' : '2px solid transparent',
-            color: activeTab === 'live-feed' ? 'var(--text-heading)' : 'var(--text-secondary)',
-            fontWeight: activeTab === 'live-feed' ? 700 : 500,
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease'
+            padding: '8px 14px',
+            backgroundColor: activeTab === 'live-feed' ? 'var(--bg-raised)' : 'transparent',
+            border: '1px solid ' + (activeTab === 'live-feed' ? 'var(--border-light)' : 'transparent'),
+            borderRadius: 'var(--radius-control)',
+            color: activeTab === 'live-feed' ? 'var(--text-heading)' : 'var(--text-muted)',
+            fontWeight: activeTab === 'live-feed' ? 600 : 400,
+            fontSize: '12.5px',
+            cursor: 'pointer'
           }}
         >
-          <Radio size={16} style={{ color: activeTab === 'live-feed' ? '#10b981' : 'inherit' }} />
-          <span>Real-Time Socket Stream</span>
-          <span style={{ 
-            fontSize: '10px', 
-            padding: '2px 6px', 
-            borderRadius: '4px', 
-            backgroundColor: 'rgba(239, 68, 68, 0.15)', 
-            color: '#ef4444', 
-            fontWeight: 700 
-          }}>
-            {liveSignals.length} ACTIVE
-          </span>
+          <Radio size={14} />
+          <span>Live feed</span>
+          {liveSignals.length > 0 && (
+            <span style={{ 
+              fontSize: '10px', 
+              padding: '1px 5px', 
+              borderRadius: 'var(--radius-badge)', 
+              backgroundColor: 'var(--accent-subtle)', 
+              color: 'var(--accent-primary)',
+              fontFamily: 'JetBrains Mono'
+            }}>
+              {liveSignals.length}
+            </span>
+          )}
         </button>
       </div>
 
@@ -392,13 +370,13 @@ export default function LiveIntelView({ onNavigate }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           
           {/* Quick Scenario Loader Bar */}
-          <div className="bs-card" style={{ padding: '16px', backgroundColor: 'var(--inner-box-bg)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
-              <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-heading)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={14} style={{ color: '#f59e0b' }} />
-                <span>Quick-Load Realistic Market Attack Scenarios:</span>
+          <div className="bs-card" style={{ padding: '14px 16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-heading)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Activity size={14} style={{ color: 'var(--text-secondary)' }} />
+                <span>Preloaded attack scenarios</span>
               </div>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Click to auto-populate the neural ingestion engine</span>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Select to populate ingestion terminal</span>
             </div>
 
             <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
@@ -407,23 +385,21 @@ export default function LiveIntelView({ onNavigate }) {
                   key={preset.id}
                   onClick={() => handleSelectPreset(preset)}
                   style={{
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                    backgroundColor: selectedTicker === preset.company_ticker && signalText === preset.text ? 'rgba(59, 130, 246, 0.2)' : 'var(--bg-card)',
-                    border: `1px solid ${selectedTicker === preset.company_ticker && signalText === preset.text ? '#3b82f6' : 'var(--border-color)'}`,
-                    color: selectedTicker === preset.company_ticker && signalText === preset.text ? '#60a5fa' : 'var(--text-primary)',
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-badge)',
+                    backgroundColor: selectedTicker === preset.company_ticker && signalText === preset.text ? 'var(--bg-raised)' : 'var(--bg-input)',
+                    border: `1px solid ${selectedTicker === preset.company_ticker && signalText === preset.text ? 'var(--border-light)' : 'var(--border-color)'}`,
+                    color: selectedTicker === preset.company_ticker && signalText === preset.text ? 'var(--text-heading)' : 'var(--text-secondary)',
                     fontSize: '11px',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    transition: 'all 0.15s ease'
+                    gap: '6px'
                   }}
                 >
-                  <Zap size={12} style={{ color: '#f59e0b' }} />
-                  <span>{preset.company_ticker}</span>
+                  <span style={{ fontFamily: 'JetBrains Mono', color: 'var(--text-primary)' }}>{preset.company_ticker}</span>
                   <span style={{ color: 'var(--text-muted)', fontSize: '10px' }}>• {preset.media_type}</span>
                 </button>
               ))}

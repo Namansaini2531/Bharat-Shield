@@ -51,36 +51,36 @@ export default function AuditLedgerView() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '11px', color: currentUser?.badgeColor || '#10b981', fontWeight: 700, letterSpacing: '1px' }}>
-              {currentUser?.badgeText || 'ROOT'}
+            <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500, fontFamily: 'JetBrains Mono' }}>
+              {currentUser?.badgeText || 'Admin'}
             </span>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>•</span>
-            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-              IMMUTABLE AUDIT TRAIL
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              Audit ledger
             </span>
           </div>
-          <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', marginTop: '4px', letterSpacing: '-0.5px' }}>
-            Evidence Integrity & EVM Audit Ledger
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', marginTop: '4px', letterSpacing: '-0.01em' }}>
+            Evidence integrity & cryptographic ledger
           </h2>
-          <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
-            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)', padding: '2px 8px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '2px' }}>
+          <div style={{ display: 'flex', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)', padding: '2px 7px', backgroundColor: 'var(--bg-input)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-badge)' }}>
               Auditor: {currentUser?.name || 'Commander Arvind Sharma'}
             </span>
-            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)', padding: '2px 8px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '2px' }}>
-              Clearance: {currentUser?.clearance ? currentUser.clearance.split('(')[0] : 'Level 5+'}
+            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)', padding: '2px 7px', backgroundColor: 'var(--bg-input)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-badge)' }}>
+              Clearance: {currentUser?.clearance ? currentUser.clearance.split('(')[0] : 'Level 5'}
             </span>
-            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)', padding: '2px 8px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '2px' }}>
-              Hardhat / EVM Chain ID: 31337
+            <span style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)', padding: '2px 7px', backgroundColor: 'var(--bg-input)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-badge)' }}>
+              Chain ID: 31337
             </span>
           </div>
         </div>
 
         <div style={{ textAlign: 'right' }}>
-          <div className="bs-badge" style={{ backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '6px 12px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <ShieldCheck size={14} /> BLOCKCHAIN: VERIFIED
+          <div className="bs-badge bs-badge-verified" style={{ padding: '4px 10px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '6px', borderRadius: 'var(--radius-badge)' }}>
+            <ShieldCheck size={13} /> Blockchain verified
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px', fontFamily: 'JetBrains Mono' }}>
-            Sync Status: NTP & EVM Confirmed
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', fontFamily: 'JetBrains Mono' }}>
+            Sync: NTP confirmed
           </div>
         </div>
       </div>

@@ -463,19 +463,19 @@ export default function CampaignView() {
     }
   };
 
-  // Status color helper
+  // Status color helper (Unslopped)
   const getStatusBadgeStyle = (status = '') => {
     const s = status.toUpperCase();
     if (s.includes('CRITICAL') || s.includes('ACTIVE')) {
-      return { bg: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)' };
+      return { bg: 'var(--risk-critical-bg)', color: 'var(--risk-critical)', border: '1px solid var(--risk-critical-border)' };
     }
     if (s.includes('VIRAL') || s.includes('HIGH')) {
-      return { bg: 'rgba(249, 115, 22, 0.12)', color: '#f97316', border: '1px solid rgba(249, 115, 22, 0.3)' };
+      return { bg: 'var(--risk-elevated-bg)', color: 'var(--risk-elevated)', border: '1px solid var(--risk-elevated-border)' };
     }
     if (s.includes('CONTAINED') || s.includes('ARCHIVED') || s.includes('DEBUNKED')) {
-      return { bg: 'rgba(16, 185, 129, 0.12)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)' };
+      return { bg: 'var(--risk-verified-bg)', color: 'var(--risk-verified)', border: '1px solid var(--risk-verified-border)' };
     }
-    return { bg: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.3)' };
+    return { bg: 'var(--bg-raised)', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' };
   };
 
   return (
@@ -486,49 +486,45 @@ export default function CampaignView() {
         
         {/* Title & Pill Tabs */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-heading)', margin: 0, letterSpacing: '-0.3px' }}>
-            Campaign Ledger
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', margin: 0, letterSpacing: '-0.01em' }}>
+            Campaign ledger
           </h2>
 
-          <div style={{ display: 'flex', backgroundColor: 'var(--inner-box-bg)', padding: '3px', borderRadius: '8px', border: '1px solid var(--border-color)', gap: '3px' }}>
+          <div style={{ display: 'flex', backgroundColor: 'var(--bg-input)', padding: '2px', borderRadius: 'var(--radius-control)', border: '1px solid var(--border-color)', gap: '2px' }}>
             <button
               onClick={() => setActiveTab('ongoing')}
               style={{
-                padding: '5px 14px',
-                borderRadius: '6px',
-                fontSize: '12px',
-                fontWeight: 600,
+                padding: '4px 12px',
+                borderRadius: 'var(--radius-badge)',
+                fontSize: '11.5px',
+                fontWeight: activeTab === 'ongoing' ? 600 : 400,
                 border: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                backgroundColor: activeTab === 'ongoing' ? 'var(--bg-card)' : 'transparent',
-                color: activeTab === 'ongoing' ? '#ef4444' : 'var(--text-secondary)',
-                boxShadow: activeTab === 'ongoing' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-                transition: 'all 0.15s ease'
+                backgroundColor: activeTab === 'ongoing' ? 'var(--bg-raised)' : 'transparent',
+                color: activeTab === 'ongoing' ? 'var(--text-heading)' : 'var(--text-muted)'
               }}
             >
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444' }} />
-              <span>Ongoing ({ongoingCampaigns.length})</span>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--risk-critical)' }} />
+              <span>Active ({ongoingCampaigns.length})</span>
             </button>
 
             <button
               onClick={() => setActiveTab('archived')}
               style={{
-                padding: '5px 14px',
-                borderRadius: '6px',
-                fontSize: '12px',
-                fontWeight: 600,
+                padding: '4px 12px',
+                borderRadius: 'var(--radius-badge)',
+                fontSize: '11.5px',
+                fontWeight: activeTab === 'archived' ? 600 : 400,
                 border: 'none',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                backgroundColor: activeTab === 'archived' ? 'var(--bg-card)' : 'transparent',
-                color: activeTab === 'archived' ? '#10b981' : 'var(--text-secondary)',
-                boxShadow: activeTab === 'archived' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-                transition: 'all 0.15s ease'
+                backgroundColor: activeTab === 'archived' ? 'var(--bg-raised)' : 'transparent',
+                color: activeTab === 'archived' ? 'var(--text-heading)' : 'var(--text-muted)'
               }}
             >
               <Archive size={12} />
@@ -540,17 +536,17 @@ export default function CampaignView() {
         {/* Search, Filter & Role */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           
-          <div style={{ position: 'relative', width: '240px' }}>
+          <div style={{ position: 'relative', width: '220px' }}>
             <Search size={13} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input
               type="text"
-              placeholder="Search by ID, title, target..."
+              placeholder="Search ID, title, target..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
-                padding: '6px 10px 6px 30px',
-                borderRadius: '6px',
+                padding: '5px 10px 5px 28px',
+                borderRadius: 'var(--radius-control)',
                 border: '1px solid var(--border-color)',
                 backgroundColor: 'var(--bg-card)',
                 color: 'var(--text-heading)',
@@ -564,42 +560,25 @@ export default function CampaignView() {
             value={platformFilter}
             onChange={(e) => setPlatformFilter(e.target.value)}
             style={{
-              padding: '6px 10px',
-              borderRadius: '6px',
+              padding: '5px 8px',
+              borderRadius: 'var(--radius-control)',
               border: '1px solid var(--border-color)',
               backgroundColor: 'var(--bg-card)',
-              color: 'var(--text-heading)',
-              fontSize: '11px',
-              fontWeight: 600,
+              color: 'var(--text-secondary)',
+              fontSize: '11.5px',
+              fontWeight: 500,
               outline: 'none',
               cursor: 'pointer'
             }}
           >
-            <option value="all">All Channels</option>
+            <option value="all">All channels</option>
             <option value="twitter">X (Twitter)</option>
             <option value="telegram">Telegram</option>
             <option value="whatsapp">WhatsApp</option>
             <option value="instagram">Instagram</option>
             <option value="reddit">Reddit</option>
           </select>
-
-          <div style={{
-            padding: '4px 10px',
-            fontSize: '11px',
-            fontWeight: 600,
-            borderRadius: '6px',
-            backgroundColor: 'var(--inner-box-bg)',
-            border: '1px solid var(--border-color)',
-            color: currentUser.badgeColor,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: currentUser.badgeColor }} />
-            <span>{currentUser.roleTitle.split('—')[0].trim()}</span>
-          </div>
         </div>
-
       </div>
 
       {/* Action Toast Banner */}
@@ -631,15 +610,15 @@ export default function CampaignView() {
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '12px' }}>
             <thead>
-              <tr style={{ backgroundColor: 'var(--inner-box-bg)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.5px' }}>
-                <th style={{ padding: '12px 16px', fontWeight: 700 }}>ID</th>
-                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Status</th>
-                <th style={{ padding: '12px 14px', fontWeight: 700, width: '42%' }}>Operational Narrative</th>
-                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Category</th>
-                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Threat Score</th>
-                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Signals</th>
-                <th style={{ padding: '12px 14px', fontWeight: 700 }}>Channels</th>
-                <th style={{ padding: '12px 16px', fontWeight: 700, textAlign: 'right' }}>Action</th>
+              <tr style={{ backgroundColor: 'var(--bg-input)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '11px' }}>
+                <th style={{ padding: '10px 14px', fontWeight: 500 }}>ID</th>
+                <th style={{ padding: '10px 14px', fontWeight: 500 }}>Status</th>
+                <th style={{ padding: '10px 14px', fontWeight: 500, width: '42%' }}>Narrative</th>
+                <th style={{ padding: '10px 14px', fontWeight: 500 }}>Category</th>
+                <th style={{ padding: '10px 14px', fontWeight: 500 }}>Threat score</th>
+                <th style={{ padding: '10px 14px', fontWeight: 500 }}>Signals</th>
+                <th style={{ padding: '10px 14px', fontWeight: 500 }}>Channels</th>
+                <th style={{ padding: '10px 14px', fontWeight: 500, textAlign: 'right' }}>Action</th>
               </tr>
             </thead>
             <tbody>
