@@ -13,7 +13,8 @@ import {
   FileText, 
   Shield, 
   Settings,
-  Building2 
+  Building2,
+  Globe 
 } from 'lucide-react';
 
 const NAV_METADATA = {
@@ -57,6 +58,12 @@ const NAV_METADATA = {
     category: 'Risk Analytics',
     label: 'Threat Assessments',
     icon: AlertTriangle
+  },
+  strategic: {
+    category: 'Geopolitical Intelligence',
+    label: 'Global Impact Radar',
+    subLabel: 'Causal Chain Engine',
+    icon: Globe
   },
   audit: {
     category: 'Governance',

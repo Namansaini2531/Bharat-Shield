@@ -18,6 +18,7 @@ const EnterpriseScopingView = lazy(() => import('./views/EnterpriseScopingView')
 const ReportGeneratorView = lazy(() => import('./views/ReportGeneratorView'));
 const AdminView = lazy(() => import('./views/AdminView'));
 const SettingsView = lazy(() => import('./views/SettingsView'));
+const StrategicRadarView = lazy(() => import('./views/StrategicRadarView'));
 const NotFoundView = lazy(() => import('./views/NotFoundView'));
 
 // Dark Command Loading Fallback
@@ -213,6 +214,8 @@ function MainAppContent() {
         return <AdminView />;
       case 'settings':
         return <SettingsView />;
+      case 'strategic':
+        return <StrategicRadarView />;
       default:
         return <NotFoundView onNavigate={(nav) => setCurrentNav(nav)} />;
     }

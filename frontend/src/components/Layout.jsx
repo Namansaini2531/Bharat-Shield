@@ -40,7 +40,8 @@ import {
   Fingerprint,
   Terminal,
   Sliders,
-  Server
+  Server,
+  Globe
 } from 'lucide-react';
 
 export default function Layout({ currentNav, setCurrentNav, theme, setTheme, children }) {
@@ -120,6 +121,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           label: 'Threat intelligence',
           items: [
             { id: 'threats', label: 'Radar assessments', icon: AlertTriangle },
+            { id: 'strategic', label: 'Global impact radar', icon: Globe },
             { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
             { id: 'enterprise', label: 'Enterprise profiles', icon: Building2 },
             { id: 'report-generator', label: 'Intelligence dossiers', icon: FileText }
@@ -163,6 +165,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           label: 'Threat intelligence',
           items: [
             { id: 'threats', label: 'Volatility risk', icon: AlertTriangle },
+            { id: 'strategic', label: 'Global impact radar', icon: Globe },
             { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
             { id: 'report-generator', label: 'Executive dossier', icon: FileText }
           ]
@@ -202,6 +205,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           label: 'Investigation',
           items: [
             { id: 'threats', label: 'Reach metrics', icon: AlertTriangle },
+            { id: 'strategic', label: 'Global impact radar', icon: Globe },
             { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
             { id: 'enterprise', label: 'Corporate entities', icon: Building2 },
             { id: 'report-generator', label: 'Press bulletin', icon: FileText }
@@ -230,6 +234,7 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
         label: 'Intelligence radar',
         items: [
           { id: 'overview', label: 'Command pulse', icon: LayoutDashboard },
+          { id: 'strategic', label: 'Global impact radar', icon: Globe },
           { id: 'campaigns', label: 'Campaign radar', icon: ShieldAlert, count: 17 },
           { id: 'threats', label: 'Narrative threats', icon: AlertTriangle }
         ]

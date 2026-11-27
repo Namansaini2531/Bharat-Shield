@@ -27,7 +27,7 @@ export const USER_PROFILES = {
     badgeText: 'OSINT Researcher',
     avatarInitials: 'NS',
     allowedNavs: [
-      'overview', 'live', 'tipline', 'campaigns', 
+      'overview', 'strategic', 'live', 'tipline', 'campaigns', 
       'threats', 'analyst-response', 'enterprise', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
@@ -61,7 +61,7 @@ export const USER_PROFILES = {
     badgeText: 'Personal Radar',
     avatarInitials: 'PG',
     allowedNavs: [
-      'overview', 'live', 'tipline', 'campaigns', 
+      'overview', 'strategic', 'live', 'tipline', 'campaigns', 
       'threats', 'analyst-response', 'enterprise', 'report-generator', 'evidence', 'audit', 'admin', 'settings'
     ],
     features: {
@@ -94,7 +94,7 @@ export const USER_PROFILES = {
     badgeText: 'Brand Radar',
     avatarInitials: 'BR',
     allowedNavs: [
-      'overview', 'live', 'campaigns', 
+      'overview', 'strategic', 'live', 'campaigns', 
       'threats', 'analyst-response', 'enterprise', 'report-generator', 'evidence', 'admin', 'settings'
     ],
     features: {
@@ -127,7 +127,7 @@ export const USER_PROFILES = {
     badgeText: 'Fact-Checker',
     avatarInitials: 'FC',
     allowedNavs: [
-      'overview', 'live', 'tipline', 'campaigns', 
+      'overview', 'strategic', 'live', 'tipline', 'campaigns', 
       'threats', 'analyst-response', 'enterprise', 'report-generator', 'admin', 'settings'
     ],
     features: {
