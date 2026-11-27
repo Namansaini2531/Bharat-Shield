@@ -5,59 +5,61 @@ import NetworkGraph from '../components/NetworkGraph';
 const mutations = [
   {
     id: 1,
-    tag: 'ORIGINAL STRAIN',
+    tag: 'Original strain',
     lang: 'EN',
     time: 'T-00:00',
     text: '"Internet shutdown tomorrow across major districts"',
-    source: 'Source: Platform X Seed Node (@tech_leaks_in)',
-    sim: 'Sim: Baseline',
-    simColor: '#3b82f6',
+    source: 'Platform X seed node (@tech_leaks_in)',
+    sim: 'Baseline',
+    simColor: 'var(--text-secondary)',
     border: 'var(--border-color)'
   },
   {
     id: 2,
-    tag: 'SEMANTIC PARAPHRASE',
+    tag: 'Semantic paraphrase',
     lang: 'EN',
     time: 'T+00:45',
     text: '"Authorities may suspend internet access tomorrow for 48 hours"',
-    source: 'Source: Telegram Infiltration Channel',
-    sim: '94% SIMILARITY',
-    simColor: '#3b82f6',
-    border: 'rgba(59, 130, 246, 0.4)',
+    source: 'Telegram channel relay',
+    sim: '94% similarity',
+    simColor: 'var(--accent-primary)',
+    border: 'var(--border-light)',
     activeNode: true
   },
   {
     id: 3,
-    tag: 'DIRECT TRANSLATION',
+    tag: 'Direct translation',
     lang: 'HI',
     time: 'T+01:20',
     text: '"सरकार कल इंटरनेट बंद करने वाली है, अपने जरूरी काम आज ही निपटा लें"',
-    source: 'Source: WhatsApp Forward Chain (Mumbai / Delhi)',
-    sim: '92% Sim',
-    simColor: '#f59e0b',
+    source: 'WhatsApp forward chain',
+    sim: '92% similarity',
+    simColor: 'var(--risk-elevated)',
     border: 'var(--border-color)'
   },
   {
     id: 4,
-    tag: 'PHONETIC MUTATION',
+    tag: 'Phonetic mutation',
     lang: 'HINGLISH',
     time: 'T+03:05',
     text: '"Sarkar kal internet band karne wali hai sabhi dosto ko forward karo"',
-    source: 'Source: Instagram Broadcast Group',
-    sim: '88% Sim',
-    simColor: '#ef4444',
+    source: 'Instagram broadcast group',
+    sim: '88% similarity',
+    simColor: 'var(--risk-critical)',
     border: 'var(--border-color)'
   },
   {
     id: 5,
-    tag: 'MEDIA ENCAPSULATION (MEME / OCR)',
+    tag: 'Media encapsulation (Meme / OCR)',
     lang: 'VISUAL',
     time: 'T+05:30',
     text: 'OCR EXTRACT: "EMERGENCY NOTICE: INTERNET SHUT DOWN TMROW!! PLS SHARE FAST"',
-    source: 'Source: Viral Graphic Intercept',
-    sim: '84% Sim',
-    simColor: '#8b5cf6',
-    border: 'var(--border-color)',
+    source: 'Viral graphic intercept',
+    sim: '84% similarity',
+    simColor: 'var(--text-muted)',
+    border: 'var(--border-color)'
+  }
+];
     isMedia: true
   }
 ];
@@ -162,12 +164,11 @@ export default function NarrativesView() {
                 left: '-32px',
                 top: '20px',
                 transform: 'translateX(-50%)',
-                width: '18px',
-                height: '18px',
+                width: '14px',
+                height: '14px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--inner-box-bg)',
-                border: `3px solid ${item.activeNode ? '#3b82f6' : 'var(--border-color)'}`,
-                boxShadow: item.activeNode ? '0 0 10px rgba(59, 130, 246, 0.5)' : 'none',
+                backgroundColor: 'var(--bg-card)',
+                border: `2px solid ${item.activeNode ? 'var(--accent-primary)' : 'var(--border-color)'}`,
                 zIndex: 2
               }} />
 

@@ -239,51 +239,51 @@ export default function EnterpriseScopingView({ onNavigate }) {
       {/* Top Banner */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ 
               fontSize: '11px', 
               fontFamily: 'JetBrains Mono', 
-              color: '#f59e0b', 
-              padding: '3px 10px', 
-              backgroundColor: 'rgba(245, 158, 11, 0.1)', 
-              border: '1px solid rgba(245, 158, 11, 0.3)', 
-              borderRadius: '9999px', 
-              fontWeight: 700 
+              color: 'var(--text-secondary)', 
+              padding: '2px 7px', 
+              backgroundColor: 'var(--bg-input)', 
+              border: '1px solid var(--border-color)', 
+              borderRadius: 'var(--radius-badge)', 
+              fontWeight: 500 
             }}>
-              ENTERPRISE ML SCOPING ENGINE
+              Enterprise profiling
             </span>
             {activeProfile && (
-              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                Active Scope: <strong>{activeProfile.name}</strong>
+              <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                Active scope: <strong style={{ color: 'var(--text-primary)' }}>{activeProfile.name}</strong>
               </span>
             )}
           </div>
-          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', marginTop: '6px', letterSpacing: '-0.5px' }}>
-            Enterprise Data Profile & ML Scoping Center
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', marginTop: '6px', letterSpacing: '-0.01em' }}>
+            Enterprise data profile & scoping
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px', maxWidth: '750px' }}>
-            Configure corporate brand identities, tickers, subsidiaries, and key executives. The ML semantic model vectorizes your enterprise footprint and exclusively isolates related threat campaigns.
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '2px', maxWidth: '750px' }}>
+            Configure corporate brand identities, tickers, subsidiaries, and key executives to isolate relevant threat campaigns.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button
             onClick={handleRunMlScan}
             disabled={isScanning}
             className="bs-button bs-button-primary"
-            style={{ padding: '10px 18px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}
+            style={{ padding: '6px 14px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            {isScanning ? <RefreshCw size={15} className="animate-spin" /> : <Cpu size={15} />}
-            <span>{isScanning ? 'Running ML Vector Scan...' : 'Scan Enterprise Space (ML)'}</span>
+            {isScanning ? <RefreshCw size={13} className="animate-spin" /> : <Cpu size={13} />}
+            <span>{isScanning ? 'Scanning vector space...' : 'Scan enterprise space'}</span>
           </button>
 
           <button
             onClick={handleStartCreateNew}
             className="bs-button bs-button-secondary"
-            style={{ padding: '10px 16px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}
+            style={{ padding: '6px 12px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <Plus size={15} />
-            <span>New Enterprise</span>
+            <Plus size={13} />
+            <span>New entity</span>
           </button>
         </div>
       </div>

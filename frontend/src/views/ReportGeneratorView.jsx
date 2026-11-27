@@ -193,38 +193,34 @@ export default function ReportGeneratorView() {
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
         
         {/* Left Column: Live Document Preview */}
-        <div className="bs-card" style={{ padding: '28px', backgroundColor: 'var(--inner-box-bg)', border: '1px solid var(--border-color)', position: 'relative' }}>
+        <div className="bs-card" style={{ padding: '24px', backgroundColor: 'var(--bg-input)', border: '1px solid var(--border-color)', position: 'relative' }}>
           
           {/* Top Bar Preview Controls */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '24px' }}>
-            <div style={{ display: 'flex', gap: '6px' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444' }} />
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b' }} />
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10b981' }} />
-            </div>
-            <div style={{ fontSize: '10px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)' }}>
-              AUTHENTICATED SIGNATORY: {currentUser.name.toUpperCase()} // CLEARANCE: {currentUser.clearance}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', marginBottom: '20px' }}>
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono' }}>Document preview</span>
+            <div style={{ fontSize: '11px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)' }}>
+              Signatory: {currentUser.name} • {currentUser.clearance}
             </div>
           </div>
 
           {/* Dossier Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
             <div>
-              <h1 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-heading)', margin: 0, letterSpacing: '0.5px' }}>
-                BHARAT-SHIELD SENTINEL DOSSIER
+              <h1 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-heading)', margin: 0 }}>
+                Bharat-Shield intelligence dossier
               </h1>
-              <div style={{ fontSize: '13px', fontWeight: 700, color: reportMeta.classColor, marginTop: '4px' }}>
+              <div style={{ fontSize: '12.5px', fontWeight: 500, color: 'var(--text-primary)', marginTop: '4px' }}>
                 {reportMeta.title}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                Recipient Authority: {reportMeta.addressee}
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                Recipient authority: {reportMeta.addressee}
               </div>
             </div>
 
-            <div style={{ textAlign: 'right', fontFamily: 'JetBrains Mono', fontSize: '11px', color: 'var(--text-secondary)' }}>
-              <div>DOC_ID: {reportMeta.docId}</div>
-              <div>DATE: {new Date().toISOString().slice(0, 10)}</div>
-              <div style={{ color: reportMeta.classColor, fontWeight: 700 }}>{reportMeta.classification}</div>
+            <div style={{ textAlign: 'right', fontFamily: 'JetBrains Mono', fontSize: '11px', color: 'var(--text-muted)' }}>
+              <div>ID: {reportMeta.docId}</div>
+              <div>Date: {new Date().toISOString().slice(0, 10)}</div>
+              <div style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{reportMeta.classification}</div>
             </div>
           </div>
 
@@ -235,39 +231,39 @@ export default function ReportGeneratorView() {
             gap: '12px', 
             backgroundColor: 'var(--bg-card)', 
             border: '1px solid var(--border-color)', 
-            borderRadius: 'var(--radius-md)', 
-            padding: '16px',
-            marginBottom: '24px'
+            borderRadius: 'var(--radius-control)', 
+            padding: '14px',
+            marginBottom: '20px'
           }}>
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Target Campaign</div>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-heading)', marginTop: '4px' }}>{reportMeta.targetCampaign}</div>
+              <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Target campaign</div>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-heading)', marginTop: '2px', fontFamily: 'JetBrains Mono' }}>{reportMeta.targetCampaign}</div>
             </div>
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Clearance Level</div>
-              <div style={{ fontSize: '14px', fontWeight: 700, color: reportMeta.classColor, marginTop: '4px' }}>{currentUser.clearance.split('(')[0]}</div>
+              <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Clearance</div>
+              <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginTop: '2px' }}>{currentUser.clearance.split('(')[0]}</div>
             </div>
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Threat Rating</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#ef4444', fontFamily: 'JetBrains Mono', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                94/100 <span className="bs-badge bs-badge-red" style={{ fontSize: '9px' }}>CRITICAL</span>
+              <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Threat rating</div>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--risk-critical)', fontFamily: 'JetBrains Mono', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                94 / 100 <span className="bs-badge bs-badge-critical" style={{ fontSize: '9px' }}>Critical</span>
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Sync Index</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#60a5fa', fontFamily: 'JetBrains Mono', marginTop: '2px' }}>
-                96% Temporal
+              <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Sync index</div>
+              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-heading)', fontFamily: 'JetBrains Mono', marginTop: '2px' }}>
+                96% temporal
               </div>
             </div>
           </div>
 
           {/* Document Section: Executive Summary */}
           {sections.executiveSummary && (
-            <div style={{ marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-heading)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                1. Executive Operational Finding
+            <div style={{ marginBottom: '18px' }}>
+              <h3 style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-heading)', marginBottom: '4px' }}>
+                1. Executive operational finding
               </h3>
-              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
                 {reportMeta.summaryText}
               </p>
             </div>
@@ -275,9 +271,9 @@ export default function ReportGeneratorView() {
 
           {/* Document Section: Statutory Citation */}
           {sections.statutoryAuthority && (
-            <div style={{ marginBottom: '20px', padding: '12px', backgroundColor: 'var(--bg-card)', borderLeft: `3px solid ${currentUser.badgeColor}`, borderRadius: '4px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Statutory Authority & Jurisdiction</div>
-              <div style={{ fontSize: '12px', color: 'var(--text-heading)', marginTop: '4px' }}>{reportMeta.statutoryCitation}</div>
+            <div style={{ marginBottom: '18px', padding: '10px 12px', backgroundColor: 'var(--bg-card)', borderLeft: '3px solid var(--border-light)', borderRadius: 'var(--radius-badge)' }}>
+              <div style={{ fontSize: '10.5px', fontWeight: 500, color: 'var(--text-muted)' }}>Statutory authority & jurisdiction</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-primary)', marginTop: '2px' }}>{reportMeta.statutoryCitation}</div>
             </div>
           )}
 

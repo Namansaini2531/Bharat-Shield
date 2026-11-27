@@ -139,60 +139,59 @@ export default function TiplineView({ onNavigate }) {
       {/* Top Title Banner */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', letterSpacing: '-0.5px' }}>
-            Voluntary Tipline Intelligence
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', letterSpacing: '-0.01em' }}>
+            Citizen tipline intelligence
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
             Real-time crowdsourced signal ingestion, automated Whisper ASR & OCR triage.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: '8px', 
+            gap: '6px', 
             fontSize: '11px', 
-            color: isConnected ? 'var(--accent-green)' : 'var(--accent-red)', 
-            backgroundColor: isConnected ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
-            padding: '6px 14px', 
-            border: `1px solid ${isConnected ? 'rgba(16, 185, 129, 0.25)' : 'rgba(239, 68, 68, 0.25)'}`, 
-            borderRadius: '9999px',
+            color: isConnected ? 'var(--risk-verified)' : 'var(--risk-critical)', 
+            backgroundColor: 'var(--bg-input)', 
+            padding: '4px 10px', 
+            border: '1px solid var(--border-color)', 
+            borderRadius: 'var(--radius-badge)',
             fontFamily: 'JetBrains Mono'
           }}>
-            <RefreshCw size={12} className={isConnected ? "animate-pulse-slow" : ""} />
-            <span style={{ fontWeight: 600, letterSpacing: '0.5px' }}>{isConnected ? 'WebSocket Sync Active' : 'Offline / Polling'}</span>
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isConnected ? 'var(--risk-verified)' : 'var(--risk-critical)' }} />
+            <span>{isConnected ? 'Stream sync active' : 'Offline / reconnecting'}</span>
           </div>
 
           <button
             onClick={handleBurst}
             disabled={simulating}
-            className="bs-button bs-button-primary"
-            style={{ fontSize: '12px', padding: '6px 14px', gap: '6px' }}
+            className="bs-button bs-button-secondary"
+            style={{ fontSize: '11.5px', padding: '5px 12px', gap: '6px' }}
           >
-            <Zap size={13} className={simulating ? "animate-pulse" : ""} />
-            <span>{simulating ? 'Injecting...' : 'Simulate Tipline Influx'}</span>
+            <Zap size={13} />
+            <span>{simulating ? 'Injecting stream...' : 'Simulate influx'}</span>
           </button>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div style={{ display: 'flex', gap: '4px', backgroundColor: 'var(--bg-muted)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-color)', marginBottom: '20px', width: 'fit-content' }}>
+      <div style={{ display: 'flex', gap: '2px', backgroundColor: 'var(--bg-input)', padding: '2px', borderRadius: 'var(--radius-control)', border: '1px solid var(--border-color)', marginBottom: '18px', width: 'fit-content' }}>
         {['All', 'WhatsApp', 'Telegram', 'Images', 'High Priority'].map((filter) => (
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
             style={{
-              padding: '6px 14px',
-              fontSize: '12px',
-              fontWeight: 600,
-              borderRadius: '6px',
-              backgroundColor: activeFilter === filter ? 'var(--bg-card)' : 'transparent',
+              padding: '4px 12px',
+              fontSize: '11.5px',
+              fontWeight: activeFilter === filter ? 600 : 400,
+              borderRadius: 'var(--radius-badge)',
+              backgroundColor: activeFilter === filter ? 'var(--bg-raised)' : 'transparent',
               color: activeFilter === filter ? 'var(--text-heading)' : 'var(--text-muted)',
               border: 'none',
-              boxShadow: activeFilter === filter ? '0 1px 3px rgba(0,0,0,0.2)' : 'none',
               cursor: 'pointer',
-              transition: 'all 0.15s ease'
+              transition: 'all 0.12s ease'
             }}
           >
             {filter}
@@ -205,11 +204,11 @@ export default function TiplineView({ onNavigate }) {
         
         {/* Left Column: Signal Ingestion Table */}
         <div className="bs-card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: '1fr 1fr 0.8fr 1.2fr', fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase' }}>
+          <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border-color)', display: 'grid', gridTemplateColumns: '1fr 1fr 0.8fr 1.2fr', fontSize: '11px', color: 'var(--text-muted)', fontWeight: 500 }}>
             <span>Signal ID</span>
             <span>Source</span>
             <span>Time</span>
-            <span>Status / Tag</span>
+            <span>Status / tag</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', maxHeight: '550px', overflowY: 'auto' }}>

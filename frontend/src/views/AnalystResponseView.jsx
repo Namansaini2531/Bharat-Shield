@@ -486,35 +486,35 @@ export default function AnalystResponseView({ onNavigate }) {
     <div style={{ position: 'relative', minHeight: '100%' }}>
       
       {/* Top Banner */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '22px', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ 
               fontSize: '11px', 
               fontFamily: 'JetBrains Mono', 
-              color: currentUser.badgeColor, 
-              padding: '3px 10px', 
-              backgroundColor: 'var(--bg-muted)', 
-              border: `1px solid ${currentUser.badgeColor}40`, 
-              borderRadius: '9999px', 
-              fontWeight: 700 
+              color: 'var(--text-secondary)', 
+              padding: '2px 7px', 
+              backgroundColor: 'var(--bg-input)', 
+              border: '1px solid var(--border-color)', 
+              borderRadius: 'var(--radius-badge)', 
+              fontWeight: 500 
             }}>
               {currentUser.badgeText}
             </span>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              Threat Response Studio & Campaign Ledger
+              Threat response & action ledger
             </span>
           </div>
-          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', marginTop: '6px', letterSpacing: '-0.5px' }}>
-            Campaign Damage Reduction & Threat Response
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', marginTop: '6px', letterSpacing: '-0.01em' }}>
+            Damage containment & operational response
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            Real-time Groq AI counter-disinformation strategic advisor, damage containment playbooks, and immutable campaign ledgers.
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
+            Strategic response advisories, damage containment playbooks, and immutable action logs.
           </p>
         </div>
 
         {/* Groq API Key Status & Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={() => {
               setTempApiKey(groqApiKey);
@@ -522,17 +522,15 @@ export default function AnalystResponseView({ onNavigate }) {
             }}
             className="bs-button bs-button-secondary"
             style={{
-              padding: '9px 15px',
-              fontSize: '12px',
+              padding: '6px 12px',
+              fontSize: '11.5px',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              borderColor: groqApiKey ? 'rgba(16, 185, 129, 0.4)' : 'var(--border-color)',
-              backgroundColor: groqApiKey ? 'rgba(16, 185, 129, 0.06)' : 'var(--bg-card)'
+              gap: '6px'
             }}
           >
-            <Key size={14} style={{ color: groqApiKey ? '#10b981' : 'var(--text-secondary)' }} />
-            <span>{groqApiKey ? `Groq API Active (${groqApiKey.slice(0, 7)}...)` : 'Set Groq API Key'}</span>
+            <Key size={13} />
+            <span>{groqApiKey ? `Groq API key active` : 'Configure Groq key'}</span>
           </button>
 
           <button
@@ -540,10 +538,10 @@ export default function AnalystResponseView({ onNavigate }) {
               if (onNavigate) onNavigate('enterprise');
             }}
             className="bs-button bs-button-secondary"
-            style={{ padding: '9px 15px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}
+            style={{ padding: '6px 12px', fontSize: '11.5px', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <Building2 size={14} style={{ color: '#f59e0b' }} />
-            <span>Enterprise Scope</span>
+            <Building2 size={13} />
+            <span>Enterprise scope</span>
           </button>
         </div>
       </div>

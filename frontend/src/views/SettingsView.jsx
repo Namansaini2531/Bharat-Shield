@@ -78,29 +78,29 @@ export default function SettingsView() {
   return (
     <div>
       {/* Workspace Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase' }}>
-            {isAdmin ? 'SYSTEM & IDENTITY ADMINISTRATION' : 'USER & CLEARANCE PROFILE'}
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono' }}>
+            {isAdmin ? 'System configuration' : 'Identity profile'}
           </div>
-          <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-heading)', marginTop: '4px', letterSpacing: '-0.5px' }}>
-            {isAdmin ? 'Cluster & Security Settings' : 'Identity & Clearance Settings'}
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', marginTop: '4px', letterSpacing: '-0.01em' }}>
+            {isAdmin ? 'Security & engine settings' : 'Identity & clearance settings'}
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
             {isAdmin 
-              ? 'Configure RBAC clearances, threat detection algorithms, EVM blockchain notary, and ingestion telemetry.'
-              : 'View your verified security clearance, authorized operational privileges, and identity tokens.'}
+              ? 'Configure clearances, algorithmic thresholds, EVM blockchain notary, and ingestion telemetry.'
+              : 'Security clearance profile, authorized operational privileges, and identity tokens.'}
           </p>
         </div>
 
         {isAdmin && (
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <button 
               onClick={handleSave}
               className="bs-button bs-button-primary" 
-              style={{ gap: '8px', padding: '9px 18px', fontSize: '13px' }}>
-              {saved ? <Check size={16} /> : <Save size={16} />}
-              <span>{saved ? 'Saved Configuration' : 'Save Changes'}</span>
+              style={{ gap: '6px', padding: '6px 14px', fontSize: '12px' }}>
+              {saved ? <Check size={14} /> : <Save size={14} />}
+              <span>{saved ? 'Saved' : 'Save changes'}</span>
             </button>
           </div>
         )}

@@ -381,33 +381,33 @@ export default function AdminView() {
       {/* Top Banner & Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ 
-              backgroundColor: emergencyLockdown ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.15)', 
-              color: emergencyLockdown ? '#ef4444' : '#10b981', 
+              backgroundColor: emergencyLockdown ? 'var(--risk-critical-bg)' : 'var(--bg-input)', 
+              color: emergencyLockdown ? 'var(--risk-critical)' : 'var(--text-secondary)', 
               fontSize: '11px', 
-              fontWeight: 700, 
-              padding: '3px 10px', 
-              borderRadius: '4px', 
-              border: `1px solid ${emergencyLockdown ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.3)'}`,
+              fontWeight: 500, 
+              padding: '2px 7px', 
+              borderRadius: 'var(--radius-badge)', 
+              border: `1px solid ${emergencyLockdown ? 'var(--risk-critical-border)' : 'var(--border-color)'}`,
               fontFamily: 'JetBrains Mono',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px'
+              gap: '5px'
             }}>
-              {emergencyLockdown ? <AlertOctagon size={13} /> : <Lock size={12} />}
-              {emergencyLockdown ? 'EMERGENCY LOCKDOWN ACTIVE' : 'SUPER ADMIN // SUBSCRIBER GOVERNANCE'}
+              {emergencyLockdown ? <AlertOctagon size={12} /> : <Lock size={12} />}
+              {emergencyLockdown ? 'Emergency lockdown active' : 'System governance'}
             </span>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>•</span>
-            <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono' }}>
-              3 ACTIVE SUBSCRIPTION TENANTS (IB, ADANI, NEWS)
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono' }}>
+              3 active tenants
             </span>
           </div>
-          <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', marginTop: '6px', letterSpacing: '-0.5px' }}>
-            Subscriber Usage Monitoring & Moderation Command Center
+          <h1 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', marginTop: '6px', letterSpacing: '-0.01em' }}>
+            Usage monitoring & platform governance
           </h1>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            Real-time subscriber activity monitoring, dynamic quota moderation, statutory legal guardrails, and system maintenance.
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
+            Subscriber activity monitoring, dynamic quota moderation, statutory guardrails, and cluster maintenance.
           </p>
         </div>
 
@@ -417,28 +417,25 @@ export default function AdminView() {
             onClick={fetchAllAdminData}
             disabled={isRefreshing}
             className="bs-button bs-button-secondary"
-            style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', padding: '5px 12px' }}
           >
-            <RefreshCw size={14} className={isRefreshing ? "animate-spin" : ""} />
-            Sync Metrics
+            <RefreshCw size={13} className={isRefreshing ? "animate-spin" : ""} />
+            Sync metrics
           </button>
           
           <button 
             onClick={handleToggleEmergencyLockdown}
-            className="bs-button"
+            className={`bs-button ${emergencyLockdown ? 'bs-button-secondary' : 'bs-button-danger'}`}
             style={{ 
               display: 'flex', 
               alignItems: 'center', 
               gap: '6px', 
-              fontSize: '12px',
-              backgroundColor: emergencyLockdown ? '#10b981' : '#dc2626',
-              color: '#ffffff',
-              border: 'none',
-              fontWeight: 600
+              fontSize: '11.5px',
+              padding: '5px 12px'
             }}
           >
-            <Power size={14} />
-            {emergencyLockdown ? 'Disengage Lockdown' : 'Emergency Lockdown'}
+            <Power size={13} />
+            {emergencyLockdown ? 'Disengage lockdown' : 'Emergency lockdown'}
           </button>
         </div>
       </div>
