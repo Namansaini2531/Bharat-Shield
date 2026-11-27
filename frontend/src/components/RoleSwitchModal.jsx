@@ -21,71 +21,71 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
 
   const roleCards = [
     {
-      key: ROLES.SYSTEM_ADMIN,
-      title: 'Operations Admin',
-      subtitle: 'System infrastructure & telemetry governance',
-      badge: 'Admin',
-      badgeBg: 'rgba(255, 255, 255, 0.05)',
-      badgeColor: 'var(--text-secondary)',
-      icon: ShieldCheck,
-      iconColor: 'var(--text-primary)',
-      targetEntity: 'National Cyber Coordination Centre',
-      capabilities: [
-        'Full software management & node cluster telemetry',
-        'Operator clearance & credentials governance',
-        'Ingestion connector pipeline controls',
-        'Model hyperparameter & threshold tuning'
-      ]
-    },
-    {
       key: ROLES.INVESTIGATION_BUREAU,
-      title: 'Investigation Bureau',
-      subtitle: 'National security & cross-border threat monitoring',
-      badge: 'Classified',
-      badgeBg: 'rgba(239, 68, 68, 0.1)',
-      badgeColor: 'var(--risk-critical)',
+      title: 'Personal Guardian',
+      subtitle: 'Scam protection, WhatsApp forwards & truth radar',
+      badge: 'Citizen / Everyday',
+      badgeBg: 'rgba(16, 185, 129, 0.1)',
+      badgeColor: 'var(--risk-verified)',
       icon: ShieldCheck,
-      iconColor: 'var(--risk-critical)',
-      targetEntity: 'Inter-Agency Cyber Command',
+      iconColor: 'var(--risk-verified)',
+      targetEntity: 'Personal Cyber Defense & Verification',
       capabilities: [
-        'State-sponsored disinformation alerts',
-        'Botnet & synthetic media tracking',
-        'Section 69A IT Act emergency dossiers',
-        'Cryptographic hash verification'
+        'Real-time viral campaign & scam alerts',
+        'Drop-box audio & forward verification',
+        'Debunk summaries for family & community forwards',
+        'Offline campaign cache for immediate access'
       ]
     },
     {
-      key: ROLES.CORPORATE_ENTERPRISE,
-      title: 'Enterprise Risk',
-      subtitle: 'Brand defense & market risk monitoring',
-      badge: 'Enterprise',
-      badgeBg: 'rgba(245, 158, 11, 0.1)',
-      badgeColor: 'var(--risk-elevated)',
-      icon: Building2,
-      iconColor: 'var(--risk-elevated)',
-      targetEntity: 'Brand Protection & Market Intelligence',
+      key: ROLES.SYSTEM_ADMIN,
+      title: 'OSINT & Cyber Researcher',
+      subtitle: 'Bot clusters, coordination math & network graphs',
+      badge: 'Researcher',
+      badgeBg: 'rgba(59, 130, 246, 0.1)',
+      badgeColor: 'var(--accent-primary)',
+      icon: ShieldCheck,
+      iconColor: 'var(--accent-primary)',
+      targetEntity: 'Deep Forensic Lab & Graph Telemetry',
       capabilities: [
-        'Market smear & stock sabotage detection',
-        'Executive impersonation & phishing alerts',
-        'Supply chain rumor tracking',
-        'Investor clarification counter-briefs'
+        'Coordinated Inauthentic Behavior (CIB) detection',
+        'SimHash text clustering across temporal windows',
+        'Raw account metadata & creation entropy analysis',
+        'Local engine configuration & BYOK LLM options'
       ]
     },
     {
       key: ROLES.JOURNALIST_MEDIA,
-      title: 'Press Desk',
-      subtitle: 'Fact-checking & viral intelligence intake',
-      badge: 'Accredited',
+      title: 'Fact-Checker & Journalist',
+      subtitle: 'Source attribution, deepfake checks & briefs',
+      badge: 'Fact-Checker',
       badgeBg: 'rgba(59, 130, 246, 0.1)',
       badgeColor: 'var(--accent-primary)',
       icon: Newspaper,
       iconColor: 'var(--accent-primary)',
-      targetEntity: 'Press Consortium & Fact Desk',
+      targetEntity: 'Open Fact-Check & Media Desk',
       capabilities: [
-        'Viral social media rumor genealogies',
-        'WhatsApp/Telegram forward tracking',
-        'Cross-lingual debunk generation',
-        'Pre-publication verification queue'
+        'Origin tracing from Telegram to X and WhatsApp',
+        'Audio spectrogram & deepfake anomaly detection',
+        'Cross-lingual regional speech transcription (Whisper)',
+        'One-click verifiable PDF dossier generation'
+      ]
+    },
+    {
+      key: ROLES.CORPORATE_ENTERPRISE,
+      title: 'Consumer & Brand Radar',
+      subtitle: 'Financial phishing & market rumors',
+      badge: 'Brand / Fraud',
+      badgeBg: 'rgba(245, 158, 11, 0.1)',
+      badgeColor: 'var(--risk-elevated)',
+      icon: Building2,
+      iconColor: 'var(--risk-elevated)',
+      targetEntity: 'Brand & Financial Threat Watch',
+      capabilities: [
+        'Pump-and-dump & stock manipulation alerts',
+        'Executive voice cloning & phishing detection',
+        'Consumer fraud & spoofed domain tracking',
+        'Fast verification receipts for public alerts'
       ]
     }
   ];

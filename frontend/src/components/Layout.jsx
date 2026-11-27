@@ -224,43 +224,36 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       ];
     }
 
-    // Default: Investigation Bureau of India
+    // Default: Personal Guardian / Citizen Defense
     return [
       {
-        label: 'Overview',
+        label: 'Intelligence radar',
         items: [
-          { id: 'overview', label: 'Command desk', icon: LayoutDashboard },
-          { id: 'campaigns', label: 'All campaigns', icon: ShieldAlert, count: 17 }
+          { id: 'overview', label: 'Command pulse', icon: LayoutDashboard },
+          { id: 'campaigns', label: 'Campaign radar', icon: ShieldAlert, count: 17 },
+          { id: 'threats', label: 'Narrative threats', icon: AlertTriangle }
         ]
       },
       {
-        label: 'Threat intelligence',
+        label: 'Personal verifier',
         items: [
-          { id: 'threats', label: 'Security risks', icon: AlertTriangle },
-          { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
-          { id: 'enterprise', label: 'Enterprise entities', icon: Building2 },
-          { id: 'report-generator', label: 'Agency dossiers', icon: FileText }
+          { id: 'analyst-response', label: 'Signal verifier', icon: Sparkles },
+          { id: 'evidence', label: 'Forensic vault', icon: FileCheck },
+          { id: 'report-generator', label: 'Truth dossiers', icon: FileText }
         ]
       },
       {
-        label: 'Forensics & audit',
+        label: 'Social streams',
         items: [
-          { id: 'evidence', label: 'Court evidence', icon: FileCheck },
-          { id: 'audit', label: 'Audit ledger', icon: BookOpen }
+          { id: 'live', label: 'Live viral feed', icon: Radio },
+          { id: 'tipline', label: 'Public tipline', icon: PhoneCall, count: 12 }
         ]
       },
       {
-        label: 'Telemetry',
+        label: 'Engine & setup',
         items: [
-          { id: 'live', label: 'Classified feed', icon: Radio },
-          { id: 'tipline', label: 'Intercept tipline', icon: PhoneCall, count: 12 }
-        ]
-      },
-      {
-        label: 'System',
-        items: [
-          { id: 'admin', label: 'System operations', icon: Terminal },
-          { id: 'settings', label: 'Security policies', icon: Settings }
+          { id: 'admin', label: 'Local engine', icon: Terminal },
+          { id: 'settings', label: 'App settings', icon: Settings }
         ]
       }
     ];
