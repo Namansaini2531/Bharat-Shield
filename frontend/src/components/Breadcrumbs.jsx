@@ -135,24 +135,20 @@ export default function Breadcrumbs({ currentNav, onNavigate, customTrail = null
                       alignItems: 'center',
                       justifyContent: 'center',
                       background: 'none',
-                      border: '1px solid rgba(59, 130, 246, 0.25)',
-                      padding: '4px 6px',
-                      borderRadius: '3px',
-                      color: 'var(--accent-blue)',
+                      border: 'none',
+                      padding: '2px 4px',
+                      color: 'var(--text-muted)',
                       cursor: 'pointer',
-                      backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                      transition: 'all 0.15s ease'
+                      transition: 'color 0.15s ease'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.2)';
-                      e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                      e.currentTarget.style.color = 'var(--text-primary)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)';
-                      e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.25)';
+                      e.currentTarget.style.color = 'var(--text-muted)';
                     }}
                   >
-                    <Home size={13} />
+                    <Home size={14} strokeWidth={1.5} />
                   </button>
                 ) : isClickable ? (
                   <button
@@ -160,21 +156,19 @@ export default function Breadcrumbs({ currentNav, onNavigate, customTrail = null
                     style={{
                       background: 'none',
                       border: 'none',
-                      padding: '2px 6px',
-                      borderRadius: '3px',
-                      color: 'var(--text-secondary)',
+                      padding: '2px 4px',
+                      color: 'var(--text-muted)',
                       fontWeight: 500,
                       cursor: 'pointer',
                       fontSize: '12px',
-                      transition: 'all 0.15s ease'
+                      fontFamily: 'inherit',
+                      transition: 'color 0.15s ease'
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.color = 'var(--text-primary)';
-                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.color = 'var(--text-secondary)';
-                      e.currentTarget.style.backgroundColor = 'transparent';
+                      e.currentTarget.style.color = 'var(--text-muted)';
                     }}
                   >
                     {item.label}
@@ -182,10 +176,11 @@ export default function Breadcrumbs({ currentNav, onNavigate, customTrail = null
                 ) : (
                   <span
                     style={{
-                      color: isLast ? 'var(--text-heading)' : 'var(--text-secondary)',
-                      fontWeight: isLast ? 700 : 500,
+                      color: 'var(--text-heading)',
+                      fontWeight: 500,
                       fontSize: '12px',
-                      padding: '2px 4px'
+                      padding: '2px 4px',
+                      fontFamily: 'inherit'
                     }}
                   >
                     {item.label}

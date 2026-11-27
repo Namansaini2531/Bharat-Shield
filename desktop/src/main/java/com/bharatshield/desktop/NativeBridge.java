@@ -30,6 +30,10 @@ public class NativeBridge {
         System.out.println("[React Client]: " + message);
     }
 
+    public void logError(String message) {
+        System.err.println("[React Client ERROR]: " + message);
+    }
+
     public void saveEvidenceFile(String defaultFilename, String content) {
         Platform.runLater(() -> {
             try {

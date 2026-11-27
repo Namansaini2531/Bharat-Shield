@@ -109,40 +109,40 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
     if (currentRole === ROLES.SYSTEM_ADMIN) {
       return [
         {
-          label: 'ROOT COMMAND',
+          label: 'Overview',
           items: [
-            { id: 'overview', label: 'Command Center', icon: LayoutDashboard },
-            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '17 ACT', badgeColor: 'red' }
+            { id: 'overview', label: 'Command center', icon: LayoutDashboard },
+            { id: 'campaigns', label: 'Campaigns', icon: ShieldAlert, count: 17 }
           ]
         },
         {
-          label: 'THREAT MATRIX',
+          label: 'Threat intelligence',
           items: [
-            { id: 'threats', label: 'Deepfake Radar', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
-            { id: 'enterprise', label: 'Enterprise Profiles', icon: Building2, badge: 'SCOPER', badgeColor: 'orange' },
-            { id: 'report-generator', label: 'Dossier Engine', icon: FileText }
+            { id: 'threats', label: 'Radar assessments', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
+            { id: 'enterprise', label: 'Enterprise profiles', icon: Building2 },
+            { id: 'report-generator', label: 'Intelligence dossiers', icon: FileText }
           ]
         },
         {
-          label: 'EVIDENCE & AUDIT',
+          label: 'Forensics & audit',
           items: [
-            { id: 'evidence', label: 'Court Evidence', icon: FileCheck, badge: 'SHA-256', badgeColor: 'green' },
-            { id: 'audit', label: 'Audit Ledger', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
+            { id: 'evidence', label: 'Court evidence', icon: FileCheck },
+            { id: 'audit', label: 'Audit ledger', icon: BookOpen }
           ]
         },
         {
-          label: 'SYSTEM OPS',
+          label: 'Telemetry',
           items: [
-            { id: 'admin', label: 'Root Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' },
-            { id: 'settings', label: 'System Policies', icon: Settings }
+            { id: 'live', label: 'Live telemetry', icon: Radio },
+            { id: 'tipline', label: 'Dialect tipline', icon: PhoneCall }
           ]
         },
         {
-          label: 'FEEDS & TELEMETRY',
+          label: 'System',
           items: [
-            { id: 'live', label: 'Live Stream', icon: Radio, badge: 'LIVE', badgeColor: 'green' },
-            { id: 'tipline', label: 'Dialect Desk', icon: PhoneCall, badge: '22 LNG', badgeColor: 'blue' }
+            { id: 'admin', label: 'System operations', icon: Terminal },
+            { id: 'settings', label: 'Security policies', icon: Settings }
           ]
         }
       ];
@@ -151,37 +151,38 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
     if (currentRole === ROLES.CORPORATE_ENTERPRISE) {
       return [
         {
-          label: 'BRAND RADAR',
+          label: 'Overview',
           items: [
-            { id: 'overview', label: 'Executive Desk', icon: LayoutDashboard },
-            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '4 ACT', badgeColor: 'red' },
-            { id: 'enterprise', label: 'Enterprise Data Profile', icon: Building2, badge: 'ML SCOPE', badgeColor: 'orange' }
+            { id: 'overview', label: 'Executive desk', icon: LayoutDashboard },
+            { id: 'campaigns', label: 'Brand campaigns', icon: ShieldAlert, count: 4 },
+            { id: 'enterprise', label: 'Enterprise data profile', icon: Building2 }
           ]
         },
         {
-          label: 'BRAND THREATS',
+          label: 'Threat intelligence',
           items: [
-            { id: 'threats', label: 'Volatility Risk', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
-            { id: 'report-generator', label: 'Executive Dossier', icon: FileText }
+            { id: 'threats', label: 'Volatility risk', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
+            { id: 'report-generator', label: 'Executive dossier', icon: FileText }
           ]
         },
         {
-          label: 'LEGAL EVIDENCE',
+          label: 'Forensics & audit',
           items: [
-            { id: 'evidence', label: 'Legal Evidence', icon: FileCheck }
+            { id: 'evidence', label: 'Legal evidence', icon: FileCheck }
           ]
         },
         {
-          label: 'SYSTEM OPS',
+          label: 'Telemetry',
           items: [
-            { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+            { id: 'live', label: 'Market intelligence', icon: Radio }
           ]
         },
         {
-          label: 'FEEDS & TELEMETRY',
+          label: 'System',
           items: [
-            { id: 'live', label: 'Market Intel', icon: Radio, badge: 'ACTIVE', badgeColor: 'orange' }
+            { id: 'admin', label: 'System operations', icon: Terminal },
+            { id: 'settings', label: 'Security policies', icon: Settings }
           ]
         }
       ];
@@ -190,73 +191,75 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
     if (currentRole === ROLES.JOURNALIST_MEDIA) {
       return [
         {
-          label: 'MEDIA RADAR',
+          label: 'Overview',
           items: [
-            { id: 'overview', label: 'Newsroom Desk', icon: LayoutDashboard },
-            { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: 'HOT', badgeColor: 'red' }
+            { id: 'overview', label: 'Newsroom desk', icon: LayoutDashboard },
+            { id: 'campaigns', label: 'Monitored campaigns', icon: ShieldAlert, count: 6 }
           ]
         },
         {
-          label: 'INVESTIGATION',
+          label: 'Investigation',
           items: [
-            { id: 'threats', label: 'Reach Metrics', icon: AlertTriangle },
-            { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
-            { id: 'enterprise', label: 'Corporate Profiles', icon: Building2 },
-            { id: 'report-generator', label: 'Press Bulletin', icon: FileText }
+            { id: 'threats', label: 'Reach metrics', icon: AlertTriangle },
+            { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
+            { id: 'enterprise', label: 'Corporate entities', icon: Building2 },
+            { id: 'report-generator', label: 'Press bulletin', icon: FileText }
           ]
         },
         {
-          label: 'SYSTEM OPS',
+          label: 'Telemetry',
           items: [
-            { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+            { id: 'live', label: 'Viral feed', icon: Radio },
+            { id: 'tipline', label: 'Public tipline', icon: PhoneCall, count: 12 }
           ]
         },
         {
-          label: 'FEEDS & TELEMETRY',
+          label: 'System',
           items: [
-            { id: 'live', label: 'Viral Feed', icon: Radio, badge: 'VIRAL', badgeColor: 'blue' },
-            { id: 'tipline', label: 'Tipline Feed', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
+            { id: 'admin', label: 'System operations', icon: Terminal },
+            { id: 'settings', label: 'Security policies', icon: Settings }
           ]
         }
       ];
     }
 
-    // Default: Investigation Bureau of India (Full Classified Access)
+    // Default: Investigation Bureau of India
     return [
       {
-        label: 'THREAT RECON',
+        label: 'Overview',
         items: [
-          { id: 'overview', label: 'Command Desk', icon: LayoutDashboard },
-          { id: 'campaigns', label: 'All Campaigns', icon: ShieldAlert, badge: '94%', badgeColor: 'red' }
+          { id: 'overview', label: 'Command desk', icon: LayoutDashboard },
+          { id: 'campaigns', label: 'All campaigns', icon: ShieldAlert, count: 17 }
         ]
       },
       {
-        label: 'CAMPAIGNS',
+        label: 'Threat intelligence',
         items: [
-          { id: 'threats', label: 'Security Risk', icon: AlertTriangle },
-          { id: 'analyst-response', label: 'Threat Response', icon: Sparkles },
-          { id: 'enterprise', label: 'Enterprise Entities', icon: Building2 },
-          { id: 'report-generator', label: 'Agency Dossiers', icon: FileText }
+          { id: 'threats', label: 'Security risks', icon: AlertTriangle },
+          { id: 'analyst-response', label: 'Threat response', icon: Sparkles },
+          { id: 'enterprise', label: 'Enterprise entities', icon: Building2 },
+          { id: 'report-generator', label: 'Agency dossiers', icon: FileText }
         ]
       },
       {
-        label: 'FORENSICS',
+        label: 'Forensics & audit',
         items: [
-          { id: 'evidence', label: 'Court Evidence', icon: FileCheck },
-          { id: 'audit', label: 'Audit Ledger', icon: BookOpen, badge: 'EVM', badgeColor: 'green' }
+          { id: 'evidence', label: 'Court evidence', icon: FileCheck },
+          { id: 'audit', label: 'Audit ledger', icon: BookOpen }
         ]
       },
       {
-        label: 'SYSTEM OPS',
+        label: 'Telemetry',
         items: [
-          { id: 'admin', label: 'System Ops', icon: Terminal, badge: 'ROOT', badgeColor: 'green' }
+          { id: 'live', label: 'Classified feed', icon: Radio },
+          { id: 'tipline', label: 'Intercept tipline', icon: PhoneCall, count: 12 }
         ]
       },
       {
-        label: 'FEEDS & TELEMETRY',
+        label: 'System',
         items: [
-          { id: 'live', label: 'Classified Stream', icon: Radio, badge: 'INTEL', badgeColor: 'red' },
-          { id: 'tipline', label: 'Intercept Tipline', icon: PhoneCall, badge: '12', badgeColor: 'blue' }
+          { id: 'admin', label: 'System operations', icon: Terminal },
+          { id: 'settings', label: 'Security policies', icon: Settings }
         ]
       }
     ];
@@ -388,14 +391,12 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                     title={isCollapsed ? item.label : undefined}
                     className={`sidebar-menu-btn ${isActive ? 'active' : ''}`}
                   >
-                    <div className="sidebar-icon-wrap">
-                      <Icon size={18} strokeWidth={2} />
-                    </div>
+                    <Icon size={16} strokeWidth={1.5} style={{ flexShrink: 0, opacity: isActive ? 1 : 0.7 }} />
                     <div className="sidebar-label-badge-wrap">
                       <span className="sidebar-item-label">{item.label}</span>
-                      {item.badge && (
-                        <span className={`sidebar-badge sidebar-badge-${item.badgeColor || 'blue'}`}>
-                          {item.badge}
+                      {item.count !== undefined && (
+                        <span className="sidebar-count">
+                          {item.count}
                         </span>
                       )}
                     </div>
@@ -495,41 +496,35 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            padding: '4px 10px',
-            borderRadius: '8px',
-            backgroundColor: 'var(--inner-box-bg)',
+            padding: '3px 8px',
+            borderRadius: '6px',
+            backgroundColor: 'var(--bg-card)',
             border: '1px solid var(--border-color)',
             fontSize: '11px',
             flexShrink: 0
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{
-                width: '8px',
-                height: '8px',
+                width: '6px',
+                height: '6px',
                 borderRadius: '50%',
-                backgroundColor: currentUser.badgeColor,
-                boxShadow: `0 0 8px ${currentUser.badgeColor}`
+                backgroundColor: 'var(--accent-primary)',
+                flexShrink: 0
               }} />
-              <span style={{ fontWeight: 700, color: 'var(--text-heading)' }}>
-                Port {typeof window !== 'undefined' ? (window.location.port || '5173') : '5173'}
+              <span style={{ fontFamily: 'JetBrains Mono', fontSize: '11px', fontWeight: 500, color: 'var(--text-heading)' }}>
+                :{typeof window !== 'undefined' ? (window.location.port || '5173') : '5173'}
               </span>
               <span style={{
-                fontSize: '10px',
-                fontWeight: 700,
-                padding: '1px 6px',
-                borderRadius: '4px',
-                backgroundColor: `${currentUser.badgeColor}20`,
-                color: currentUser.badgeColor,
-                border: `1px solid ${currentUser.badgeColor}40`
+                fontSize: '11px',
+                color: 'var(--text-secondary)'
               }}>
                 {currentUser.roleTitle.split('/')[0].trim()}
               </span>
             </div>
 
-            <div style={{ height: '14px', width: '1px', backgroundColor: 'var(--border-color)' }} />
+            <div style={{ height: '12px', width: '1px', backgroundColor: 'var(--border-color)' }} />
 
-            <span style={{ color: 'var(--text-muted)', fontSize: '10px', whiteSpace: 'nowrap' }}>Cluster Nodes:</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
               {PROFILE_CLUSTER_NODES.map(node => {
                 const isCurrent = typeof window !== 'undefined' && window.location.port === node.port;
                 return (
@@ -540,17 +535,18 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
                     rel="noreferrer"
                     title={`${node.title} (${node.name}) on Port ${node.port}`}
                     style={{
-                      padding: '2px 7px',
-                      borderRadius: '5px',
-                      backgroundColor: isCurrent ? `${node.badgeColor}25` : 'var(--bg-card)',
-                      border: `1px solid ${isCurrent ? node.badgeColor : 'var(--border-color)'}`,
-                      color: isCurrent ? node.badgeColor : 'var(--text-secondary)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      backgroundColor: isCurrent ? 'var(--bg-raised)' : 'transparent',
+                      border: `1px solid ${isCurrent ? 'var(--border-light)' : 'transparent'}`,
+                      color: isCurrent ? 'var(--text-heading)' : 'var(--text-muted)',
                       textDecoration: 'none',
-                      fontWeight: isCurrent ? 700 : 500,
+                      fontWeight: 500,
+                      fontFamily: 'JetBrains Mono',
                       fontSize: '10px',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '3px',
+                      gap: '2px',
                       cursor: isCurrent ? 'default' : 'pointer'
                     }}
                   >

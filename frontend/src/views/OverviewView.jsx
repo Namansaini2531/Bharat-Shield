@@ -99,28 +99,28 @@ export default function OverviewView({ onNavigate }) {
 
       return {
         roleId: 'system_admin',
-        title: 'Super Administrator — System Architecture & Threat Grid Command',
-        subtitle: 'Supreme root access: software telemetry, cluster health, cross-agency IO matrix & vector operations',
-        classificationBadge: 'SUPREME ROOT // LEVEL 5+',
-        classificationColor: '#10b981',
+        title: 'System architecture & threat grid command',
+        subtitle: 'Root cluster health, cross-agency IO matrix, and vector ingest operations',
+        classificationBadge: 'Operations Admin',
+        classificationColor: 'var(--text-secondary)',
         stats: [
-          { label: 'Active Cyber Campaigns', value: String(activeCamps), color: 'var(--text-heading)' },
-          { label: 'Critical National Threats', value: String(criticalThreats), color: '#ef4444', isDanger: true },
-          { label: 'Raw Intercepts Ingested', value: totalIntercepts, color: 'var(--text-heading)' },
-          { label: 'AI Threat Detection Accuracy', value: '94.8%', color: '#10b981' }
+          { label: 'Active campaigns', value: String(activeCamps), color: 'var(--text-heading)' },
+          { label: 'Critical threats', value: String(criticalThreats), color: 'var(--risk-critical)', isDanger: true },
+          { label: 'Raw intercepts', value: totalIntercepts, color: 'var(--text-heading)' },
+          { label: 'Detection accuracy', value: '94.8%', color: 'var(--text-heading)' }
         ],
         sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
-          { key: 'twitter', name: 'X (Twitter)', pct: '37%', rawPct: 37, color: 'var(--sticker-sky, #38bdf8)' },
-          { key: 'reddit', name: 'Reddit Ingestion', pct: '28%', rawPct: 28, color: 'var(--sticker-orange, #fb923c)' },
-          { key: 'instagram', name: 'Instagram Reels', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
-          { key: 'telegram', name: 'Telegram Dark Web', pct: '5%', rawPct: 5, color: 'var(--sticker-purple, #c084fc)' },
-          { key: 'whatsapp', name: 'WhatsApp Tiplines', pct: '2%', rawPct: 2, color: 'var(--sticker-teal, #2dd4bf)' }
+          { key: 'twitter', name: 'X (Twitter)', pct: '37%', rawPct: 37, color: '#38bdf8' },
+          { key: 'reddit', name: 'Reddit Ingestion', pct: '28%', rawPct: 28, color: '#fb923c' },
+          { key: 'instagram', name: 'Instagram Reels', pct: '28%', rawPct: 28, color: '#f472b6' },
+          { key: 'telegram', name: 'Telegram Channels', pct: '5%', rawPct: 5, color: '#a78bfa' },
+          { key: 'whatsapp', name: 'WhatsApp Tiplines', pct: '2%', rawPct: 2, color: '#2dd4bf' }
         ],
         hotspots: [
-          { name: 'DELHI / NCR ROOT COMMAND', top: '35%', left: '40%', color: '#ef4444' },
-          { name: 'MUMBAI / GATEWAY', top: '60%', left: '30%', color: '#f59e0b' },
-          { name: 'J&K BORDER SECTOR', top: '20%', left: '35%', color: '#ef4444' },
-          { name: 'BENGALURU TECH HUB', top: '75%', left: '45%', color: '#10b981' }
+          { name: 'Delhi / NCR', top: '35%', left: '40%', color: '#ef4444' },
+          { name: 'Mumbai', top: '60%', left: '30%', color: '#f59e0b' },
+          { name: 'Jammu & Kashmir', top: '20%', left: '35%', color: '#ef4444' },
+          { name: 'Bengaluru', top: '75%', left: '45%', color: '#3b82f6' }
         ]
       };
     }
@@ -133,27 +133,27 @@ export default function OverviewView({ onNavigate }) {
 
       return {
         roleId: 'investigation_bureau',
-        title: 'Investigation Bureau of India — Cyber Operations Command',
-        subtitle: 'National security threat matrix, foreign state-sponsored information ops & inter-agency threat mitigation',
-        classificationBadge: 'LEVEL 5 TOP SECRET / LEA',
-        classificationColor: '#ef4444',
+        title: 'Cyber operations & threat matrix command',
+        subtitle: 'National security threat matrix, foreign state-sponsored information ops, and evidence verification',
+        classificationBadge: 'Investigation Bureau',
+        classificationColor: 'var(--text-secondary)',
         stats: [
-          { label: 'Active Foreign Operations', value: String(activeCamps), color: 'var(--text-heading)' },
-          { label: 'Critical Threat Vectors', value: String(criticalThreats), color: '#ef4444', isDanger: true },
-          { label: 'Classified Intercepts', value: totalIntercepts, color: 'var(--text-heading)' },
-          { label: 'Proxy Bot Farms Tracked', value: '42', color: 'var(--sticker-orange, #fb923c)' }
+          { label: 'Active operations', value: String(activeCamps), color: 'var(--text-heading)' },
+          { label: 'Critical threat vectors', value: String(criticalThreats), color: 'var(--risk-critical)', isDanger: true },
+          { label: 'Classified intercepts', value: totalIntercepts, color: 'var(--text-heading)' },
+          { label: 'Proxy bot networks', value: '42', color: 'var(--text-heading)' }
         ],
         sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
-          { key: 'twitter', name: 'X (Twitter Botnets)', pct: '37%', rawPct: 37, color: 'var(--sticker-sky, #38bdf8)' },
-          { key: 'reddit', name: 'Reddit Disinfo Swarms', pct: '28%', rawPct: 28, color: 'var(--sticker-orange, #fb923c)' },
-          { key: 'instagram', name: 'Instagram Visual Ops', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
-          { key: 'telegram', name: 'Dark Telegram Channels', pct: '7%', rawPct: 7, color: 'var(--sticker-purple, #c084fc)' }
+          { key: 'twitter', name: 'X (Twitter Botnets)', pct: '37%', rawPct: 37, color: '#38bdf8' },
+          { key: 'reddit', name: 'Reddit Disinfo Swarms', pct: '28%', rawPct: 28, color: '#fb923c' },
+          { key: 'instagram', name: 'Instagram Visual Ops', pct: '28%', rawPct: 28, color: '#f472b6' },
+          { key: 'telegram', name: 'Telegram Channels', pct: '7%', rawPct: 7, color: '#a78bfa' }
         ],
         hotspots: [
-          { name: 'J&K SECTOR COMMAND', top: '22%', left: '36%', color: '#ef4444' },
-          { name: 'DELHI LEA HQ', top: '35%', left: '40%', color: '#ef4444' },
-          { name: 'WESTERN BORDER CORRIDOR', top: '48%', left: '26%', color: '#f59e0b' },
-          { name: 'SILIGURI CORRIDOR', top: '38%', left: '72%', color: '#ef4444' }
+          { name: 'Jammu & Kashmir Command', top: '22%', left: '36%', color: '#ef4444' },
+          { name: 'Delhi LEA Bureau', top: '35%', left: '40%', color: '#ef4444' },
+          { name: 'Western Border', top: '48%', left: '26%', color: '#f59e0b' },
+          { name: 'Siliguri Corridor', top: '38%', left: '72%', color: '#ef4444' }
         ]
       };
     }
@@ -166,27 +166,27 @@ export default function OverviewView({ onNavigate }) {
 
       return {
         roleId: 'corporate_enterprise',
-        title: 'Tata Sons — Brand Defense & Market Risk Radar',
-        subtitle: 'Real-time detection of coordinated corporate smear campaigns, stock sabotage, energy & port hoaxes, and executive deepfakes',
-        classificationBadge: 'ENTERPRISE TIER-1 RESTRICTED',
-        classificationColor: '#f59e0b',
+        title: 'Brand defense & market risk radar',
+        subtitle: 'Detection of coordinated smear campaigns, stock sabotage, and synthetic impersonation',
+        classificationBadge: 'Enterprise Risk',
+        classificationColor: 'var(--text-secondary)',
         stats: [
-          { label: 'Active Brand Attacks', value: String(activeCamps), color: 'var(--text-heading)' },
-          { label: 'High Risk Market Threats', value: String(criticalThreats), color: '#ef4444', isDanger: true },
-          { label: 'Corporate Posts Analyzed', value: totalPosts, color: 'var(--text-heading)' },
-          { label: 'Executive Deepfakes', value: '3', color: 'var(--sticker-orange, #fb923c)' }
+          { label: 'Active brand attacks', value: String(activeCamps), color: 'var(--text-heading)' },
+          { label: 'Critical market threats', value: String(criticalThreats), color: 'var(--risk-critical)', isDanger: true },
+          { label: 'Posts analyzed', value: totalPosts, color: 'var(--text-heading)' },
+          { label: 'Executive deepfakes', value: '3', color: 'var(--text-heading)' }
         ],
         sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
-          { key: 'twitter', name: 'X / FinTwit Clusters', pct: '38%', rawPct: 38, color: 'var(--sticker-sky, #38bdf8)' },
-          { key: 'instagram', name: 'Instagram Viral Reels', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
-          { key: 'reddit', name: 'Reddit Investor Hubs', pct: '20%', rawPct: 20, color: 'var(--sticker-orange, #fb923c)' },
-          { key: 'telegram', name: 'Telegram Shadow Groups', pct: '14%', rawPct: 14, color: 'var(--sticker-purple, #c084fc)' }
+          { key: 'twitter', name: 'X / Market Discussions', pct: '38%', rawPct: 38, color: '#38bdf8' },
+          { key: 'instagram', name: 'Instagram Viral Reels', pct: '28%', rawPct: 28, color: '#f472b6' },
+          { key: 'reddit', name: 'Reddit Investor Forums', pct: '20%', rawPct: 20, color: '#fb923c' },
+          { key: 'telegram', name: 'Telegram Shadow Channels', pct: '14%', rawPct: 14, color: '#a78bfa' }
         ],
         hotspots: [
-          { name: 'TATA SONS HQ / BOMBAY HOUSE', top: '58%', left: '30%', color: '#ef4444' },
-          { name: 'TATA MOTORS PUNE PLANT', top: '60%', left: '32%', color: '#f59e0b' },
-          { name: 'TCS TECH CORRIDOR BENGALURU', top: '75%', left: '45%', color: '#10b981' },
-          { name: 'TATA STEEL JAMSHEDPUR', top: '48%', left: '72%', color: '#f59e0b' }
+          { name: 'Corporate HQ / Mumbai', top: '58%', left: '30%', color: '#ef4444' },
+          { name: 'Industrial Plant / Pune', top: '60%', left: '32%', color: '#f59e0b' },
+          { name: 'Tech Hub / Bengaluru', top: '75%', left: '45%', color: '#3b82f6' },
+          { name: 'Manufacturing / Jamshedpur', top: '48%', left: '72%', color: '#f59e0b' }
         ]
       };
     }
@@ -199,27 +199,27 @@ export default function OverviewView({ onNavigate }) {
 
     return {
       roleId: 'journalist_media',
-      title: 'National Press Consortium — Fact-Check & Virality Monitor',
-      subtitle: 'Cross-lingual rumor genealogies, viral WhatsApp forwards, manipulated media & pre-publication debunk verification',
-      classificationBadge: 'PRESS ACCREDITED // VERIFICATION DESK',
-      classificationColor: '#3b82f6',
+      title: 'Fact-checking & viral intelligence monitor',
+      subtitle: 'Cross-lingual rumor genealogies, viral forward clusters, and pre-publication debunk verification',
+      classificationBadge: 'Press Desk',
+      classificationColor: 'var(--text-secondary)',
       stats: [
-        { label: 'Viral Rumors Tracked', value: String(activeCamps), color: 'var(--text-heading)' },
-        { label: 'Critical Debunk Priority', value: String(criticalThreats), color: '#ef4444', isDanger: true },
-        { label: 'Citizen Tipline Submissions', value: totalTipline, color: 'var(--text-heading)' },
-        { label: 'Multilingual Variants', value: '78', color: '#3b82f6' }
+        { label: 'Viral rumors tracked', value: String(activeCamps), color: 'var(--text-heading)' },
+        { label: 'Critical debunk queue', value: String(criticalThreats), color: 'var(--risk-critical)', isDanger: true },
+        { label: 'Citizen submissions', value: totalTipline, color: 'var(--text-heading)' },
+        { label: 'Multilingual variants', value: '78', color: 'var(--text-heading)' }
       ],
       sources: backendOverview?.sources ? backendOverview.sources.map(s => ({ key: s.key || s.name.toLowerCase(), name: s.name, pct: `${s.percentage}%`, rawPct: s.percentage, color: s.color })) : [
-        { key: 'whatsapp', name: 'WhatsApp Citizen Tipline', pct: '38%', rawPct: 38, color: 'var(--sticker-teal, #2dd4bf)' },
-        { key: 'instagram', name: 'Instagram Viral Reels', pct: '28%', rawPct: 28, color: 'var(--sticker-pink, #f472b6)' },
-        { key: 'reddit', name: 'Reddit Rumor Threads', pct: '20%', rawPct: 20, color: 'var(--sticker-orange, #fb923c)' },
-        { key: 'twitter', name: 'X / Public Feeds', pct: '14%', rawPct: 14, color: 'var(--sticker-sky, #38bdf8)' }
+        { key: 'whatsapp', name: 'WhatsApp Tiplines', pct: '38%', rawPct: 38, color: '#2dd4bf' },
+        { key: 'instagram', name: 'Instagram Viral Reels', pct: '28%', rawPct: 28, color: '#f472b6' },
+        { key: 'reddit', name: 'Reddit Threads', pct: '20%', rawPct: 20, color: '#fb923c' },
+        { key: 'twitter', name: 'X / Public Feeds', pct: '14%', rawPct: 14, color: '#38bdf8' }
       ],
       hotspots: [
-        { name: 'DELHI MEDIA DESK', top: '35%', left: '40%', color: '#3b82f6' },
-        { name: 'MUMBAI METRO', top: '60%', left: '30%', color: '#f472b6' },
-        { name: 'BENGALURU FACT DESK', top: '75%', left: '45%', color: '#3b82f6' },
-        { name: 'KOLKATA PRESS BUREAU', top: '48%', left: '70%', color: '#10b981' }
+        { name: 'Delhi Media Desk', top: '35%', left: '40%', color: '#3b82f6' },
+        { name: 'Mumbai Bureau', top: '60%', left: '30%', color: '#f59e0b' },
+        { name: 'Bengaluru Fact Desk', top: '75%', left: '45%', color: '#3b82f6' },
+        { name: 'Kolkata Press Desk', top: '48%', left: '70%', color: '#10b981' }
       ]
     };
   }, [currentRole, backendOverview, liveSignals.length]);
@@ -405,41 +405,40 @@ export default function OverviewView({ onNavigate }) {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
             <span style={{
-              fontSize: '11px',
-              fontWeight: 700,
-              padding: '2px 8px',
-              borderRadius: '9999px',
-              backgroundColor: `${personaData.classificationColor}18`,
-              color: personaData.classificationColor,
-              border: `1px solid ${personaData.classificationColor}40`,
-              letterSpacing: '0.05em',
+              fontSize: '10.5px',
+              fontWeight: 500,
+              padding: '2px 7px',
+              borderRadius: '4px',
+              backgroundColor: 'var(--bg-card)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border-color)',
               fontFamily: 'JetBrains Mono'
             }}>
               {personaData.classificationBadge}
             </span>
             {liveSignals.length > 0 && (
               <span style={{
-                fontSize: '11px',
-                fontWeight: 600,
-                padding: '2px 8px',
-                borderRadius: '9999px',
-                backgroundColor: 'rgba(59, 130, 246, 0.12)',
-                color: '#3b82f6',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
+                fontSize: '10.5px',
+                fontWeight: 500,
+                padding: '2px 7px',
+                borderRadius: '4px',
+                backgroundColor: 'var(--accent-subtle)',
+                color: 'var(--accent-primary)',
+                border: '1px solid var(--accent-border)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '5px',
                 fontFamily: 'JetBrains Mono'
               }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#3b82f6', boxShadow: '0 0 6px #3b82f6' }} />
-                +{liveSignals.length} LIVE SIGNALS
+                <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--accent-primary)' }} />
+                +{liveSignals.length} signals
               </span>
             )}
           </div>
-          <h2 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-heading)', letterSpacing: '-0.5px', margin: 0 }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-heading)', letterSpacing: '-0.01em', margin: 0 }}>
             {personaData.title}
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px', maxWidth: '850px', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '4px', maxWidth: '850px', lineHeight: 1.5 }}>
             {personaData.subtitle}
           </p>
         </div>
@@ -451,32 +450,32 @@ export default function OverviewView({ onNavigate }) {
             disabled={isRefreshing}
             className="bs-button bs-button-secondary"
             title="Refresh real-time intelligence feeds"
-            style={{ fontSize: '12px', padding: '6px 12px', display: 'flex', alignItems: 'center', gap: '6px' }}
+            style={{ fontSize: '12px', padding: '5px 10px', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <RefreshCw size={13} className={isRefreshing ? "animate-spin" : ""} />
-            <span>{isRefreshing ? 'Syncing...' : 'Live Sync'}</span>
+            <RefreshCw size={12} className={isRefreshing ? "animate-spin" : ""} />
+            <span>{isRefreshing ? 'Syncing...' : 'Sync'}</span>
           </button>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* TOP 5 STAT CARDS                                                          */}
+      {/* TOP STAT CARDS                                                            */}
       {/* ========================================================================= */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
         {personaData.stats.map((st, idx) => (
           <div 
             key={idx} 
             className="bs-card" 
             style={{ 
-              padding: '16px',
-              borderColor: st.isDanger ? 'rgba(239, 68, 68, 0.4)' : undefined,
-              background: st.isDanger ? 'rgba(239, 68, 68, 0.04)' : undefined
+              padding: '14px 16px',
+              borderColor: st.isDanger ? 'var(--risk-critical-border)' : undefined,
+              background: st.isDanger ? 'var(--risk-critical-bg)' : undefined
             }}
           >
-            <div style={{ color: st.isDanger ? '#ef4444' : 'var(--text-secondary)', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' }}>
+            <div style={{ color: st.isDanger ? 'var(--risk-critical)' : 'var(--text-muted)', fontSize: '11px', fontWeight: 500 }}>
               <span>{st.label}</span>
             </div>
-            <div style={{ fontSize: '28px', fontWeight: 800, color: st.color || 'var(--text-heading)', marginTop: '6px', fontFamily: 'JetBrains Mono', letterSpacing: '-0.5px' }}>
+            <div style={{ fontSize: '22px', fontWeight: 600, color: st.color || 'var(--text-heading)', marginTop: '4px', fontFamily: 'JetBrains Mono', letterSpacing: '-0.02em' }}>
               {st.value}
             </div>
           </div>
@@ -495,15 +494,15 @@ export default function OverviewView({ onNavigate }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '14px' }}>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Activity size={18} style={{ color: '#3b82f6' }} />
+              <Activity size={16} style={{ color: 'var(--accent-primary)' }} />
               <div>
-                <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-heading)' }}>
-                  {currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Brand Attack Velocity & Stock Sabotage Timeline' 
-                    : currentRole === ROLES.JOURNALIST_MEDIA ? 'Viral Rumor Forward Velocity Timeline' 
-                    : 'National Threat Activity Timeline'}
+                <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-heading)' }}>
+                  {currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Brand attack velocity & market impact' 
+                    : currentRole === ROLES.JOURNALIST_MEDIA ? 'Viral rumor forward velocity' 
+                    : 'Threat activity timeline'}
                 </span>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                  Filtered: <strong>{selectedChannel === 'ALL' ? 'All Channels' : selectedChannel.toUpperCase()}</strong> • Range: <strong>{timeRange}</strong> • View: <strong>{metricFilter}</strong>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                  Channel: {selectedChannel === 'ALL' ? 'All channels' : selectedChannel} • Range: {timeRange}
                 </div>
               </div>
             </div>
@@ -511,17 +510,17 @@ export default function OverviewView({ onNavigate }) {
             {/* Filter Controls Row */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               
-              {/* Chart Type Toggle: Bar / Area / Line */}
-              <div style={{ display: 'flex', backgroundColor: 'var(--bg-muted, #1a1d2d)', borderRadius: '6px', padding: '2px', border: '1px solid var(--border-color)' }}>
+              {/* Chart Type Toggle: Bar / Area */}
+              <div style={{ display: 'flex', backgroundColor: 'var(--bg-input)', borderRadius: 'var(--radius-control)', padding: '2px', border: '1px solid var(--border-color)' }}>
                 <button
                   onClick={() => setChartType('bar')}
-                  title="Histogram Volume Bar Chart"
+                  title="Histogram volume bar chart"
                   style={{
                     padding: '4px 8px',
                     borderRadius: '4px',
                     border: 'none',
-                    backgroundColor: chartType === 'bar' ? '#3b82f6' : 'transparent',
-                    color: chartType === 'bar' ? '#ffffff' : 'var(--text-secondary)',
+                    backgroundColor: chartType === 'bar' ? 'var(--bg-card-hover)' : 'transparent',
+                    color: chartType === 'bar' ? 'var(--text-heading)' : 'var(--text-muted)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center'
@@ -531,13 +530,13 @@ export default function OverviewView({ onNavigate }) {
                 </button>
                 <button
                   onClick={() => setChartType('area')}
-                  title="Gradient Velocity Area Chart"
+                  title="Velocity area chart"
                   style={{
                     padding: '4px 8px',
                     borderRadius: '4px',
                     border: 'none',
-                    backgroundColor: chartType === 'area' ? '#3b82f6' : 'transparent',
-                    color: chartType === 'area' ? '#ffffff' : 'var(--text-secondary)',
+                    backgroundColor: chartType === 'area' ? 'var(--bg-card-hover)' : 'transparent',
+                    color: chartType === 'area' ? 'var(--text-heading)' : 'var(--text-muted)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center'
@@ -550,9 +549,9 @@ export default function OverviewView({ onNavigate }) {
               {/* Metric Mode Filter Dropdown/Pills */}
               <div style={{ display: 'flex', gap: '4px' }}>
                 {[
-                  { id: 'ALL', label: 'All Signals' },
-                  { id: 'HIGH_RISK', label: 'High Risk (Score > 80)' },
-                  { id: 'BOTNET', label: 'Bot Swarms' }
+                  { id: 'ALL', label: 'All signals' },
+                  { id: 'HIGH_RISK', label: 'High risk' },
+                  { id: 'BOTNET', label: 'Bot swarms' }
                 ].map(m => (
                   <button
                     key={m.id}
@@ -560,11 +559,11 @@ export default function OverviewView({ onNavigate }) {
                     style={{
                       padding: '4px 8px',
                       fontSize: '11px',
-                      fontWeight: metricFilter === m.id ? 700 : 500,
-                      borderRadius: '4px',
-                      border: `1px solid ${metricFilter === m.id ? '#3b82f6' : 'var(--border-color)'}`,
-                      backgroundColor: metricFilter === m.id ? 'rgba(59, 130, 246, 0.15)' : 'var(--bg-muted, #1a1d2d)',
-                      color: metricFilter === m.id ? '#3b82f6' : 'var(--text-secondary)',
+                      fontWeight: metricFilter === m.id ? 600 : 400,
+                      borderRadius: 'var(--radius-badge)',
+                      border: `1px solid ${metricFilter === m.id ? 'var(--border-light)' : 'var(--border-color)'}`,
+                      backgroundColor: metricFilter === m.id ? 'var(--bg-raised)' : 'transparent',
+                      color: metricFilter === m.id ? 'var(--text-heading)' : 'var(--text-muted)',
                       cursor: 'pointer'
                     }}
                   >
@@ -580,13 +579,13 @@ export default function OverviewView({ onNavigate }) {
                     key={tr}
                     onClick={() => setTimeRange(tr)}
                     style={{
-                      padding: '4px 10px',
+                      padding: '4px 8px',
                       fontSize: '11px',
-                      fontWeight: timeRange === tr ? 700 : 500,
-                      borderRadius: '4px',
-                      border: `1px solid ${timeRange === tr ? '#10b981' : 'var(--border-color)'}`,
-                      backgroundColor: timeRange === tr ? 'rgba(16, 185, 129, 0.15)' : 'var(--bg-muted, #1a1d2d)',
-                      color: timeRange === tr ? '#10b981' : 'var(--text-secondary)',
+                      fontWeight: timeRange === tr ? 600 : 400,
+                      borderRadius: 'var(--radius-badge)',
+                      border: `1px solid ${timeRange === tr ? 'var(--border-light)' : 'var(--border-color)'}`,
+                      backgroundColor: timeRange === tr ? 'var(--bg-raised)' : 'transparent',
+                      color: timeRange === tr ? 'var(--text-heading)' : 'var(--text-muted)',
                       cursor: 'pointer'
                     }}
                   >
@@ -599,14 +598,14 @@ export default function OverviewView({ onNavigate }) {
           </div>
 
           {/* Quick Metrics Bar directly above graph */}
-          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', fontSize: '12px', backgroundColor: 'var(--inner-box-bg, rgba(255,255,255,0.02))', padding: '8px 12px', borderRadius: '6px' }}>
-            <span>Filtered Volume: <strong style={{ color: '#3b82f6', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalVolume.toLocaleString()}</strong></span>
-            <span>•</span>
-            <span>High-Risk Flags: <strong style={{ color: '#ef4444', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalHighRisk.toLocaleString()} ({graphSummary.riskRatio}%)</strong></span>
-            <span>•</span>
-            <span>Bot Swarm Bursts: <strong style={{ color: '#f59e0b', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalBotBurst.toLocaleString()}</strong></span>
-            <span>•</span>
-            <span>Peak Activity Interval: <strong style={{ color: 'var(--text-heading)', fontFamily: 'JetBrains Mono' }}>{graphSummary.peakInterval}</strong></span>
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', fontSize: '12px', backgroundColor: 'var(--bg-input)', padding: '8px 12px', borderRadius: 'var(--radius-control)', border: '1px solid var(--border-subtle)' }}>
+            <span>Filtered volume: <strong style={{ color: 'var(--text-heading)', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalVolume.toLocaleString()}</strong></span>
+            <span style={{ color: 'var(--border-light)' }}>•</span>
+            <span>High risk: <strong style={{ color: 'var(--risk-critical)', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalHighRisk.toLocaleString()} ({graphSummary.riskRatio}%)</strong></span>
+            <span style={{ color: 'var(--border-light)' }}>•</span>
+            <span>Bot bursts: <strong style={{ color: 'var(--risk-elevated)', fontFamily: 'JetBrains Mono' }}>{graphSummary.totalBotBurst.toLocaleString()}</strong></span>
+            <span style={{ color: 'var(--border-light)' }}>•</span>
+            <span>Peak interval: <strong style={{ color: 'var(--text-primary)', fontFamily: 'JetBrains Mono' }}>{graphSummary.peakInterval}</strong></span>
           </div>
 
           {/* Real Recharts Interactive Visualization */}
@@ -615,34 +614,34 @@ export default function OverviewView({ onNavigate }) {
               {chartType === 'bar' ? (
                 <BarChart data={graphData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
-                  <XAxis dataKey="time" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
-                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(59, 130, 246, 0.05)' }} />
+                  <XAxis dataKey="time" stroke="var(--text-muted)" fontSize={11} tickLine={false} />
+                  <YAxis stroke="var(--text-muted)" fontSize={11} tickLine={false} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255, 255, 255, 0.03)' }} />
                   <Legend 
                     verticalAlign="top" 
                     align="right" 
                     iconType="circle" 
                     wrapperStyle={{ paddingBottom: '10px', fontSize: '11px' }} 
                   />
-                  <Bar dataKey="totalSignals" name="Total Signals" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={16} />
-                  <Bar dataKey="highRisk" name="High Risk Threats" fill="#ef4444" radius={[4, 4, 0, 0]} barSize={16} />
-                  <Bar dataKey="botnetBurst" name="Bot Swarms" fill="#f59e0b" radius={[4, 4, 0, 0]} barSize={16} />
+                  <Bar dataKey="totalSignals" name="Total signals" fill="#3b82f6" radius={[3, 3, 0, 0]} barSize={14} />
+                  <Bar dataKey="highRisk" name="High risk" fill="#f87171" radius={[3, 3, 0, 0]} barSize={14} />
+                  <Bar dataKey="botnetBurst" name="Bot swarms" fill="#fbbf24" radius={[3, 3, 0, 0]} barSize={14} />
                 </BarChart>
               ) : (
                 <AreaChart data={graphData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4}/>
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25}/>
                       <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0}/>
                     </linearGradient>
                     <linearGradient id="highGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.5}/>
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0}/>
+                      <stop offset="5%" stopColor="#f87171" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#f87171" stopOpacity={0.0}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
-                  <XAxis dataKey="time" stroke="#94a3b8" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
+                  <XAxis dataKey="time" stroke="var(--text-muted)" fontSize={11} tickLine={false} />
+                  <YAxis stroke="var(--text-muted)" fontSize={11} tickLine={false} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend 
                     verticalAlign="top" 
@@ -650,9 +649,9 @@ export default function OverviewView({ onNavigate }) {
                     iconType="circle" 
                     wrapperStyle={{ paddingBottom: '10px', fontSize: '11px' }} 
                   />
-                  <Area type="monotone" dataKey="totalSignals" name="Total Signals" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#totalGrad)" />
-                  <Area type="monotone" dataKey="highRisk" name="High Risk Threats" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#highGrad)" />
-                  <Line type="monotone" dataKey="botnetBurst" name="Bot Swarms" stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} />
+                  <Area type="monotone" dataKey="totalSignals" name="Total signals" stroke="#3b82f6" strokeWidth={1.5} fillOpacity={1} fill="url(#totalGrad)" />
+                  <Area type="monotone" dataKey="highRisk" name="High risk" stroke="#f87171" strokeWidth={1.5} fillOpacity={1} fill="url(#highGrad)" />
+                  <Line type="monotone" dataKey="botnetBurst" name="Bot swarms" stroke="#fbbf24" strokeWidth={1.5} dot={{ r: 2 }} />
                 </AreaChart>
               )}
             </ResponsiveContainer>
@@ -663,32 +662,32 @@ export default function OverviewView({ onNavigate }) {
         {/* Partitioned Ingestion Channels & Interactive Channel Filter */}
         <div className="bs-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontSize: '14px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
-              <Database size={16} style={{ color: '#10b981' }} />
-              <span>Channel Filter & Breakdown</span>
+            <div style={{ fontSize: '13px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
+              <Database size={15} style={{ color: 'var(--text-secondary)' }} />
+              <span>Channel distribution</span>
             </div>
             {selectedChannel !== 'ALL' && (
               <button
                 onClick={() => setSelectedChannel('ALL')}
                 style={{
                   fontSize: '11px',
-                  color: '#3b82f6',
+                  color: 'var(--accent-primary)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  fontWeight: 600
+                  fontWeight: 500
                 }}
               >
-                Reset All
+                Reset
               </button>
             )}
           </div>
 
-          <p style={{ fontSize: '11px', color: 'var(--text-secondary)', margin: 0 }}>
-            Click any channel below to filter the timeline graph strictly to that ingestion pipeline:
+          <p style={{ fontSize: '11.5px', color: 'var(--text-muted)', margin: 0 }}>
+            Filter timeline by ingestion pipeline:
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {personaData.sources.map((src, idx) => {
               const isSelected = selectedChannel === src.key;
               return (
@@ -697,26 +696,26 @@ export default function OverviewView({ onNavigate }) {
                   onClick={() => setSelectedChannel(isSelected ? 'ALL' : src.key)}
                   style={{
                     padding: '8px 10px',
-                    borderRadius: '6px',
-                    border: `1px solid ${isSelected ? src.color : 'var(--border-color)'}`,
-                    backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.08)' : 'var(--inner-box-bg, transparent)',
+                    borderRadius: 'var(--radius-control)',
+                    border: `1px solid ${isSelected ? 'var(--border-light)' : 'var(--border-color)'}`,
+                    backgroundColor: isSelected ? 'var(--bg-raised)' : 'transparent',
                     cursor: 'pointer',
-                    transition: 'all 0.15s ease'
+                    transition: 'all 0.12s ease'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: src.color, display: 'inline-block' }}></span>
-                      <span style={{ color: isSelected ? 'var(--text-heading)' : 'var(--text-primary)', fontWeight: isSelected ? 700 : 500 }}>
+                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: src.color, display: 'inline-block' }}></span>
+                      <span style={{ color: isSelected ? 'var(--text-heading)' : 'var(--text-primary)', fontWeight: isSelected ? 600 : 400 }}>
                         {src.name}
                       </span>
                     </span>
-                    <span style={{ fontWeight: 700, fontFamily: 'JetBrains Mono', color: isSelected ? src.color : 'var(--text-primary)' }}>
+                    <span style={{ fontWeight: 500, fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)' }}>
                       {src.pct}
                     </span>
                   </div>
-                  <div style={{ height: '4px', backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: '9999px', overflow: 'hidden' }}>
-                    <div style={{ width: src.pct, height: '100%', backgroundColor: src.color, borderRadius: '9999px' }}></div>
+                  <div style={{ height: '3px', backgroundColor: 'var(--bg-input)', borderRadius: '2px', overflow: 'hidden' }}>
+                    <div style={{ width: src.pct, height: '100%', backgroundColor: src.color, borderRadius: '2px' }}></div>
                   </div>
                 </div>
               );
@@ -724,10 +723,10 @@ export default function OverviewView({ onNavigate }) {
           </div>
 
           <div style={{ marginTop: 'auto', borderTop: '1px solid var(--border-color)', paddingTop: '10px', fontSize: '11px', color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>Active Channel: <strong style={{ color: '#3b82f6' }}>{selectedChannel.toUpperCase()}</strong></span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#10b981' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10b981' }} />
-              STREAM LIVE
+            <span>Active: <strong style={{ color: 'var(--text-primary)' }}>{selectedChannel === 'ALL' ? 'All' : selectedChannel}</strong></span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '5px', color: 'var(--risk-verified)' }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--risk-verified)' }} />
+              Live
             </span>
           </div>
         </div>
@@ -741,54 +740,51 @@ export default function OverviewView({ onNavigate }) {
 
         {/* Priority Campaigns Table */}
         <div className="bs-card" style={{ padding: '20px' }}>
-          <div style={{ fontSize: '15px', fontWeight: 700, marginBottom: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
-              <AlertOctagon size={18} style={{ color: '#ef4444' }} />
-              <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Targeted Corporate Smear Campaigns' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Viral Rumor Verification Queue' : 'Priority Threat Campaigns'}</span>
+              <AlertOctagon size={16} style={{ color: 'var(--risk-critical)' }} />
+              <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Targeted brand attacks' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Verification queue' : 'Priority campaigns'}</span>
             </div>
             <button 
               onClick={() => onNavigate && onNavigate('campaigns')}
               className="bs-button bs-button-secondary"
-              style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}
+              style={{ fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px' }}
             >
-              <span>View All Campaigns</span>
+              <span>View all</span>
               <ArrowRight size={12} />
             </button>
           </div>
 
-          <div style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
+          <div style={{ overflowX: 'auto', borderRadius: 'var(--radius-control)', border: '1px solid var(--border-color)' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', textAlign: 'left' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--border-color)', backgroundColor: 'var(--inner-box-bg, rgba(255,255,255,0.02))', color: 'var(--text-secondary)', fontSize: '11px', textTransform: 'uppercase' }}>
-                  <th style={{ padding: '10px 14px' }}>ID</th>
-                  <th style={{ padding: '10px 14px' }}>NARRATIVE FOCUS</th>
-                  <th style={{ padding: '10px 14px' }}>RISK RANGE</th>
-                  <th style={{ padding: '10px 14px' }}>COORD.</th>
-                  <th style={{ padding: '10px 14px' }}>AI ASST.</th>
-                  <th style={{ padding: '10px 14px', textAlign: 'right' }}>ACTION</th>
+                <tr style={{ borderBottom: '1px solid var(--border-color)', backgroundColor: 'var(--bg-input)', color: 'var(--text-muted)', fontSize: '11px' }}>
+                  <th style={{ padding: '8px 12px', fontWeight: 500 }}>ID</th>
+                  <th style={{ padding: '8px 12px', fontWeight: 500 }}>Narrative focus</th>
+                  <th style={{ padding: '8px 12px', fontWeight: 500 }}>Risk</th>
+                  <th style={{ padding: '8px 12px', fontWeight: 500 }}>Coord.</th>
+                  <th style={{ padding: '8px 12px', fontWeight: 500 }}>AI assist</th>
+                  <th style={{ padding: '8px 12px', textAlign: 'right', fontWeight: 500 }}>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {displayCampaigns.map((cmp, idx) => (
-                  <tr key={idx} style={{ borderBottom: idx < displayCampaigns.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
-                    <td style={{ padding: '12px 14px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)' }}>{cmp.id}</td>
-                    <td style={{ padding: '12px 14px' }}>
-                      <div style={{ fontWeight: 600, color: 'var(--text-heading)' }}>{cmp.title}</div>
-                      <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>{cmp.focus}</div>
+                  <tr key={idx} style={{ borderBottom: idx < displayCampaigns.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
+                    <td style={{ padding: '10px 12px', fontFamily: 'JetBrains Mono', color: 'var(--text-muted)' }}>{cmp.id}</td>
+                    <td style={{ padding: '10px 12px' }}>
+                      <div style={{ fontWeight: 500, color: 'var(--text-heading)' }}>{cmp.title}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>{cmp.focus}</div>
                     </td>
-                    <td style={{ padding: '12px 14px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ color: '#ef4444', fontWeight: 700, fontFamily: 'JetBrains Mono' }}>{cmp.risk}</span>
-                        <div style={{ width: '45px', height: '4px', backgroundColor: '#ef4444', borderRadius: '9999px' }} />
-                      </div>
+                    <td style={{ padding: '10px 12px' }}>
+                      <span style={{ color: 'var(--risk-critical)', fontWeight: 500, fontFamily: 'JetBrains Mono' }}>{cmp.risk}</span>
                     </td>
-                    <td style={{ padding: '12px 14px', fontFamily: 'JetBrains Mono' }}>{cmp.coord}%</td>
-                    <td style={{ padding: '12px 14px', fontFamily: 'JetBrains Mono', color: '#f59e0b', fontWeight: 600 }}>{cmp.aiAsst}%</td>
-                    <td style={{ padding: '12px 14px', textAlign: 'right' }}>
+                    <td style={{ padding: '10px 12px', fontFamily: 'JetBrains Mono', color: 'var(--text-secondary)' }}>{cmp.coord}%</td>
+                    <td style={{ padding: '10px 12px', fontFamily: 'JetBrains Mono', color: 'var(--risk-elevated)', fontWeight: 500 }}>{cmp.aiAsst}%</td>
+                    <td style={{ padding: '10px 12px', textAlign: 'right' }}>
                       <button
                         onClick={() => onNavigate && onNavigate('campaigns')}
-                        className={`bs-button bs-button-${cmp.statusColor}`}
-                        style={{ padding: '4px 10px', fontSize: '11px', borderRadius: '9999px' }}
+                        className={`bs-badge bs-badge-${cmp.statusColor === 'danger' ? 'critical' : 'neutral'}`}
+                        style={{ cursor: 'pointer', border: '1px solid var(--border-color)' }}
                       >
                         {cmp.status}
                       </button>
@@ -802,16 +798,16 @@ export default function OverviewView({ onNavigate }) {
 
         {/* Regional Hotspot Preview */}
         <div className="bs-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
-            <MapPin size={16} style={{ color: '#ec4899' }} />
-            <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Asset & Port Infrastructure Nodes' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Citizen Tipline Regional Nodes' : 'National Hotspot Clusters'}</span>
+          <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-heading)' }}>
+            <MapPin size={15} style={{ color: 'var(--text-secondary)' }} />
+            <span>{currentRole === ROLES.CORPORATE_ENTERPRISE ? 'Asset & facility nodes' : currentRole === ROLES.JOURNALIST_MEDIA ? 'Regional media desks' : 'Hotspot clusters'}</span>
           </div>
 
           <div style={{
             flex: 1,
-            backgroundColor: 'var(--inner-box-bg, rgba(0,0,0,0.2))',
+            backgroundColor: 'var(--bg-input)',
             border: '1px solid var(--border-color)',
-            borderRadius: '8px',
+            borderRadius: 'var(--radius-control)',
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
@@ -819,16 +815,16 @@ export default function OverviewView({ onNavigate }) {
             minHeight: '200px',
             overflow: 'hidden'
           }}>
-            {/* Grid overlay */}
+            {/* Subtle grid lines */}
             <div style={{
               position: 'absolute',
               inset: 0,
-              backgroundImage: 'radial-gradient(var(--border-color) 1px, transparent 1px)',
-              backgroundSize: '16px 16px',
-              opacity: 0.7
+              backgroundImage: 'linear-gradient(to right, var(--border-subtle) 1px, transparent 1px), linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px)',
+              backgroundSize: '24px 24px',
+              opacity: 0.8
             }} />
 
-            {/* Glowing Hotspots based on current persona */}
+            {/* Hotspots */}
             {personaData.hotspots.map((h, hIdx) => (
               <div 
                 key={hIdx}
@@ -844,22 +840,22 @@ export default function OverviewView({ onNavigate }) {
               >
                 <div 
                   style={{ 
-                    width: '10px', 
-                    height: '10px', 
+                    width: '7px', 
+                    height: '7px', 
                     borderRadius: '50%', 
-                    backgroundColor: h.color, 
-                    boxShadow: `0 0 10px ${h.color}` 
+                    backgroundColor: h.color,
+                    border: '1px solid rgba(255, 255, 255, 0.4)'
                   }} 
                 />
-                <span style={{ fontSize: '9px', color: 'var(--text-primary)', marginTop: '3px', fontWeight: 600, whiteSpace: 'nowrap', backgroundColor: 'var(--bg-card)', padding: '1px 5px', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                <span style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '4px', whiteSpace: 'nowrap', backgroundColor: 'var(--bg-card)', padding: '1px 6px', borderRadius: 'var(--radius-badge)', border: '1px solid var(--border-color)' }}>
                   {h.name}
                 </span>
               </div>
             ))}
 
-            <div style={{ position: 'absolute', bottom: '10px', right: '10px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--bg-card)', padding: '2px 8px', borderRadius: '9999px', border: '1px solid var(--border-color)' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444' }} />
-              <span style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: 600, fontFamily: 'JetBrains Mono' }}>LIVE RADAR</span>
+            <div style={{ position: 'absolute', bottom: '10px', right: '10px', display: 'flex', alignItems: 'center', gap: '5px', backgroundColor: 'var(--bg-card)', padding: '2px 8px', borderRadius: 'var(--radius-badge)', border: '1px solid var(--border-color)' }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--risk-verified)' }} />
+              <span style={{ fontSize: '10.5px', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono' }}>Active grid</span>
             </div>
           </div>
         </div>

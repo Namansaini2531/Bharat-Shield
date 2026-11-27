@@ -26,6 +26,7 @@ public class DesktopApp extends Application {
     private WebView webView;
     private WebEngine webEngine;
     private SidecarManager sidecarManager;
+    private LocalStaticServer staticServer;
 
     @Override
     public void start(Stage primaryStage) {
@@ -42,7 +43,11 @@ public class DesktopApp extends Application {
         String defaultUA = webEngine.getUserAgent();
         webEngine.setUserAgent(defaultUA + " BharatShieldDesktop/1.0.0 (JavaFX)");
 
-        // 3. Setup JS to Java Native Bridge
+        // 3. Setup JS Error and Alert Listeners
+        webEngine.setOnError(event -> System.err.println("[WebEngine Error]: " + event.getMessage()));
+        webEngine.setOnAlert(event -> System.out.println("[WebEngine Alert]: " + event.getData()));
+
+        // 4. Setup JS to Java Native Bridge
         NativeBridge nativeBridge = new NativeBridge(primaryStage);
         webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
@@ -51,15 +56,38 @@ public class DesktopApp extends Application {
                     window.setMember("bharatShieldNative", nativeBridge);
                     window.setMember("__BHARAT_SHIELD_API_URL__", "http://127.0.0.1:8000");
                     window.setMember("__BHARAT_SHIELD_WS_URL__", "ws://127.0.0.1:8000");
-                    System.out.println("[Desktop] Native bridge successfully injected into DOM.");
+
+                    // Forward client JavaScript errors and console logs to Java terminal
+                    webEngine.executeScript(
+                        "window.onerror = function(message, source, lineno, colno, error) {" +
+                        "  var details = message + ' (' + source + ':' + lineno + ')';" +
+                        "  if (window.bharatShieldNative) { window.bharatShieldNative.logError(details); }" +
+                        "  return false;" +
+                        "};" +
+                        "var _origLog = console.log; console.log = function() {" +
+                        "  _origLog.apply(console, arguments);" +
+                        "  if (window.bharatShieldNative) {" +
+                        "    var args = Array.prototype.slice.call(arguments).join(' ');" +
+                        "    window.bharatShieldNative.logToConsole(args);" +
+                        "  }" +
+                        "};" +
+                        "var _origErr = console.error; console.error = function() {" +
+                        "  _origErr.apply(console, arguments);" +
+                        "  if (window.bharatShieldNative) {" +
+                        "    var args = Array.prototype.slice.call(arguments).join(' ');" +
+                        "    window.bharatShieldNative.logError(args);" +
+                        "  }" +
+                        "};"
+                    );
+
+                    System.out.println("[Desktop] Native bridge and console logger successfully injected.");
                 } catch (Exception e) {
-                    System.err.println("[Desktop] Failed to inject native bridge: " + e.getMessage());
+                    System.err.println("[Desktop] Bridge injection warning: " + e.getMessage());
                 }
+            } else if (newState == Worker.State.FAILED) {
+                System.err.println("[Desktop] Load failed: " + webEngine.getLoadWorker().getException());
             }
         });
-
-        // 4. Load Application URL (check if local dev server or packaged build)
-        loadAppContent();
 
         // 5. Layout and Scene Setup
         BorderPane root = new BorderPane();
@@ -78,43 +106,51 @@ public class DesktopApp extends Application {
             }
         } catch (Exception ignored) {}
 
-        // 6. Handle Window Closing - Cleanly kill child processes
+        // 6. Handle Window Closing - Cleanly kill child processes and static server
         primaryStage.setOnCloseRequest(event -> {
             System.out.println("[Desktop] Application closing. Terminating backend sidecar...");
-            if (sidecarManager != null) {
-                sidecarManager.stopSidecar();
-            }
+            cleanup();
             Platform.exit();
             System.exit(0);
         });
 
         primaryStage.show();
+
+        // 7. Load Application Content
+        loadAppContent();
     }
 
     private void loadAppContent() {
-        // First check if Vite dev server is running on localhost:5173
         new Thread(() -> {
+            // First check if Vite dev server is running on localhost:5173
             boolean isDevServerOnline = checkServer("http://localhost:5173");
-            Platform.runLater(() -> {
-                if (isDevServerOnline) {
-                    System.out.println("[Desktop] Connecting to live Vite dev server: " + DEV_URL);
-                    webEngine.load(DEV_URL);
-                } else {
-                    // Check if local dist/index.html exists
-                    File distIndex = new File("../frontend/dist/index.html");
-                    if (!distIndex.exists()) {
-                        distIndex = new File("frontend/dist/index.html");
-                    }
+            if (isDevServerOnline) {
+                System.out.println("[Desktop] Connected to live Vite dev server: " + DEV_URL);
+                Platform.runLater(() -> webEngine.load(DEV_URL));
+                return;
+            }
 
-                    if (distIndex.exists()) {
-                        System.out.println("[Desktop] Loading local production bundle: " + distIndex.toURI());
-                        webEngine.load(distIndex.toURI().toString());
-                    } else {
-                        System.out.println("[Desktop] Vite dev server offline and dist not found. Pointing to dev URL...");
-                        webEngine.load(DEV_URL);
-                    }
+            // Otherwise, check if frontend/dist exists to serve via internal HTTP server
+            File distDir = new File("frontend/dist");
+            if (!distDir.exists()) {
+                distDir = new File("../frontend/dist");
+            }
+
+            if (distDir.exists() && new File(distDir, "index.html").exists()) {
+                try {
+                    staticServer = new LocalStaticServer(distDir);
+                    int port = staticServer.start();
+                    String localUrl = "http://127.0.0.1:" + port;
+                    System.out.println("[Desktop] Serving production frontend on " + localUrl);
+                    Platform.runLater(() -> webEngine.load(localUrl));
+                } catch (Exception e) {
+                    System.err.println("[Desktop] Failed to start local static server: " + e.getMessage());
+                    Platform.runLater(() -> webEngine.load(DEV_URL));
                 }
-            });
+            } else {
+                System.out.println("[Desktop] Neither Vite server nor frontend/dist found. Waiting on " + DEV_URL);
+                Platform.runLater(() -> webEngine.load(DEV_URL));
+            }
         }).start();
     }
 
@@ -132,10 +168,17 @@ public class DesktopApp extends Application {
         }
     }
 
-    @Override
-    public void stop() {
+    private void cleanup() {
         if (sidecarManager != null) {
             sidecarManager.stopSidecar();
         }
+        if (staticServer != null) {
+            staticServer.stop();
+        }
+    }
+
+    @Override
+    public void stop() {
+        cleanup();
     }
 }

@@ -22,70 +22,70 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
   const roleCards = [
     {
       key: ROLES.SYSTEM_ADMIN,
-      title: 'Super Administrator / NCCC',
-      subtitle: 'Software Ops Command & System Governance',
-      badge: 'SUPREME ROOT (Level 5+)',
-      badgeBg: 'rgba(16, 185, 129, 0.15)',
-      badgeColor: '#10b981',
+      title: 'Operations Admin',
+      subtitle: 'System infrastructure & telemetry governance',
+      badge: 'Admin',
+      badgeBg: 'rgba(255, 255, 255, 0.05)',
+      badgeColor: 'var(--text-secondary)',
       icon: ShieldCheck,
-      iconColor: '#10b981',
-      targetEntity: 'National Cyber Coordination Centre (NCCC) & MoD',
+      iconColor: 'var(--text-primary)',
+      targetEntity: 'National Cyber Coordination Centre',
       capabilities: [
         'Full software management & node cluster telemetry',
-        'Operator RBAC clearance & credentials governance',
-        'Live ingestion connector pipeline controls',
-        'Real-time AI threat risk weight hyperparameter tuning'
+        'Operator clearance & credentials governance',
+        'Ingestion connector pipeline controls',
+        'Model hyperparameter & threshold tuning'
       ]
     },
     {
       key: ROLES.INVESTIGATION_BUREAU,
-      title: 'Investigation Bureau of India',
-      subtitle: 'Law Enforcement & National Security Wing',
-      badge: 'TOP SECRET (Level 5)',
-      badgeBg: 'rgba(239, 68, 68, 0.15)',
-      badgeColor: '#ef4444',
+      title: 'Investigation Bureau',
+      subtitle: 'National security & cross-border threat monitoring',
+      badge: 'Classified',
+      badgeBg: 'rgba(239, 68, 68, 0.1)',
+      badgeColor: 'var(--risk-critical)',
       icon: ShieldCheck,
-      iconColor: '#ef4444',
-      targetEntity: 'Ministry of Home Affairs / Inter-Agency Cyber Command',
+      iconColor: 'var(--risk-critical)',
+      targetEntity: 'Inter-Agency Cyber Command',
       capabilities: [
-        'Classified state-sponsored disinformation alerts',
-        'Cross-border botnet & deepfake threat tracking',
-        'Section 69A IT Act emergency takedown dossiers',
-        'Court-admissible SHA-256 / EVM blockchain evidence'
+        'State-sponsored disinformation alerts',
+        'Botnet & synthetic media tracking',
+        'Section 69A IT Act emergency dossiers',
+        'Cryptographic hash verification'
       ]
     },
     {
       key: ROLES.CORPORATE_ENTERPRISE,
-      title: 'Tata Sons — Brand Defense',
-      subtitle: 'Corporate Risk & Market Intelligence',
-      badge: 'ENTERPRISE TIER-1',
-      badgeBg: 'rgba(245, 158, 11, 0.15)',
-      badgeColor: '#f59e0b',
+      title: 'Enterprise Risk',
+      subtitle: 'Brand defense & market risk monitoring',
+      badge: 'Enterprise',
+      badgeBg: 'rgba(245, 158, 11, 0.1)',
+      badgeColor: 'var(--risk-elevated)',
       icon: Building2,
-      iconColor: '#f59e0b',
-      targetEntity: 'Tata Strategic Threat Intelligence & Brand Protection',
+      iconColor: 'var(--risk-elevated)',
+      targetEntity: 'Brand Protection & Market Intelligence',
       capabilities: [
-        'Stock manipulation & short-seller smear detection',
-        'Executive deepfake & phishing alert radar',
-        'Supply chain & ESG disinformation monitoring',
-        'BSE / NSE investor clarification counter-briefs'
+        'Market smear & stock sabotage detection',
+        'Executive impersonation & phishing alerts',
+        'Supply chain rumor tracking',
+        'Investor clarification counter-briefs'
       ]
     },
     {
       key: ROLES.JOURNALIST_MEDIA,
-      title: 'National Press Consortium',
-      subtitle: 'Fact-Checking & Investigative Journalism',
-      badge: 'PRESS ACCREDITED',
-      badgeBg: 'rgba(59, 130, 246, 0.15)',
-      badgeColor: '#3b82f6',
+      title: 'Press Desk',
+      subtitle: 'Fact-checking & viral intelligence intake',
+      badge: 'Accredited',
+      badgeBg: 'rgba(59, 130, 246, 0.1)',
+      badgeColor: 'var(--accent-primary)',
       icon: Newspaper,
-      iconColor: '#3b82f6',
-      targetEntity: 'Media Bureau & Citizen Fact-Check Desk',
+      iconColor: 'var(--accent-primary)',
+      targetEntity: 'Press Consortium & Fact Desk',
       capabilities: [
-        'Viral social media rumor origin genealogy',
-        'WhatsApp/Telegram forward mutation tracking',
-        'Cross-lingual debunk cards (Hindi, Hinglish, English)',
-        'Pre-publication viral claim verification radar'
+        'Viral social media rumor genealogies',
+        'WhatsApp/Telegram forward tracking',
+        'Cross-lingual debunk generation',
+        'Pre-publication verification queue'
       ]
     }
   ];
@@ -116,32 +116,33 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
       }}>
         {/* Modal Header */}
         <div style={{
-          padding: '20px 24px',
+          padding: '16px 20px',
           borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'var(--inner-box-bg)'
+          background: 'var(--bg-card)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
+              width: '32px',
+              height: '32px',
+              borderRadius: 'var(--radius-control)',
+              background: 'var(--bg-raised)',
+              border: '1px solid var(--border-color)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#ffffff'
+              color: 'var(--text-primary)'
             }}>
-              <Fingerprint size={22} />
+              <Fingerprint size={18} />
             </div>
             <div>
-              <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-heading)', margin: 0 }}>
-                Role-Based Access Control (RBAC) Portal
+              <h2 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-heading)', margin: 0 }}>
+                Operational persona
               </h2>
-              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0 0' }}>
-                Select an authorized operational persona to switch clearance level and data partition
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: '1px 0 0 0' }}>
+                Select an authorized operational clearance profile
               </p>
             </div>
           </div>
@@ -153,20 +154,20 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
               color: 'var(--text-muted)',
               cursor: 'pointer',
               padding: '6px',
-              borderRadius: '6px'
+              borderRadius: 'var(--radius-control)'
             }}
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
         {/* Modal Body: Cards Grid */}
         <div style={{
-          padding: '24px',
+          padding: '20px',
           overflowY: 'auto',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '16px'
+          gap: '12px'
         }}>
           {roleCards.map(card => {
             const isSelected = currentRole === card.key;
@@ -180,28 +181,16 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
                   onClose();
                 }}
                 style={{
-                  border: isSelected ? `2px solid ${card.badgeColor}` : '1px solid var(--border-color)',
-                  backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.05)' : 'var(--inner-box-bg)',
-                  borderRadius: '12px',
-                  padding: '18px',
+                  border: isSelected ? '1px solid var(--border-light)' : '1px solid var(--border-color)',
+                  backgroundColor: isSelected ? 'var(--bg-raised)' : 'var(--bg-input)',
+                  borderRadius: 'var(--radius-control)',
+                  padding: '14px',
                   cursor: 'pointer',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  transition: 'all 0.2s ease',
+                  transition: 'background-color 0.12s ease, border-color 0.12s ease',
                   position: 'relative'
-                }}
-                onMouseEnter={(e) => {
-                  if (!isSelected) {
-                    e.currentTarget.style.borderColor = 'var(--border-light)';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isSelected) {
-                    e.currentTarget.style.borderColor = 'var(--border-color)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }
                 }}
               >
                 {isSelected && (
@@ -209,16 +198,16 @@ export default function RoleSwitchModal({ isOpen, onClose }) {
                     position: 'absolute',
                     top: '12px',
                     right: '12px',
-                    backgroundColor: card.badgeColor,
-                    color: '#ffffff',
-                    width: '22px',
-                    height: '22px',
+                    backgroundColor: 'var(--text-primary)',
+                    color: 'var(--bg-deep)',
+                    width: '18px',
+                    height: '18px',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}>
-                    <Check size={14} strokeWidth={3} />
+                    <Check size={12} strokeWidth={2.5} />
                   </div>
                 )}
 
