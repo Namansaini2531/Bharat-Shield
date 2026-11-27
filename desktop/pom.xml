@@ -56,9 +56,7 @@
                     <mainClass>com.bharatshield.desktop.Main</mainClass>
                     <options>
                         <option>-Dprism.order=d3d,es2</option>
-                        <option>-Dprism.scrollmode=texture</option>
                         <option>-Dprism.targetvram=512m</option>
-                        <option>-Dprism.vsync=true</option>
                         <option>-Dprism.lcdtext=true</option>
                         <option>-Xms256m</option>
                         <option>-Xmx1024m</option>

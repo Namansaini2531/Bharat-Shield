@@ -39,6 +39,36 @@ public class DesktopApp extends Application {
         webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
 
+        // Hardware-amplified smooth mouse wheel scroll filter for native browser speed
+        webView.addEventFilter(javafx.scene.input.ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaY() != 0 || event.getDeltaX() != 0) {
+                // JavaFX wheel delta per notch is ~30px; 2.5x matches Chrome/Brave 100-120px speed
+                double deltaX = -event.getDeltaX() * 2.5;
+                double deltaY = -event.getDeltaY() * 2.5;
+                try {
+                    webEngine.executeScript(String.format(java.util.Locale.US,
+                        "(function(dx, dy, x, y) {" +
+                        "  var el = document.elementFromPoint(x, y);" +
+                        "  while (el && el !== document.body && el !== document.documentElement) {" +
+                        "    var s = window.getComputedStyle(el);" +
+                        "    var sy = (s.overflowY === 'auto' || s.overflowY === 'scroll') && el.scrollHeight > el.clientHeight;" +
+                        "    var sx = (s.overflowX === 'auto' || s.overflowX === 'scroll') && el.scrollWidth > el.clientWidth;" +
+                        "    if (sy || sx) {" +
+                        "      if (sy) el.scrollTop += dy;" +
+                        "      if (sx) el.scrollLeft += dx;" +
+                        "      return;" +
+                        "    }" +
+                        "    el = el.parentElement;" +
+                        "  }" +
+                        "  window.scrollBy(dx, dy);" +
+                        "})(%f, %f, %f, %f);",
+                        deltaX, deltaY, event.getX(), event.getY()
+                    ));
+                    event.consume();
+                } catch (Exception ignored) {}
+            }
+        });
+
         // Customize User Agent so React app knows it is in the desktop client
         String defaultUA = webEngine.getUserAgent();
         webEngine.setUserAgent(defaultUA + " BharatShieldDesktop/1.0.0 (JavaFX)");
