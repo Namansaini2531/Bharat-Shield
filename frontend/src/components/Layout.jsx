@@ -448,7 +448,8 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           top: 0,
           zIndex: 30,
           gap: '16px',
-          transition: 'all 0.2s ease'
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)'
         }}>
           {/* Left Header Section: SidebarTrigger + Separator + Breadcrumbs */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
@@ -927,8 +928,9 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
           flex: 1,
           padding: '24px 28px',
           backgroundColor: 'var(--bg-dark)',
-          transition: 'background-color 0.2s ease',
-          minWidth: 0
+          minWidth: 0,
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)'
         }}>
           {children}
         </main>
