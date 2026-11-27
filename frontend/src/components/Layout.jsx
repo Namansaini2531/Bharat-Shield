@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Breadcrumbs from './Breadcrumbs';
 import ThemeToggle from './ThemeToggle';
 import RoleSwitchModal from './RoleSwitchModal';
+import Sidebar from './Sidebar';
 import { useAuth, ROLES, PROFILE_CLUSTER_NODES } from '../context/AuthContext';
 import logoImg from '../assets/logo.png';
 import {
@@ -312,124 +313,18 @@ export default function Layout({ currentNav, setCurrentNav, theme, setTheme, chi
       {/* Role Switcher Authentication Modal */}
       <RoleSwitchModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
 
-      {/* ========================================================================= */}
-      {/* SHADCN APPLICATION SHELL: COLLAPSIBLE SIDEBAR                             */}
-      {/* ========================================================================= */}
-      <aside className={`bs-sidebar ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
-        {/* Sidebar Header / Brand */}
-        <div className="sidebar-brand-container">
-          <div
-            onClick={isCollapsed ? toggleSidebar : undefined}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              minWidth: 0,
-              width: '100%',
-              cursor: isCollapsed ? 'pointer' : 'default',
-              justifyContent: isCollapsed ? 'center' : 'flex-start'
-            }}
-            title={isCollapsed ? "Expand BHARAT-SHIELD Sidebar (Ctrl+B)" : undefined}
-          >
-            <div style={{ 
-              width: '38px', 
-              height: '38px', 
-              borderRadius: '8px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              flexShrink: 0
-            }}>
-              <img 
-                src={logoImg} 
-                alt="Bharat-Shield Sentinel" 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'contain',
-                  borderRadius: '6px'
-                }} 
-              />
-            </div>
-
-            <div className="sidebar-brand-text">
-              <span>BHARAT-SHIELD</span>
-            </div>
-
-          </div>
-        </div>
-
-
-
-        {/* Sidebar Navigation Content */}
-        <div style={{
-          flex: 1,
-          padding: '8px 8px',
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '14px'
-        }}>
-          {navGroups.map((group, groupIdx) => (
-            <div key={groupIdx} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <div className="sidebar-group-label">
-                {group.label}
-              </div>
-
-              {isCollapsed && groupIdx > 0 && (
-                <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '6px 4px' }} />
-              )}
-
-              {group.items.map((item) => {
-                const Icon = item.icon;
-                const isActive = currentNav === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => setCurrentNav(item.id)}
-                    title={isCollapsed ? item.label : undefined}
-                    className={`sidebar-menu-btn ${isActive ? 'active' : ''}`}
-                  >
-                    <Icon size={16} strokeWidth={1.5} style={{ flexShrink: 0, opacity: isActive ? 1 : 0.7 }} />
-                    <div className="sidebar-label-badge-wrap">
-                      <span className="sidebar-item-label">{item.label}</span>
-                      {item.count !== undefined && (
-                        <span className="sidebar-count">
-                          {item.count}
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-
-        {/* Sidebar Footer: Settings */}
-        <div style={{
-          padding: '10px 8px',
-          borderTop: '1px solid var(--border-color)',
-          backgroundColor: 'var(--bg-sidebar)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '2px'
-        }}>
-          <button
-            onClick={() => setCurrentNav('settings')}
-            title={isCollapsed ? "System Settings" : undefined}
-            className={`sidebar-menu-btn ${currentNav === 'settings' ? 'active' : ''}`}
-          >
-            <div className="sidebar-icon-wrap">
-              <Settings size={18} strokeWidth={2} />
-            </div>
-            <div className="sidebar-label-badge-wrap">
-              <span className="sidebar-item-label">Settings</span>
-            </div>
-          </button>
-        </div>
-      </aside>
+      {/* Modernized Forensic Sidebar with Lucide Icons */}
+      <Sidebar
+        isCollapsed={isCollapsed}
+        toggleSidebar={toggleSidebar}
+        currentNav={currentNav}
+        setCurrentNav={setCurrentNav}
+        navGroups={navGroups}
+        currentUser={currentUser}
+        currentRole={currentRole}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+        logout={logout}
+      />
 
       {/* ========================================================================= */}
       {/* MAIN CONTAINER & TOP NAVIGATION BAR                                       */}
