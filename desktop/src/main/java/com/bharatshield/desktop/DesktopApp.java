@@ -39,6 +39,18 @@ public class DesktopApp extends Application {
         webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
 
+        // Persistent User Data Directory for WebKit (persists HTML5 LocalStorage, theme, persona across app quits)
+        try {
+            java.io.File userDataDir = new java.io.File(System.getProperty("user.home"), ".bharatshield" + java.io.File.separator + "webview_profile");
+            if (!userDataDir.exists()) {
+                userDataDir.mkdirs();
+            }
+            webEngine.setUserDataDirectory(userDataDir);
+            System.out.println("[Desktop] WebKit user data directory set to: " + userDataDir.getAbsolutePath());
+        } catch (Exception e) {
+            System.err.println("[Desktop] Warning: Could not set WebKit user data directory: " + e.getMessage());
+        }
+
         // Hardware-amplified smooth mouse wheel scroll filter for native browser speed
         webView.addEventFilter(javafx.scene.input.ScrollEvent.SCROLL, event -> {
             if (event.getDeltaY() != 0 || event.getDeltaX() != 0) {

@@ -149,9 +149,9 @@ function MainAppContent() {
   const [currentNav, setCurrentNav] = useState('overview');
   const [theme, setTheme] = useState(() => {
     try {
-      return localStorage.getItem('bharat_shield_theme') || 'light';
+      return localStorage.getItem('bharat_shield_theme') || 'dark';
     } catch {
-      return 'light';
+      return 'dark';
     }
   });
   const { isAuthenticated, currentRole, hasAccessToNav } = useAuth();
@@ -164,6 +164,10 @@ function MainAppContent() {
   }, [currentRole, currentNav, hasAccessToNav]);
 
   React.useEffect(() => {
+    try {
+      localStorage.setItem('bharat_shield_theme', theme);
+    } catch {}
+
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       const applySystemTheme = () => {
@@ -175,9 +179,6 @@ function MainAppContent() {
       return () => mediaQuery.removeEventListener('change', applySystemTheme);
     } else {
       document.documentElement.setAttribute('data-theme', theme);
-      try {
-        localStorage.setItem('bharat_shield_theme', theme);
-      } catch {}
     }
   }, [theme]);
 

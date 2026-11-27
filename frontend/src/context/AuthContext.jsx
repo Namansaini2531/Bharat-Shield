@@ -245,20 +245,21 @@ export function getInitialRoleForEnvironment() {
       }
       if (queryRole === 'admin') return ROLES.SYSTEM_ADMIN;
 
-      // Check current localhost port
-      const port = window.location.port;
-      if (port && PORT_ROLES[port]) {
-        return PORT_ROLES[port];
-      }
-
+      // 1. User's saved active role takes top priority across sessions & reloads
       const saved = localStorage.getItem('bharat_shield_active_role');
       if (saved && USER_PROFILES[saved]) {
         return saved;
       }
+
+      // 2. Fallback to designated port mapping only if no personal saved role exists
+      const port = window.location.port;
+      if (port && PORT_ROLES[port]) {
+        return PORT_ROLES[port];
+      }
     }
   } catch (e) {}
 
-  return ROLES.SYSTEM_ADMIN;
+  return ROLES.INVESTIGATION_BUREAU;
 }
 
 export function getInitialAuthState() {
