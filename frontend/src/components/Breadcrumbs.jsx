@@ -12,7 +12,8 @@ import {
   BookOpen, 
   FileText, 
   Shield, 
-  Settings 
+  Settings,
+  Building2 
 } from 'lucide-react';
 
 const NAV_METADATA = {
